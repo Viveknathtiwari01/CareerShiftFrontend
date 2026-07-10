@@ -1,0 +1,248 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/plus-jakarta-sans";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * CareerShift Design System
+ * Premium enterprise SaaS: calm, modern, human-centered.
+ * Palette: Slate, Zinc, Soft Indigo, Subtle Teal.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    "Plus Jakarta Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-teal: var(--teal);
+  --color-warm: var(--warm);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 0 3px rgba(0, 0, 0, 0.02);
+  --shadow-elevated: 0 12px 32px -4px rgba(0, 0, 0, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.02);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.04);
+}
+
+:root,
+.dark {
+  --radius: 1rem; /* 16px, large rounded corners */
+
+  /* Semantic (shadcn) - Valture Dark Theme */
+  --background: oklch(0.18 0.01 260); /* #0C1015 Dark charcoal */
+  --foreground: oklch(0.95 0.01 250); /* Off-white text */
+  --card: oklch(0.22 0.01 260);
+  --card-foreground: oklch(0.95 0.01 250);
+  --popover: oklch(0.22 0.01 260);
+  --popover-foreground: oklch(0.95 0.01 250);
+  --primary: oklch(0.9 0.15 130); /* Lime Green #B1F05D */
+  --primary-foreground: oklch(0.18 0.01 260); /* Dark text on green button */
+  --secondary: oklch(0.26 0.01 260);
+  --secondary-foreground: oklch(0.95 0.01 250);
+  --muted: oklch(0.26 0.01 260);
+  --muted-foreground: oklch(0.7 0.01 260);
+  --accent: oklch(0.26 0.01 260);
+  --accent-foreground: oklch(0.95 0.01 250);
+  --destructive: oklch(0.65 0.15 20);
+  --destructive-foreground: oklch(0.95 0.01 250);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.9 0.15 130);
+
+  /* Brand - Valture Accent */
+  --brand: oklch(0.9 0.15 130); /* Lime Green */
+  --brand-foreground: oklch(0.18 0.01 260);
+  --teal: oklch(0.65 0.12 180);
+  --warm: oklch(0.75 0.1 60);
+
+  --surface: oklch(0.2 0.01 260);
+  --surface-2: oklch(0.24 0.01 260);
+
+  /* Gradients - Subtle radial green glow */
+  --gradient-brand: linear-gradient(135deg, oklch(0.9 0.15 130) 0%, oklch(0.95 0.15 130) 100%);
+  --gradient-hero: radial-gradient(
+    circle at center,
+    color-mix(in oklab, var(--brand) 15%, transparent) 0%,
+    transparent 60%
+  );
+  --gradient-card: linear-gradient(180deg, oklch(0.22 0.01 260) 0%, oklch(0.2 0.01 260) 100%);
+
+  /* Shadows */
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 12px 32px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  max-width: 1200px;
+  @media (min-width: 1280px) {
+    max-width: 1240px;
+  }
+}
+
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility surface-card {
+  background-image: var(--gradient-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+}
+
+@utility surface-glass {
+  background: color-mix(in oklab, var(--card) 60%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility bg-hero {
+  background: var(--gradient-hero);
+}
+
+/* Premium Animations */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+@utility animate-float {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Hover micro-interactions */
+@utility hover-lift {
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Animations for radar */
+@keyframes valRadarWave {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@utility animate-valRadarWave {
+  animation: valRadarWave 4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
