@@ -31,6 +31,7 @@ const NAV = [
   { to: "/roi", label: "Cost & ROI", icon: DollarSign },
   { to: "/insights", label: "Market Insights", icon: Sparkles },
   { to: "/history", label: "Assessment History", icon: History },
+  { to: "/my-profile", label: "My Career", icon: UserIcon },
 ] as const;
 
 export default function AuthenticatedLayout() {

@@ -13,6 +13,7 @@ import Report from '../pages/report';
 import Roi from '../pages/roi';
 import Routing from '../pages/routing';
 import Toolkit from '../pages/toolkit';
+import MyProfile from '../pages/my-career/profile';
 
 export default function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ export default function AppRoutes() {
         <Route path="/roi" element={<Roi />} />
         <Route path="/routing" element={<Routing />} />
         <Route path="/toolkit" element={<Toolkit />} />
+        <Route path="/my-profile" element={<MyProfile />} />
       </Route>
     </Routes>
   );
