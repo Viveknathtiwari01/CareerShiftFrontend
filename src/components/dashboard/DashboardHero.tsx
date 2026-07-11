@@ -6,7 +6,7 @@ export function DashboardHero() {
     <section className="bg-card border border-border rounded-xl px-6 py-10 sm:px-10 lg:px-12 text-center shadow-sm">
       <div className="mx-auto max-w-3xl">
         <h1 className="text-2xl font-bold tracking-tight sm:text-4xl text-foreground leading-tight">
-          AI Isn't Here to Replace You.<br /> It's Here to Redefine How You Work.
+          AI Is not Here to Replace You.<br /> It's Here to Redefine How You Work.
         </h1>
         <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
           Most professionals fear AI because they don't know how to use it effectively. 
