@@ -17,6 +17,7 @@ import {
   User as UserIcon,
   Wrench,
   X,
+  Target
 } from "lucide-react";
 import { useAuth } from "@/store/mock-store";
 
@@ -26,13 +27,13 @@ export const Route = createFileRoute("/_authenticated")({
 
 const NAV = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { to: "/report", label: "AI Readiness Report", icon: BarChart3 },
-  { to: "/routing", label: "Task Routing", icon: Compass },
-  { to: "/toolkit", label: "AI Toolkit", icon: Wrench },
-  { to: "/learning", label: "Learning Roadmap", icon: BookOpen },
-  { to: "/roi", label: "Cost & ROI", icon: DollarSign },
-  { to: "/insights", label: "Market Insights", icon: Sparkles },
+  { to: "/my-profile", label: "My Career", icon: UserIcon },
+  { to: "/assessment", label: "Career Assessment", icon: ClipboardList },
+  { to: "/ai-readiness", label: "AI Readiness Score", icon: Sparkles },
+  { to: "/career-identity", label: "Career Identity", icon: Target },
+  { to: "/report", label: "Career Intelligence Report", icon: BarChart3 },
   { to: "/history", label: "Assessment History", icon: History },
+  { to: "/toolkit", label: "AI Toolkit", icon: Wrench },
 ] as const;
 
 function AuthedShell() {
@@ -118,20 +119,6 @@ function AuthedShell() {
                 );
               })}
 
-              <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Assessment
-              </p>
-              <Link
-                to="/assessment"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  pathname === "/assessment"
-                    ? "bg-primary text-primary-foreground shadow-soft"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <ClipboardList className="h-4 w-4" />
-                New assessment
-              </Link>
 
               <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Account
@@ -147,13 +134,7 @@ function AuthedShell() {
                 <UserIcon className="h-4 w-4" />
                 Profile
               </Link>
-              <button
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                disabled
-              >
-                <Settings className="h-4 w-4" />
-                Preferences
-              </button>
+
             </nav>
 
             <div className="border-t border-border p-4">
