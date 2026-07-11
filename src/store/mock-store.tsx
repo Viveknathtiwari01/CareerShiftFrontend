@@ -29,6 +29,16 @@ export type Task = {
   complexity: "low" | "medium" | "high";
   creativity: "low" | "medium" | "high";
   humanTouch: "low" | "medium" | "high";
+  category?: string;
+  description?: string;
+  confidence?: number;
+  selected?: boolean;
+  frequency?: "Multiple times daily" | "Daily" | "Weekly" | "Monthly" | "Occasionally";
+  businessCriticality?: "Mission Critical" | "High" | "Medium" | "Low";
+  timeAllocation?: number;
+  aiAssistance?: "Never" | "Sometimes" | "Frequently" | "Always";
+  confidenceScore?: number;
+  manualNotes?: string;
 };
 
 export type Assessment = {
@@ -40,6 +50,7 @@ export type Assessment = {
   tasks: Task[];
   aiUsage: "none" | "some" | "daily";
   attitude: number; // 1..10
+  competencies: string[];
   completedAt?: string;
 };
 
@@ -52,6 +63,7 @@ const emptyAssessment: Assessment = {
   tasks: [],
   aiUsage: "none",
   attitude: 5,
+  competencies: [],
 };
 
 /* ------------------------------------------------------------------ */

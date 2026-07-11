@@ -1,0 +1,106 @@
+import { Link } from "react-router-dom";
+import { 
+  User, ClipboardList, FileText, Map, GraduationCap, 
+  Wrench, BookOpen, Activity, ArrowRight
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const navCards = [
+  {
+    title: "My Career",
+    purpose: "Understand your strengths.",
+    why: "Identify what makes you unique in the AI era.",
+    cta: "View Profile",
+    icon: User,
+    to: "/career-profile"
+  },
+  {
+    title: "AI Assessment",
+    purpose: "Evaluate your readiness.",
+    why: "Find out where you can improve.",
+    cta: "Take Assessment",
+    icon: ClipboardList,
+    to: "/ai-readiness"
+  },
+  {
+    title: "Intelligence Report",
+    purpose: "Deep analysis.",
+    why: "Actionable insights tailored to your career.",
+    cta: "View Report",
+    icon: FileText,
+    to: "/report"
+  },
+  {
+    title: "Learning Roadmap",
+    purpose: "Your structured path.",
+    why: "Know exactly what to learn next.",
+    cta: "View Roadmap",
+    icon: Map,
+    to: "/learning"
+  },
+  {
+    title: "Workshops",
+    purpose: "Master practical skills.",
+    why: "Save hours every week with AI workflows.",
+    cta: "Explore Workshops",
+    icon: GraduationCap,
+    to: "/workshops"
+  },
+  {
+    title: "AI Tools",
+    purpose: "Discover new solutions.",
+    why: "Find the best AI tools for your specific role.",
+    cta: "Browse Tools",
+    icon: Wrench,
+    to: "/ai-tools"
+  },
+  {
+    title: "Resources",
+    purpose: "Expand your knowledge.",
+    why: "Curated guides, templates, and cheat sheets.",
+    cta: "View Resources",
+    icon: BookOpen,
+    to: "/resources"
+  },
+  {
+    title: "Progress Tracker",
+    purpose: "Measure your growth.",
+    why: "See how far you've come on your journey.",
+    cta: "Track Progress",
+    icon: Activity,
+    to: "/progress"
+  }
+];
+
+export function DashboardNavigation() {
+  return (
+    <div className="py-6">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">Explore CareerShift</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Access your tools and resources.</p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {navCards.map((card, idx) => (
+          <Link key={idx} to={card.to} className="block h-full">
+            <div className="bg-card border border-border p-4 rounded-xl shadow-sm h-full flex flex-col hover:border-primary/50 transition-colors">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-muted p-1.5 rounded text-primary">
+                  <card.icon className="w-4 h-4" />
+                </div>
+                <h3 className="font-semibold text-foreground text-sm">{card.title}</h3>
+              </div>
+              
+              <p className="text-xs text-muted-foreground font-medium mb-1">{card.purpose}</p>
+              <p className="text-[10px] text-muted-foreground/80 mb-4 flex-1">{card.why}</p>
+              
+              <Button variant="ghost" size="sm" className="w-full text-[10px] font-semibold justify-between h-7 px-2">
+                {card.cta} <ArrowRight className="w-3 h-3" />
+              </Button>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -77,7 +77,9 @@ function Nav() {
             <span className="text-white [text-shadow:_0_1px_3px_rgb(0_0_0_/_30%),_0_1px_2px_rgb(0_0_0_/_50%)]">
               Career
             </span>
-            <span className="text-brand">Shift</span>
+            <span className="font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-500">
+              Shift
+            </span>
           </span>
         </Link>
         <nav className="hidden items-center gap-8 md:flex">

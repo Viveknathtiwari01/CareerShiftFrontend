@@ -14,6 +14,9 @@ import Roi from "../pages/roi";
 import Routing from "../pages/routing";
 import Toolkit from "../pages/toolkit";
 import MyProfile from "../pages/my-career/profile";
+import AIReadiness from "../pages/ai-readiness";
+import CareerIdentity from "../pages/career-identity";
+import Workshops from "../pages/workshops";
 
 export default function AppRoutes() {
   return (
@@ -34,6 +37,9 @@ export default function AppRoutes() {
         <Route path="/routing" element={<Routing />} />
         <Route path="/toolkit" element={<Toolkit />} />
         <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/ai-readiness" element={<AIReadiness />} />
+        <Route path="/career-identity" element={<CareerIdentity />} />
+        <Route path="/workshops" element={<Workshops />} />
       </Route>
     </Routes>
   );

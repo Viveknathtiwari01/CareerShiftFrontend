@@ -8,12 +8,14 @@ import {
   ClipboardList,
   Compass,
   DollarSign,
+  GraduationCap,
   History,
   LayoutDashboard,
   LogOut,
   Menu,
   Settings,
   Sparkles,
+  Target,
   User as UserIcon,
   Wrench,
   X,
@@ -22,7 +24,6 @@ import { useAuth } from "@/store/mock-store";
 
 const NAV = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { to: "/report", label: "AI Readiness Report", icon: BarChart3 },
   { to: "/routing", label: "Task Routing", icon: Compass },
   { to: "/toolkit", label: "AI Toolkit", icon: Wrench },
   { to: "/learning", label: "Learning Roadmap", icon: BookOpen },
@@ -30,6 +31,10 @@ const NAV = [
   { to: "/insights", label: "Market Insights", icon: Sparkles },
   { to: "/history", label: "Assessment History", icon: History },
   { to: "/my-profile", label: "My Career", icon: UserIcon },
+  { to: "/ai-readiness", label: "AI Readiness Score", icon: Sparkles },
+  { to: "/career-identity", label: "Career Identity", icon: Target },
+  { to: "/report", label: "Career Intelligence Report", icon: BarChart3 },
+  { to: "/workshops", label: "Workshops", icon: GraduationCap },
 ] as const;
 
 export default function AuthenticatedLayout() {
