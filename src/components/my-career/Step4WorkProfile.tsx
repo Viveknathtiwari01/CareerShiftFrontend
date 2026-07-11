@@ -10,13 +10,12 @@ interface Props {
 }
 
 export function Step4WorkProfile({ data, updateData }: Props) {
-  
   const toggleActivity = (activity: string) => {
     const current = data.dailyActivities;
     const newActivities = current.includes(activity)
-      ? current.filter(a => a !== activity)
+      ? current.filter((a) => a !== activity)
       : [...current, activity];
-    
+
     updateData({ dailyActivities: newActivities });
   };
 
@@ -34,20 +33,20 @@ export function Step4WorkProfile({ data, updateData }: Props) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {DAILY_ACTIVITIES.map(activity => {
+            {DAILY_ACTIVITIES.map((activity) => {
               const isSelected = data.dailyActivities.includes(activity);
               return (
-                <div 
+                <div
                   key={activity}
-                  className={`flex items-center space-x-3 border rounded-lg p-4 cursor-pointer transition-colors ${isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                  className={`flex items-center space-x-3 border rounded-lg p-4 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                   onClick={() => toggleActivity(activity)}
                 >
-                  <Checkbox 
-                    id={`activity-${activity}`} 
+                  <Checkbox
+                    id={`activity-${activity}`}
                     checked={isSelected}
                     onCheckedChange={() => toggleActivity(activity)}
                   />
-                  <label 
+                  <label
                     htmlFor={`activity-${activity}`}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
                   >

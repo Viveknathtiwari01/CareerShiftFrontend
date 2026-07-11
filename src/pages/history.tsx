@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAssessment } from "@/store/mock-store";
 
-
-
 function History() {
   const { submitted } = useAssessment();
   return (

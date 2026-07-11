@@ -74,7 +74,9 @@ function Nav() {
         <Link to="/" className="flex items-center gap-2">
           <Logo />
           <span className="font-display text-2xl font-extrabold tracking-tight">
-            <span className="text-white [text-shadow:_0_1px_3px_rgb(0_0_0_/_30%),_0_1px_2px_rgb(0_0_0_/_50%)]">Career</span>
+            <span className="text-white [text-shadow:_0_1px_3px_rgb(0_0_0_/_30%),_0_1px_2px_rgb(0_0_0_/_50%)]">
+              Career
+            </span>
             <span className="text-brand">Shift</span>
           </span>
         </Link>
@@ -147,9 +149,7 @@ function Nav() {
 }
 
 function Logo() {
-  return (
-    <img src={logoImg} alt="CareerShift Logo" className="h-10 object-contain" />
-  );
+  return <img src={logoImg} alt="CareerShift Logo" className="h-10 object-contain" />;
 }
 
 /* ---------- HERO ---------- */
@@ -166,7 +166,8 @@ function Hero() {
             Will AI take <span className="text-brand">your job?</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Find out exactly what to build, what to automate, and how to become the person companies fight to keep. Receive your personalized AI Career Readiness Report in minutes.
+            Find out exactly what to build, what to automate, and how to become the person companies
+            fight to keep. Receive your personalized AI Career Readiness Report in minutes.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -313,12 +314,16 @@ function Framework3B() {
             The proprietary 3B Framework™
           </h2>
           <p className="mt-4 text-muted-foreground">
-            CareerShift analyzes every task in your role and routes it into one of three action categories, giving you a clear strategy for the age of AI.
+            CareerShift analyzes every task in your role and routes it into one of three action
+            categories, giving you a clear strategy for the age of AI.
           </p>
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {items.map((it) => (
-            <div key={it.title} className={`surface-card flex flex-col p-8 border ${it.color} hover-lift`}>
+            <div
+              key={it.title}
+              className={`surface-card flex flex-col p-8 border ${it.color} hover-lift`}
+            >
               <div className="inline-grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft mb-2">
                 {it.icon}
               </div>
@@ -326,9 +331,7 @@ function Framework3B() {
               <div className="mt-1 text-sm font-semibold uppercase tracking-wider opacity-80">
                 {it.subtitle}
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground flex-1">
-                {it.body}
-              </p>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground flex-1">{it.body}</p>
             </div>
           ))}
         </div>
@@ -1031,9 +1034,9 @@ function OurStory() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div className="relative">
             <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-teal/20 blur-2xl opacity-40"></div>
-            <img 
-              src={ownerPhoto} 
-              alt="Owner of CareerShift" 
+            <img
+              src={ownerPhoto}
+              alt="Owner of CareerShift"
               className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
             />
           </div>
@@ -1044,19 +1047,23 @@ function OurStory() {
             </h2>
             <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                As a professional navigating the rapid advancements in AI, I saw brilliant colleagues feeling overwhelmed and uncertain about their future. The advice out there was either too academic or just sensationalist fear-mongering.
+                As a professional navigating the rapid advancements in AI, I saw brilliant
+                colleagues feeling overwhelmed and uncertain about their future. The advice out
+                there was either too academic or just sensationalist fear-mongering.
               </p>
               <p>
-                I realized we didn't need another generic AI tutorial. We needed a personalized compass. We needed to know exactly which parts of our jobs to automate, and which human skills to double down on.
+                I realized we didn't need another generic AI tutorial. We needed a personalized
+                compass. We needed to know exactly which parts of our jobs to automate, and which
+                human skills to double down on.
               </p>
               <p>
-                That's why CareerShift was born. My mission is to empower professionals to move from anxiety to advantage, giving them a clear, actionable roadmap to thrive in the age of AI.
+                That's why CareerShift was born. My mission is to empower professionals to move from
+                anxiety to advantage, giving them a clear, actionable roadmap to thrive in the age
+                of AI.
               </p>
             </div>
             <div className="mt-8 flex items-center gap-4">
-              <div className="font-display font-semibold text-foreground">
-                Alex Founder
-              </div>
+              <div className="font-display font-semibold text-foreground">Alex Founder</div>
               <div className="h-4 w-px bg-border"></div>
               <div className="text-sm text-muted-foreground">Founder & CEO</div>
             </div>
@@ -1081,7 +1088,7 @@ function ContactUs() {
             Have questions? Want to discuss a team plan? Reach out or book a consultation directly.
           </p>
         </div>
-        
+
         <div className="mt-14 mx-auto max-w-5xl grid gap-10 md:grid-cols-2">
           {/* Contact Form */}
           <div className="surface-card p-8">
@@ -1092,26 +1099,42 @@ function ContactUs() {
                   <label className="text-sm font-medium text-foreground flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" /> First Name
                   </label>
-                  <input type="text" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="John" />
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                    placeholder="John"
+                  />
                 </div>
-                 <div className="space-y-2">
+                <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" /> Last Name
                   </label>
-                  <input type="text" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="Doe" />
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                    placeholder="Doe"
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Mail className="w-4 h-4 text-muted-foreground" /> Email Address
                 </label>
-                <input type="email" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="john@example.com" />
+                <input
+                  type="email"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                  placeholder="john@example.com"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MessageSquare className="w-4 h-4 text-muted-foreground" /> Message
                 </label>
-                <textarea rows={4} className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none" placeholder="How can we help you?"></textarea>
+                <textarea
+                  rows={4}
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none"
+                  placeholder="How can we help you?"
+                ></textarea>
               </div>
               <button className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]">
                 Send Message
@@ -1126,25 +1149,37 @@ function ContactUs() {
               <p className="text-sm text-muted-foreground mb-8">
                 Choose a time that works best for you. We offer video and phone consultations.
               </p>
-              
+
               <div className="space-y-4">
-                <a href="#" className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-brand hover:bg-brand/5 group">
+                <a
+                  href="#"
+                  className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-brand hover:bg-brand/5 group"
+                >
                   <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
                     <Video className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground group-hover:text-brand transition-colors">Google / Zoom Meeting</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">30 min video consultation</p>
+                    <h4 className="font-semibold text-foreground group-hover:text-brand transition-colors">
+                      Google / Zoom Meeting
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      30 min video consultation
+                    </p>
                   </div>
                   <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-brand transition-colors group-hover:translate-x-1" />
                 </a>
 
-                <a href="#" className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-teal hover:bg-teal/5 group">
+                <a
+                  href="#"
+                  className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-teal hover:bg-teal/5 group"
+                >
                   <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-teal/10 text-teal">
                     <Phone className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground group-hover:text-teal transition-colors">Phone Call</h4>
+                    <h4 className="font-semibold text-foreground group-hover:text-teal transition-colors">
+                      Phone Call
+                    </h4>
                     <p className="text-xs text-muted-foreground mt-0.5">15 min quick chat</p>
                   </div>
                   <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-teal transition-colors group-hover:translate-x-1" />

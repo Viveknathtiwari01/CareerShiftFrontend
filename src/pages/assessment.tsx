@@ -1,582 +1,461 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
-  ArrowLeft,
   ArrowRight,
+  BarChart,
   Bot,
+  BrainCircuit,
+  Briefcase,
   CheckCircle2,
+  ChevronRight,
   ClipboardList,
+  Compass,
   Cpu,
-  Heart,
-  Plus,
+  FileText,
+  Map,
+  PlayCircle,
   Sparkles,
-  Target,
-  Trash2,
-  Wrench,
 } from "lucide-react";
-import { useAssessment, type Task } from "@/store/mock-store";
+import AssessmentWizard from "@/components/AssessmentWizard";
+import { useAssessment } from "@/store/mock-store";
 
+export default function AssessmentPage() {
+  const [view, setView] = useState<"dashboard" | "wizard">("dashboard");
+  const { draft, submitted } = useAssessment();
 
-
-const TOOL_OPTIONS = [
-  "ChatGPT",
-  "Claude",
-  "Gemini",
-  "Cursor",
-  "Copilot",
-  "Notion AI",
-  "Perplexity",
-  "Midjourney",
-  "None",
-];
-const GOAL_OPTIONS = [
-  "Automate repetitive tasks",
-  "Learn new AI tools",
-  "Change roles or industries",
-  "Increase productivity",
-  "Future-proof my skills",
-  "Lead AI adoption at work",
-];
-
-const STEPS = [
-  { key: "role", label: "Role", icon: ClipboardList },
-  { key: "tools", label: "Tools", icon: Wrench },
-  { key: "tasks", label: "Tasks", icon: Cpu },
-  { key: "attitude", label: "Attitude", icon: Heart },
-  { key: "goals", label: "Goals", icon: Target },
-  { key: "review", label: "Review", icon: CheckCircle2 },
-] as const;
-
-function AssessmentWizard() {
-  const { draft, setDraft, addTask, updateTask, removeTask, submit } = useAssessment();
-  const navigate = useNavigate();
-  const [step, setStep] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-
-  const progress = ((step + 1) / STEPS.length) * 100;
-
-  function next() {
-    if (step < STEPS.length - 1) setStep((s) => s + 1);
-  }
-  function prev() {
-    if (step > 0) setStep((s) => s - 1);
+  if (view === "wizard") {
+    return <AssessmentWizard />;
   }
 
-  function handleSubmit() {
-    submit();
-    setSubmitted(true);
-  }
-
-  if (submitted) return <Success onContinue={() => navigate("/report")} />;
+  const hasDraft = draft.tasks.length > 0 || draft.role !== "";
+  const hasHistory = submitted !== null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      {/* Stepper */}
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5 text-brand">
-            <Sparkles className="h-3.5 w-3.5" /> Assessment
-          </span>
-          <span>{Math.round(progress)}% complete</span>
+      {/* Header Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
+      >
+        <div>
+          <h1 className="font-display text-4xl font-bold tracking-tight text-foreground">
+            AI Based Career Assessment
+          </h1>
+          <p className="mt-2 max-w-2xl text-lg text-muted-foreground">
+            Understand how AI will impact your career, analyze your daily work, measure your AI
+            readiness, and receive a personalized career transformation roadmap.
+          </p>
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-brand to-teal transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <ol className="mt-6 hidden grid-cols-6 gap-2 md:grid">
-          {STEPS.map((s, i) => {
-            const Icon = s.icon;
-            const active = i === step;
-            const done = i < step;
-            return (
-              <li key={s.key} className="flex flex-col items-center gap-2 text-center">
-                <div
-                  className={`grid h-9 w-9 place-items-center rounded-full border transition-colors ${
-                    done
-                      ? "border-teal bg-teal text-primary-foreground"
-                      : active
-                        ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                        : "border-border bg-background text-muted-foreground"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
-                <span
-                  className={`text-xs font-medium ${active ? "text-foreground" : "text-muted-foreground"}`}
-                >
-                  {s.label}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-
-      <div className="surface-card p-6 md:p-10">
-        {step === 0 && <StepRole draft={draft} setDraft={setDraft} />}
-        {step === 1 && <StepTools draft={draft} setDraft={setDraft} />}
-        {step === 2 && (
-          <StepTasks
-            draft={draft}
-            addTask={addTask}
-            updateTask={updateTask}
-            removeTask={removeTask}
-          />
-        )}
-        {step === 3 && <StepAttitude draft={draft} setDraft={setDraft} />}
-        {step === 4 && <StepGoals draft={draft} setDraft={setDraft} />}
-        {step === 5 && <StepReview />}
-      </div>
-
-      <div className="mt-6 flex items-center justify-between">
-        <button
-          onClick={prev}
-          disabled={step === 0}
-          className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-40"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </button>
-        {step < STEPS.length - 1 ? (
+        <div className="flex shrink-0 items-center gap-3">
           <button
-            onClick={next}
+            disabled={!hasDraft}
+            onClick={() => setView("wizard")}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+          >
+            Continue Draft
+          </button>
+          <button
+            onClick={() => setView("wizard")}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
           >
-            Continue <ArrowRight className="h-4 w-4" />
+            Start New Assessment <ArrowRight className="h-4 w-4" />
           </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated"
-          >
-            <Bot className="h-4 w-4" /> Generate my Report
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
+        </div>
+      </motion.div>
 
-/* ---------- Steps ---------- */
+      {/* Hero Overview Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="mb-12 overflow-hidden rounded-2xl border border-border bg-surface-2 shadow-soft"
+      >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3">
+          <div className="col-span-1 p-8 lg:col-span-2">
+            <h2 className="font-display text-2xl font-bold">
+              Your Career. Your Tasks. Your AI Strategy.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              CareerShift analyzes your professional role, competencies, daily work, and AI usage to
+              determine which parts of your career should be Built, Bot-enabled, or Blended using
+              AI.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-medium text-foreground">
+              <span className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-primary">
+                <PlayCircle className="h-4 w-4" />
+                Estimated Assessment Time: 7–10 Minutes
+              </span>
+            </div>
 
-function StepHeader({ title, description }: { title: string; description: string }) {
-  return (
-    <div className="mb-8">
-      <h2 className="font-display text-3xl font-bold tracking-tight">{title}</h2>
-      <p className="mt-2 text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
-function StepRole({
-  draft,
-  setDraft,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  setDraft: ReturnType<typeof useAssessment>["setDraft"];
-}) {
-  return (
-    <div>
-      <StepHeader
-        title="Tell us about your role"
-        description="This anchors how we interpret your tasks and toolkit."
-      />
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">Job title</span>
-          <input
-            type="text"
-            value={draft.role}
-            onChange={(e) => setDraft({ role: e.target.value })}
-            placeholder="e.g. Marketing Manager"
-            className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-          />
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">Industry</span>
-          <input
-            type="text"
-            value={draft.industry}
-            onChange={(e) => setDraft({ industry: e.target.value })}
-            placeholder="e.g. SaaS, Healthcare, Finance"
-            className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-          />
-        </label>
-        <label className="block md:col-span-2">
-          <div className="mb-1.5 flex items-center justify-between">
-            <span className="text-xs font-medium">Years of experience</span>
-            <span className="font-display text-base font-bold">{draft.yearsExp}</span>
+            <div className="mt-8">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                What's Analyzed
+              </p>
+              <div className="flex flex-wrap gap-4">
+                {[
+                  "Career Intelligence",
+                  "Competency Mapping",
+                  "Task Analysis",
+                  "AI Readiness Score",
+                  "Career Identity",
+                  "Personalized Learning Roadmap",
+                ].map((feature) => (
+                  <span
+                    key={feature}
+                    className="flex items-center gap-1.5 text-sm font-medium text-foreground"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-brand" /> {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-          <input
-            type="range"
-            min={0}
-            max={30}
-            value={draft.yearsExp}
-            onChange={(e) => setDraft({ yearsExp: Number(e.target.value) })}
-            className="w-full accent-[color:var(--brand)]"
-          />
-        </label>
-      </div>
-    </div>
-  );
-}
 
-function StepTools({
-  draft,
-  setDraft,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  setDraft: ReturnType<typeof useAssessment>["setDraft"];
-}) {
-  function toggle(tool: string) {
-    const s = new Set(draft.tools);
-    if (s.has(tool)) s.delete(tool);
-    else s.add(tool);
-    setDraft({ tools: [...s] });
-  }
-  return (
-    <div>
-      <StepHeader
-        title="Which AI tools do you already use?"
-        description="Pick any that apply — we use this to gauge your baseline fluency."
-      />
-      <div className="flex flex-wrap gap-2">
-        {TOOL_OPTIONS.map((t) => {
-          const active = draft.tools.includes(t);
-          return (
-            <button
-              key={t}
-              onClick={() => toggle(t)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                active
-                  ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                  : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-              }`}
-            >
-              {t}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="mt-8">
-        <span className="mb-2 block text-xs font-medium">
-          How often do you use AI at work today?
-        </span>
-        <div className="grid gap-2 sm:grid-cols-3">
-          {(["none", "some", "daily"] as const).map((v) => (
-            <button
-              key={v}
-              onClick={() => setDraft({ aiUsage: v })}
-              className={`rounded-xl border px-4 py-3 text-sm font-medium capitalize transition-colors ${
-                draft.aiUsage === v
-                  ? "border-primary bg-primary/5 text-foreground"
-                  : "border-border bg-background text-muted-foreground hover:border-primary/40"
-              }`}
-            >
-              {v === "none" ? "Rarely / never" : v === "some" ? "Occasionally" : "Daily driver"}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StepTasks({
-  draft,
-  addTask,
-  updateTask,
-  removeTask,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  addTask: ReturnType<typeof useAssessment>["addTask"];
-  updateTask: ReturnType<typeof useAssessment>["updateTask"];
-  removeTask: ReturnType<typeof useAssessment>["removeTask"];
-}) {
-  const [title, setTitle] = useState("");
-  const [hours, setHours] = useState(3);
-
-  function add() {
-    if (!title.trim()) return;
-    const t: Task = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      hoursPerWeek: hours,
-      complexity: "medium",
-      creativity: "medium",
-      humanTouch: "medium",
-    };
-    addTask(t);
-    setTitle("");
-    setHours(3);
-  }
-
-  return (
-    <div>
-      <StepHeader
-        title="What do you actually do in a week?"
-        description="Add 3–8 recurring tasks. For each one, rate complexity, creativity, and human touch — this powers your task routing."
-      />
-
-      <div className="rounded-xl border border-dashed border-border bg-muted/30 p-4">
-        <div className="flex flex-col gap-3 md:flex-row md:items-end">
-          <label className="flex-1">
-            <span className="mb-1 block text-xs font-medium">Task</span>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && add()}
-              placeholder="e.g. Draft weekly stakeholder report"
-              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-            />
-          </label>
-          <label className="md:w-40">
-            <span className="mb-1 block text-xs font-medium">Hours / week</span>
-            <input
-              type="number"
-              min={0}
-              max={40}
-              value={hours}
-              onChange={(e) => setHours(Number(e.target.value))}
-              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-            />
-          </label>
-          <button
-            onClick={add}
-            className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-          >
-            <Plus className="h-4 w-4" /> Add
-          </button>
-        </div>
-      </div>
-
-      <ul className="mt-6 space-y-3">
-        {draft.tasks.length === 0 && (
-          <li className="rounded-xl border border-border bg-background p-6 text-center text-sm text-muted-foreground">
-            No tasks yet. Add your first weekly task above.
-          </li>
-        )}
-        {draft.tasks.map((t) => (
-          <li key={t.id} className="surface-card p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <p className="truncate font-semibold text-foreground">{t.title}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{t.hoursPerWeek} hrs / week</p>
+          <div className="border-t border-border bg-background p-8 md:border-l md:border-t-0">
+            <h3 className="mb-6 font-display text-lg font-bold">Assessment Status</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Career Profile</span>
+                <span className="flex items-center gap-1 font-medium text-foreground">
+                  Completed <CheckCircle2 className="h-4 w-4 text-brand" />
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Assessment</span>
+                <span className="font-medium text-foreground">
+                  {hasHistory ? "Completed" : "Not Started"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Last Assessment</span>
+                <span className="font-medium text-foreground">
+                  {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Estimated Duration</span>
+                <span className="font-medium text-foreground">7–10 Minutes</span>
+              </div>
+              <div>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Assessment Progress</span>
+                  <span className="font-medium text-brand">0%</span>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                  <div className="h-full w-[0%] bg-gradient-to-r from-brand to-teal" />
+                </div>
               </div>
               <button
-                onClick={() => removeTask(t.id)}
-                aria-label="Remove"
-                className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-danger"
+                onClick={() => setView("wizard")}
+                className="mt-6 w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
               >
-                <Trash2 className="h-4 w-4" />
+                Start Assessment
               </button>
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              <TaskRating
-                label="Complexity"
-                value={t.complexity}
-                onChange={(v) => updateTask(t.id, { complexity: v })}
-              />
-              <TaskRating
-                label="Creativity"
-                value={t.creativity}
-                onChange={(v) => updateTask(t.id, { creativity: v })}
-              />
-              <TaskRating
-                label="Human touch"
-                value={t.humanTouch}
-                onChange={(v) => updateTask(t.id, { humanTouch: v })}
-              />
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function TaskRating({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: "low" | "medium" | "high";
-  onChange: (v: "low" | "medium" | "high") => void;
-}) {
-  return (
-    <div>
-      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-        {label}
-      </span>
-      <div className="grid grid-cols-3 rounded-lg border border-border bg-background p-0.5 text-xs">
-        {(["low", "medium", "high"] as const).map((v) => (
-          <button
-            key={v}
-            onClick={() => onChange(v)}
-            className={`rounded-md py-1.5 font-medium capitalize transition-colors ${
-              value === v
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {v}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function StepAttitude({
-  draft,
-  setDraft,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  setDraft: ReturnType<typeof useAssessment>["setDraft"];
-}) {
-  return (
-    <div>
-      <StepHeader
-        title="How do you feel about AI at work?"
-        description="Your posture toward change is a strong signal for readiness."
-      />
-      <div className="rounded-xl border border-border bg-muted/30 p-6">
-        <div className="mb-3 flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Cautious</span>
-          <span className="font-display text-3xl font-bold text-foreground">{draft.attitude}</span>
-          <span className="text-muted-foreground">Enthusiastic</span>
+          </div>
         </div>
-        <input
-          type="range"
-          min={1}
-          max={10}
-          value={draft.attitude}
-          onChange={(e) => setDraft({ attitude: Number(e.target.value) })}
-          className="w-full accent-[color:var(--brand)]"
-        />
-      </div>
-    </div>
-  );
-}
+      </motion.div>
 
-function StepGoals({
-  draft,
-  setDraft,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  setDraft: ReturnType<typeof useAssessment>["setDraft"];
-}) {
-  function toggle(g: string) {
-    const s = new Set(draft.goals);
-    if (s.has(g)) s.delete(g);
-    else s.add(g);
-    setDraft({ goals: [...s] });
-  }
-  return (
-    <div>
-      <StepHeader
-        title="What are you optimizing for?"
-        description="Choose up to three. We'll prioritize recommendations to match."
-      />
-      <div className="grid gap-3 md:grid-cols-2">
-        {GOAL_OPTIONS.map((g) => {
-          const active = draft.goals.includes(g);
-          return (
+      {/* Assessment Benefits Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-16"
+      >
+        <h2 className="mb-8 font-display text-2xl font-bold tracking-tight">What You Will Gain</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              icon: BrainCircuit,
+              title: "Career Intelligence",
+              description: "Understand where you stand in the AI era.",
+            },
+            {
+              icon: Compass,
+              title: "Competency Mapping",
+              description: "Discover your strengths and competency gaps.",
+            },
+            {
+              icon: ClipboardList,
+              title: "Daily Task Analysis",
+              description: "Analyze how AI impacts your actual work.",
+            },
+            {
+              icon: Cpu,
+              title: "3B Framework",
+              description: "Classify every task into Build, Bot, or Blend.",
+            },
+            {
+              icon: BarChart,
+              title: "AI Readiness Score",
+              description: "Measure your readiness using CareerShift's proprietary framework.",
+            },
+            {
+              icon: Map,
+              title: "Career Roadmap",
+              description: "Receive actionable recommendations to future-proof your career.",
+            },
+          ].map((benefit, i) => {
+            const Icon = benefit.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="group rounded-2xl border border-border bg-background p-6 transition-all hover:border-primary/30 hover:shadow-soft"
+              >
+                <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="mb-2 font-display text-lg font-semibold">{benefit.title}</h3>
+                <p className="text-sm text-muted-foreground">{benefit.description}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Assessment History */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-16"
+      >
+        <h2 className="mb-8 font-display text-2xl font-bold tracking-tight">Assessment History</h2>
+        <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-soft">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] text-left text-sm">
+              <thead className="border-b border-border bg-muted/40">
+                <tr>
+                  <th className="px-6 py-4 font-semibold text-foreground">Assessment Date</th>
+                  <th className="px-6 py-4 font-semibold text-foreground">Assessment Score</th>
+                  <th className="px-6 py-4 font-semibold text-foreground">Career Identity</th>
+                  <th className="px-6 py-4 font-semibold text-foreground">Status</th>
+                  <th className="px-6 py-4 text-right font-semibold text-foreground">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                <tr className="transition-colors hover:bg-muted/20">
+                  <td className="px-6 py-4 text-muted-foreground">12 Jul 2026</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-2.5 py-1 font-semibold text-brand">
+                      74 / 100
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 font-medium text-foreground">
+                    AI-Augmented Backend Engineer
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1 text-xs font-semibold text-teal">
+                      Completed
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      to="/report"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
+                    >
+                      View Report <ChevronRight className="h-3 w-3" />
+                    </Link>
+                  </td>
+                </tr>
+                <tr className="transition-colors hover:bg-muted/20">
+                  <td className="px-6 py-4 text-muted-foreground">18 Apr 2026</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-1 font-semibold text-amber-600 dark:text-amber-400">
+                      69 / 100
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 font-medium text-foreground">Backend Engineer</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1 text-xs font-semibold text-teal">
+                      Completed
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      to="/report"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
+                    >
+                      View Report <ChevronRight className="h-3 w-3" />
+                    </Link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* What's Included Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-16"
+      >
+        <h2 className="mb-8 font-display text-2xl font-bold tracking-tight">What's Included</h2>
+        <div className="relative">
+          {/* Connecting line */}
+          <div className="absolute left-[27px] top-4 hidden h-[calc(100%-2rem)] w-0.5 bg-border md:block" />
+          <div className="space-y-6 md:space-y-8">
+            {[
+              {
+                title: "Role Analysis",
+                desc: "We anchor the assessment around your specific job title and industry.",
+                icon: Briefcase,
+              },
+              {
+                title: "Competency Mapping",
+                desc: "Identify essential skills and tools you use.",
+                icon: Compass,
+              },
+              {
+                title: "Task Generation",
+                desc: "Outline your primary responsibilities and weekly tasks.",
+                icon: ClipboardList,
+              },
+              {
+                title: "Task Review",
+                desc: "Evaluate the complexity, creativity, and human touch required.",
+                icon: CheckCircle2,
+              },
+              {
+                title: "3B Analysis",
+                desc: "Determine which tasks to Build, Bot, or Blend.",
+                icon: Cpu,
+              },
+              {
+                title: "AI Readiness Score",
+                desc: "Calculate your current standing in the AI era.",
+                icon: BarChart,
+              },
+              {
+                title: "Career Identity",
+                desc: "Define your future professional persona.",
+                icon: Sparkles,
+              },
+              {
+                title: "Personalized Report",
+                desc: "Get actionable recommendations for your career.",
+                icon: FileText,
+              },
+            ].map((step, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className="relative flex items-start gap-6 md:gap-8"
+              >
+                <div className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-surface-2 bg-primary text-primary-foreground shadow-soft">
+                  <step.icon className="h-6 w-6" />
+                </div>
+                <div className="pt-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">
+                    Step {idx + 1}
+                  </p>
+                  <h3 className="mt-1 font-display text-lg font-bold">{step.title}</h3>
+                  <p className="mt-1 max-w-lg text-sm text-muted-foreground">{step.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Assessment Insights Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+      >
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Current AI Readiness
+          </p>
+          <div className="mt-2 flex items-baseline gap-2">
+            <span className="font-display text-3xl font-bold text-foreground">
+              {hasHistory ? "74" : "N/A"}
+            </span>
+            <span className="text-sm text-muted-foreground">/ 100</span>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Career Profile
+          </p>
+          <div className="mt-2 flex items-center gap-2">
+            <CheckCircle2 className="h-6 w-6 text-teal" />
+            <span className="font-display text-2xl font-bold text-foreground">Completed</span>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Assessments Completed
+          </p>
+          <div className="mt-2 font-display text-3xl font-bold text-foreground">
+            {hasHistory ? "1" : "0"}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Last Assessment
+          </p>
+          <div className="mt-2 font-display text-2xl font-bold text-foreground">
+            {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* CTA Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 md:p-12"
+      >
+        <div className="absolute right-0 top-0 opacity-10 blur-3xl">
+          <Bot className="h-96 w-96 text-white" />
+        </div>
+        <div className="relative z-10 max-w-2xl text-primary-foreground">
+          <h2 className="font-display text-3xl font-bold md:text-4xl">
+            Ready to Discover Your AI Career Potential?
+          </h2>
+          <p className="mt-4 text-lg text-primary-foreground/80">
+            Complete your first AI Career Assessment and receive personalized insights into your
+            strengths, automation opportunities, AI readiness, and future career strategy.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             <button
-              key={g}
-              onClick={() => toggle(g)}
-              className={`flex items-center justify-between rounded-xl border p-4 text-left text-sm font-medium transition-all ${
-                active
-                  ? "border-primary bg-primary/5 text-foreground shadow-soft"
-                  : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-              }`}
+              onClick={() => setView("wizard")}
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-primary shadow-elevated transition-transform hover:scale-[1.02]"
             >
-              <span>{g}</span>
-              {active && <CheckCircle2 className="h-4 w-4 text-brand" />}
+              Start Assessment <ArrowRight className="h-4 w-4" />
             </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function StepReview() {
-  const { draft } = useAssessment();
-  return (
-    <div>
-      <StepHeader
-        title="Review & submit"
-        description="Confirm everything looks right before we generate your Report."
-      />
-      <dl className="grid gap-4 md:grid-cols-2">
-        <ReviewRow label="Role" value={draft.role || "—"} />
-        <ReviewRow label="Industry" value={draft.industry || "—"} />
-        <ReviewRow label="Experience" value={`${draft.yearsExp} years`} />
-        <ReviewRow label="AI usage today" value={draft.aiUsage} />
-        <ReviewRow label="Tools" value={draft.tools.length ? draft.tools.join(", ") : "—"} />
-        <ReviewRow label="Goals" value={draft.goals.length ? draft.goals.join(", ") : "—"} />
-      </dl>
-      <div className="mt-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Tasks ({draft.tasks.length})
-        </p>
-        <ul className="space-y-2">
-          {draft.tasks.map((t) => (
-            <li
-              key={t.id}
-              className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-transparent px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
             >
-              <span className="truncate">{t.title}</span>
-              <span className="text-xs text-muted-foreground">
-                {t.hoursPerWeek}h · {t.complexity}/{t.creativity}/{t.humanTouch}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-function ReviewRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-border bg-background p-3">
-      <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-        {label}
-      </dt>
-      <dd className="mt-1 truncate text-sm font-medium capitalize text-foreground">{value}</dd>
-    </div>
-  );
-}
-
-function Success({ onContinue }: { onContinue: () => void }) {
-  return (
-    <div className="mx-auto grid min-h-[70vh] max-w-xl place-items-center px-6 text-center">
-      <div>
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal/15 text-teal">
-          <CheckCircle2 className="h-8 w-8" />
+              Learn More
+            </Link>
+          </div>
         </div>
-        <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
-          Your Report is ready
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          We analyzed your role, tools, and tasks. Head to your personalized AI Career Readiness
-          Report.
-        </p>
-        <button
-          onClick={onContinue}
-          className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
-        >
-          View my Report <ArrowRight className="h-4 w-4" />
-        </button>
-      </div>
+      </motion.div>
     </div>
   );
 }
-
-export default AssessmentWizard;

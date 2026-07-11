@@ -46,12 +46,18 @@ export default function MyCareerProfile() {
   const handleNext = () => {
     // Basic validation for required fields in Step 1
     if (currentStep === 1) {
-      if (!data.jobTitle || !data.industry || !data.businessFunction || !data.domain || !data.specialization) {
+      if (
+        !data.jobTitle ||
+        !data.industry ||
+        !data.businessFunction ||
+        !data.domain ||
+        !data.specialization
+      ) {
         toast.error("Please fill in all required fields to proceed.");
         return;
       }
     }
-    
+
     if (currentStep <= TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -68,7 +74,7 @@ export default function MyCareerProfile() {
     // In a real app, you would submit to API here.
     // For now, redirect to dashboard or just show success.
     setTimeout(() => {
-      navigate('/dashboard'); // Mock redirect to dashboard
+      navigate("/dashboard"); // Mock redirect to dashboard
     }, 1500);
   };
 
@@ -76,7 +82,6 @@ export default function MyCareerProfile() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      
       {/* Header & Progress */}
       {currentStep <= TOTAL_STEPS && (
         <div className="mb-8 space-y-4">
@@ -96,12 +101,25 @@ export default function MyCareerProfile() {
       {/* Wizard Content */}
       <div className="flex-1 relative">
         <AnimatePresence mode="wait">
-          {currentStep === 1 && <Step1CareerIdentity key="step1" data={data} updateData={updateData} />}
+          {currentStep === 1 && (
+            <Step1CareerIdentity key="step1" data={data} updateData={updateData} />
+          )}
           {currentStep === 2 && <Step2Background key="step2" data={data} updateData={updateData} />}
           {currentStep === 3 && <Step3Skills key="step3" data={data} updateData={updateData} />}
-          {currentStep === 4 && <Step4WorkProfile key="step4" data={data} updateData={updateData} />}
-          {currentStep === 5 && <Step5AIReadiness key="step5" data={data} updateData={updateData} />}
-          {currentStep === 6 && <Step6Review key="step6" data={data} goToStep={setCurrentStep} onSubmit={handleSubmit} />}
+          {currentStep === 4 && (
+            <Step4WorkProfile key="step4" data={data} updateData={updateData} />
+          )}
+          {currentStep === 5 && (
+            <Step5AIReadiness key="step5" data={data} updateData={updateData} />
+          )}
+          {currentStep === 6 && (
+            <Step6Review
+              key="step6"
+              data={data}
+              goToStep={setCurrentStep}
+              onSubmit={handleSubmit}
+            />
+          )}
         </AnimatePresence>
       </div>
 
@@ -117,11 +135,8 @@ export default function MyCareerProfile() {
             <ChevronLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
-          
-          <Button
-            onClick={handleNext}
-            className="w-32"
-          >
+
+          <Button onClick={handleNext} className="w-32">
             {currentStep === TOTAL_STEPS ? "Review" : "Next"}
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>

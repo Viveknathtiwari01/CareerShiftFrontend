@@ -2,7 +2,13 @@ import { motion } from "framer-motion";
 import { WizardData } from "./types";
 import { EXPERIENCE_LEVELS, PREFERRED_LOCATIONS } from "@/lib/mock-data";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,9 +21,7 @@ interface Props {
 export function Step2Background({ data, updateData }: Props) {
   const toggleLocation = (loc: string) => {
     const current = data.preferredLocation || [];
-    const newLocs = current.includes(loc)
-      ? current.filter(l => l !== loc)
-      : [...current, loc];
+    const newLocs = current.includes(loc) ? current.filter((l) => l !== loc) : [...current, loc];
     updateData({ preferredLocation: newLocs });
   };
 
@@ -36,13 +40,18 @@ export function Step2Background({ data, updateData }: Props) {
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="experience">Total Experience</Label>
-            <Select value={data.experience} onValueChange={(val) => updateData({ experience: val })}>
+            <Select
+              value={data.experience}
+              onValueChange={(val) => updateData({ experience: val })}
+            >
               <SelectTrigger id="experience">
                 <SelectValue placeholder="Select your experience" />
               </SelectTrigger>
               <SelectContent>
                 {EXPERIENCE_LEVELS.map((exp) => (
-                  <SelectItem key={exp} value={exp}>{exp}</SelectItem>
+                  <SelectItem key={exp} value={exp}>
+                    {exp}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -50,9 +59,9 @@ export function Step2Background({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label htmlFor="location">Current Location/Region</Label>
-            <Input 
-              id="location" 
-              placeholder="e.g. UAE" 
+            <Input
+              id="location"
+              placeholder="e.g. UAE"
               value={data.location}
               onChange={(e) => updateData({ location: e.target.value })}
             />
@@ -60,9 +69,9 @@ export function Step2Background({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label htmlFor="salary">Salary</Label>
-            <Input 
-              id="salary" 
-              placeholder="e.g. 4-5LPA" 
+            <Input
+              id="salary"
+              placeholder="e.g. 4-5LPA"
               value={data.salary}
               onChange={(e) => updateData({ salary: e.target.value })}
             />
@@ -74,10 +83,10 @@ export function Step2Background({ data, updateData }: Props) {
               {PREFERRED_LOCATIONS.map((loc) => {
                 const isSelected = data.preferredLocation?.includes(loc);
                 return (
-                  <Badge 
+                  <Badge
                     key={loc}
                     variant={isSelected ? "default" : "outline"}
-                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? 'bg-primary' : 'hover:bg-muted'}`}
+                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? "bg-primary" : "hover:bg-muted"}`}
                     onClick={() => toggleLocation(loc)}
                   >
                     {loc}

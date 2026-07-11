@@ -1,9 +1,6 @@
-
 import { useState } from "react";
 import { useAuth } from "@/store/mock-store";
 import { toast } from "sonner";
-
-
 
 function Profile() {
   const { user, updateUser } = useAuth();

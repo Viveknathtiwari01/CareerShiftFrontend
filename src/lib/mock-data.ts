@@ -8,7 +8,7 @@ export const JOB_TITLES = [
   "Data Scientist",
   "DevOps Engineer",
   "QA Engineer",
-  "Other"
+  "Other",
 ];
 
 export const INDUSTRIES = [
@@ -19,7 +19,7 @@ export const INDUSTRIES = [
   "Education",
   "Entertainment",
   "Manufacturing",
-  "Consulting"
+  "Consulting",
 ];
 
 export const BUSINESS_FUNCTIONS = [
@@ -30,7 +30,7 @@ export const BUSINESS_FUNCTIONS = [
   "Sales",
   "Human Resources",
   "Operations",
-  "Finance"
+  "Finance",
 ];
 
 export const DOMAINS = [
@@ -39,7 +39,7 @@ export const DOMAINS = [
   "Cloud & Infrastructure",
   "Cybersecurity",
   "Artificial Intelligence",
-  "Digital Marketing"
+  "Digital Marketing",
 ];
 
 export const SPECIALIZATIONS = [
@@ -49,7 +49,7 @@ export const SPECIALIZATIONS = [
   "Cloud Architecture",
   "Machine Learning",
   "Growth Marketing",
-  "Agile Project Management"
+  "Agile Project Management",
 ];
 
 export const EXPERIENCE_LEVELS = [
@@ -58,7 +58,7 @@ export const EXPERIENCE_LEVELS = [
   "3-5 Years",
   "5-8 Years",
   "8-12 Years",
-  "12+ Years"
+  "12+ Years",
 ];
 
 export const PREFERRED_LOCATIONS = [
@@ -71,22 +71,47 @@ export const PREFERRED_LOCATIONS = [
   "India",
   "UAE",
   "Singapore",
-  "Europe"
+  "Europe",
 ];
 
 export const SKILL_CATEGORIES = {
   Technical: [
-    "JavaScript", "TypeScript", "React", "Node.js", "Express", "MongoDB", "PostgreSQL", 
-    "Redis", "Docker", "Kubernetes", "AWS", "Python", "Java", "C++", "Next.js"
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "PostgreSQL",
+    "Redis",
+    "Docker",
+    "Kubernetes",
+    "AWS",
+    "Python",
+    "Java",
+    "C++",
+    "Next.js",
   ],
   Business: [
-    "Requirement Gathering", "Architecture", "Client Communication", "Stakeholder Management", 
-    "Agile Methodologies", "Scrum", "Product Strategy", "Market Analysis"
+    "Requirement Gathering",
+    "Architecture",
+    "Client Communication",
+    "Stakeholder Management",
+    "Agile Methodologies",
+    "Scrum",
+    "Product Strategy",
+    "Market Analysis",
   ],
   Soft: [
-    "Leadership", "Presentation", "Problem Solving", "Critical Thinking", "Negotiation", 
-    "Time Management", "Team Collaboration", "Adaptability"
-  ]
+    "Leadership",
+    "Presentation",
+    "Problem Solving",
+    "Critical Thinking",
+    "Negotiation",
+    "Time Management",
+    "Team Collaboration",
+    "Adaptability",
+  ],
 };
 
 export const DAILY_ACTIVITIES = [
@@ -105,15 +130,10 @@ export const DAILY_ACTIVITIES = [
   "Sales",
   "Marketing",
   "Finance",
-  "HR"
+  "HR",
 ];
 
-export const AI_FREQUENCY = [
-  "Never",
-  "Sometimes",
-  "Weekly",
-  "Daily"
-];
+export const AI_FREQUENCY = ["Never", "Sometimes", "Weekly", "Daily"];
 
 export const AI_TOOLS = [
   "ChatGPT",
@@ -125,5 +145,5 @@ export const AI_TOOLS = [
   "Midjourney",
   "Lovable",
   "Bolt",
-  "Windsurf"
+  "Windsurf",
 ];

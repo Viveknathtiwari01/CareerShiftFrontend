@@ -13,13 +13,12 @@ interface Props {
 }
 
 export function Step5AIReadiness({ data, updateData }: Props) {
-  
   const toggleTool = (tool: string) => {
     const current = data.aiTools;
     const newTools = current.includes(tool)
-      ? current.filter(t => t !== tool)
+      ? current.filter((t) => t !== tool)
       : [...current, tool];
-    
+
     updateData({ aiTools: newTools });
   };
 
@@ -36,18 +35,22 @@ export function Step5AIReadiness({ data, updateData }: Props) {
           <CardDescription>How are you leveraging AI in your career?</CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          
           <div className="space-y-4">
             <Label className="text-base">How often do you use AI?</Label>
-            <RadioGroup 
-              value={data.aiFrequency} 
+            <RadioGroup
+              value={data.aiFrequency}
               onValueChange={(val) => updateData({ aiFrequency: val })}
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
-              {AI_FREQUENCY.map(freq => (
-                <div key={freq} className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors">
+              {AI_FREQUENCY.map((freq) => (
+                <div
+                  key={freq}
+                  className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                >
                   <RadioGroupItem value={freq} id={`freq-${freq}`} />
-                  <Label htmlFor={`freq-${freq}`} className="cursor-pointer flex-1">{freq}</Label>
+                  <Label htmlFor={`freq-${freq}`} className="cursor-pointer flex-1">
+                    {freq}
+                  </Label>
                 </div>
               ))}
             </RadioGroup>
@@ -56,27 +59,27 @@ export function Step5AIReadiness({ data, updateData }: Props) {
           <div className="space-y-4">
             <Label className="text-base">Which AI tools do you use?</Label>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {AI_TOOLS.map(tool => {
+              {AI_TOOLS.map((tool) => {
                 const isSelected = data.aiTools.includes(tool);
                 return (
-                  <div 
+                  <div
                     key={tool}
-                    className={`flex items-center space-x-2 border rounded-md p-3 cursor-pointer transition-colors ${isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                    className={`flex items-center space-x-2 border rounded-md p-3 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                     onClick={() => toggleTool(tool)}
                   >
-                    <Checkbox 
-                      id={`tool-${tool}`} 
+                    <Checkbox
+                      id={`tool-${tool}`}
                       checked={isSelected}
                       onCheckedChange={() => toggleTool(tool)}
                     />
-                    <label 
+                    <label
                       htmlFor={`tool-${tool}`}
                       className="text-sm font-medium leading-none cursor-pointer flex-1 truncate"
                     >
                       {tool}
                     </label>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -99,7 +102,6 @@ export function Step5AIReadiness({ data, updateData }: Props) {
               <span>Expert</span>
             </div>
           </div>
-
         </CardContent>
       </Card>
     </motion.div>

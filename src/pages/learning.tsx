@@ -1,7 +1,4 @@
-
 import { BookOpen, Clock } from "lucide-react";
-
-
 
 const WEEKS = [
   { w: "Weeks 1–2", title: "AI foundations", desc: "How LLMs work, prompting basics, safety." },

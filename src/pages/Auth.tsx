@@ -1,6 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowRight, BrainCircuit, Loader2, Lock, Mail, Target, User as UserIcon, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  BrainCircuit,
+  Loader2,
+  Lock,
+  Mail,
+  Target,
+  User as UserIcon,
+  Zap,
+} from "lucide-react";
 import { useAuth } from "@/store/mock-store";
 import { toast } from "sonner";
 
@@ -48,8 +57,8 @@ export default function AuthPage() {
             <Zap className="h-5 w-5" strokeWidth={2.5} />
           </div>
           <h1 className="font-display text-xl font-bold leading-tight">
-              Career <span className="text-teal">Shift</span>
-            </h1>
+            Career <span className="text-teal">Shift</span>
+          </h1>
         </Link>
 
         <div className="relative">

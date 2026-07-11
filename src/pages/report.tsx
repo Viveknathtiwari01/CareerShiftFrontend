@@ -12,8 +12,6 @@ import {
 } from "lucide-react";
 import { deriveReport, useAssessment, useAuth } from "@/store/mock-store";
 
-
-
 function ReportPage() {
   const { user } = useAuth();
   const { submitted } = useAssessment();

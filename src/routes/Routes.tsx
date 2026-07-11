@@ -1,26 +1,26 @@
-import { Routes, Route } from 'react-router-dom';
-import Landing from '../pages/Landing';
-import Auth from '../pages/Auth';
-import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
-import Dashboard from '../pages/dashboard';
-import Assessment from '../pages/assessment';
-import History from '../pages/history';
-import Insights from '../pages/insights';
-import Learning from '../pages/learning';
-import Onboarding from '../pages/onboarding';
-import Profile from '../pages/profile';
-import Report from '../pages/report';
-import Roi from '../pages/roi';
-import Routing from '../pages/routing';
-import Toolkit from '../pages/toolkit';
-import MyProfile from '../pages/my-career/profile';
+import { Routes, Route } from "react-router-dom";
+import Landing from "../pages/Landing";
+import Auth from "../pages/Auth";
+import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
+import Dashboard from "../pages/dashboard";
+import Assessment from "../pages/assessment";
+import History from "../pages/history";
+import Insights from "../pages/insights";
+import Learning from "../pages/learning";
+import Onboarding from "../pages/onboarding";
+import Profile from "../pages/profile";
+import Report from "../pages/report";
+import Roi from "../pages/roi";
+import Routing from "../pages/routing";
+import Toolkit from "../pages/toolkit";
+import MyProfile from "../pages/my-career/profile";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/auth" element={<Auth />} />
-      
+
       <Route element={<AuthenticatedLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/assessment" element={<Assessment />} />

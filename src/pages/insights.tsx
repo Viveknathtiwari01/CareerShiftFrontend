@@ -1,7 +1,4 @@
-
 import { TrendingUp } from "lucide-react";
-
-
 
 const INSIGHTS = [
   {

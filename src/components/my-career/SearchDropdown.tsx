@@ -10,11 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -34,10 +30,10 @@ export function SearchDropdown({
   searchPlaceholder = "Search...",
 }: SearchDropdownProps) {
   const [open, setOpen] = useState(false);
-  
+
   const isOtherSelected = value === "Other";
   const [customValue, setCustomValue] = useState(options.includes(value) ? "" : value);
-  const displayValue = isOtherSelected ? "Other" : (options.includes(value) ? value : "Other");
+  const displayValue = isOtherSelected ? "Other" : options.includes(value) ? value : "Other";
 
   // If a value is provided that isn't in options, we treat it as 'Other' internally for the dropdown but set customValue.
 
@@ -51,7 +47,11 @@ export function SearchDropdown({
             aria-expanded={open}
             className="w-full justify-between h-14 text-base font-normal bg-card hover:bg-card/90 hover:text-foreground"
           >
-            {value && options.includes(value) ? value : value && !options.includes(value) ? "Other" : placeholder}
+            {value && options.includes(value)
+              ? value
+              : value && !options.includes(value)
+                ? "Other"
+                : placeholder}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -66,7 +66,9 @@ export function SearchDropdown({
                     key={option}
                     value={option}
                     onSelect={(currentValue) => {
-                      const selected = options.find((o) => o.toLowerCase() === currentValue.toLowerCase());
+                      const selected = options.find(
+                        (o) => o.toLowerCase() === currentValue.toLowerCase(),
+                      );
                       if (selected) {
                         onChange(selected);
                         if (selected !== "Other") {
@@ -79,7 +81,10 @@ export function SearchDropdown({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        (value === option || (option === "Other" && value && !options.includes(value))) ? "opacity-100" : "opacity-0"
+                        value === option ||
+                          (option === "Other" && value && !options.includes(value))
+                          ? "opacity-100"
+                          : "opacity-0",
                       )}
                     />
                     {option}

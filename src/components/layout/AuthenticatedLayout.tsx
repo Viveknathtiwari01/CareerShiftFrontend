@@ -20,8 +20,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/store/mock-store";
 
-
-
 const NAV = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { to: "/report", label: "AI Readiness Report", icon: BarChart3 },
@@ -129,7 +127,7 @@ export default function AuthenticatedLayout() {
                 }`}
               >
                 <ClipboardList className="h-4 w-4" />
-                New assessment
+                Career Assessment
               </Link>
 
               <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">

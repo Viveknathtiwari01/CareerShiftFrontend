@@ -1,8 +1,20 @@
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
-import { JOB_TITLES, INDUSTRIES, BUSINESS_FUNCTIONS, DOMAINS, SPECIALIZATIONS } from "@/lib/mock-data";
+import {
+  JOB_TITLES,
+  INDUSTRIES,
+  BUSINESS_FUNCTIONS,
+  DOMAINS,
+  SPECIALIZATIONS,
+} from "@/lib/mock-data";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Props {
@@ -32,7 +44,9 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
               </SelectTrigger>
               <SelectContent>
                 {JOB_TITLES.map((title) => (
-                  <SelectItem key={title} value={title}>{title}</SelectItem>
+                  <SelectItem key={title} value={title}>
+                    {title}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -46,7 +60,9 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
               </SelectTrigger>
               <SelectContent>
                 {INDUSTRIES.map((ind) => (
-                  <SelectItem key={ind} value={ind}>{ind}</SelectItem>
+                  <SelectItem key={ind} value={ind}>
+                    {ind}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -54,13 +70,18 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label htmlFor="businessFunction">Department / Business Function *</Label>
-            <Select value={data.businessFunction} onValueChange={(val) => updateData({ businessFunction: val })}>
+            <Select
+              value={data.businessFunction}
+              onValueChange={(val) => updateData({ businessFunction: val })}
+            >
               <SelectTrigger id="businessFunction">
                 <SelectValue placeholder="Select your business function" />
               </SelectTrigger>
               <SelectContent>
                 {BUSINESS_FUNCTIONS.map((bf) => (
-                  <SelectItem key={bf} value={bf}>{bf}</SelectItem>
+                  <SelectItem key={bf} value={bf}>
+                    {bf}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -74,7 +95,9 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
               </SelectTrigger>
               <SelectContent>
                 {DOMAINS.map((domain) => (
-                  <SelectItem key={domain} value={domain}>{domain}</SelectItem>
+                  <SelectItem key={domain} value={domain}>
+                    {domain}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -82,13 +105,18 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label htmlFor="specialization">Specialization *</Label>
-            <Select value={data.specialization} onValueChange={(val) => updateData({ specialization: val })}>
+            <Select
+              value={data.specialization}
+              onValueChange={(val) => updateData({ specialization: val })}
+            >
               <SelectTrigger id="specialization">
                 <SelectValue placeholder="Select your specialization" />
               </SelectTrigger>
               <SelectContent>
                 {SPECIALIZATIONS.map((spec) => (
-                  <SelectItem key={spec} value={spec}>{spec}</SelectItem>
+                  <SelectItem key={spec} value={spec}>
+                    {spec}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>

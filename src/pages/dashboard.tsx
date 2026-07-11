@@ -13,8 +13,6 @@ import {
 } from "lucide-react";
 import { deriveReport, useAssessment, useAuth } from "@/store/mock-store";
 
-
-
 function Dashboard() {
   const { user } = useAuth();
   const { submitted } = useAssessment();

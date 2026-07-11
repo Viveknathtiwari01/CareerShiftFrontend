@@ -1,7 +1,4 @@
-
 import { ExternalLink } from "lucide-react";
-
-
 
 const TOOLS = [
   { name: "ChatGPT", cat: "Chat & reasoning", use: "Drafting, summaries, brainstorming" },

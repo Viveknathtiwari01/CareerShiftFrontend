@@ -3,8 +3,6 @@ import { useState } from "react";
 import { ArrowRight, Briefcase, Building2, Sparkles } from "lucide-react";
 import { useAuth } from "@/store/mock-store";
 
-
-
 const INDUSTRIES = [
   "Software",
   "Design",

@@ -1,7 +1,4 @@
-
 import { deriveReport, useAssessment } from "@/store/mock-store";
-
-
 
 function RoutingPage() {
   const { submitted } = useAssessment();
