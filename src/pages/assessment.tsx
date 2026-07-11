@@ -67,10 +67,10 @@ function AssessmentWizard() {
     setSubmitted(true);
   }
 
-  if (submitted) return <Success onContinue={() => navigate({ to: "/report" })} />;
+  if (submitted) return <Success onContinue={() => navigate("/report")} />;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
       {/* Stepper */}
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
