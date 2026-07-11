@@ -11,7 +11,10 @@ import {
   FileText,
   Github,
   Linkedin,
+  Mail,
   Menu,
+  MessageSquare,
+  Phone,
   Rocket,
   ShieldCheck,
   Sparkles,
@@ -20,12 +23,15 @@ import {
   Target,
   TrendingUp,
   Twitter,
+  User,
+  Video,
   X,
   Zap,
 } from "lucide-react";
 import { useState } from "react";
 import heroImg from "@/assets/hero.jpg";
 import logoImg from "@/assets/Logo.png";
+import ownerPhoto from "@/assets/owner_photo.png";
 
 export default Landing;
 
@@ -41,7 +47,9 @@ function Landing() {
       <Features />
       <Testimonials />
       <Pricing />
+      <OurStory />
       <FAQ />
+      <ContactUs />
       <FinalCTA />
       <Footer />
     </div>
@@ -56,7 +64,9 @@ function Nav() {
     { label: "How it works", href: "#how" },
     { label: "Sample report", href: "#report" },
     { label: "Pricing", href: "#pricing" },
+    { label: "Our Story", href: "#our-story" },
     { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#contact" },
   ];
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
@@ -146,7 +156,7 @@ function Logo() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="container-page animate-fade-in-up relative grid gap-14 py-16 md:py-24 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-28">
+      <div className="container-page animate-fade-in-up relative grid gap-14 py-10 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
         <div className="flex flex-col justify-center">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-brand" />
@@ -870,8 +880,8 @@ function HeroGraphic() {
           <line
             x1="200"
             y1="200"
-            x2="85"
-            y2="36"
+            x2="62"
+            y2="3"
             stroke="currentColor"
             className="text-brand opacity-50"
             strokeWidth="1"
@@ -880,8 +890,8 @@ function HeroGraphic() {
           <line
             x1="200"
             y1="200"
-            x2="315"
-            y2="36"
+            x2="338"
+            y2="3"
             stroke="currentColor"
             className="text-brand opacity-50"
             strokeWidth="1"
@@ -890,8 +900,8 @@ function HeroGraphic() {
           <line
             x1="200"
             y1="200"
-            x2="397"
-            y2="235"
+            x2="436"
+            y2="242"
             stroke="currentColor"
             className="text-brand opacity-50"
             strokeWidth="1"
@@ -900,8 +910,8 @@ function HeroGraphic() {
           <line
             x1="200"
             y1="200"
-            x2="268"
-            y2="388"
+            x2="282"
+            y2="426"
             stroke="currentColor"
             className="text-brand opacity-50"
             strokeWidth="1"
@@ -910,8 +920,8 @@ function HeroGraphic() {
           <line
             x1="200"
             y1="200"
-            x2="47"
-            y2="329"
+            x2="16"
+            y2="355"
             stroke="currentColor"
             className="text-brand opacity-50"
             strokeWidth="1"
@@ -922,71 +932,71 @@ function HeroGraphic() {
         {/* Cards */}
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "21.25%", top: "9%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "15.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Loyalists
+              Bot Potential
             </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">11%</div>
+            <div className="text-primary text-lg font-bold my-0.5 leading-none">42%</div>
             <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              HIGH LTV
+              TASKS TO AUTOMATE
             </div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "11.75%", top: "82.25%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "4%", top: "88.75%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Researchers
+              Human Mastery
             </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">19%</div>
+            <div className="text-primary text-lg font-bold my-0.5 leading-none">35%</div>
             <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              LONG CYCLE
+              TASKS TO BUILD
             </div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "99.25%", top: "58.75%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "109%", top: "60.5%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Impulse
+              AI Acceleration
             </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">22%</div>
+            <div className="text-primary text-lg font-bold my-0.5 leading-none">23%</div>
             <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              FAST CONVERT
+              TASKS TO BLEND
             </div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "67%", top: "97%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "70.5%", top: "106.5%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Churners
+              Time Reclaimed
             </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">20%</div>
+            <div className="text-primary text-lg font-bold my-0.5 leading-none">11.5h</div>
             <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              AT-RISK
+              SAVED PER WEEK
             </div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "78.75%", top: "9%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "84.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Deal Hunters
+              AI Readiness
             </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">28%</div>
+            <div className="text-primary text-lg font-bold my-0.5 leading-none">82</div>
             <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              PRICE-DRIVEN
+              TOP 15% SCORE
             </div>
           </div>
         </div>
@@ -1010,6 +1020,141 @@ function HeroGraphic() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ---------- OUR STORY ---------- */
+function OurStory() {
+  return (
+    <section id="our-story" className="container-page animate-fade-in-up py-24">
+      <div className="mx-auto max-w-5xl rounded-3xl border border-border bg-surface-2/40 p-8 md:p-12 lg:p-16">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+          <div className="relative">
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-teal/20 blur-2xl opacity-40"></div>
+            <img 
+              src={ownerPhoto} 
+              alt="Owner of CareerShift" 
+              className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
+            />
+          </div>
+          <div>
+            <SectionEyebrow>Our Story</SectionEyebrow>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Why I Built CareerShift
+            </h2>
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                As a professional navigating the rapid advancements in AI, I saw brilliant colleagues feeling overwhelmed and uncertain about their future. The advice out there was either too academic or just sensationalist fear-mongering.
+              </p>
+              <p>
+                I realized we didn't need another generic AI tutorial. We needed a personalized compass. We needed to know exactly which parts of our jobs to automate, and which human skills to double down on.
+              </p>
+              <p>
+                That's why CareerShift was born. My mission is to empower professionals to move from anxiety to advantage, giving them a clear, actionable roadmap to thrive in the age of AI.
+              </p>
+            </div>
+            <div className="mt-8 flex items-center gap-4">
+              <div className="font-display font-semibold text-foreground">
+                Alex Founder
+              </div>
+              <div className="h-4 w-px bg-border"></div>
+              <div className="text-sm text-muted-foreground">Founder & CEO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- CONTACT US ---------- */
+function ContactUs() {
+  return (
+    <section id="contact" className="bg-surface-2/30 border-y border-border/60 py-24">
+      <div className="container-page">
+        <div className="mx-auto max-w-2xl text-center">
+          <SectionEyebrow>Contact Us</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            Let's talk about your career.
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Have questions? Want to discuss a team plan? Reach out or book a consultation directly.
+          </p>
+        </div>
+        
+        <div className="mt-14 mx-auto max-w-5xl grid gap-10 md:grid-cols-2">
+          {/* Contact Form */}
+          <div className="surface-card p-8">
+            <h3 className="font-display text-xl font-semibold mb-6">Send a Message</h3>
+            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                    <User className="w-4 h-4 text-muted-foreground" /> First Name
+                  </label>
+                  <input type="text" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="John" />
+                </div>
+                 <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                    <User className="w-4 h-4 text-muted-foreground" /> Last Name
+                  </label>
+                  <input type="text" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="Doe" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-muted-foreground" /> Email Address
+                </label>
+                <input type="email" className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all" placeholder="john@example.com" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-muted-foreground" /> Message
+                </label>
+                <textarea rows={4} className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none" placeholder="How can we help you?"></textarea>
+              </div>
+              <button className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]">
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          {/* Booking Options */}
+          <div className="flex flex-col gap-6">
+            <div className="surface-card p-8 flex-1">
+              <h3 className="font-display text-xl font-semibold mb-2">Book an Appointment</h3>
+              <p className="text-sm text-muted-foreground mb-8">
+                Choose a time that works best for you. We offer video and phone consultations.
+              </p>
+              
+              <div className="space-y-4">
+                <a href="#" className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-brand hover:bg-brand/5 group">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
+                    <Video className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground group-hover:text-brand transition-colors">Google / Zoom Meeting</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">30 min video consultation</p>
+                  </div>
+                  <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-brand transition-colors group-hover:translate-x-1" />
+                </a>
+
+                <a href="#" className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-teal hover:bg-teal/5 group">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-teal/10 text-teal">
+                    <Phone className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground group-hover:text-teal transition-colors">Phone Call</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">15 min quick chat</p>
+                  </div>
+                  <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-teal transition-colors group-hover:translate-x-1" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
