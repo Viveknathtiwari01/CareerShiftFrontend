@@ -74,12 +74,8 @@ function Nav() {
         <Link to="/" className="flex items-center gap-2">
           <Logo />
           <span className="font-display text-2xl font-extrabold tracking-tight">
-            <span className="text-white [text-shadow:_0_1px_3px_rgb(0_0_0_/_30%),_0_1px_2px_rgb(0_0_0_/_50%)]">
-              Career
-            </span>
-            <span className="font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-500">
-              Shift
-            </span>
+            <span className="font-display text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600">CareerShift</span>
+            
           </span>
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
