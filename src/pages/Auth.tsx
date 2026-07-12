@@ -51,35 +51,36 @@ export default function AuthPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Left: brand panel */}
-      <aside className="bg-primary relative hidden overflow-hidden text-primary-foreground lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <aside className="bg-[#0A1525] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
-          <div className="relative grid h-9 w-9 place-items-center rounded-lg bg-white/10 ring-1 ring-white/20">
+          {/* <div className="relative grid h-9 w-9 place-items-center rounded-lg bg-white/10 ring-1 ring-white/20">
             <Zap className="h-5 w-5" strokeWidth={2.5} />
           </div>
           <h1 className="font-display text-xl font-bold leading-tight">
             Career <span className="opacity-80">Shift</span>
-          </h1>
+          </h1> */}
+          <img src="/log_text.jpeg" alt="logo" className="object-cover w-50" />
         </Link>
 
         <div className="relative">
           <div className="absolute -left-16 -top-16 h-64 w-64 rounded-full bg-brand/40 blur-3xl opacity-30" />
           <div className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
           <div className="relative">
-            <h1 className="font-display text-4xl font-bold leading-tight">
-              Turn AI anxiety into <span className="opacity-70">AI clarity.</span>
+            <h1 className="font-display text-4xl font-bold leading-tight text-white">
+              Turn AI anxiety into <span className="text-blue-400">AI clarity.</span>
             </h1>
-            <p className="mt-4 max-w-md text-primary-foreground/70">
+            <p className="mt-4 max-w-md text-white/70">
               Answer a few questions about your work and get a personalized AI Career Readiness
               Report — with tools, learning paths, and a clear plan.
             </p>
-            <ul className="mt-8 space-y-3 text-sm text-primary-foreground/80">
+            <ul className="mt-8 space-y-3 text-sm text-white/80">
               {[
                 "Personalized readiness score",
                 "Task-by-task automate / augment / master routing",
                 "Curated AI toolkit and 12-week learning plan",
               ].map((s) => (
                 <li key={s} className="flex items-center gap-2">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10 ring-1 ring-white/20">
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10">
                     ✓
                   </span>
                   {s}
@@ -89,7 +90,7 @@ export default function AuthPage() {
           </div>
         </div>
 
-        <p className="text-xs text-primary-foreground/50">
+        <p className="text-xs text-white">
           © {new Date().getFullYear()} CareerShift · All rights reserved
         </p>
       </aside>
@@ -104,11 +105,11 @@ export default function AuthPage() {
             <span className="font-display text-lg font-bold">CareerShift</span>
           </Link>
 
-          <div className="mb-6 inline-flex rounded-full border border-border bg-muted/50 p-1 text-sm">
+          <div className="mb-6 inline-flex rounded-full border border-border bg-brand p-1 text-sm">
             <button
               className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
                 mode === "login"
-                  ? "bg-background shadow-soft text-foreground"
+                  ? "bg-white/80 shadow-soft text-foreground"
                   : "text-muted-foreground"
               }`}
               onClick={() => setMode("login")}
@@ -190,7 +191,7 @@ export default function AuthPage() {
             </button>
 
             <div className="relative py-2 text-center text-xs text-muted-foreground">
-              <span className="relative bg-background px-3">or continue with</span>
+              <span className="relative bg-background px-3 text-black">or continue with</span>
               <span className="absolute inset-x-0 top-1/2 -z-0 h-px bg-border" />
             </div>
 

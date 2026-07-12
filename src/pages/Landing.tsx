@@ -69,17 +69,17 @@ function Nav() {
     { label: "Contact", href: "#contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A1525]/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/10 animate-fade-in-up backdrop-blur-xl">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
+          <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-14 object-contain" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-white/70 transition-colors hover:text-white"
+              className="text-sm font-medium text-black/90 transition-colors hover:text-black"
             >
               {l.label}
             </a>
@@ -88,13 +88,13 @@ function Nav() {
         <div className="hidden items-center gap-3 md:flex">
           <Link
             to="/auth"
-            className="text-sm font-medium text-white/70 hover:text-white"
+            className="text-sm font-medium text-black/90 hover:text-black"
           >
             Log in
           </Link>
           <Link
             to="/auth"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-soft transition-colors hover:bg-white/20"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
           >
             Start free
             <ArrowRight className="h-4 w-4" />
@@ -130,7 +130,7 @@ function Nav() {
               </Link>
               <Link
                 to="/auth"
-                className="flex-1 rounded-lg bg-white/10 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-white/20 transition-colors"
+                className="rounded-xl bg-primary/80 px-4 py-2 text-sm font-semibold text-black/90 shadow-soft transition-colors hover:bg-primary/20"
               >
                 Start free
               </Link>
@@ -153,7 +153,6 @@ function Hero() {
       <div className="container-page animate-fade-in-up relative grid gap-14 py-10 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
         <div className="flex flex-col justify-center">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5 text-brand" />
             AI Career Readiness Report · Built for professionals
           </div>
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -307,7 +306,7 @@ function Framework3B() {
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow dark>The Engine</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            The proprietary 3B Framework™
+            The 3B Framework
           </h2>
           <p className="mt-4 text-white/60">
             CareerShift analyzes every task in your role and routes it into one of three action
@@ -589,7 +588,7 @@ function Features() {
             Everything you need to future-proof your role.
           </h2>
         </div>
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3 ">
           {feats.map((f) => (
             <div key={f.title} className="rounded-2xl bg-white/5 border border-white/10 p-6 hover:-translate-y-1 transition-transform group">
               <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-brand text-brand-foreground shadow-soft transition-transform group-hover:scale-105">
@@ -643,7 +642,7 @@ function Testimonials() {
                 <Star key={i} className="h-4 w-4 fill-current" />
               ))}
             </div>
-            <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground">
+            <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-card-foreground">
               "{t.quote}"
             </blockquote>
             <figcaption className="mt-6 flex items-center gap-3">
@@ -655,7 +654,7 @@ function Testimonials() {
               </div>
               <div>
                 <div className="text-sm font-semibold">{t.name}</div>
-                <div className="text-xs text-muted-foreground">{t.role}</div>
+                <div className="text-xs text-card-foreground/70">{t.role}</div>
               </div>
             </figcaption>
           </figure>
@@ -713,7 +712,7 @@ function Pricing() {
     },
   ];
   return (
-    <section id="pricing" className="bg-surface-2/60 py-24">
+    <section id="pricing" className="animate-fade-in-up py-24">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow>Pricing</SectionEyebrow>
@@ -731,7 +730,7 @@ function Pricing() {
               className={`relative flex flex-col rounded-2xl border p-7 ${
                 t.highlighted
                   ? "border-transparent bg-primary text-primary-foreground shadow-elevated"
-                  : "border-border bg-card text-foreground shadow-soft"
+                  : "border-border bg-card text-card-foreground shadow-soft"
               }`}
             >
               {t.highlighted && (
@@ -745,7 +744,7 @@ function Pricing() {
                 {t.per && (
                   <span
                     className={
-                      t.highlighted ? "text-primary-foreground/60" : "text-muted-foreground"
+                      t.highlighted ? "text-primary-foreground/60" : "text-card-foreground/70"
                     }
                   >
                     {t.per}
@@ -753,7 +752,7 @@ function Pricing() {
                 )}
               </div>
               <p
-                className={`mt-1 text-sm ${t.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}
+                className={`mt-1 text-sm ${t.highlighted ? "text-primary-foreground/70" : "text-card-foreground/70"}`}
               >
                 {t.sub}
               </p>
@@ -766,7 +765,7 @@ function Pricing() {
                       }`}
                     />
                     <span
-                      className={t.highlighted ? "text-primary-foreground/90" : "text-foreground"}
+                      className={t.highlighted ? "text-primary-foreground/90" : "text-card-foreground"}
                     >
                       {f}
                     </span>
@@ -823,7 +822,7 @@ function FAQ() {
             Questions, answered.
           </h2>
         </div>
-        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-card">
+        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-card text-card-foreground">
           {qs.map((item) => (
             <FaqItem key={item.q} {...item} />
           ))}
@@ -844,7 +843,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
       >
         <span className="font-display text-base font-semibold">{q}</span>
         <ChevronDown
-          className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${
+          className={`h-5 w-5 shrink-0 text-card-foreground/70 transition-transform ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -855,7 +854,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         }`}
       >
         <div className="min-h-0">
-          <p className="text-sm leading-relaxed text-muted-foreground">{a}</p>
+          <p className="text-sm leading-relaxed text-card-foreground/80">{a}</p>
         </div>
       </div>
     </div>
@@ -967,7 +966,7 @@ function OurStory() {
             <div className="relative">
               <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-primary/20 blur-2xl opacity-40"></div>
               <img
-                src={ownerPhoto}
+                src="/nc.jpeg"
                 alt="Owner of CareerShift"
                 className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
               />

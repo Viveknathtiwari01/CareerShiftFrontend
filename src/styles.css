@@ -61,25 +61,25 @@
   --radius: 1rem; /* 16px, large rounded corners */
  
   
-  /* Semantic (shadcn) - Portfolio Theme (Dark Theme Re-design) */
-  --background: #0A121F; /* Very dark blue/ink background from screenshots */
-  --foreground: #F9F7F3; /* Cream text */
-  --card: #141F32; /* Slightly lighter ink for cards */
-  --card-foreground: #F9F7F3;
+  /* Semantic (shadcn) - Portfolio Theme (Mixed Light/Dark) */
+  --background: #F6F5EC; /* Main background white */
+  --foreground: #0A121F; /* Dark ink text for readability on white */
+  --card: #141F32; /* Kept dark for cards */
+  --card-foreground: #F9F7F3; /* Light text for dark cards */
   --popover: #141F32;
   --popover-foreground: #F9F7F3;
   --primary: #C9A84C; /* Gold */
   --primary-foreground: #0A121F; /* Ink text on gold */
-  --secondary: #1E2D45; /* Border/secondary */
-  --secondary-foreground: #F9F7F3;
-  --muted: #141F32; 
-  --muted-foreground: #8B9BB4; /* Slate muted text */
+  --secondary: #F1F5F9; /* Light secondary */
+  --secondary-foreground: #0F172A;
+  --muted: #F8FAFC; 
+  --muted-foreground: #64748B; 
   --accent: #C9A84C; /* Gold accent */
   --accent-foreground: #0A121F; /* Ink deep on gold */
   --destructive: #dc2626;
   --destructive-foreground: #FFFFFF;
-  --border: #1E2D45;
-  --input: #1E2D45;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
   --ring: #C9A84C;
 
   /* Brand - Portfolio Accent */
@@ -88,8 +88,8 @@
   --teal: #10b981;
   --warm: #f59e0b;
 
-  --surface: #141F32;
-  --surface-2: #0A121F;
+  --surface: #FFFFFF;
+  --surface-2: #F8FAFC;
 
   /* Gradients - Portfolio style */
   --gradient-brand: linear-gradient(135deg, #FAD673 0%, #C9A84C 100%);
@@ -100,15 +100,15 @@
   ),
     radial-gradient(
       ellipse 40% 60% at 10% 80%,
-      rgba(30, 53, 88, 0.4),
+      rgba(30, 53, 88, 0.1),
       transparent 70%
     );
-  --gradient-card: linear-gradient(180deg, #141F32 0%, #0A121F 100%);
+  --gradient-card: linear-gradient(180deg, #1A273D 0%, #141F32 100%);
 
   /* Shadows */
-  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.3), 0 0 3px rgba(0, 0, 0, 0.2);
-  --shadow-elevated: 0 12px 32px -4px rgba(0, 0, 0, 0.4), 0 4px 12px -2px rgba(0, 0, 0, 0.25);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0, 0, 0, 0.02);
+  --shadow-elevated: 0 12px 32px -4px rgba(0, 0, 0, 0.1), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 
 @utility container-page {
@@ -133,6 +133,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-soft);
+  color: var(--card-foreground);
 }
 
 @utility surface-glass {
