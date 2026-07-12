@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { WizardData } from "./types";
 import { SKILL_CATEGORIES } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Wand2, Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -81,18 +81,27 @@ export function Step3Skills({ data, updateData }: Props) {
         <CardContent className="space-y-8">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Technical Skills</h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {SKILL_CATEGORIES.Technical.map((skill) => {
                 const isSelected = data.technicalSkills.includes(skill);
                 return (
-                  <Badge
+                  <div
                     key={skill}
-                    variant={isSelected ? "default" : "outline"}
-                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? "bg-primary" : "hover:bg-muted"}`}
+                    className={`flex items-center space-x-3 border rounded-lg p-3 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                     onClick={() => toggleSkill("technicalSkills", skill)}
                   >
-                    {skill}
-                  </Badge>
+                    <Checkbox
+                      id={`tech-${skill}`}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleSkill("technicalSkills", skill)}
+                    />
+                    <label
+                      htmlFor={`tech-${skill}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+                    >
+                      {skill}
+                    </label>
+                  </div>
                 );
               })}
             </div>
@@ -100,18 +109,27 @@ export function Step3Skills({ data, updateData }: Props) {
 
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Business Skills</h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {SKILL_CATEGORIES.Business.map((skill) => {
                 const isSelected = data.businessSkills.includes(skill);
                 return (
-                  <Badge
+                  <div
                     key={skill}
-                    variant={isSelected ? "default" : "outline"}
-                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? "bg-primary" : "hover:bg-muted"}`}
+                    className={`flex items-center space-x-3 border rounded-lg p-3 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                     onClick={() => toggleSkill("businessSkills", skill)}
                   >
-                    {skill}
-                  </Badge>
+                    <Checkbox
+                      id={`biz-${skill}`}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleSkill("businessSkills", skill)}
+                    />
+                    <label
+                      htmlFor={`biz-${skill}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+                    >
+                      {skill}
+                    </label>
+                  </div>
                 );
               })}
             </div>
@@ -119,18 +137,27 @@ export function Step3Skills({ data, updateData }: Props) {
 
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Soft Skills</h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {SKILL_CATEGORIES.Soft.map((skill) => {
                 const isSelected = data.softSkills.includes(skill);
                 return (
-                  <Badge
+                  <div
                     key={skill}
-                    variant={isSelected ? "default" : "outline"}
-                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? "bg-primary" : "hover:bg-muted"}`}
+                    className={`flex items-center space-x-3 border rounded-lg p-3 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                     onClick={() => toggleSkill("softSkills", skill)}
                   >
-                    {skill}
-                  </Badge>
+                    <Checkbox
+                      id={`soft-${skill}`}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleSkill("softSkills", skill)}
+                    />
+                    <label
+                      htmlFor={`soft-${skill}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+                    >
+                      {skill}
+                    </label>
+                  </div>
                 );
               })}
             </div>

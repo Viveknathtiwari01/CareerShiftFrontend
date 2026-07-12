@@ -56,7 +56,7 @@ export default function AuthenticatedLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-2">
+    <div className="min-h-screen bg-background">
       {/* Top bar (mobile) */}
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 px-4 py-3 backdrop-blur-xl lg:hidden">
         <Link to="/dashboard" className="flex items-center gap-2">
@@ -77,24 +77,20 @@ export default function AuthenticatedLayout() {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-72 shrink-0 border-r border-border bg-background transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-50 w-72 shrink-0 border-r border-border bg-[#141F32] text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
             mobileNav ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="flex h-full flex-col">
             <Link
               to="/dashboard"
-              className="hidden items-center gap-2 border-b border-border px-6 py-5 lg:flex"
+              className="hidden items-center gap-1 border-b border-border px-6 lg:flex"
             >
-              <div className="relative grid h-9 w-9 place-items-center rounded-lg bg-primary shadow-soft">
-                <BrainCircuit className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
-                {/* <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-warm ring-2 ring-background" /> */}
-              </div>
-              <span className="font-display text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600">CareerShift</span>
+             <img src="/Logo_text_.png" alt="Logo" className="w-42 h-24" />
             </Link>
 
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/50">
                 Workspace
               </p>
               {NAV.map((item) => {
@@ -107,7 +103,7 @@ export default function AuthenticatedLayout() {
                     className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       active
                         ? "bg-primary text-primary-foreground shadow-soft"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        : "text-white/70 hover:bg-white/10 hover:text-white"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -117,7 +113,7 @@ export default function AuthenticatedLayout() {
               })}
 
 
-              <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/50">
                 Account
               </p>
               <Link
@@ -125,7 +121,7 @@ export default function AuthenticatedLayout() {
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   pathname === "/profile"
                     ? "bg-primary text-primary-foreground shadow-soft"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <UserIcon className="h-4 w-4" />
@@ -135,13 +131,13 @@ export default function AuthenticatedLayout() {
             </nav>
 
             <div className="border-t border-border p-4">
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/40 p-3">
+              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
                 <div className="grid h-9 w-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                   {user.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-foreground">{user.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                  <p className="truncate text-sm font-semibold text-white">{user.name}</p>
+                  <p className="truncate text-xs text-white/70">{user.email}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -149,7 +145,7 @@ export default function AuthenticatedLayout() {
                     navigate("/", { replace: true });
                   }}
                   aria-label="Log out"
-                  className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-background hover:text-foreground"
+                  className="grid h-8 w-8 place-items-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>

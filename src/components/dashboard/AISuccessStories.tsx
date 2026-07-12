@@ -18,9 +18,10 @@ const stories = [
 export function AISuccessStories() {
   return (
     <div className="py-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">AI Success Stories</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Real professionals using AI to multiply their output.</p>
+      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
+        <div className="mb-6">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">AI Success Stories</h2>
+        <p className="mt-2 text-base text-muted-foreground">Real professionals using AI to multiply their output.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -30,11 +31,12 @@ export function AISuccessStories() {
               <User className="w-4 h-4 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground text-sm mb-1">{story.role}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{story.impact}</p>
+              <h3 className="font-semibold text-foreground text-base mb-1">{story.role}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{story.impact}</p>
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

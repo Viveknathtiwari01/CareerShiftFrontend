@@ -12,11 +12,11 @@ export function WhyCareerShift() {
   return (
     <div className="py-6">
       <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
-        <div className="max-w-3xl">
-          <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
+        <div className="max-w-6xl">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground mb-4">
             Why We Built CareerShift
           </h2>
-          <div className="space-y-4 text-sm text-muted-foreground leading-relaxed mb-8">
+          <div className="space-y-4 text-medium text-muted-foreground leading-relaxed mb-8">
             <p>
               We built CareerShift to solve a massive problem: <strong className="text-foreground">The "AI Fog."</strong>
             </p>
@@ -33,10 +33,10 @@ export function WhyCareerShift() {
             {truths.map((truth, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border/50"
+                className="flex items-center gap-3 p-3 bg-[#141F32] rounded-full border border-[#E2E8F0]"
               >
                 <truth.icon className="h-4 w-4 text-primary shrink-0" />
-                <span className="text-xs font-medium text-foreground">{truth.text}</span>
+                <span className="text-medium font-medium text-white/80">{truth.text}</span>
               </div>
             ))}
           </div>

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Props {
   data: WizardData;
@@ -79,18 +79,27 @@ export function Step2Background({ data, updateData }: Props) {
 
           <div className="space-y-3">
             <Label>Preferred Work Location</Label>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {PREFERRED_LOCATIONS.map((loc) => {
                 const isSelected = data.preferredLocation?.includes(loc);
                 return (
-                  <Badge
+                  <div
                     key={loc}
-                    variant={isSelected ? "default" : "outline"}
-                    className={`cursor-pointer px-3 py-1.5 text-sm transition-all hover:scale-105 ${isSelected ? "bg-primary" : "hover:bg-muted"}`}
+                    className={`flex items-center space-x-3 border rounded-lg p-3 cursor-pointer transition-colors ${isSelected ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
                     onClick={() => toggleLocation(loc)}
                   >
-                    {loc}
-                  </Badge>
+                    <Checkbox
+                      id={`loc-${loc}`}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleLocation(loc)}
+                    />
+                    <label
+                      htmlFor={`loc-${loc}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+                    >
+                      {loc}
+                    </label>
+                  </div>
                 );
               })}
             </div>

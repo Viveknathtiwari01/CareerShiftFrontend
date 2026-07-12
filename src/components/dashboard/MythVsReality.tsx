@@ -18,9 +18,10 @@ const comparisons = [
 export function MythVsReality() {
   return (
     <div className="py-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">The AI Myth vs Reality</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Separate the fear from the facts.</p>
+      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
+        <div className="mb-6">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">The AI Myth vs Reality</h2>
+        <p className="mt-2 text-base text-muted-foreground">Separate the fear from the facts.</p>
       </div>
 
       <div className="space-y-4">
@@ -31,7 +32,7 @@ export function MythVsReality() {
                 <X className="w-4 h-4" />
                 <span className="font-bold text-xs uppercase tracking-wider">Myth</span>
               </div>
-              <p className="text-foreground text-sm">{item.myth}</p>
+              <p className="text-foreground text-base">{item.myth}</p>
             </div>
 
             <div className="flex-1 bg-card border border-border rounded-xl p-5 shadow-sm">
@@ -39,10 +40,11 @@ export function MythVsReality() {
                 <Check className="w-4 h-4" />
                 <span className="font-bold text-xs uppercase tracking-wider">Reality</span>
               </div>
-              <p className="text-foreground text-sm">{item.reality}</p>
+              <p className="text-foreground text-base">{item.reality}</p>
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

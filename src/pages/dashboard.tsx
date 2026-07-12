@@ -14,7 +14,7 @@ import { DashboardNavigation } from "@/components/dashboard/DashboardNavigation"
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-secondary/30">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl px-4 py-8 sm:px-6 lg:px-12 lg:py-12 space-y-8">
         <DashboardHero />
         <WhyCareerShift />

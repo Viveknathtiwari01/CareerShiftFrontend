@@ -75,9 +75,10 @@ const navCards = [
 export function DashboardNavigation() {
   return (
     <div className="py-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">Explore CareerShift</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Access your tools and resources.</p>
+      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
+        <div className="mb-6">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Explore CareerShift</h2>
+        <p className="mt-2 text-base text-muted-foreground">Access your tools and resources.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -88,18 +89,19 @@ export function DashboardNavigation() {
                 <div className="bg-muted p-1.5 rounded text-primary">
                   <card.icon className="w-4 h-4" />
                 </div>
-                <h3 className="font-semibold text-foreground text-sm">{card.title}</h3>
+                <h3 className="font-semibold text-foreground text-base">{card.title}</h3>
               </div>
               
-              <p className="text-xs text-muted-foreground font-medium mb-1">{card.purpose}</p>
-              <p className="text-[10px] text-muted-foreground/80 mb-4 flex-1">{card.why}</p>
+              <p className="text-sm text-muted-foreground font-medium mb-1">{card.purpose}</p>
+              <p className="text-xs text-muted-foreground/80 mb-4 flex-1">{card.why}</p>
               
-              <Button variant="ghost" size="sm" className="w-full text-[10px] font-semibold justify-between h-7 px-2">
-                {card.cta} <ArrowRight className="w-3 h-3" />
+              <Button variant="ghost" size="sm" className="w-full text-xs font-semibold justify-between h-9 px-3 bg-[#C9A84C] text-[#0A121F] hover:bg-[#FAD673] hover:text-[#0A121F] mt-auto">
+                {card.cta} <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </Link>
         ))}
+        </div>
       </div>
     </div>
   );

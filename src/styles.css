@@ -64,10 +64,10 @@
   /* Semantic (shadcn) - Portfolio Theme (Mixed Light/Dark) */
   --background: #F6F5EC; /* Main background white */
   --foreground: #0A121F; /* Dark ink text for readability on white */
-  --card: #141F32; /* Kept dark for cards */
-  --card-foreground: #F9F7F3; /* Light text for dark cards */
-  --popover: #141F32;
-  --popover-foreground: #F9F7F3;
+  --card: #FFFFFF; /* Standard cards white */
+  --card-foreground: #0A121F; /* Dark ink text for standard white cards */
+  --popover: #FFFFFF;
+  --popover-foreground: #0A121F;
   --primary: #C9A84C; /* Gold */
   --primary-foreground: #0A121F; /* Ink text on gold */
   --secondary: #F1F5F9; /* Light secondary */
