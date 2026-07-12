@@ -866,7 +866,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative min-h-[500px] overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.85] origin-center">
+    <div className="flex justify-center items-center relative overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center">
       {/* Concentric rings */}
       <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.02] pointer-events-none"></div>
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.03] pointer-events-none"></div>

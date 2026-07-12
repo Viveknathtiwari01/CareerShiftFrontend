@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Play, Sparkles, BrainCircuit } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function DashboardHero() {
   return (
@@ -31,9 +32,11 @@ export function DashboardHero() {
         
         {/* CTAs */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-          <Button size="lg" className="w-full sm:w-auto font-semibold shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl">
-            <BrainCircuit className="mr-2 h-5 w-5" />
-            Start My AI Journey
+          <Button asChild size="lg" className="w-full sm:w-auto font-semibold shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl">
+            <Link to="/my-profile">
+              <BrainCircuit className="mr-2 h-5 w-5" />
+              Start My AI Journey
+            </Link>
           </Button>
           <Button variant="outline" size="lg" className="w-full sm:w-auto group transition-all hover:bg-muted/80 border-border/60">
             <Play className="mr-2 h-4 w-4 transition-transform group-hover:scale-110 text-primary" />

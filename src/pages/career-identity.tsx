@@ -34,11 +34,11 @@ export default function CareerIdentity() {
           <Target className="h-32 w-32" />
         </div>
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-wrap items-center gap-3 mb-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
               <Sparkles className="h-4 w-4" /> AI Generated Identity
             </div>
-            <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+            <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground whitespace-nowrap">
               <ShieldCheck className="h-4 w-4 text-emerald-500" /> 94% Confidence
             </div>
           </div>
