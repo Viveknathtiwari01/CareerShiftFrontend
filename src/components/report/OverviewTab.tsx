@@ -21,12 +21,12 @@ export function OverviewTab() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
-          { label: "Overall Score", value: "76", icon: Activity, color: "text-emerald-500" },
-          { label: "Tasks Analyzed", value: "18", icon: CheckSquare, color: "text-blue-500" },
-          { label: "Competencies", value: "24", icon: Award, color: "text-purple-500" },
-          { label: "AI Tools Used", value: "3", icon: Wrench, color: "text-amber-500" },
-          { label: "Automation %", value: "31%", icon: Zap, color: "text-teal-500" },
-          { label: "Career Risk", value: "Medium", icon: ShieldAlert, color: "text-rose-500" },
+          { label: "Overall Score", value: "76", icon: Activity, color: "text-brand" },
+          { label: "Tasks Analyzed", value: "18", icon: CheckSquare, color: "text-primary" },
+          { label: "Competencies", value: "24", icon: Award, color: "text-primary" },
+          { label: "AI Tools Used", value: "3", icon: Wrench, color: "text-primary" },
+          { label: "Automation %", value: "31%", icon: Zap, color: "text-brand" },
+          { label: "Career Risk", value: "Medium", icon: ShieldAlert, color: "text-primary" },
         ].map((kpi, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}

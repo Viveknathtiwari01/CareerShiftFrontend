@@ -8,8 +8,7 @@ export function CareerIdentityTab() {
       {/* Identity Card */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-teal-950/20 p-8 md:p-12 shadow-sm relative overflow-hidden backdrop-blur-xl"
+        className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-8 md:p-12 shadow-sm relative overflow-hidden backdrop-blur-xl"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -z-10" />
         <div className="absolute top-0 right-0 p-8 opacity-10">
@@ -38,18 +37,18 @@ export function CareerIdentityTab() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-background p-8 shadow-sm relative overflow-hidden"
+          className="rounded-3xl border border-brand/20 bg-gradient-to-br from-brand/10 to-background p-8 shadow-sm relative overflow-hidden"
         >
-          <h3 className="mb-8 font-display text-2xl font-bold flex items-center gap-3 text-emerald-400">
-            <div className="p-2.5 bg-emerald-500/20 rounded-xl">
-              <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+          <h3 className="mb-8 font-display text-2xl font-bold flex items-center gap-3 text-brand">
+            <div className="p-2.5 bg-brand/20 rounded-xl">
+              <CheckCircle2 className="h-6 w-6 text-brand" />
             </div>
             Career Strengths
           </h3>
-          <div className="space-y-4 text-lg font-semibold text-emerald-100">
+          <div className="space-y-4 text-lg font-semibold text-foreground">
             {["Deep Backend Knowledge", "Healthcare Domain Expertise", "Early AI Tool Adoption", "Analytical Problem Solving"].map((power, idx) => (
               <div key={idx} className="flex items-center gap-4">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                <CheckCircle2 className="h-5 w-5 text-brand shrink-0 drop-shadow-[0_0_8px_rgba(var(--brand),0.5)]" />
                 {power}
               </div>
             ))}
@@ -61,18 +60,18 @@ export function CareerIdentityTab() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-3xl border border-rose-500/20 bg-gradient-to-br from-rose-500/10 to-background p-8 shadow-sm relative overflow-hidden"
+          className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 to-background p-8 shadow-sm relative overflow-hidden"
         >
-          <h3 className="mb-8 font-display text-2xl font-bold flex items-center gap-3 text-rose-400">
-            <div className="p-2.5 bg-rose-500/20 rounded-xl">
-              <EyeOff className="h-6 w-6 text-rose-400" />
+          <h3 className="mb-8 font-display text-2xl font-bold flex items-center gap-3 text-primary">
+            <div className="p-2.5 bg-primary/20 rounded-xl">
+              <EyeOff className="h-6 w-6 text-primary" />
             </div>
             Blind Spots
           </h3>
-          <div className="space-y-4 text-lg font-semibold text-rose-100">
+          <div className="space-y-4 text-lg font-semibold text-foreground">
             {["Strategic Business Thinking", "Advanced Prompt Engineering", "Automating Team Workflows", "Mentoring on AI"].map((spot, idx) => (
               <div key={idx} className="flex items-center gap-4">
-                <EyeOff className="h-5 w-5 text-rose-500 shrink-0 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
+                <EyeOff className="h-5 w-5 text-primary shrink-0 drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
                 {spot}
               </div>
             ))}
@@ -116,8 +115,8 @@ export function CareerIdentityTab() {
         transition={{ delay: 0.4 }}
       >
         <h3 className="mb-6 font-display text-2xl font-bold flex items-center gap-3">
-          <div className="p-2 bg-yellow-500/10 rounded-xl">
-            <Star className="h-6 w-6 text-yellow-500" />
+          <div className="p-2 bg-brand/10 rounded-xl">
+            <Star className="h-6 w-6 text-brand" />
           </div>
           Ideal Future Roles
         </h3>
@@ -139,9 +138,9 @@ export function CareerIdentityTab() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 p-10 md:p-14 text-center shadow-lg text-white"
+        className="rounded-3xl bg-primary p-10 md:p-14 text-center shadow-lg text-primary-foreground"
       >
-        <Sparkles className="h-12 w-12 text-yellow-400 mx-auto mb-6" />
+        <Sparkles className="h-12 w-12 text-brand mx-auto mb-6" />
         <p className="text-xl md:text-3xl font-medium leading-relaxed max-w-4xl mx-auto">
           AI is not replacing your career. It is changing how exceptional professionals create value. Your strongest advantage will come from combining deep domain expertise with intelligent AI collaboration.
         </p>

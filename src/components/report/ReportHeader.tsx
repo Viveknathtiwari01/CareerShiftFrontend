@@ -18,7 +18,7 @@ export function ReportHeader() {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-border/40">
       <div>
-        <h1 className="font-display text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600 mb-3">
+        <h1 className="font-display text-4xl md:text-5xl font-black tracking-tight text-gradient-brand mb-3">
           Career Intelligence Report
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl font-medium leading-relaxed">
@@ -32,11 +32,11 @@ export function ReportHeader() {
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
             <span className="text-muted-foreground">Version:</span> 2.4.1
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-            <span className="text-emerald-600/70">Score:</span> 76/100
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand border border-brand/20">
+            <span className="text-brand/70">Score:</span> 76/100
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 border border-blue-500/20">
-            <span className="text-blue-600/70">Reading Time:</span> ~12 min
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+            <span className="text-primary/70">Reading Time:</span> ~12 min
           </div>
         </div>
       </div>

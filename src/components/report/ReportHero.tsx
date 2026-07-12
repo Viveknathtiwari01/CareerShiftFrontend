@@ -7,7 +7,7 @@ export function ReportHero() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-teal-950/20 p-8 md:p-12 shadow-[0_0_40px_-10px_rgba(var(--primary),0.15)] mb-12"
+      className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-8 md:p-12 shadow-[0_0_40px_-10px_rgba(var(--primary),0.15)] mb-12"
     >
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -z-10" />
       <div className="absolute top-0 right-0 p-8 opacity-5">
@@ -25,7 +25,7 @@ export function ReportHero() {
           
           <div className="rounded-2xl border border-border bg-background/50 p-6 shadow-sm mt-8 backdrop-blur-sm">
             <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-yellow-500" /> Executive Summary
+              <Sparkles className="h-5 w-5 text-brand" /> Executive Summary
             </h3>
             <p className="text-muted-foreground leading-relaxed font-medium">
               Your strong backend engineering expertise and growing AI adoption position you well for the future. By strengthening AI workflow design and leadership skills, you can transition into high-value AI-augmented engineering roles.
@@ -38,28 +38,28 @@ export function ReportHero() {
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <Activity className="h-3.5 w-3.5" /> AI Readiness
             </div>
-            <div className="text-3xl font-display font-black text-emerald-500">76<span className="text-lg text-muted-foreground">/100</span></div>
+            <div className="text-3xl font-display font-black text-brand">76<span className="text-lg text-muted-foreground">/100</span></div>
           </div>
           
           <div className="rounded-2xl border border-border bg-background/50 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-center">
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <ShieldAlert className="h-3.5 w-3.5" /> Career Risk
             </div>
-            <div className="text-2xl font-display font-black text-amber-500">Medium</div>
+            <div className="text-2xl font-display font-black text-primary">Medium</div>
           </div>
 
           <div className="rounded-2xl border border-border bg-background/50 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-center">
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <TrendingUp className="h-3.5 w-3.5" /> Growth
             </div>
-            <div className="text-2xl font-display font-black text-blue-500">High</div>
+            <div className="text-2xl font-display font-black text-primary">High</div>
           </div>
 
           <div className="rounded-2xl border border-border bg-background/50 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-center">
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <Zap className="h-3.5 w-3.5" /> Automation
             </div>
-            <div className="text-3xl font-display font-black text-purple-500">31%</div>
+            <div className="text-3xl font-display font-black text-brand">31%</div>
           </div>
         </div>
       </div>

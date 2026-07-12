@@ -57,7 +57,7 @@ export default function AuthPage() {
             <Zap className="h-5 w-5" strokeWidth={2.5} />
           </div>
           <h1 className="font-display text-xl font-bold leading-tight">
-            Career <span className="text-teal">Shift</span>
+            Career <span className="opacity-80">Shift</span>
           </h1>
         </Link>
 
@@ -66,7 +66,7 @@ export default function AuthPage() {
           <div className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
           <div className="relative">
             <h1 className="font-display text-4xl font-bold leading-tight">
-              Turn AI anxiety into <span className="text-teal">AI clarity.</span>
+              Turn AI anxiety into <span className="opacity-70">AI clarity.</span>
             </h1>
             <p className="mt-4 max-w-md text-primary-foreground/70">
               Answer a few questions about your work and get a personalized AI Career Readiness

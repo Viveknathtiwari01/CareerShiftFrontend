@@ -6,9 +6,9 @@ export function ThreeBAnalysisTab() {
     {
       title: "BUILD (Core Human Value)",
       icon: Wrench,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
+      color: "text-primary",
+      bg: "bg-primary/10",
+      border: "border-primary/20",
       tasks: [
         { name: "System Architecture Design", reason: "Requires deep context, strategic foresight, and cross-system understanding.", auto: "10%", tools: "Claude (for brainstorming)", importance: "High" },
         { name: "Complex Debugging", reason: "Requires intuition and tracing across unmapped legacy systems.", auto: "20%", tools: "Cursor (for context mapping)", importance: "High" }
@@ -17,9 +17,9 @@ export function ThreeBAnalysisTab() {
     {
       title: "BOT (Automate Completely)",
       icon: Bot,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
-      border: "border-purple-500/20",
+      color: "text-brand",
+      bg: "bg-brand/10",
+      border: "border-brand/20",
       tasks: [
         { name: "Boilerplate Code Generation", reason: "Standardized patterns that LLMs excel at generating instantly.", auto: "95%", tools: "GitHub Copilot", importance: "Low" },
         { name: "Initial Log Parsing", reason: "Pattern recognition in text is a native strength of AI models.", auto: "85%", tools: "ChatGPT Advanced Data Analysis", importance: "Medium" }
@@ -28,9 +28,9 @@ export function ThreeBAnalysisTab() {
     {
       title: "BLEND (Human + AI Collaboration)",
       icon: Users,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
+      color: "text-primary",
+      bg: "bg-primary/10",
+      border: "border-primary/20",
       tasks: [
         { name: "Code Review & PRs", reason: "AI can catch syntax and basic logic errors, but human needs to review business logic.", auto: "60%", tools: "CodeRabbit, Cursor", importance: "High" },
         { name: "Writing Documentation", reason: "AI drafts perfectly, human reviews for nuance and tone.", auto: "80%", tools: "Notion AI, ChatGPT", importance: "Medium" }
@@ -44,9 +44,9 @@ export function ThreeBAnalysisTab() {
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "BUILD", count: 6, color: "text-blue-500", bg: "bg-blue-500/10" },
-          { label: "BOT", count: 5, color: "text-purple-500", bg: "bg-purple-500/10" },
-          { label: "BLEND", count: 7, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+          { label: "BUILD", count: 6, color: "text-primary", bg: "bg-primary/10" },
+          { label: "BOT", count: 5, color: "text-brand", bg: "bg-brand/10" },
+          { label: "BLEND", count: 7, color: "text-primary", bg: "bg-primary/10" },
         ].map((item, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}

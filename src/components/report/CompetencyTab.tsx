@@ -1,13 +1,35 @@
 import { motion } from "framer-motion";
 import { Terminal, Briefcase, Users, Brain } from "lucide-react";
 
+const IMPORTANCE_COLORS: Record<string, string> = {
+  High: 'text-brand',
+  Medium: 'text-primary',
+  Low: 'text-muted-foreground'
+};
+
+const PROFICIENCY_COLORS = (prof: number) => {
+  if (prof >= 80) return 'bg-brand';
+  if (prof >= 60) return 'bg-primary';
+  return 'bg-muted-foreground';
+};
+
+const GROWTH_STYLES: Record<string, string> = {
+  'Critical Focus': 'bg-brand/10 text-brand border border-brand/20',
+  'Mastery': 'bg-primary/10 text-primary border border-primary/20',
+  'Expand': 'bg-secondary text-secondary-foreground border border-border',
+  'Develop': 'bg-secondary text-secondary-foreground border border-border',
+  'Leverage': 'bg-secondary text-secondary-foreground border border-border',
+  'Optimize': 'bg-secondary text-secondary-foreground border border-border',
+  'Maintain': 'bg-secondary text-secondary-foreground border border-border'
+};
+
 export function CompetencyTab() {
   const groups = [
     {
       title: "Technical",
       icon: Terminal,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
+      color: "text-primary",
+      bg: "bg-primary/10",
       items: [
         { name: "Backend Architecture", proficiency: 90, importance: "High", growth: "Mastery" },
         { name: "API Development", proficiency: 85, importance: "High", growth: "Optimize" },
@@ -18,8 +40,8 @@ export function CompetencyTab() {
     {
       title: "Business",
       icon: Briefcase,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10",
+      color: "text-brand",
+      bg: "bg-brand/10",
       items: [
         { name: "Domain Knowledge (Healthcare)", proficiency: 80, importance: "High", growth: "Leverage" },
         { name: "Product Strategy", proficiency: 50, importance: "Medium", growth: "Develop" },
@@ -29,8 +51,8 @@ export function CompetencyTab() {
     {
       title: "Leadership",
       icon: Users,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
+      color: "text-primary",
+      bg: "bg-primary/10",
       items: [
         { name: "Technical Mentoring", proficiency: 75, importance: "High", growth: "Expand" },
         { name: "Cross-functional Comms", proficiency: 65, importance: "High", growth: "Develop" },
@@ -40,8 +62,8 @@ export function CompetencyTab() {
     {
       title: "Behavioral",
       icon: Brain,
-      color: "text-amber-500",
-      bg: "bg-amber-500/10",
+      color: "text-primary",
+      bg: "bg-primary/10",
       items: [
         { name: "Problem Solving", proficiency: 95, importance: "High", growth: "Mastery" },
         { name: "Adaptability", proficiency: 85, importance: "High", growth: "Leverage" },
@@ -75,7 +97,7 @@ export function CompetencyTab() {
                   <h4 className="font-bold text-foreground">{item.name}</h4>
                   <div className="flex gap-3 mt-1.5 text-xs font-semibold">
                     <span className="text-muted-foreground uppercase tracking-wider">Importance:</span>
-                    <span className={item.importance === 'High' ? 'text-rose-500' : 'text-blue-500'}>{item.importance}</span>
+                    <span className={IMPORTANCE_COLORS[item.importance] || 'text-primary'}>{item.importance}</span>
                   </div>
                 </div>
 
@@ -89,7 +111,7 @@ export function CompetencyTab() {
                       initial={{ width: 0 }}
                       animate={{ width: `${item.proficiency}%` }}
                       transition={{ duration: 1, delay: 0.2 + (idx * 0.1) }}
-                      className={`h-full rounded-full ${item.proficiency >= 80 ? 'bg-emerald-500' : item.proficiency >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`}
+                      className={`h-full rounded-full ${PROFICIENCY_COLORS(item.proficiency)}`}
                     />
                   </div>
                 </div>
@@ -97,9 +119,7 @@ export function CompetencyTab() {
                 <div className="md:text-right">
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1">Growth Opportunity</div>
                   <div className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold ${
-                    item.growth === 'Critical Focus' ? 'bg-rose-500/10 text-rose-600 border border-rose-500/20' :
-                    item.growth === 'Mastery' ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' :
-                    'bg-secondary text-secondary-foreground border border-border'
+                    GROWTH_STYLES[item.growth] || 'bg-secondary text-secondary-foreground border border-border'
                   }`}>
                     {item.growth}
                   </div>

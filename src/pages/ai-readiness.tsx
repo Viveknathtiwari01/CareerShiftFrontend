@@ -33,7 +33,7 @@ export default function AIReadiness() {
       </div>
 
       <div className="mx-auto max-w-6xl rounded-2xl border border-primary/20 bg-primary/5 p-8 text-center shadow-soft relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand/80 to-brand" />
         <div className="text-sm font-bold uppercase tracking-wider text-primary/80 mb-4">Overall AI Readiness</div>
         <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border-8 border-primary/20 bg-background mb-6">
           <div className="text-4xl font-display font-bold text-primary">76<span className="text-xl text-muted-foreground">/100</span></div>
@@ -46,36 +46,36 @@ export default function AIReadiness() {
 
       <div className="grid lg:grid-cols-2 gap-8">
         <div>
-          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2"><Activity className="h-5 w-5 text-teal" /> AI Readiness Breakdown</h3>
+          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2"><Activity className="h-5 w-5 text-brand" /> AI Readiness Breakdown</h3>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">AI Adoption</div>
-              <div className="text-3xl font-display font-bold text-emerald-500">82</div>
+              <div className="text-3xl font-display font-bold text-primary">82</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Strong daily tool usage.</p>
             </div>
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Technical Readiness</div>
-              <div className="text-3xl font-display font-bold text-blue-500">79</div>
+              <div className="text-3xl font-display font-bold text-primary">79</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Solid backend foundation.</p>
             </div>
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Automation Readiness</div>
-              <div className="text-3xl font-display font-bold text-purple-500">73</div>
+              <div className="text-3xl font-display font-bold text-primary">73</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Some workflows automated.</p>
             </div>
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Learning Mindset</div>
-              <div className="text-3xl font-display font-bold text-teal">88</div>
+              <div className="text-3xl font-display font-bold text-primary">88</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Highly adaptable.</p>
             </div>
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Leadership Readiness</div>
-              <div className="text-3xl font-display font-bold text-rose-500">67</div>
+              <div className="text-3xl font-display font-bold text-primary">67</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Needs strategic focus.</p>
             </div>
             <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Future Adaptability</div>
-              <div className="text-3xl font-display font-bold text-amber-500">75</div>
+              <div className="text-3xl font-display font-bold text-primary">75</div>
               <p className="text-xs text-muted-foreground mt-2 font-medium">Good long-term prospects.</p>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function AIReadiness() {
               <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                 <PolarGrid stroke="#333" />
                 <PolarAngleAxis dataKey="subject" tick={{ fill: '#888', fontSize: 11 }} />
-                <Radar name="Score" dataKey="A" stroke="#0ea5e9" strokeWidth={2} fill="#0ea5e9" fillOpacity={0.2} />
+                <Radar name="Score" dataKey="A" stroke="var(--color-brand)" strokeWidth={2} fill="var(--color-brand)" fillOpacity={0.2} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -97,29 +97,29 @@ export default function AIReadiness() {
 
       <div className="grid md:grid-cols-2 gap-8">
         <div>
-          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><TrendingUp className="h-5 w-5 text-emerald-500" /> Strengths</h3>
+          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><TrendingUp className="h-5 w-5 text-brand" /> Strengths</h3>
           <div className="space-y-3">
-            <div className="flex items-center gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm">
-              <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-              <span className="font-medium text-emerald-100">Strong Backend Engineering</span>
+            <div className="flex items-center gap-4 rounded-xl border border-brand/20 bg-brand/5 p-4 shadow-sm">
+              <CheckCircle2 className="h-5 w-5 text-brand shrink-0" />
+              <span className="font-medium text-foreground">Strong Backend Engineering</span>
             </div>
-            <div className="flex items-center gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm">
-              <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-              <span className="font-medium text-emerald-100">Good AI Tool Adoption</span>
+            <div className="flex items-center gap-4 rounded-xl border border-brand/20 bg-brand/5 p-4 shadow-sm">
+              <CheckCircle2 className="h-5 w-5 text-brand shrink-0" />
+              <span className="font-medium text-foreground">Good AI Tool Adoption</span>
             </div>
-            <div className="flex items-center gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm">
-              <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-              <span className="font-medium text-emerald-100">Excellent Problem Solving</span>
+            <div className="flex items-center gap-4 rounded-xl border border-brand/20 bg-brand/5 p-4 shadow-sm">
+              <CheckCircle2 className="h-5 w-5 text-brand shrink-0" />
+              <span className="font-medium text-foreground">Excellent Problem Solving</span>
             </div>
-            <div className="flex items-center gap-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm">
-              <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-              <span className="font-medium text-emerald-100">High Technical Confidence</span>
+            <div className="flex items-center gap-4 rounded-xl border border-brand/20 bg-brand/5 p-4 shadow-sm">
+              <CheckCircle2 className="h-5 w-5 text-brand shrink-0" />
+              <span className="font-medium text-foreground">High Technical Confidence</span>
             </div>
           </div>
         </div>
 
         <div>
-          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-rose-500" /> Improvement Areas</h3>
+          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-primary" /> Improvement Areas</h3>
           <div className="space-y-3">
             {[
               { title: "Prompt Engineering", diff: "Medium", imp: "High" },
@@ -131,8 +131,8 @@ export default function AIReadiness() {
               <div key={area.title} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border bg-background p-4 shadow-sm">
                 <span className="font-medium">{area.title}</span>
                 <div className="flex items-center gap-5 text-xs font-semibold">
-                  <div className="flex flex-col"><span className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Difficulty</span><span className={area.diff === 'High' ? 'text-rose-500' : 'text-amber-500'}>{area.diff}</span></div>
-                  <div className="flex flex-col"><span className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Impact</span><span className={area.imp === 'High' ? 'text-emerald-500' : 'text-blue-500'}>{area.imp}</span></div>
+                  <div className="flex flex-col"><span className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Difficulty</span><span className={area.diff === 'High' ? 'text-primary' : 'text-muted-foreground'}>{area.diff}</span></div>
+                  <div className="flex flex-col"><span className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Impact</span><span className={area.imp === 'High' ? 'text-brand' : 'text-primary'}>{area.imp}</span></div>
                 </div>
               </div>
             ))}
@@ -140,33 +140,33 @@ export default function AIReadiness() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-8 shadow-soft">
-        <h3 className="mb-4 flex items-center gap-2 font-display text-xl font-bold text-amber-500">
+      <div className="rounded-2xl border border-brand/20 bg-brand/5 p-8 shadow-soft">
+        <h3 className="mb-4 flex items-center gap-2 font-display text-xl font-bold text-brand">
           <Lightbulb className="h-5 w-5" /> AI Insights
         </h3>
-        <p className="text-lg leading-relaxed text-amber-100/90">
+        <p className="text-lg leading-relaxed text-foreground/90">
           You already use AI daily for coding assistance, but you're not leveraging AI for documentation, planning, testing, or workflow automation. Expanding AI into these areas could significantly improve your productivity.
         </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
         <div className="rounded-2xl border border-border bg-background p-8 shadow-sm">
-          <div className="flex items-center gap-2 mb-4 text-amber-500">
+          <div className="flex items-center gap-2 mb-4 text-primary">
             <AlertTriangle className="h-6 w-6" />
             <h3 className="font-display text-xl font-bold">Career Risk Meter</h3>
           </div>
-          <div className="text-3xl font-display font-bold text-amber-500 mb-4">Medium Risk</div>
+          <div className="text-3xl font-display font-bold text-primary mb-4">Medium Risk</div>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Routine development tasks are increasingly AI-assisted, but your architecture and leadership responsibilities remain valuable.
           </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-background p-8 shadow-sm">
-          <div className="flex items-center gap-2 mb-4 text-emerald-500">
+          <div className="flex items-center gap-2 mb-4 text-brand">
             <TrendingUp className="h-6 w-6" />
             <h3 className="font-display text-xl font-bold">Career Opportunity</h3>
           </div>
-          <div className="text-3xl font-display font-bold text-emerald-500 mb-4">High Growth Potential</div>
+          <div className="text-3xl font-display font-bold text-brand mb-4">High Growth Potential</div>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Your combination of backend expertise and AI adoption positions you well for AI-augmented engineering roles.
           </p>
@@ -175,7 +175,7 @@ export default function AIReadiness() {
 
       <div className="grid md:grid-cols-2 gap-8">
         <div>
-          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><Wrench className="h-5 w-5 text-blue-500" /> Recommended Tools</h3>
+          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><Wrench className="h-5 w-5 text-primary" /> Recommended Tools</h3>
           <div className="space-y-3">
             {[
               { name: "ChatGPT", fit: "General problem solving & ideation", useCase: "Architecture planning" },
@@ -193,7 +193,7 @@ export default function AIReadiness() {
                   </div>
                   <div>
                     <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Suggested Use Case</div>
-                    <div className="font-medium text-blue-400">{tool.useCase}</div>
+                    <div className="font-medium text-brand">{tool.useCase}</div>
                   </div>
                 </div>
               </div>
@@ -202,7 +202,7 @@ export default function AIReadiness() {
         </div>
 
         <div>
-          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><Zap className="h-5 w-5 text-yellow-500" /> Quick Wins</h3>
+          <h3 className="mb-4 font-display text-xl font-bold flex items-center gap-2"><Zap className="h-5 w-5 text-brand" /> Quick Wins</h3>
           <div className="space-y-3">
             {[
               "Learn Prompt Engineering",
@@ -212,7 +212,7 @@ export default function AIReadiness() {
               "Practice AI-assisted Architecture Design"
             ].map((win, idx) => (
               <div key={idx} className="flex items-center gap-4 rounded-xl border border-border bg-background p-5 shadow-sm">
-                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-yellow-500/10 text-sm font-bold text-yellow-500">
+                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand/10 text-sm font-bold text-brand">
                   {idx + 1}
                 </div>
                 <span className="font-medium text-foreground/90">{win}</span>

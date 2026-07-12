@@ -2,6 +2,19 @@ import { motion } from "framer-motion";
 import { Clock, Briefcase, Zap, ShieldCheck, PieChart } from "lucide-react";
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
+const CRITICALITY_COLORS: Record<string, string> = {
+  High: 'text-brand',
+  Medium: 'text-primary',
+  Low: 'text-muted-foreground'
+};
+
+const AI_USAGE_COLORS: Record<string, string> = {
+  High: 'text-brand',
+  Medium: 'text-primary',
+  Low: 'text-muted-foreground',
+  None: 'text-muted-foreground'
+};
+
 export function DailyWorkTab() {
   const tasks = [
     { name: "API Endpoint Design", time: "10h", criticality: "High", ai: "High", confidence: "95%" },
@@ -13,10 +26,10 @@ export function DailyWorkTab() {
   ];
 
   const chartData = [
-    { name: "Coding & Arch", value: 23, color: "#10b981" },
-    { name: "Reviews", value: 8, color: "#3b82f6" },
-    { name: "Docs", value: 4, color: "#f59e0b" },
-    { name: "Meetings", value: 5, color: "#8b5cf6" },
+    { name: "Coding & Arch", value: 23, color: "var(--color-brand)" },
+    { name: "Reviews", value: 8, color: "var(--color-primary)" },
+    { name: "Docs", value: 4, color: "var(--color-accent)" },
+    { name: "Meetings", value: 5, color: "var(--color-muted-foreground)" },
   ];
 
   return (
@@ -96,15 +109,15 @@ export function DailyWorkTab() {
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1"><Briefcase className="h-3 w-3"/> Criticality</span>
-                  <span className={task.criticality === 'High' ? 'text-rose-500' : 'text-blue-500'}>{task.criticality}</span>
+                  <span className={CRITICALITY_COLORS[task.criticality] || 'text-muted-foreground'}>{task.criticality}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1"><Zap className="h-3 w-3"/> AI Usage</span>
-                  <span className={task.ai === 'High' ? 'text-emerald-500' : task.ai === 'Medium' ? 'text-amber-500' : 'text-muted-foreground'}>{task.ai}</span>
+                  <span className={AI_USAGE_COLORS[task.ai] || 'text-muted-foreground'}>{task.ai}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1"><ShieldCheck className="h-3 w-3"/> Confidence</span>
-                  <span className="text-emerald-600">{task.confidence}</span>
+                  <span className="text-primary">{task.confidence}</span>
                 </div>
               </div>
             </motion.div>

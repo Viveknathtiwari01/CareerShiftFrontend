@@ -39,7 +39,7 @@ export default function CareerIdentity() {
               <Sparkles className="h-4 w-4" /> AI Generated Identity
             </div>
             <div className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground whitespace-nowrap">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" /> 94% Confidence
+              <ShieldCheck className="h-4 w-4 text-brand" /> 94% Confidence
             </div>
           </div>
           
@@ -66,12 +66,12 @@ export default function CareerIdentity() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { label: "Role", value: "Senior Backend Engineer", icon: Briefcase, color: "text-blue-500" },
-          { label: "Primary Strength", value: "Backend Architecture", icon: Zap, color: "text-amber-500" },
-          { label: "Industry", value: "Healthcare", icon: Activity, color: "text-emerald-500" },
-          { label: "Experience", value: "8 Years", icon: Clock, color: "text-purple-500" },
-          { label: "Leadership", value: "Emerging", icon: Users, color: "text-rose-500" },
-          { label: "AI Maturity", value: "Advanced", icon: Brain, color: "text-teal" },
+          { label: "Role", value: "Senior Backend Engineer", icon: Briefcase, color: "text-primary" },
+          { label: "Primary Strength", value: "Backend Architecture", icon: Zap, color: "text-brand" },
+          { label: "Industry", value: "Healthcare", icon: Activity, color: "text-primary" },
+          { label: "Experience", value: "8 Years", icon: Clock, color: "text-primary" },
+          { label: "Leadership", value: "Emerging", icon: Users, color: "text-primary" },
+          { label: "AI Maturity", value: "Advanced", icon: Brain, color: "text-brand" },
         ].map(item => (
           <div key={item.label} className="flex items-center gap-4 rounded-xl border border-border bg-background p-5 shadow-sm">
             <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-muted ${item.color}`}>
@@ -111,7 +111,7 @@ export default function CareerIdentity() {
 
       <div>
         <h3 className="mb-6 font-display text-2xl font-bold flex items-center gap-2">
-          <Star className="h-6 w-6 text-yellow-500" /> Ideal Roles
+          <Star className="h-6 w-6 text-brand" /> Ideal Roles
         </h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
@@ -130,8 +130,8 @@ export default function CareerIdentity() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 shadow-sm">
-          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2 text-emerald-400">
+        <div className="rounded-2xl border border-brand/20 bg-brand/5 p-8 shadow-sm">
+          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2 text-brand">
             <Zap className="h-6 w-6" /> Superpowers
           </h3>
           <div className="space-y-4">
@@ -143,15 +143,15 @@ export default function CareerIdentity() {
               "AI Adaptability"
             ].map((power) => (
               <div key={power} className="flex items-center gap-3">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
-                <span className="font-medium text-emerald-500 dark:text-emerald-100">{power}</span>
+                <CheckCircle2 className="h-5 w-5 text-brand shrink-0" />
+                <span className="font-medium text-foreground">{power}</span>
               </div>
             ))}
           </div>
         </div>
         
-        <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-8 shadow-sm">
-          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2 text-rose-600">
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8 shadow-sm">
+          <h3 className="mb-6 font-display text-xl font-bold flex items-center gap-2 text-primary">
             <EyeOff className="h-6 w-6" /> Blind Spots
           </h3>
           <div className="space-y-4">
@@ -163,8 +163,8 @@ export default function CareerIdentity() {
               "Business Thinking"
             ].map((spot) => (
               <div key={spot} className="flex items-center gap-3">
-                <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0" />
-                <span className="font-medium text-rose-500 dark:text-rose-100">{spot}</span>
+                <AlertTriangle className="h-5 w-5 text-primary shrink-0" />
+                <span className="font-medium text-foreground">{spot}</span>
               </div>
             ))}
           </div>
@@ -173,30 +173,30 @@ export default function CareerIdentity() {
 
       <div>
         <h3 className="mb-6 font-display text-2xl font-bold flex items-center gap-2">
-          <TrendingUp className="h-6 w-6 text-blue-500" /> Personalized Growth Strategy
+          <TrendingUp className="h-6 w-6 text-brand" /> Personalized Growth Strategy
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4 pb-4 border-b border-border">Next 30 Days</div>
             <ul className="space-y-3 text-sm font-medium">
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"/>Learn advanced prompting.</li>
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"/>Use AI daily for documentation.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0"/>Learn advanced prompting.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0"/>Use AI daily for documentation.</li>
             </ul>
           </div>
           <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4 pb-4 border-b border-border">Next 90 Days</div>
             <ul className="space-y-3 text-sm font-medium">
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0"/>Build an AI-integrated project.</li>
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0"/>Learn LangChain.</li>
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0"/>Use AI for architecture reviews.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-brand mt-1.5 shrink-0"/>Build an AI-integrated project.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-brand mt-1.5 shrink-0"/>Learn LangChain.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-brand mt-1.5 shrink-0"/>Use AI for architecture reviews.</li>
             </ul>
           </div>
           <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4 pb-4 border-b border-border">Next 12 Months</div>
             <ul className="space-y-3 text-sm font-medium">
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"/>Lead AI initiatives.</li>
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"/>Mentor AI adoption.</li>
-              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"/>Move into Solution Architecture.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0"/>Lead AI initiatives.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0"/>Mentor AI adoption.</li>
+              <li className="flex items-start gap-2"><div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0"/>Move into Solution Architecture.</li>
             </ul>
           </div>
         </div>
@@ -211,8 +211,8 @@ export default function CareerIdentity() {
         </p>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 p-8 md:p-12 text-center shadow-lg text-white">
-        <Sparkles className="h-10 w-10 text-yellow-400 mx-auto mb-6" />
+      <div className="rounded-2xl bg-primary p-8 md:p-12 text-center shadow-lg text-primary-foreground">
+        <Sparkles className="h-10 w-10 text-brand mx-auto mb-6" />
         <p className="text-xl md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto">
           AI is not replacing your career. It is changing how exceptional professionals create value. Your strongest advantage will come from combining deep domain expertise with intelligent AI collaboration.
         </p>

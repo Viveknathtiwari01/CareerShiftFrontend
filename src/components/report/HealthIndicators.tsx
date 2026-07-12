@@ -3,12 +3,12 @@ import { Activity, Brain, ShieldCheck, Zap, Briefcase, Cpu, ArrowDown } from "lu
 
 export function HealthIndicators() {
   const kpis = [
-    { label: "AI Adoption", value: "High", icon: Zap, color: "text-emerald-500" },
-    { label: "Learning Velocity", value: "Medium", icon: Brain, color: "text-blue-500" },
-    { label: "Automation Readiness", value: "Good", icon: ShieldCheck, color: "text-purple-500" },
-    { label: "Leadership", value: "Emerging", icon: Briefcase, color: "text-amber-500" },
-    { label: "Technical Depth", value: "Expert", icon: Cpu, color: "text-indigo-500" },
-    { label: "Business Acumen", value: "Medium", icon: Activity, color: "text-rose-500" },
+    { label: "AI Adoption", value: "High", icon: Zap, color: "text-brand" },
+    { label: "Learning Velocity", value: "Medium", icon: Brain, color: "text-primary" },
+    { label: "Automation Readiness", value: "Good", icon: ShieldCheck, color: "text-primary" },
+    { label: "Leadership", value: "Emerging", icon: Briefcase, color: "text-primary" },
+    { label: "Technical Depth", value: "Expert", icon: Cpu, color: "text-primary" },
+    { label: "Business Acumen", value: "Medium", icon: Activity, color: "text-primary" },
   ];
 
   return (

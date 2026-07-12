@@ -5,8 +5,8 @@ export function LearningRoadmapTab() {
   const roadmap = [
     {
       period: "Next 30 Days",
-      color: "text-blue-500",
-      bg: "bg-blue-500",
+      color: "text-primary",
+      bg: "bg-primary",
       items: [
         { title: "Learn Prompt Engineering", priority: "High", effort: "20h", impact: "High" },
         { title: "Master AI Documentation", priority: "Medium", effort: "10h", impact: "Medium" },
@@ -15,8 +15,8 @@ export function LearningRoadmapTab() {
     },
     {
       period: "Next 90 Days",
-      color: "text-purple-500",
-      bg: "bg-purple-500",
+      color: "text-brand",
+      bg: "bg-brand",
       items: [
         { title: "Build AI-assisted Projects", priority: "High", effort: "40h", impact: "High" },
         { title: "Learn AI Workflow Automation", priority: "Medium", effort: "25h", impact: "High" },
@@ -25,8 +25,8 @@ export function LearningRoadmapTab() {
     },
     {
       period: "Next 12 Months",
-      color: "text-emerald-500",
-      bg: "bg-emerald-500",
+      color: "text-primary",
+      bg: "bg-primary",
       items: [
         { title: "Lead AI Transformation", priority: "High", effort: "Ongoing", impact: "Transformational" },
         { title: "Become Solution Architect", priority: "High", effort: "Ongoing", impact: "Transformational" },
@@ -69,7 +69,7 @@ export function LearningRoadmapTab() {
                     <div className="flex flex-wrap items-center gap-6">
                       <div className="flex flex-col gap-1">
                         <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1 font-bold"><Flag className="h-3 w-3"/> Priority</span>
-                        <span className={`text-sm font-bold ${item.priority === 'High' ? 'text-rose-500' : 'text-blue-500'}`}>{item.priority}</span>
+                        <span className={`text-sm font-bold ${item.priority === 'High' ? 'text-primary' : 'text-muted-foreground'}`}>{item.priority}</span>
                       </div>
                       <div className="flex flex-col gap-1">
                         <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1 font-bold"><Target className="h-3 w-3"/> Effort</span>
@@ -77,7 +77,7 @@ export function LearningRoadmapTab() {
                       </div>
                       <div className="flex flex-col gap-1">
                         <span className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1 font-bold"><TrendingUp className="h-3 w-3"/> Impact</span>
-                        <span className={`text-sm font-bold ${item.impact === 'Transformational' ? 'text-purple-500' : item.impact === 'High' ? 'text-emerald-500' : 'text-amber-500'}`}>{item.impact}</span>
+                        <span className={`text-sm font-bold ${item.impact === 'Transformational' ? 'text-brand' : item.impact === 'High' ? 'text-primary' : 'text-muted-foreground'}`}>{item.impact}</span>
                       </div>
                     </div>
                   </div>

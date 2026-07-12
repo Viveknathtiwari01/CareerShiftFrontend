@@ -6,9 +6,9 @@ export function AIToolsTab() {
     {
       title: "Development Tools",
       icon: Terminal,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
+      color: "text-primary",
+      bg: "bg-primary/10",
+      border: "border-primary/20",
       tools: [
         { name: "Cursor", desc: "AI-first code editor built for pair programming.", uses: "Refactoring, boilerplate generation, in-context debugging.", why: "Aligns with your backend architecture focus.", gain: "40%" },
         { name: "GitHub Copilot", desc: "Inline code completion and chat.", uses: "Writing test cases, translating code, regex.", why: "Industry standard, seamless workflow integration.", gain: "25%" },
@@ -18,9 +18,9 @@ export function AIToolsTab() {
     {
       title: "Business & Productivity",
       icon: Briefcase,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
+      color: "text-brand",
+      bg: "bg-brand/10",
+      border: "border-brand/20",
       tools: [
         { name: "Notion AI", desc: "Connected workspace AI assistant.", uses: "Drafting technical specs, meeting summaries.", why: "Helps translate technical work to business stakeholders.", gain: "20%" },
         { name: "Perplexity", desc: "AI-powered search engine.", uses: "Researching new libraries, troubleshooting errors.", why: "Faster than traditional documentation search.", gain: "35%" },
@@ -30,9 +30,9 @@ export function AIToolsTab() {
     {
       title: "Marketing & Design",
       icon: Megaphone,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
-      border: "border-purple-500/20",
+      color: "text-primary",
+      bg: "bg-primary/10",
+      border: "border-primary/20",
       tools: [
         { name: "Midjourney", desc: "AI image generation.", uses: "Conceptual architecture diagrams, blog graphics.", why: "Adds visual flair to your technical writing.", gain: "N/A" },
         { name: "Canva AI", desc: "Accessible design suite with AI tools.", uses: "Quick mockups, personal branding.", why: "Low barrier to entry for non-designers.", gain: "N/A" }
@@ -61,7 +61,7 @@ export function AIToolsTab() {
               <div key={idx} className="rounded-3xl border border-border bg-background p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col">
                 <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
                   <h4 className="font-bold text-xl">{tool.name}</h4>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-xs font-bold border border-emerald-500/20">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-bold border border-brand/20">
                     <TrendingUp className="h-3 w-3" /> +{tool.gain}
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export function AIToolsTab() {
                     <div className="font-semibold">{tool.uses}</div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1 flex items-center gap-1"><Sparkles className="h-3 w-3 text-amber-500"/> Why We Recommend It</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1 flex items-center gap-1"><Sparkles className="h-3 w-3 text-brand"/> Why We Recommend It</span>
                     <div className="font-semibold text-primary">{tool.why}</div>
                   </div>
                 </div>

@@ -69,21 +69,17 @@ function Nav() {
     { label: "Contact", href: "#contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A1525]/80 backdrop-blur-xl">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <Logo />
-          <span className="font-display text-2xl font-extrabold tracking-tight">
-            <span className="font-display text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600">CareerShift</span>
-            
-          </span>
+          <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-white/70 transition-colors hover:text-white"
             >
               {l.label}
             </a>
@@ -92,13 +88,13 @@ function Nav() {
         <div className="hidden items-center gap-3 md:flex">
           <Link
             to="/auth"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            className="text-sm font-medium text-white/70 hover:text-white"
           >
             Log in
           </Link>
           <Link
             to="/auth"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-soft transition-colors hover:bg-white/20"
           >
             Start free
             <ArrowRight className="h-4 w-4" />
@@ -106,21 +102,21 @@ function Nav() {
         </div>
         <button
           aria-label="Toggle menu"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-border md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
+        <div className="border-t border-white/10 bg-[#0A1525] md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-md px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
               >
                 {l.label}
               </a>
@@ -128,13 +124,13 @@ function Nav() {
             <div className="mt-2 flex gap-2 px-1">
               <Link
                 to="/auth"
-                className="flex-1 rounded-lg border border-border px-4 py-2 text-center text-sm font-medium"
+                className="flex-1 rounded-lg border border-white/10 px-4 py-2 text-center text-sm font-medium text-white"
               >
                 Log in
               </Link>
               <Link
                 to="/auth"
-                className="flex-1 rounded-lg bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground"
+                className="flex-1 rounded-lg bg-white/10 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-white/20 transition-colors"
               >
                 Start free
               </Link>
@@ -153,31 +149,31 @@ function Logo() {
 /* ---------- HERO ---------- */
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#0A1525]">
       <div className="container-page animate-fade-in-up relative grid gap-14 py-10 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
         <div className="flex flex-col justify-center">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-brand" />
             AI Career Readiness Report · Built for professionals
           </div>
-          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
             Will AI take <span className="text-brand">your job?</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">
             Find out exactly what to build, what to automate, and how to become the person companies
             fight to keep. Receive your personalized AI Career Readiness Report in minutes.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               to="/auth"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
             >
               Start free assessment
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="#report"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
               View sample report
             </a>
@@ -189,15 +185,15 @@ function Hero() {
               { k: "97%", v: "Would recommend" },
             ].map((s) => (
               <div key={s.v}>
-                <dt className="font-display text-2xl font-bold text-foreground">{s.k}</dt>
-                <dd className="mt-1 text-xs text-muted-foreground">{s.v}</dd>
+                <dt className="font-display text-2xl font-bold text-white">{s.k}</dt>
+                <dd className="mt-1 text-xs text-white/60">{s.v}</dd>
               </div>
             ))}
           </dl>
         </div>
 
         <div className="relative">
-          <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-teal/10 to-warm/10 blur-3xl opacity-30" />
+          <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
           <HeroGraphic />
         </div>
       </div>
@@ -250,8 +246,9 @@ function Problem() {
     },
   ];
   return (
-    <section className="container-page animate-fade-in-up py-24">
-      <div className="mx-auto max-w-2xl text-center">
+    <section className="bg-background py-24">
+      <div className="container-page animate-fade-in-up">
+        <div className="mx-auto max-w-2xl text-center">
         <SectionEyebrow>The problem</SectionEyebrow>
         <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
           AI anxiety is a planning problem, not an information problem.
@@ -274,6 +271,7 @@ function Problem() {
           </div>
         ))}
       </div>
+      </div>
     </section>
   );
 }
@@ -286,32 +284,32 @@ function Framework3B() {
       title: "BUILD IT",
       subtitle: "Human Mastery",
       body: "Tasks requiring human judgment, emotional intelligence, leadership, and relationships. AI cannot replace these — you must develop and own them as human capabilities.",
-      color: "border-emerald-500/20",
+      color: "border-brand/20",
     },
     {
       icon: <Bot className="h-6 w-6" />,
       title: "BOT IT",
       subtitle: "Full Automation",
       body: "Tasks that are repetitive, templated, or high-volume. AI handles these fully. Stop spending your energy here and deploy an AI tool to take over.",
-      color: "border-teal-500/20",
+      color: "border-primary/20",
     },
     {
       icon: <Zap className="h-6 w-6" />,
       title: "BLEND IT",
       subtitle: "Human + AI",
       body: "Tasks where you stay in the driver's seat, but AI accelerates your output. The crucial skill here is knowing how to direct AI, not working against it.",
-      color: "border-warm/20",
+      color: "border-foreground/20",
     },
   ];
   return (
-    <section className="bg-surface-2/30 border-y border-border/60 py-24">
+    <section className="bg-[#0A1525] text-white py-24">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>The Engine</SectionEyebrow>
+          <SectionEyebrow dark>The Engine</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             The proprietary 3B Framework™
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p className="mt-4 text-white/60">
             CareerShift analyzes every task in your role and routes it into one of three action
             categories, giving you a clear strategy for the age of AI.
           </p>
@@ -320,16 +318,16 @@ function Framework3B() {
           {items.map((it) => (
             <div
               key={it.title}
-              className={`surface-card flex flex-col p-8 border ${it.color} hover-lift`}
+              className="flex flex-col p-8 rounded-3xl bg-white/5 border border-white/10 hover:-translate-y-1 transition-transform"
             >
-              <div className="inline-grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft mb-2">
+              <div className="inline-grid h-14 w-14 place-items-center rounded-full bg-brand text-brand-foreground shadow-soft mb-2">
                 {it.icon}
               </div>
-              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">{it.title}</h3>
-              <div className="mt-1 text-sm font-semibold uppercase tracking-wider opacity-80">
+              <h3 className="mt-6 font-display text-2xl font-bold text-white">{it.title}</h3>
+              <div className="mt-1 text-sm font-semibold uppercase tracking-wider text-brand">
                 {it.subtitle}
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground flex-1">{it.body}</p>
+              <p className="mt-4 text-sm leading-relaxed text-white/60 flex-1">{it.body}</p>
             </div>
           ))}
         </div>
@@ -394,14 +392,14 @@ function HowItWorks() {
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <section id="report" className="container-page animate-fade-in-up py-24">
-      <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+    <section id="report" className="bg-[#0A1525] text-white py-24">
+      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
         <div>
-          <SectionEyebrow>Sample report</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <SectionEyebrow dark>Sample report</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
             A consulting-grade report — not another quiz result.
           </h2>
-          <p className="mt-5 text-muted-foreground">
+          <p className="mt-5 text-white/70">
             Every report is packed with visual insights: an AI Readiness Score, task-by-task
             routing, hours saved, recommended tools, salary premium data, and a 12-month learning
             roadmap.
@@ -414,8 +412,8 @@ function ReportPreview() {
               "12-month learning roadmap and skill priorities",
             ].map((t) => (
               <li key={t} className="flex items-start gap-3 text-sm">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-teal" />
-                <span className="text-foreground">{t}</span>
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                <span className="text-white/90">{t}</span>
               </li>
             ))}
           </ul>
@@ -435,13 +433,13 @@ function ReportPreview() {
 
 function ReportMockup() {
   return (
-    <div className="surface-card relative overflow-hidden p-6 shadow-elevated">
+    <div className="bg-white/5 border border-white/10 rounded-3xl relative overflow-hidden p-6 shadow-elevated">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-muted-foreground">AI Career Readiness</p>
-          <h3 className="mt-1 font-display text-lg font-semibold">Senior Marketing Manager</h3>
+          <p className="text-xs font-medium text-white/50">AI Career Readiness</p>
+          <h3 className="mt-1 font-display text-lg font-semibold text-white">Senior Marketing Manager</h3>
         </div>
-        <span className="rounded-full bg-teal/10 px-2.5 py-1 text-xs font-medium text-teal">
+        <span className="rounded-full bg-brand/20 px-2.5 py-1 text-xs font-medium text-brand">
           Report ready
         </span>
       </div>
@@ -450,24 +448,24 @@ function ReportMockup() {
         <ScoreRing score={82} />
         <div className="grid grid-cols-3 gap-3">
           <MiniStat label="Build" value="6" tint="brand" />
-          <MiniStat label="Bot" value="9" tint="teal" />
-          <MiniStat label="Blend" value="11" tint="warm" />
+          <MiniStat label="Bot" value="9" tint="primary" />
+          <MiniStat label="Blend" value="11" tint="muted" />
         </div>
       </div>
 
       <div className="mt-6">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs font-medium text-muted-foreground">Hours saved / week</p>
-          <p className="text-xs font-semibold text-foreground">11.5h</p>
+          <p className="text-xs font-medium text-white/50">Hours saved / week</p>
+          <p className="text-xs font-semibold text-white">11.5h</p>
         </div>
         <BarRow />
       </div>
 
-      <div className="mt-6 rounded-xl border border-border bg-surface-2 p-4">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          <Zap className="h-3.5 w-3.5 text-warm" /> Top recommendation
+      <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/50">
+          <Zap className="h-3.5 w-3.5 text-brand" /> Top recommendation
         </div>
-        <p className="mt-2 text-sm text-foreground">
+        <p className="mt-2 text-sm text-white/90">
           Automate briefing docs with an AI writing workflow — saves ~4.2h/week and lifts throughput
           28%.
         </p>
@@ -483,7 +481,7 @@ function ScoreRing({ score }: { score: number }) {
   return (
     <div className="relative mx-auto grid h-40 w-40 place-items-center">
       <svg viewBox="0 0 120 120" className="h-40 w-40 -rotate-90">
-        <circle cx="60" cy="60" r={r} className="fill-none stroke-muted" strokeWidth="10" />
+        <circle cx="60" cy="60" r={r} className="fill-none stroke-white/10" strokeWidth="10" />
         <circle
           cx="60"
           cy="60"
@@ -503,8 +501,8 @@ function ScoreRing({ score }: { score: number }) {
         </defs>
       </svg>
       <div className="absolute text-center">
-        <div className="font-display text-4xl font-bold">{score}</div>
-        <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="font-display text-4xl font-bold text-white">{score}</div>
+        <div className="text-[10px] font-medium uppercase tracking-wider text-white/50">
           Readiness
         </div>
       </div>
@@ -519,16 +517,16 @@ function MiniStat({
 }: {
   label: string;
   value: string;
-  tint: "brand" | "teal" | "warm";
+  tint: "brand" | "primary" | "muted";
 }) {
-  const dot = tint === "brand" ? "bg-brand" : tint === "teal" ? "bg-teal" : "bg-warm";
+  const dot = tint === "brand" ? "bg-brand" : tint === "primary" ? "bg-primary" : "bg-white/30";
   return (
-    <div className="rounded-xl border border-border bg-surface-2 p-3">
+    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
       <div className="flex items-center gap-1.5">
         <span className={`h-2 w-2 rounded-full ${dot}`} />
-        <span className="text-xs text-muted-foreground">{label}</span>
+        <span className="text-xs text-white/50">{label}</span>
       </div>
-      <div className="mt-1.5 font-display text-2xl font-bold">{value}</div>
+      <div className="mt-1.5 font-display text-2xl font-bold text-white">{value}</div>
     </div>
   );
 }
@@ -540,7 +538,7 @@ function BarRow() {
       {bars.map((h, i) => (
         <div
           key={i}
-          className="flex-1 rounded-t-md bg-gradient-to-t from-brand/70 to-teal/70"
+          className="flex-1 rounded-t-md bg-gradient-to-t from-brand/70 to-primary/70"
           style={{ height: `${h}%` }}
         />
       ))}
@@ -583,22 +581,22 @@ function Features() {
     },
   ];
   return (
-    <section id="features" className="bg-surface-2/60 py-24">
+    <section id="features" className="bg-[#0A1525] py-24 text-white">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>Features</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <SectionEyebrow dark>Features</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
             Everything you need to future-proof your role.
           </h2>
         </div>
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {feats.map((f) => (
-            <div key={f.title} className="surface-card group p-6 hover-lift">
-              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform group-hover:scale-105">
+            <div key={f.title} className="rounded-2xl bg-white/5 border border-white/10 p-6 hover:-translate-y-1 transition-transform group">
+              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-brand text-brand-foreground shadow-soft transition-transform group-hover:scale-105">
                 {f.icon}
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.body}</p>
+              <h3 className="mt-5 font-display text-lg font-semibold text-white">{f.title}</h3>
+              <p className="mt-2 text-sm text-white/60">{f.body}</p>
             </div>
           ))}
         </div>
@@ -640,7 +638,7 @@ function Testimonials() {
       <div className="mt-14 grid gap-5 md:grid-cols-3">
         {items.map((t) => (
           <figure key={t.name} className="surface-card flex flex-col p-6">
-            <div className="flex gap-0.5 text-warm">
+            <div className="flex gap-0.5 text-brand">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />
               ))}
@@ -737,7 +735,7 @@ function Pricing() {
               }`}
             >
               {t.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-warm px-3 py-1 text-xs font-semibold text-navy">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground">
                   Most popular
                 </span>
               )}
@@ -764,7 +762,7 @@ function Pricing() {
                   <li key={f} className="flex items-start gap-2.5 text-sm">
                     <CheckCircle2
                       className={`mt-0.5 h-4.5 w-4.5 shrink-0 ${
-                        t.highlighted ? "text-teal" : "text-teal"
+                        t.highlighted ? "text-brand" : "text-brand"
                       }`}
                     />
                     <span
@@ -778,7 +776,7 @@ function Pricing() {
               <a
                 href="#"
                 className={`mt-8 inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${
-                  t.highlighted ? "bg-white text-navy" : "bg-primary text-primary-foreground"
+                  t.highlighted ? "bg-white text-primary" : "bg-primary text-primary-foreground"
                 }`}
               >
                 {t.cta}
@@ -868,9 +866,9 @@ function HeroGraphic() {
   return (
     <div className="flex justify-center items-center relative overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center">
       {/* Concentric rings */}
-      <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.02] pointer-events-none"></div>
-      <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.03] pointer-events-none"></div>
-      <div className="absolute w-[50%] h-[50%] rounded-full border border-white/[0.02] pointer-events-none"></div>
+      <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.04] pointer-events-none"></div>
+      <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>
+      <div className="absolute w-[50%] h-[50%] rounded-full border border-white/[0.04] pointer-events-none"></div>
 
       {/* Connection Lines */}
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.06] pointer-events-none">
@@ -878,56 +876,11 @@ function HeroGraphic() {
           className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
           viewBox="0 0 400 400"
         >
-          <line
-            x1="200"
-            y1="200"
-            x2="62"
-            y2="3"
-            stroke="currentColor"
-            className="text-brand opacity-50"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          <line
-            x1="200"
-            y1="200"
-            x2="338"
-            y2="3"
-            stroke="currentColor"
-            className="text-brand opacity-50"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          <line
-            x1="200"
-            y1="200"
-            x2="436"
-            y2="242"
-            stroke="currentColor"
-            className="text-brand opacity-50"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          <line
-            x1="200"
-            y1="200"
-            x2="282"
-            y2="426"
-            stroke="currentColor"
-            className="text-brand opacity-50"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          <line
-            x1="200"
-            y1="200"
-            x2="16"
-            y2="355"
-            stroke="currentColor"
-            className="text-brand opacity-50"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
+          <line x1="200" y1="200" x2="62" y2="3" stroke="currentColor" className="text-white/30" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="200" y1="200" x2="338" y2="3" stroke="currentColor" className="text-white/30" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="200" y1="200" x2="436" y2="242" stroke="currentColor" className="text-white/30" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="200" y1="200" x2="282" y2="426" stroke="currentColor" className="text-white/30" strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="200" y1="200" x2="16" y2="355" stroke="currentColor" className="text-white/30" strokeWidth="1" strokeDasharray="4 4" />
         </svg>
 
         {/* Cards */}
@@ -935,87 +888,67 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "15.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
-            <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Bot Potential
-            </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">42%</div>
-            <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              TASKS TO AUTOMATE
-            </div>
+          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">Bot Potential</div>
+            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">42%</div>
+            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">TASKS TO AUTOMATE</div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
           style={{ left: "4%", top: "88.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
-            <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Human Mastery
-            </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">35%</div>
-            <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              TASKS TO BUILD
-            </div>
+          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">Human Mastery</div>
+            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">35%</div>
+            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">TASKS TO BUILD</div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
           style={{ left: "109%", top: "60.5%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
-            <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              AI Acceleration
-            </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">23%</div>
-            <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              TASKS TO BLEND
-            </div>
+          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">AI Acceleration</div>
+            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">23%</div>
+            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">TASKS TO BLEND</div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
           style={{ left: "70.5%", top: "106.5%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
-            <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              Time Reclaimed
-            </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">11.5h</div>
-            <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              SAVED PER WEEK
-            </div>
+          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">Time Reclaimed</div>
+            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">11.5h</div>
+            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">SAVED PER WEEK</div>
           </div>
         </div>
         <div
           className="absolute pointer-events-auto"
           style={{ left: "84.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
-            <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
-              AI Readiness
-            </div>
-            <div className="text-primary text-lg font-bold my-0.5 leading-none">82</div>
-            <div className="text-white/40 text-[8px] font-bold tracking-widest leading-none">
-              TOP 15% SCORE
-            </div>
+          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">AI Readiness</div>
+            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">82</div>
+            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">TOP 15% SCORE</div>
           </div>
         </div>
       </div>
 
       {/* Center Node and Ripples */}
       <div className="absolute w-[35%] h-[35%] flex items-center justify-center pointer-events-none z-10">
-        <div className="absolute w-full h-full rounded-full border border-primary/45 bg-primary/[0.01] animate-valRadarWave"></div>
+        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-brand/[0.02] animate-valRadarWave"></div>
         <div
-          className="absolute w-full h-full rounded-full border border-primary/45 bg-primary/[0.01] animate-valRadarWave"
+          className="absolute w-full h-full rounded-full border border-brand/20 bg-brand/[0.02] animate-valRadarWave"
           style={{ animationDelay: "2s" }}
         ></div>
-        <div className="w-[100px] h-[100px] rounded-full border border-primary/45 bg-[#080d16] flex flex-col items-center justify-center p-3 shadow-[0_0_25px_var(--color-primary)] pointer-events-auto">
-          <BrainCircuit className="h-6 w-6 text-primary mb-1" strokeWidth={2.5} />
-          <span className="text-white text-[8px] font-bold tracking-[0.2em] leading-none mb-0.5 mt-1">
+        <div className="w-[110px] h-[110px] rounded-full border border-white/10 bg-[#0A1525] flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto relative z-20">
+          {/* <BrainCircuit className="h-7 w-7 text-brand mb-1" strokeWidth={2} /> */}
+          <span className="text-white/90 text-[10px] font-bold tracking-[0.2em] leading-none mb-1 mt-1">
             CAREER
           </span>
-          <span className="text-primary/70 text-[6px] font-bold tracking-[0.1em] leading-none">
+          <span className="text-white/40 text-[7px] font-bold tracking-[0.1em] leading-none">
             AI ENGINE
           </span>
         </div>
@@ -1027,43 +960,45 @@ function HeroGraphic() {
 /* ---------- OUR STORY ---------- */
 function OurStory() {
   return (
-    <section id="our-story" className="container-page animate-fade-in-up py-24">
-      <div className="mx-auto max-w-5xl rounded-3xl border border-border bg-surface-2/40 p-8 md:p-12 lg:p-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <div className="relative">
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-teal/20 blur-2xl opacity-40"></div>
-            <img
-              src={ownerPhoto}
-              alt="Owner of CareerShift"
-              className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
-            />
-          </div>
-          <div>
-            <SectionEyebrow>Our Story</SectionEyebrow>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Why I Built CareerShift
-            </h2>
-            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                As a professional navigating the rapid advancements in AI, I saw brilliant
-                colleagues feeling overwhelmed and uncertain about their future. The advice out
-                there was either too academic or just sensationalist fear-mongering.
-              </p>
-              <p>
-                I realized we didn't need another generic AI tutorial. We needed a personalized
-                compass. We needed to know exactly which parts of our jobs to automate, and which
-                human skills to double down on.
-              </p>
-              <p>
-                That's why CareerShift was born. My mission is to empower professionals to move from
-                anxiety to advantage, giving them a clear, actionable roadmap to thrive in the age
-                of AI.
-              </p>
+    <section id="our-story" className="bg-[#0A1525] py-24 text-white">
+      <div className="container-page animate-fade-in-up">
+        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12 lg:p-16">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+            <div className="relative">
+              <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-primary/20 blur-2xl opacity-40"></div>
+              <img
+                src={ownerPhoto}
+                alt="Owner of CareerShift"
+                className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
+              />
             </div>
-            <div className="mt-8 flex items-center gap-4">
-              <div className="font-display font-semibold text-foreground">Alex Founder</div>
-              <div className="h-4 w-px bg-border"></div>
-              <div className="text-sm text-muted-foreground">Founder & CEO</div>
+            <div>
+              <SectionEyebrow dark>Our Story</SectionEyebrow>
+              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
+                Why I Built CareerShift
+              </h2>
+              <div className="mt-6 space-y-4 text-white/70 leading-relaxed">
+                <p>
+                  As a professional navigating the rapid advancements in AI, I saw brilliant
+                  colleagues feeling overwhelmed and uncertain about their future. The advice out
+                  there was either too academic or just sensationalist fear-mongering.
+                </p>
+                <p>
+                  I realized we didn't need another generic AI tutorial. We needed a personalized
+                  compass. We needed to know exactly which parts of our jobs to automate, and which
+                  human skills to double down on.
+                </p>
+                <p>
+                  That's why CareerShift was born. My mission is to empower professionals to move from
+                  anxiety to advantage, giving them a clear, actionable roadmap to thrive in the age
+                  of AI.
+                </p>
+              </div>
+              <div className="mt-8 flex items-center gap-4">
+                <div className="font-display font-semibold text-white">Alex Founder</div>
+                <div className="h-4 w-px bg-white/20"></div>
+                <div className="text-sm text-white/50">Founder & CEO</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1075,66 +1010,66 @@ function OurStory() {
 /* ---------- CONTACT US ---------- */
 function ContactUs() {
   return (
-    <section id="contact" className="bg-surface-2/30 border-y border-border/60 py-24">
+    <section id="contact" className="bg-[#0A1525] text-white py-24 border-y border-white/10">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>Contact Us</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <SectionEyebrow dark>Contact Us</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
             Let's talk about your career.
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p className="mt-4 text-white/60">
             Have questions? Want to discuss a team plan? Reach out or book a consultation directly.
           </p>
         </div>
 
         <div className="mt-14 mx-auto max-w-5xl grid gap-10 md:grid-cols-2">
           {/* Contact Form */}
-          <div className="surface-card p-8">
-            <h3 className="font-display text-xl font-semibold mb-6">Send a Message</h3>
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+            <h3 className="font-display text-xl font-semibold mb-6 text-white">Send a Message</h3>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                    <User className="w-4 h-4 text-muted-foreground" /> First Name
+                  <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+                    <User className="w-4 h-4 text-brand" /> First Name
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                    className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand text-white placeholder-white/30 transition-all"
                     placeholder="John"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                    <User className="w-4 h-4 text-muted-foreground" /> Last Name
+                  <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+                    <User className="w-4 h-4 text-brand" /> Last Name
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                    className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand text-white placeholder-white/30 transition-all"
                     placeholder="Doe"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-muted-foreground" /> Email Address
+                <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-brand" /> Email Address
                 </label>
                 <input
                   type="email"
-                  className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                  className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand text-white placeholder-white/30 transition-all"
                   placeholder="john@example.com"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-muted-foreground" /> Message
+                <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-brand" /> Message
                 </label>
                 <textarea
                   rows={4}
-                  className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none"
+                  className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand text-white placeholder-white/30 transition-all resize-none"
                   placeholder="How can we help you?"
                 ></textarea>
               </div>
-              <button className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]">
+              <button className="w-full rounded-lg bg-brand px-4 py-3 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]">
                 Send Message
               </button>
             </form>
@@ -1142,45 +1077,45 @@ function ContactUs() {
 
           {/* Booking Options */}
           <div className="flex flex-col gap-6">
-            <div className="surface-card p-8 flex-1">
-              <h3 className="font-display text-xl font-semibold mb-2">Book an Appointment</h3>
-              <p className="text-sm text-muted-foreground mb-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex-1">
+              <h3 className="font-display text-xl font-semibold mb-2 text-white">Book an Appointment</h3>
+              <p className="text-sm text-white/60 mb-8">
                 Choose a time that works best for you. We offer video and phone consultations.
               </p>
 
               <div className="space-y-4">
                 <a
                   href="#"
-                  className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-brand hover:bg-brand/5 group"
+                  className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-brand hover:bg-brand/10 group"
                 >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
                     <Video className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground group-hover:text-brand transition-colors">
+                    <h4 className="font-semibold text-white group-hover:text-brand transition-colors">
                       Google / Zoom Meeting
                     </h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-xs text-white/50 mt-0.5">
                       30 min video consultation
                     </p>
                   </div>
-                  <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-brand transition-colors group-hover:translate-x-1" />
+                  <ArrowRight className="ml-auto h-5 w-5 text-white/30 group-hover:text-brand transition-colors group-hover:translate-x-1" />
                 </a>
 
                 <a
                   href="#"
-                  className="flex items-center gap-4 rounded-xl border border-border bg-surface-2 p-4 transition-colors hover:border-teal hover:bg-teal/5 group"
+                  className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-primary hover:bg-primary/20 group"
                 >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-teal/10 text-teal">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
                     <Phone className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground group-hover:text-teal transition-colors">
+                    <h4 className="font-semibold text-white group-hover:text-primary transition-colors">
                       Phone Call
                     </h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">15 min quick chat</p>
+                    <p className="text-xs text-white/50 mt-0.5">15 min quick chat</p>
                   </div>
-                  <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground group-hover:text-teal transition-colors group-hover:translate-x-1" />
+                  <ArrowRight className="ml-auto h-5 w-5 text-white/30 group-hover:text-primary transition-colors group-hover:translate-x-1" />
                 </a>
               </div>
             </div>
@@ -1197,7 +1132,7 @@ function FinalCTA() {
     <section className="container-page py-20">
       <div className="relative overflow-hidden rounded-3xl bg-primary p-10 text-primary-foreground shadow-elevated sm:p-14">
         <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/40 blur-3xl opacity-30" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/30 blur-3xl opacity-30" />
         <div className="relative max-w-2xl">
           <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Turn AI anxiety into an AI advantage.
@@ -1209,7 +1144,7 @@ function FinalCTA() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               href="#"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-navy shadow-soft transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-primary shadow-soft transition-transform hover:scale-[1.02]"
             >
               Start free assessment
               <ArrowRight className="h-4 w-4" />
@@ -1239,15 +1174,14 @@ function Footer() {
     { title: "Legal", links: ["Privacy", "Terms"] },
   ];
   return (
-    <footer className="border-t border-border bg-surface-2/60">
+    <footer className="border-t border-border bg-[#0A1525]">
       <div className="container-page py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div>
             <Link to="/" className="flex items-center gap-2">
-              <Logo />
-              <span className="font-display text-lg font-bold">CareerShift</span>
+              <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm text-white/45">
               Bridge your career to the AI future — with clarity, confidence, and a plan.
             </p>
             <div className="mt-5 flex gap-2">
@@ -1255,7 +1189,7 @@ function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-white/55 transition-colors hover:bg-white/10 hover:text-[#C9A84C]"
                   aria-label="Social link"
                 >
                   <Icon className="h-4 w-4" />
@@ -1265,13 +1199,13 @@ function Footer() {
           </div>
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="font-display text-sm font-semibold">{c.title}</h4>
+              <h4 className="font-display text-sm font-semibold text-white">{c.title}</h4>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map((l) => (
                   <li key={l}>
                     <a
                       href="#"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
                     >
                       {l}
                     </a>
@@ -1281,7 +1215,7 @@ function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/6 pt-6 text-xs text-white/25 sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
           <span>Built for professionals navigating the AI shift.</span>
         </div>
@@ -1291,9 +1225,9 @@ function Footer() {
 }
 
 /* ---------- SHARED ---------- */
-function SectionEyebrow({ children }: { children: React.ReactNode }) {
+function SectionEyebrow({ children, dark }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand">
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand ${dark ? 'border-white/10 bg-white/5' : 'border-border bg-card'}`}>
       {children}
     </span>
   );
