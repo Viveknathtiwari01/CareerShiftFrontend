@@ -31,6 +31,7 @@ const NAV = [
   { to: "/report", label: "Career Intelligence Report", icon: BarChart3 },
   { to: "/history", label: "Assessment History", icon: History },
   { to: "/toolkit", label: "AI Toolkit", icon: Wrench },
+  { to: "/workshops", label: "Workshops", icon: GraduationCap },
 ] as const;
 
 export default function AuthenticatedLayout() {

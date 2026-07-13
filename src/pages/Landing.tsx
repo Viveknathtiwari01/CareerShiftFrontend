@@ -10,6 +10,7 @@ import {
   Compass,
   FileText,
   Github,
+  GraduationCap,
   Linkedin,
   Mail,
   Menu,
@@ -45,6 +46,7 @@ function Landing() {
       <HowItWorks />
       <ReportPreview />
       <Features />
+      <WorkshopTeaser />
       <Testimonials />
       <Pricing />
       <OurStory />
@@ -63,6 +65,7 @@ function Nav() {
     { label: "Features", href: "#features" },
     { label: "How it works", href: "#how" },
     { label: "Sample report", href: "#report" },
+    { label: "Workshop", href: "#workshop" },
     { label: "Pricing", href: "#pricing" },
     { label: "Our Story", href: "#our-story" },
     { label: "FAQ", href: "#faq" },
@@ -254,9 +257,9 @@ function Problem() {
         </h2>
         <p className="mt-4 text-muted-foreground">
           You've read the think-pieces. You need clarity on{" "}
-          <span className="text-foreground">your</span> role,
-          <span className="text-foreground"> your</span> tasks, and{" "}
-          <span className="text-foreground">your</span> next move.
+          <span className="text-brand font-bold">your</span> role,
+          <span className="text-brand font-bold"> your</span> tasks, and{" "}
+          <span className="text-brand font-bold">your</span> next move.
         </p>
       </div>
       <div className="mt-14 grid gap-5 md:grid-cols-3">
@@ -265,7 +268,7 @@ function Problem() {
             <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft">
               {it.icon}
             </div>
-            <h3 className="mt-5 font-display text-lg font-semibold">{it.title}</h3>
+            <h3 className="mt-5 font-display text-lg font-semibold text-background">{it.title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{it.body}</p>
           </div>
         ))}
@@ -378,7 +381,7 @@ function HowItWorks() {
                   {s.n}
                 </span>
               </div>
-              <h3 className="mt-6 font-display text-xl font-semibold">{s.title}</h3>
+              <h3 className="mt-6 font-display text-xl font-semibold text-background">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
             </div>
           ))}
@@ -604,6 +607,123 @@ function Features() {
   );
 }
 
+/* ---------- WORKSHOP TEASER ---------- */
+function WorkshopTeaser() {
+  return (
+    <section id="workshop" className="bg-surface-2 py-24">
+      <div className="container-page animate-fade-in-up">
+        <div className="mx-auto max-w-2xl text-center mb-16">
+          <SectionEyebrow>Recommended Next Actions</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+            Personalized guidance based on your profile.
+          </h2>
+          <p className="mt-4 text-muted-foreground text-lg">
+            Your assessment is just the beginning. CareerShift provides the structured guidance you need to turn insights into action.
+          </p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr] items-stretch">
+          {/* Left Column: Actions & Insights */}
+          <div className="flex flex-col gap-6">
+            <div className="bg-card rounded-[2rem] p-8 shadow-soft border border-border group hover:border-primary/30 transition-colors relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-display text-xl font-bold text-foreground flex items-center gap-2 relative z-10">
+                  <BarChart3 className="w-5 h-5 text-primary" />
+                  Review Your Career Intelligence Report
+                </h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/10 text-red-500 px-2 py-1 rounded relative z-10">Priority</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed relative z-10">
+                Your assessment is complete. Reviewing this report will give you a clear baseline of your current AI readiness.
+              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-xs font-medium text-muted-foreground mb-6 relative z-10">
+                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full"><Clock className="w-4 h-4 text-primary" /> Est. Time: 10 mins</span>
+                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full"><Target className="w-4 h-4 text-primary" /> Impact: Immediate clarity</span>
+              </div>
+              <Link to="/report" className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 relative z-10 w-full sm:w-auto">
+                View Report <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="bg-primary/5 rounded-[2rem] p-8 border border-primary/20 relative overflow-hidden flex-1 flex flex-col justify-center">
+              <div className="absolute -top-4 -right-4 opacity-5">
+                <MessageSquare className="w-32 h-32 text-primary" />
+              </div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-4 relative z-10">
+                <Zap className="w-4 h-4" /> Today's Insight
+              </div>
+              <blockquote className="text-foreground/90 italic font-medium leading-relaxed mb-6 relative z-10 text-lg border-l-2 border-primary/30 pl-4">
+                "Professionals who combine domain expertise with AI consistently outperform those who rely on either one alone."
+              </blockquote>
+              <div className="flex items-center justify-between mt-auto">
+                <span className="text-xs font-semibold text-muted-foreground">2 Min Read</span>
+                <Link to="/workshops" className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 relative z-10">
+                  Learn More <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Featured Workshop */}
+          <div className="surface-card rounded-[2rem] p-8 md:p-12 shadow-elevated border border-border relative overflow-hidden h-full flex flex-col group text-white">
+             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 group-hover:bg-primary/20 transition-colors duration-700" />
+             
+             <div className="flex-1 relative z-10">
+               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-3 py-1.5 text-xs font-semibold text-white mb-6 backdrop-blur-sm">
+                 <GraduationCap className="h-4 w-4" />
+                 Featured Workshop
+               </div>
+               
+               <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                 Master AI for Everyday Professionals
+               </h3>
+               
+               <p className="text-white/80 leading-relaxed mb-8 text-lg">
+                 Learn practical AI workflows that save time, improve productivity, and make you more valuable in your current role. This is the foundational skill required to communicate effectively with AI tools in your daily work.
+               </p>
+
+               <div className="grid grid-cols-2 gap-4 mb-10">
+                 <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
+                   <Clock className="w-6 h-6 text-primary mb-3" />
+                   <div className="text-base font-bold text-white">6 Hours</div>
+                   <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">Duration</div>
+                 </div>
+                 <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
+                   <Target className="w-6 h-6 text-teal-400 mb-3" />
+                   <div className="text-base font-bold text-white">Beginner to Int.</div>
+                   <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">Level</div>
+                 </div>
+                 <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
+                   <CheckCircle2 className="w-6 h-6 text-primary mb-3" />
+                   <div className="text-base font-bold text-white">Included</div>
+                   <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">Certificate</div>
+                 </div>
+                 <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
+                   <Zap className="w-6 h-6 text-warm mb-3" />
+                   <div className="text-base font-bold text-white">2-4 hrs/week</div>
+                   <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">Est. Time Saved</div>
+                 </div>
+               </div>
+             </div>
+
+             <div className="mt-auto relative z-10">
+               <Link
+                 to="/workshops"
+                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-base font-semibold text-background shadow-soft transition-transform hover:scale-[1.02] hover:shadow-lg"
+               >
+                 Explore Workshop
+                 <ArrowRight className="h-5 w-5" />
+               </Link>
+               <p className="text-center text-xs text-white/50 mt-4 font-medium">Lifetime access to all materials and updates.</p>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- TESTIMONIALS ---------- */
 function Testimonials() {
   const items = [
@@ -642,19 +762,19 @@ function Testimonials() {
                 <Star key={i} className="h-4 w-4 fill-current" />
               ))}
             </div>
-            <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-card-foreground">
+            <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-background text-base ">
               "{t.quote}"
             </blockquote>
             <figcaption className="mt-6 flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary font-display text-sm font-bold text-primary-foreground">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary font-display text-sm font-semibold text-foreground">
                 {t.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
               </div>
               <div>
-                <div className="text-sm font-semibold">{t.name}</div>
-                <div className="text-xs text-card-foreground/70">{t.role}</div>
+                <div className="text-sm font-base text-background">{t.name}</div>
+                <div className="text-xs text-muted-foreground">{t.role}</div>
               </div>
             </figcaption>
           </figure>

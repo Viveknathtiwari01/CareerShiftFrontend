@@ -1,36 +1,40 @@
-import { Clock, BookOpen, Infinity, Award, Users } from "lucide-react";
-
-const details = [
-  { icon: Clock, label: "Duration", value: "6 Hours" },
-  { icon: BookOpen, label: "Level", value: "Beginner" },
-  { icon: Infinity, label: "Access", value: "Lifetime" },
-  { icon: Award, label: "Certificate", value: "Included" },
-  { icon: Users, label: "Community", value: "Included" },
-];
+import { motion } from "framer-motion";
+import { Clock, Globe, Signal, Infinity, Award, Users } from "lucide-react";
 
 export function WorkshopOverview() {
+  const details = [
+    { label: "Duration", value: "6 Hours", icon: Clock },
+    { label: "Level", value: "Beginner to Intermediate", icon: Signal },
+    { label: "Lifetime Access", value: "Yes", icon: Infinity },
+    { label: "Certificate", value: "Included", icon: Award },
+    { label: "Community", value: "Included", icon: Users },
+    { label: "Language", value: "English", icon: Globe },
+  ];
+
   return (
-    <div className="py-6 border-y border-border my-6">
-      <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
-        <div className="md:w-1/3">
-          <h2 className="text-xl font-bold text-foreground">
-            Master AI for Everyday Professionals
-          </h2>
-          <p className="mt-2 text-muted-foreground text-sm">
-            A comprehensive, self-paced workshop designed for non-technical professionals.
-          </p>
+    <div className="py-12">
+      <div className="bg-card rounded-2xl border border-border p-8 shadow-soft">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-foreground mb-3">Workshop Overview</h2>
+          <p className="text-lg text-muted-foreground">Everything you need to master AI for everyday work.</p>
         </div>
-        
-        <div className="md:w-2/3 grid grid-cols-2 sm:grid-cols-5 gap-4 w-full">
-          {details.map((detail) => (
-            <div 
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {details.map((detail, idx) => (
+            <motion.div
               key={detail.label}
-              className="flex flex-col items-start"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.4 }}
+              className="flex flex-col items-center p-4 rounded-xl bg-muted/50 border border-border/50 text-center hover:bg-muted transition-colors hover-lift"
             >
-              <detail.icon className="h-4 w-4 text-primary mb-2" />
-              <p className="text-xs font-medium text-muted-foreground">{detail.label}</p>
-              <p className="font-semibold text-foreground text-sm">{detail.value}</p>
-            </div>
+              <div className="p-3 bg-primary/10 rounded-full mb-3 text-primary">
+                <detail.icon className="w-6 h-6" />
+              </div>
+              <p className="text-sm text-muted-foreground mb-1">{detail.label}</p>
+              <p className="text-base font-semibold text-foreground">{detail.value}</p>
+            </motion.div>
           ))}
         </div>
       </div>

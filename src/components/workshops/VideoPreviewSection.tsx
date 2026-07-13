@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { VideoModal } from "./VideoModal";
 
@@ -24,44 +25,65 @@ const videos = [
 export function VideoPreviewSection() {
   const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="py-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">Watch Before You Enroll</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Get a taste of the premium content waiting for you.</p>
+    <div className="py-16">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-extrabold tracking-tight text-foreground mb-4">Watch Before You Enroll</h2>
+        <p className="text-lg text-muted-foreground">Get a taste of the premium content waiting for you.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
         {videos.map((video) => (
-          <div
+          <motion.div
             key={video.id}
-            className="group cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-border bg-card flex flex-col"
+            variants={item}
+            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.2 } }}
+            className="group cursor-pointer rounded-2xl overflow-hidden shadow-elevated border border-border bg-card flex flex-col relative"
             onClick={() => setActiveVideo(video)}
           >
             <div className="relative aspect-video overflow-hidden">
+              <div className="absolute inset-0 bg-muted animate-pulse" />
               <img 
                 src={video.thumbnailUrl} 
                 alt={video.title} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 relative z-10"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <div className="bg-white/90 rounded-full p-3 shadow-sm">
-                  <Play className="w-5 h-5 text-slate-900 fill-slate-900 ml-0.5" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20 opacity-80 group-hover:opacity-60 transition-opacity" />
+              
+              <div className="absolute inset-0 z-30 flex items-center justify-center">
+                <div className="bg-white/90 backdrop-blur-md rounded-full p-4 shadow-lg group-hover:bg-primary transition-colors duration-300">
+                  <Play className="w-8 h-8 text-primary fill-primary group-hover:text-primary-foreground group-hover:fill-primary-foreground ml-1" />
                 </div>
               </div>
-              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">
+              <div className="absolute bottom-4 right-4 z-30 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded border border-white/10">
                 {video.duration}
               </div>
             </div>
             
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{video.title}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
+            <div className="p-6 relative z-30">
+              <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{video.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{video.description}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <VideoModal
         isOpen={!!activeVideo}
