@@ -32,14 +32,13 @@ export default function AIReadiness() {
         </p>
       </div>
 
-      <div className="mx-auto max-w-6xl rounded-2xl border border-primary/20 bg-primary/5 p-8 text-center shadow-soft relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand/80 to-brand" />
-        <div className="text-sm font-bold uppercase tracking-wider text-primary/80 mb-4">Overall AI Readiness</div>
+      <div className="mx-auto max-w-6xl rounded-2xl border border-primary/20 bg-brand p-8 text-center shadow-soft relative overflow-hidden">
+        <div className="text-sm font-bold uppercase tracking-wider text-white mb-4">Overall AI Readiness</div>
         <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border-8 border-primary/20 bg-background mb-6">
-          <div className="text-4xl font-display font-bold text-primary">76<span className="text-xl text-muted-foreground">/100</span></div>
+          <div className="text-4xl font-display font-bold text-brand">76<span className="text-xl text-muted-foreground">/100</span></div>
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-3">Good</h3>
-        <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+        <h3 className="text-2xl font-bold text-white mb-3">Good</h3>
+        <p className="text-base text-white max-w-xl mx-auto leading-relaxed">
           You are ahead of many professionals in AI adoption, but there are several opportunities to strengthen your long-term career resilience.
         </p>
       </div>

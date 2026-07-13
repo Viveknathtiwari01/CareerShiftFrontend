@@ -100,9 +100,9 @@ function AssessmentWizard() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
       {/* Stepper */}
       <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
+        <div className="mb-4 flex items-center justify-between text-2xs font-medium text-muted-foreground">
           <span className="inline-flex items-center gap-1.5 text-brand">
-            <Sparkles className="h-3.5 w-3.5" /> Assessment
+          Assessment Profile
           </span>
           <span>{Math.round(progress)}% complete</span>
         </div>
@@ -141,7 +141,7 @@ function AssessmentWizard() {
         </ol>
       </div>
 
-      <div className="surface-card p-6 md:p-10">
+      <div className=" bg-card p-6 md:p-10 rounded-lg shadow-md">
         {STEPS[step].key === "role" && <StepRole draft={draft} setDraft={setDraft} />}
         {STEPS[step].key === "tools" && <StepTools draft={draft} setDraft={setDraft} />}
         {STEPS[step].key === "attitude" && <StepAttitude draft={draft} setDraft={setDraft} />}
@@ -179,7 +179,7 @@ function AssessmentWizard() {
             onClick={handleSubmit}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated"
           >
-            <Sparkles className="h-4 w-4" /> View AI Readiness Score
+             View AI Readiness Score
           </button>
         )}
       </div>
@@ -206,14 +206,14 @@ function StepRole({
   setDraft: ReturnType<typeof useAssessment>["setDraft"];
 }) {
   return (
-    <div>
+    <div className="bg-card p-6">
       <StepHeader
         title="Tell us about your role"
         description="This anchors how we interpret your tasks and toolkit."
       />
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">Job title</span>
+          <span className="mb-1.5 block text-2xs font-medium">Job title</span>
           <input
             type="text"
             value={draft.role}
@@ -223,7 +223,7 @@ function StepRole({
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">Industry</span>
+          <span className="mb-1.5 block text-2xs font-medium">Industry</span>
           <input
             type="text"
             value={draft.industry}
@@ -234,7 +234,7 @@ function StepRole({
         </label>
         <label className="block md:col-span-2">
           <div className="mb-1.5 flex items-center justify-between">
-            <span className="text-xs font-medium">Years of experience</span>
+            <span className="text-2xs font-medium">Years of experience</span>
             <span className="font-display text-base font-bold">{draft.yearsExp}</span>
           </div>
           <input
@@ -290,7 +290,7 @@ function StepTools({
       </div>
 
       <div className="mt-8">
-        <span className="mb-2 block text-xs font-medium">
+        <span className="mb-2 block text-2xs font-medium">
           How often do you use AI at work today?
         </span>
         <div className="grid gap-2 sm:grid-cols-3">
@@ -775,13 +775,16 @@ function StepCompetencies({
         description="We've identified the key competencies expected for your current role. Review them before continuing."
       />
 
-      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-primary">
-        <Sparkles className="mt-1 h-5 w-5 shrink-0" />
-        <div>
+      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-brand p-4 text-foreground">
+        <div className="flex-1">
           <h3 className="font-semibold">AI Generated</h3>
           <p className="text-sm opacity-80">
-            Based on your career profile, CareerShift identified these competencies as the most relevant for your current role. Confidence: 92%
+            We've auto-generated these tasks based on industry benchmarks for your role.
           </p>
+        </div>
+        <div className="text-right">
+          <div className="text-sm font-bold">94%</div>
+          <div className="text-[10px] uppercase tracking-wider opacity-80">Confidence</div>
         </div>
       </div>
 
@@ -1015,8 +1018,7 @@ function StepTaskGenerator({
         description="Based on your career profile and competencies, we've identified the activities that likely occupy your working day."
       />
 
-      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-primary">
-        <Sparkles className="mt-1 h-5 w-5 shrink-0" />
+      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-brand p-4 text-foreground">
         <div className="flex-1">
           <h3 className="font-semibold">AI Generated</h3>
           <p className="text-sm opacity-80">
@@ -1357,12 +1359,11 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
           </p>
         </div>
         
-        <div className="inline-flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2 shadow-sm shrink-0">
-          <Brain className="h-5 w-5 text-primary" />
+        <div className="inline-flex items-center gap-3 rounded-lg border border-primary/20 bg-brand px-4 py-2 shadow-sm shrink-0">
           <div className="text-sm">
-            <span className="font-semibold text-primary">Analysis Complete</span>
-            <span className="mx-2 text-primary/30">|</span>
-            <span className="text-primary/80">94% Confidence</span>
+            <span className="font-semibold text-primary-foreground">Analysis Complete</span>
+            <span className="mx-2 text-primary-foreground/30">|</span>
+            <span className="text-primary-foreground/80">94% Confidence</span>
           </div>
         </div>
       </div>
@@ -1373,7 +1374,7 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div>
             <div className="text-xs font-semibold text-muted-foreground">BUILD</div>
-            <div className="font-display text-2xl font-bold text-emerald-500">{buildTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span></div>
+            <div className="font-display text-2xl font-bold text-emerald-500">{buildTasks.length} <span className="text-xs font-medium opacity-70">Tasks</span></div>
           </div>
           <div>
             <div className="text-xs font-semibold text-muted-foreground">BOT</div>
@@ -1427,22 +1428,19 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 shadow-sm">
-          <h3 className="mb-2 flex items-center gap-2 font-display text-base font-bold text-primary">
-            <Sparkles className="h-4 w-4" /> AI Recommendations
+        <div className="rounded-xl border border-primary/20 bg-brand p-5 shadow-sm">
+          <h3 className="mb-2 flex items-center gap-2 font-display text-base font-bold text-primary-foreground">
+             AI Recommendations
           </h3>
-          <p className="text-sm leading-relaxed text-primary/90">
+          <p className="text-sm leading-relaxed text-primary-foreground/90">
             Focus on strengthening <strong className="font-semibold">BUILD</strong> skills. Use AI aggressively to automate <strong className="font-semibold">BOT</strong> tasks and improve efficiency in <strong className="font-semibold">BLEND</strong> activities.
           </p>
         </div>
 
-        <div className="rounded-xl border border-border bg-muted/40 p-5 shadow-sm flex items-start gap-4">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-background shadow-sm border border-border">
-            <Activity className="h-5 w-5 text-primary" />
-          </div>
+        <div className="rounded-xl border border-border bg-emerald-500 p-5 shadow-sm flex items-start gap-4">
           <div>
-            <h3 className="font-display text-base font-bold mb-1">Up Next: AI Readiness</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <h3 className="font-display text-base font-bold mb-1 text-primary-foreground">Up Next: AI Readiness</h3>
+            <p className="text-sm text-primary-foreground/90 leading-relaxed">
               We'll measure your overall AI Readiness and identify your biggest opportunities for career growth.
             </p>
           </div>

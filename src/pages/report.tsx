@@ -44,7 +44,7 @@ export default function ReportPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm font-bold rounded-xl transition-all duration-200 ${
+                className={`relative px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm font-base rounded-xl transition-all duration-200 ${
                   activeTab === tab.id
                     ? "text-primary-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"

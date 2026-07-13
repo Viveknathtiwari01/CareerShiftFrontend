@@ -53,7 +53,7 @@ export default function AssessmentPage() {
           <button
             disabled={!hasDraft}
             onClick={() => setView("wizard")}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-muted disabled:opacity-50"
           >
             Continue Draft
           </button>
@@ -71,7 +71,7 @@ export default function AssessmentPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="mb-12 overflow-hidden rounded-2xl border border-border bg-surface-2 shadow-soft"
+        className="mb-12 overflow-hidden rounded-2xl border border-border bg-card shadow-soft"
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-3">
           <div className="col-span-1 p-8 lg:col-span-2">
@@ -209,7 +209,7 @@ export default function AssessmentPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="group rounded-2xl border border-border bg-background p-6 transition-all hover:border-primary/30 hover:shadow-soft"
+                className="group rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-soft"
               >
                 <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <Icon className="h-6 w-6" />

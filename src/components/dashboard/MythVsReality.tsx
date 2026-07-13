@@ -28,17 +28,17 @@ export function MythVsReality() {
         {comparisons.map((item, idx) => (
           <div key={idx} className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 bg-card border border-border rounded-xl p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-2 text-destructive">
-                <X className="w-4 h-4" />
-                <span className="font-bold text-xs uppercase tracking-wider">Myth</span>
+              <div className="flex items-center gap-2 mb-2">
+                <X className="w-5 h-5 bg-red-600 rounded-full p-0.5 text-white" />
+                <span className="font-bold text-xs uppercase tracking-wider text-red-600">Myth</span>
               </div>
               <p className="text-foreground text-base">{item.myth}</p>
             </div>
 
             <div className="flex-1 bg-card border border-border rounded-xl p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-2 text-primary">
-                <Check className="w-4 h-4" />
-                <span className="font-bold text-xs uppercase tracking-wider">Reality</span>
+              <div className="flex items-center gap-2 mb-2">
+                <Check className="w-5 h-5 bg-green-600 rounded-full p-0.5 text-white" />
+                <span className="font-bold text-xs uppercase tracking-wider text-green-600">Reality</span>
               </div>
               <p className="text-foreground text-base">{item.reality}</p>
             </div>

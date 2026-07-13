@@ -27,7 +27,7 @@ export function HealthIndicators() {
               className="rounded-2xl border border-border bg-background p-5 shadow-sm text-center flex flex-col items-center justify-center"
             >
               <kpi.icon className={`h-6 w-6 mb-3 ${kpi.color}`} />
-              <div className="text-xl font-bold mb-1">{kpi.value}</div>
+              <div className="text-xl font-base mb-1">{kpi.value}</div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{kpi.label}</div>
             </motion.div>
           ))}
@@ -47,7 +47,7 @@ export function HealthIndicators() {
             <div key={node.label} className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
               <div className="flex flex-col items-center text-center">
                 <span className={`text-[10px] font-black uppercase tracking-widest mb-3 ${node.active ? 'text-primary' : 'text-muted-foreground'}`}>{node.label}</span>
-                <span className={`font-bold text-sm md:text-base px-6 py-4 rounded-2xl border ${node.active ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105' : 'bg-background border-border text-foreground'}`}>
+                <span className={`font-base text-sm md:text-base px-6 py-4 rounded-2xl border ${node.active ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105' : 'bg-background border-border text-foreground'}`}>
                   {node.role}
                 </span>
               </div>

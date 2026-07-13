@@ -18,7 +18,7 @@ export function ReportHeader() {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-border/40">
       <div>
-        <h1 className="font-display text-4xl md:text-5xl font-black tracking-tight text-gradient-brand mb-3">
+        <h1 className="mb-3 font-display text-4xl font-bold tracking-tight">
           Career Intelligence Report
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl font-medium leading-relaxed">

@@ -7,7 +7,7 @@ function History() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
       <h1 className="font-display text-3xl font-bold tracking-tight">Assessment history</h1>
       <p className="mt-2 text-muted-foreground">Every readiness snapshot you've completed.</p>
-      <div className="surface-card mt-8 divide-y divide-border">
+      <div className="bg-brand rounded-lg mt-8 divide-y divide-border">
         {submitted ? (
           <Link to="/report" className="flex items-center justify-between p-5 hover:bg-muted/40">
             <div>
@@ -18,7 +18,7 @@ function History() {
                   : "Recently"}
               </p>
             </div>
-            <span className="text-sm font-medium text-brand">View →</span>
+            <span className="text-sm font-medium text-primary-frontend">View →</span>
           </Link>
         ) : (
           <div className="p-8 text-center text-sm text-muted-foreground">
