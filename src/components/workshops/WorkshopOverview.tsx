@@ -16,7 +16,9 @@ export function WorkshopOverview() {
       <div className="bg-card rounded-2xl border border-border p-8 shadow-soft">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-foreground mb-3">Workshop Overview</h2>
-          <p className="text-lg text-muted-foreground">Everything you need to master AI for everyday work.</p>
+          <p className="text-lg text-muted-foreground">
+            Everything you need to master AI for everyday work.
+          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">

@@ -1,12 +1,4 @@
-import { 
-  Download, 
-  Share2, 
-  GitCompare, 
-  MoreVertical, 
-  Printer, 
-  FileJson, 
-  Save 
-} from "lucide-react";
+import { Download, Share2, GitCompare, MoreVertical, Printer, FileJson, Save } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +14,10 @@ export function ReportHeader() {
           Career Intelligence Report
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl font-medium leading-relaxed">
-          Your personalized AI-powered career intelligence report based on your professional profile, competencies, work patterns, and AI readiness.
+          Your personalized AI-powered career intelligence report based on your professional
+          profile, competencies, work patterns, and AI readiness.
         </p>
-        
+
         <div className="flex flex-wrap items-center gap-4 mt-6 text-sm font-semibold">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
             <span className="text-muted-foreground">Date:</span> Oct 24, 2026
@@ -51,7 +44,7 @@ export function ReportHeader() {
         <button className="hidden lg:inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted transition-colors">
           <GitCompare className="h-4 w-4" /> Compare
         </button>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="inline-flex items-center justify-center rounded-xl border border-border bg-background h-10 w-10 hover:bg-muted transition-colors">

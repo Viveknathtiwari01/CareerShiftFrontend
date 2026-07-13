@@ -9,12 +9,15 @@ export function FeaturedWorkshop() {
           Featured Workshop
         </span>
       </div>
-      
-      <h3 className="text-sm font-bold text-[#0A121F] mb-2 leading-tight">Master AI for Everyday Professionals</h3>
+
+      <h3 className="text-sm font-bold text-[#0A121F] mb-2 leading-tight">
+        Master AI for Everyday Professionals
+      </h3>
       <p className="text-xs text-[#0A121F]/80 mb-4 line-clamp-3">
-        Learn practical AI workflows that save time, improve productivity, and make you more valuable in your current role.
+        Learn practical AI workflows that save time, improve productivity, and make you more
+        valuable in your current role.
       </p>
-      
+
       <div className="flex flex-col gap-2 mb-4">
         <div className="flex items-center text-[10px] text-[#0A121F]/70">
           <Clock className="w-3 h-3 text-[#0A121F] mr-2" /> 6 Hours Duration
@@ -26,9 +29,14 @@ export function FeaturedWorkshop() {
           <Award className="w-3 h-3 text-[#0A121F] mr-2" /> Certificate Included
         </div>
       </div>
-      
-      <Button variant="outline" size="sm" className="w-full text-xs font-semibold group bg-[#0A121F] text-[#F9F7F3] border-transparent hover:bg-[#141F32] hover:text-white">
-        Explore Workshop <ArrowRight className="ml-2 w-3 h-3 transition-transform group-hover:translate-x-1" />
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full text-xs font-semibold group bg-[#0A121F] text-[#F9F7F3] border-transparent hover:bg-[#141F32] hover:text-white"
+      >
+        Explore Workshop{" "}
+        <ArrowRight className="ml-2 w-3 h-3 transition-transform group-hover:translate-x-1" />
       </Button>
     </div>
   );

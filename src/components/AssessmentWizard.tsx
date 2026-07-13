@@ -37,8 +37,13 @@ import {
   Users,
   EyeOff,
 } from "lucide-react";
-import { 
-  Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer 
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
 } from "recharts";
 import { useAssessment, type Task } from "@/store/mock-store";
 
@@ -91,7 +96,7 @@ function AssessmentWizard() {
 
   function handleSubmit() {
     submit();
-    navigate('/ai-readiness');
+    navigate("/ai-readiness");
   }
 
   if (submitted) return <Success onContinue={() => navigate("/report")} />;
@@ -101,9 +106,7 @@ function AssessmentWizard() {
       {/* Stepper */}
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-between text-2xs font-medium text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5 text-brand">
-          Assessment Profile
-          </span>
+          <span className="inline-flex items-center gap-1.5 text-brand">Assessment Profile</span>
           <span>{Math.round(progress)}% complete</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-muted">
@@ -146,14 +149,12 @@ function AssessmentWizard() {
         {STEPS[step].key === "tools" && <StepTools draft={draft} setDraft={setDraft} />}
         {STEPS[step].key === "attitude" && <StepAttitude draft={draft} setDraft={setDraft} />}
         {STEPS[step].key === "goals" && <StepGoals draft={draft} setDraft={setDraft} />}
-        {STEPS[step].key === "competencies" && <StepCompetencies draft={draft} setDraft={setDraft} />}
+        {STEPS[step].key === "competencies" && (
+          <StepCompetencies draft={draft} setDraft={setDraft} />
+        )}
         {STEPS[step].key === "taskGen" && <StepTaskGenerator draft={draft} setDraft={setDraft} />}
         {STEPS[step].key === "tasks" && (
-          <StepTasks
-            draft={draft}
-            updateTask={updateTask}
-            removeTask={removeTask}
-          />
+          <StepTasks draft={draft} updateTask={updateTask} removeTask={removeTask} />
         )}
         {STEPS[step].key === "3bAnalysis" && <Step3BAnalysis draft={draft} />}
         {STEPS[step].key === "finalReport" && <StepReview />}
@@ -179,7 +180,7 @@ function AssessmentWizard() {
             onClick={handleSubmit}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated"
           >
-             View AI Readiness Score
+            View AI Readiness Score
           </button>
         )}
       </div>
@@ -325,23 +326,35 @@ function StepTasks({
   const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
   const [expandedId, setExpandedId] = useState<string | null>(selectedTasks[0]?.id || null);
 
-  const tasksReviewed = selectedTasks.filter(t => 
-    t.frequency && t.businessCriticality && t.timeAllocation !== undefined && t.aiAssistance && t.confidenceScore !== undefined
+  const tasksReviewed = selectedTasks.filter(
+    (t) =>
+      t.frequency &&
+      t.businessCriticality &&
+      t.timeAllocation !== undefined &&
+      t.aiAssistance &&
+      t.confidenceScore !== undefined,
   ).length;
 
-  const validConfidenceTasks = selectedTasks.filter(t => t.confidenceScore !== undefined);
-  const avgConfidence = validConfidenceTasks.length 
-    ? (validConfidenceTasks.reduce((acc, t) => acc + t.confidenceScore!, 0) / validConfidenceTasks.length).toFixed(1)
+  const validConfidenceTasks = selectedTasks.filter((t) => t.confidenceScore !== undefined);
+  const avgConfidence = validConfidenceTasks.length
+    ? (
+        validConfidenceTasks.reduce((acc, t) => acc + t.confidenceScore!, 0) /
+        validConfidenceTasks.length
+      ).toFixed(1)
     : "0.0";
-    
-  const totalHours = selectedTasks.reduce((acc, t) => acc + (t.timeAllocation ?? t.hoursPerWeek ?? 0), 0);
 
-  const aiScores = { "Never": 0, "Sometimes": 1, "Frequently": 2, "Always": 3 };
-  const validAiTasks = selectedTasks.filter(t => t.aiAssistance);
-  const avgAiScore = validAiTasks.length 
-    ? validAiTasks.reduce((acc, t) => acc + aiScores[t.aiAssistance as keyof typeof aiScores], 0) / validAiTasks.length 
+  const totalHours = selectedTasks.reduce(
+    (acc, t) => acc + (t.timeAllocation ?? t.hoursPerWeek ?? 0),
+    0,
+  );
+
+  const aiScores = { Never: 0, Sometimes: 1, Frequently: 2, Always: 3 };
+  const validAiTasks = selectedTasks.filter((t) => t.aiAssistance);
+  const avgAiScore = validAiTasks.length
+    ? validAiTasks.reduce((acc, t) => acc + aiScores[t.aiAssistance as keyof typeof aiScores], 0) /
+      validAiTasks.length
     : 0;
-  
+
   let avgAiText = "None";
   if (avgAiScore > 0 && avgAiScore <= 1) avgAiText = "Low";
   else if (avgAiScore > 1 && avgAiScore <= 2) avgAiText = "Medium";
@@ -363,16 +376,26 @@ function StepTasks({
           )}
           {selectedTasks.map((t) => {
             const isExpanded = expandedId === t.id;
-            const isReviewed = t.frequency && t.businessCriticality && t.timeAllocation !== undefined && t.aiAssistance && t.confidenceScore !== undefined;
+            const isReviewed =
+              t.frequency &&
+              t.businessCriticality &&
+              t.timeAllocation !== undefined &&
+              t.aiAssistance &&
+              t.confidenceScore !== undefined;
 
             return (
-              <div key={t.id} className={`overflow-hidden rounded-2xl border transition-colors ${isExpanded ? "border-primary/50 bg-background shadow-soft" : "border-border bg-muted/20"}`}>
+              <div
+                key={t.id}
+                className={`overflow-hidden rounded-2xl border transition-colors ${isExpanded ? "border-primary/50 bg-background shadow-soft" : "border-border bg-muted/20"}`}
+              >
                 <button
                   onClick={() => setExpandedId(isExpanded ? null : t.id)}
                   className="flex w-full items-center justify-between p-5 text-left"
                 >
                   <div className="flex items-center gap-4">
-                    <div className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${isReviewed ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30 text-muted-foreground"}`}>
+                    <div
+                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${isReviewed ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30 text-muted-foreground"}`}
+                    >
                       {isReviewed ? <CheckCircle2 className="h-4 w-4" /> : "!"}
                     </div>
                     <div>
@@ -380,9 +403,11 @@ function StepTasks({
                       <p className="text-xs text-muted-foreground">{t.category}</p>
                     </div>
                   </div>
-                  <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                  />
                 </button>
-                
+
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
@@ -394,15 +419,25 @@ function StepTasks({
                       <div className="p-5 space-y-8">
                         <div className="grid gap-6 lg:grid-cols-2">
                           <div>
-                            <h4 className="mb-3 text-sm font-semibold">How often do you perform this task?</h4>
+                            <h4 className="mb-3 text-sm font-semibold">
+                              How often do you perform this task?
+                            </h4>
                             <TaskSelectOptions
                               value={t.frequency || ""}
-                              options={["Multiple times daily", "Daily", "Weekly", "Monthly", "Occasionally"]}
+                              options={[
+                                "Multiple times daily",
+                                "Daily",
+                                "Weekly",
+                                "Monthly",
+                                "Occasionally",
+                              ]}
                               onChange={(v) => updateTask(t.id, { frequency: v as any })}
                             />
                           </div>
                           <div>
-                            <h4 className="mb-3 text-sm font-semibold">How important is this task to your role?</h4>
+                            <h4 className="mb-3 text-sm font-semibold">
+                              How important is this task to your role?
+                            </h4>
                             <TaskSelectOptions
                               value={t.businessCriticality || ""}
                               options={["Mission Critical", "High", "Medium", "Low"]}
@@ -414,43 +449,59 @@ function StepTasks({
                         <div className="grid gap-6 lg:grid-cols-2">
                           <div>
                             <div className="flex items-center justify-between mb-3">
-                              <h4 className="text-sm font-semibold">Approximately how much of your work week is spent on this task?</h4>
-                              <span className="text-sm font-bold text-primary">{t.timeAllocation ?? t.hoursPerWeek ?? 0} hrs</span>
+                              <h4 className="text-sm font-semibold">
+                                Approximately how much of your work week is spent on this task?
+                              </h4>
+                              <span className="text-sm font-bold text-primary">
+                                {t.timeAllocation ?? t.hoursPerWeek ?? 0} hrs
+                              </span>
                             </div>
-                            <input 
-                              type="range" 
-                              min="0" 
-                              max="40" 
-                              value={t.timeAllocation ?? t.hoursPerWeek ?? 0} 
-                              onChange={(e) => updateTask(t.id, { timeAllocation: Number(e.target.value) })}
-                              className="w-full accent-primary" 
+                            <input
+                              type="range"
+                              min="0"
+                              max="40"
+                              value={t.timeAllocation ?? t.hoursPerWeek ?? 0}
+                              onChange={(e) =>
+                                updateTask(t.id, { timeAllocation: Number(e.target.value) })
+                              }
+                              className="w-full accent-primary"
                             />
                             <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                              <span>0</span><span>40 Hours</span>
+                              <span>0</span>
+                              <span>40 Hours</span>
                             </div>
                           </div>
-                          
+
                           <div>
                             <div className="flex items-center justify-between mb-3">
-                              <h4 className="text-sm font-semibold">How confident are you performing this task without assistance?</h4>
-                              <span className="text-sm font-bold text-primary">{t.confidenceScore ?? 5} / 10</span>
+                              <h4 className="text-sm font-semibold">
+                                How confident are you performing this task without assistance?
+                              </h4>
+                              <span className="text-sm font-bold text-primary">
+                                {t.confidenceScore ?? 5} / 10
+                              </span>
                             </div>
-                            <input 
-                              type="range" 
-                              min="1" 
-                              max="10" 
-                              value={t.confidenceScore ?? 5} 
-                              onChange={(e) => updateTask(t.id, { confidenceScore: Number(e.target.value) })}
-                              className="w-full accent-primary" 
+                            <input
+                              type="range"
+                              min="1"
+                              max="10"
+                              value={t.confidenceScore ?? 5}
+                              onChange={(e) =>
+                                updateTask(t.id, { confidenceScore: Number(e.target.value) })
+                              }
+                              className="w-full accent-primary"
                             />
                             <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                              <span>1</span><span>10</span>
+                              <span>1</span>
+                              <span>10</span>
                             </div>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="mb-3 text-sm font-semibold">Do you currently use AI for this task?</h4>
+                          <h4 className="mb-3 text-sm font-semibold">
+                            Do you currently use AI for this task?
+                          </h4>
                           <TaskSelectOptions
                             value={t.aiAssistance || ""}
                             options={["Never", "Sometimes", "Frequently", "Always"]}
@@ -460,7 +511,7 @@ function StepTasks({
 
                         <div>
                           <h4 className="mb-2 text-sm font-semibold">Manual Notes (Optional)</h4>
-                          <textarea 
+                          <textarea
                             placeholder="Anything else you want CareerShift to know?"
                             value={t.manualNotes || ""}
                             onChange={(e) => updateTask(t.id, { manualNotes: e.target.value })}
@@ -475,7 +526,7 @@ function StepTasks({
             );
           })}
         </div>
-        
+
         <div className="w-full shrink-0 lg:w-72">
           <div className="sticky top-6 space-y-4">
             <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
@@ -483,7 +534,11 @@ function StepTasks({
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Tasks Reviewed</span>
-                  <span className={`font-semibold ${tasksReviewed === selectedTasks.length ? 'text-teal' : 'text-foreground'}`}>{tasksReviewed} / {selectedTasks.length}</span>
+                  <span
+                    className={`font-semibold ${tasksReviewed === selectedTasks.length ? "text-teal" : "text-foreground"}`}
+                  >
+                    {tasksReviewed} / {selectedTasks.length}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Average AI Usage</span>
@@ -500,7 +555,7 @@ function StepTasks({
                 </div>
               </div>
             </div>
-            
+
             {tasksReviewed < selectedTasks.length && (
               <div className="rounded-2xl border border-amber/20 bg-amber/5 p-4 text-xs text-amber-900 dark:text-amber-200">
                 Please complete the review for all tasks to unlock maximum AI accuracy.
@@ -629,7 +684,10 @@ function StepReview() {
         <ReviewRow label="Experience" value={`${draft.yearsExp} years`} />
         <ReviewRow label="AI usage today" value={draft.aiUsage} />
         <ReviewRow label="Tools" value={draft.tools.length ? draft.tools.join(", ") : "—"} />
-        <ReviewRow label="Competencies" value={draft.competencies?.length ? draft.competencies.join(", ") : "—"} />
+        <ReviewRow
+          label="Competencies"
+          value={draft.competencies?.length ? draft.competencies.join(", ") : "—"}
+        />
         <ReviewRow label="Goals" value={draft.goals.length ? draft.goals.join(", ") : "—"} />
       </dl>
       <div className="mt-6">
@@ -793,13 +851,18 @@ function StepCompetencies({
           {Object.entries(MOCK_COMPETENCIES).map(([cat, list]) => {
             const isExpanded = expanded === cat;
             return (
-              <div key={cat} className="overflow-hidden rounded-2xl border border-border bg-background shadow-soft">
+              <div
+                key={cat}
+                className="overflow-hidden rounded-2xl border border-border bg-background shadow-soft"
+              >
                 <button
                   onClick={() => setExpanded(isExpanded ? "" : cat)}
                   className="flex w-full items-center justify-between bg-muted/30 px-6 py-4 transition-colors hover:bg-muted/50"
                 >
                   <span className="font-display text-lg font-semibold">{cat} Competencies</span>
-                  <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                  />
                 </button>
                 <AnimatePresence>
                   {isExpanded && (
@@ -813,7 +876,9 @@ function StepCompetencies({
                         <div className="flex flex-wrap gap-2">
                           {list.map((c) => {
                             const active = selected.has(c);
-                            const confidence = ["High", "Medium", "Low"][Math.floor(Math.random() * 3)];
+                            const confidence = ["High", "Medium", "Low"][
+                              Math.floor(Math.random() * 3)
+                            ];
                             return (
                               <button
                                 key={c}
@@ -839,7 +904,9 @@ function StepCompetencies({
                             type="text"
                             placeholder="Add custom competency..."
                             value={customInput[cat]}
-                            onChange={(e) => setCustomInput((p) => ({ ...p, [cat]: e.target.value }))}
+                            onChange={(e) =>
+                              setCustomInput((p) => ({ ...p, [cat]: e.target.value }))
+                            }
                             onKeyDown={(e) => e.key === "Enter" && addCustom(cat)}
                             className="flex-1 rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
                           />
@@ -889,20 +956,86 @@ function StepCompetencies({
 }
 
 const MOCK_TASKS = [
-  { title: "Build REST APIs", category: "Development", description: "Develop and maintain scalable RESTful API endpoints.", confidence: 95, hoursPerWeek: 18 },
-  { title: "Develop Backend Services", category: "Development", description: "Create robust backend microservices.", confidence: 88, hoursPerWeek: 12 },
-  { title: "Write Unit Tests", category: "Development", description: "Ensure code quality through comprehensive testing.", confidence: 90, hoursPerWeek: 5 },
-  { title: "Design APIs", category: "Architecture", description: "Architect API contracts and data models.", confidence: 92, hoursPerWeek: 4 },
-  { title: "Database Design", category: "Architecture", description: "Design schema and optimize queries.", confidence: 85, hoursPerWeek: 3 },
-  { title: "Client Meetings", category: "Collaboration", description: "Meet with stakeholders to discuss requirements.", confidence: 80, hoursPerWeek: 4 },
-  { title: "Sprint Planning", category: "Collaboration", description: "Plan and estimate tasks for the sprint.", confidence: 85, hoursPerWeek: 2 },
-  { title: "Deployment", category: "Operations", description: "Manage release pipelines and production deployments.", confidence: 75, hoursPerWeek: 3 },
+  {
+    title: "Build REST APIs",
+    category: "Development",
+    description: "Develop and maintain scalable RESTful API endpoints.",
+    confidence: 95,
+    hoursPerWeek: 18,
+  },
+  {
+    title: "Develop Backend Services",
+    category: "Development",
+    description: "Create robust backend microservices.",
+    confidence: 88,
+    hoursPerWeek: 12,
+  },
+  {
+    title: "Write Unit Tests",
+    category: "Development",
+    description: "Ensure code quality through comprehensive testing.",
+    confidence: 90,
+    hoursPerWeek: 5,
+  },
+  {
+    title: "Design APIs",
+    category: "Architecture",
+    description: "Architect API contracts and data models.",
+    confidence: 92,
+    hoursPerWeek: 4,
+  },
+  {
+    title: "Database Design",
+    category: "Architecture",
+    description: "Design schema and optimize queries.",
+    confidence: 85,
+    hoursPerWeek: 3,
+  },
+  {
+    title: "Client Meetings",
+    category: "Collaboration",
+    description: "Meet with stakeholders to discuss requirements.",
+    confidence: 80,
+    hoursPerWeek: 4,
+  },
+  {
+    title: "Sprint Planning",
+    category: "Collaboration",
+    description: "Plan and estimate tasks for the sprint.",
+    confidence: 85,
+    hoursPerWeek: 2,
+  },
+  {
+    title: "Deployment",
+    category: "Operations",
+    description: "Manage release pipelines and production deployments.",
+    confidence: 75,
+    hoursPerWeek: 3,
+  },
 ];
 
 const SUGGESTED_MISSING = [
-  { title: "Documentation", category: "Development", description: "Write and maintain technical docs.", confidence: 70, hoursPerWeek: 2 },
-  { title: "Mentoring", category: "Collaboration", description: "Mentor junior team members.", confidence: 60, hoursPerWeek: 3 },
-  { title: "Code Reviews", category: "Development", description: "Review peer code changes.", confidence: 85, hoursPerWeek: 5 },
+  {
+    title: "Documentation",
+    category: "Development",
+    description: "Write and maintain technical docs.",
+    confidence: 70,
+    hoursPerWeek: 2,
+  },
+  {
+    title: "Mentoring",
+    category: "Collaboration",
+    description: "Mentor junior team members.",
+    confidence: 60,
+    hoursPerWeek: 3,
+  },
+  {
+    title: "Code Reviews",
+    category: "Development",
+    description: "Review peer code changes.",
+    confidence: 85,
+    hoursPerWeek: 5,
+  },
 ];
 
 function StepTaskGenerator({
@@ -913,36 +1046,41 @@ function StepTaskGenerator({
   setDraft: ReturnType<typeof useAssessment>["setDraft"];
 }) {
   const [isAdding, setIsAdding] = useState(false);
-  const [newTask, setNewTask] = useState({ title: "", category: "Development", description: "", hoursPerWeek: 5 });
+  const [newTask, setNewTask] = useState({
+    title: "",
+    category: "Development",
+    description: "",
+    hoursPerWeek: 5,
+  });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
 
   useEffect(() => {
     if (draft.tasks.length === 0) {
-       const initialTasks = MOCK_TASKS.map(t => ({
-           id: crypto.randomUUID(),
-           title: t.title,
-           category: t.category,
-           description: t.description,
-           hoursPerWeek: t.hoursPerWeek,
-           confidence: t.confidence,
-           selected: true,
-           complexity: "medium" as const,
-           creativity: "medium" as const,
-           humanTouch: "medium" as const
-       }));
-       setDraft({ tasks: initialTasks });
+      const initialTasks = MOCK_TASKS.map((t) => ({
+        id: crypto.randomUUID(),
+        title: t.title,
+        category: t.category,
+        description: t.description,
+        hoursPerWeek: t.hoursPerWeek,
+        confidence: t.confidence,
+        selected: true,
+        complexity: "medium" as const,
+        creativity: "medium" as const,
+        humanTouch: "medium" as const,
+      }));
+      setDraft({ tasks: initialTasks });
     }
   }, []);
 
   function toggleTask(id: string) {
     setDraft({
-      tasks: draft.tasks.map(t => t.id === id ? { ...t, selected: !(t.selected ?? true) } : t)
+      tasks: draft.tasks.map((t) => (t.id === id ? { ...t, selected: !(t.selected ?? true) } : t)),
     });
   }
 
   function deleteTask(id: string) {
-    setDraft({ tasks: draft.tasks.filter(t => t.id !== id) });
+    setDraft({ tasks: draft.tasks.filter((t) => t.id !== id) });
   }
 
   function startEdit(t: any) {
@@ -952,7 +1090,7 @@ function StepTaskGenerator({
 
   function saveEdit(id: string) {
     setDraft({
-      tasks: draft.tasks.map(t => t.id === id ? { ...t, title: editTitle } : t)
+      tasks: draft.tasks.map((t) => (t.id === id ? { ...t, title: editTitle } : t)),
     });
     setEditingId(null);
   }
@@ -971,15 +1109,15 @@ function StepTaskGenerator({
           selected: true,
           complexity: "medium",
           creativity: "medium",
-          humanTouch: "medium"
-        }
-      ]
+          humanTouch: "medium",
+        },
+      ],
     });
     setIsAdding(false);
     setNewTask({ title: "", category: "Development", description: "", hoursPerWeek: 5 });
   }
 
-  function addSuggested(s: typeof SUGGESTED_MISSING[0]) {
+  function addSuggested(s: (typeof SUGGESTED_MISSING)[0]) {
     setDraft({
       tasks: [
         ...draft.tasks,
@@ -993,23 +1131,26 @@ function StepTaskGenerator({
           selected: true,
           complexity: "medium",
           creativity: "medium",
-          humanTouch: "medium"
-        }
-      ]
+          humanTouch: "medium",
+        },
+      ],
     });
   }
 
-  const selectedTasks = draft.tasks.filter(t => t.selected ?? true);
+  const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
   const totalHours = selectedTasks.reduce((acc, t) => acc + t.hoursPerWeek, 0);
-  const categoriesCovered = new Set(selectedTasks.map(t => t.category || "Uncategorized")).size;
+  const categoriesCovered = new Set(selectedTasks.map((t) => t.category || "Uncategorized")).size;
 
   // Group tasks by category
-  const groupedTasks = draft.tasks.reduce((acc, t) => {
-    const cat = t.category || "Uncategorized";
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(t);
-    return acc;
-  }, {} as Record<string, typeof draft.tasks>);
+  const groupedTasks = draft.tasks.reduce(
+    (acc, t) => {
+      const cat = t.category || "Uncategorized";
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(t);
+      return acc;
+    },
+    {} as Record<string, typeof draft.tasks>,
+  );
 
   return (
     <div>
@@ -1037,26 +1178,30 @@ function StepTaskGenerator({
             <div key={cat}>
               <h3 className="mb-4 font-display text-lg font-bold">{cat}</h3>
               <div className="space-y-3">
-                {tasks.map(t => {
+                {tasks.map((t) => {
                   const isSelected = t.selected ?? true;
                   const isEditing = editingId === t.id;
                   return (
                     <div
                       key={t.id}
                       className={`relative overflow-hidden rounded-xl border p-4 transition-all ${
-                        isSelected ? "border-primary/50 bg-primary/5 shadow-soft" : "border-border bg-background opacity-60"
+                        isSelected
+                          ? "border-primary/50 bg-primary/5 shadow-soft"
+                          : "border-border bg-background opacity-60"
                       }`}
                     >
                       <div className="flex items-start gap-4">
                         <button
                           onClick={() => toggleTask(t.id)}
                           className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-md border transition-colors ${
-                            isSelected ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background"
+                            isSelected
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-input bg-background"
                           }`}
                         >
                           {isSelected && <CheckCircle2 className="h-3 w-3" />}
                         </button>
-                        
+
                         <div className="flex-1 min-w-0">
                           {isEditing ? (
                             <div className="flex items-center gap-2 mb-2">
@@ -1067,21 +1212,33 @@ function StepTaskGenerator({
                                 onKeyDown={(e) => e.key === "Enter" && saveEdit(t.id)}
                                 className="w-full rounded-md border border-input bg-background px-2 py-1 text-sm outline-none focus:border-primary"
                               />
-                              <button onClick={() => saveEdit(t.id)} className="text-xs font-semibold text-primary">Save</button>
+                              <button
+                                onClick={() => saveEdit(t.id)}
+                                className="text-xs font-semibold text-primary"
+                              >
+                                Save
+                              </button>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold text-foreground truncate">{t.title}</h4>
-                              <button onClick={() => startEdit(t)} className="text-muted-foreground hover:text-foreground">
+                              <button
+                                onClick={() => startEdit(t)}
+                                className="text-muted-foreground hover:text-foreground"
+                              >
                                 <Edit2 className="h-3.5 w-3.5" />
                               </button>
                             </div>
                           )}
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{t.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                            {t.description}
+                          </p>
                         </div>
 
                         <div className="shrink-0 text-right">
-                          <div className="text-sm font-semibold text-foreground">{t.hoursPerWeek} hrs</div>
+                          <div className="text-sm font-semibold text-foreground">
+                            {t.hoursPerWeek} hrs
+                          </div>
                           {t.confidence && (
                             <div className="mt-1 inline-flex items-center rounded-full bg-teal/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-teal">
                               {t.confidence}% Conf
@@ -1089,7 +1246,10 @@ function StepTaskGenerator({
                           )}
                         </div>
 
-                        <button onClick={() => deleteTask(t.id)} className="ml-2 text-muted-foreground hover:text-danger">
+                        <button
+                          onClick={() => deleteTask(t.id)}
+                          className="ml-2 text-muted-foreground hover:text-danger"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -1104,7 +1264,10 @@ function StepTaskGenerator({
             <div className="rounded-2xl border border-border bg-muted/30 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-semibold">Add Custom Task</h4>
-                <button onClick={() => setIsAdding(false)} className="text-muted-foreground hover:text-foreground">
+                <button
+                  onClick={() => setIsAdding(false)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   <X className="h-4 w-4" />
                 </button>
               </div>
@@ -1142,7 +1305,9 @@ function StepTaskGenerator({
                     type="number"
                     min={1}
                     value={newTask.hoursPerWeek}
-                    onChange={(e) => setNewTask({ ...newTask, hoursPerWeek: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, hoursPerWeek: Number(e.target.value) })
+                    }
                     className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                   />
                 </label>
@@ -1164,21 +1329,29 @@ function StepTaskGenerator({
           )}
 
           <div className="pt-8">
-            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground">Suggested Missing Tasks</h3>
+            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              Suggested Missing Tasks
+            </h3>
             <div className="grid gap-3 sm:grid-cols-2">
-              {SUGGESTED_MISSING.filter(s => !draft.tasks.some(t => t.title === s.title)).map(s => (
-                <button
-                  key={s.title}
-                  onClick={() => addSuggested(s)}
-                  className="group flex items-center justify-between rounded-xl border border-border bg-background p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5"
-                >
-                  <div>
-                    <div className="font-semibold text-foreground group-hover:text-primary">{s.title}</div>
-                    <div className="text-xs text-muted-foreground">{s.category} · {s.hoursPerWeek} hrs</div>
-                  </div>
-                  <Plus className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
-                </button>
-              ))}
+              {SUGGESTED_MISSING.filter((s) => !draft.tasks.some((t) => t.title === s.title)).map(
+                (s) => (
+                  <button
+                    key={s.title}
+                    onClick={() => addSuggested(s)}
+                    className="group flex items-center justify-between rounded-xl border border-border bg-background p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    <div>
+                      <div className="font-semibold text-foreground group-hover:text-primary">
+                        {s.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {s.category} · {s.hoursPerWeek} hrs
+                      </div>
+                    </div>
+                    <Plus className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                  </button>
+                ),
+              )}
             </div>
           </div>
         </div>
@@ -1209,9 +1382,13 @@ function StepTaskGenerator({
             </div>
 
             <div className="rounded-2xl border border-teal/20 bg-teal/5 p-5 text-sm text-teal-950 dark:text-teal-100">
-              <h4 className="mb-2 font-bold flex items-center gap-1.5"><Bot className="h-4 w-4" /> Next Step</h4>
+              <h4 className="mb-2 font-bold flex items-center gap-1.5">
+                <Bot className="h-4 w-4" /> Next Step
+              </h4>
               <p className="opacity-90">
-                The selected tasks will be analyzed in the next step using the CareerShift 3B Framework (BUILD • BOT • BLEND) to determine automation opportunities, AI augmentation potential, and long-term career impact.
+                The selected tasks will be analyzed in the next step using the CareerShift 3B
+                Framework (BUILD • BOT • BLEND) to determine automation opportunities, AI
+                augmentation potential, and long-term career impact.
               </p>
             </div>
           </div>
@@ -1228,7 +1405,7 @@ function CategorySection({
   description,
   tasks,
   isExpanded,
-  onToggle
+  onToggle,
 }: {
   title: string;
   category: "BUILD" | "BOT" | "BLEND";
@@ -1238,22 +1415,26 @@ function CategorySection({
   isExpanded: boolean;
   onToggle: () => void;
 }) {
-  const color = category === "BUILD" ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/5" :
-                category === "BOT" ? "text-rose-500 border-rose-500/20 bg-rose-500/5" :
-                "text-blue-500 border-blue-500/20 bg-blue-500/5";
-                
+  const color =
+    category === "BUILD"
+      ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/5"
+      : category === "BOT"
+        ? "text-rose-500 border-rose-500/20 bg-rose-500/5"
+        : "text-blue-500 border-blue-500/20 bg-blue-500/5";
+
   return (
-    <div className={`overflow-hidden rounded-xl border transition-colors ${isExpanded ? color : "border-border bg-background shadow-sm"}`}>
-      <button
-        onClick={onToggle}
-        className="flex w-full items-center justify-between p-4 text-left"
-      >
+    <div
+      className={`overflow-hidden rounded-xl border transition-colors ${isExpanded ? color : "border-border bg-background shadow-sm"}`}
+    >
+      <button onClick={onToggle} className="flex w-full items-center justify-between p-4 text-left">
         <div className="flex items-center gap-3">
-          <div className="font-display text-lg font-bold">{title} <span className="ml-2 text-xs font-normal opacity-70">({count} Tasks)</span></div>
+          <div className="font-display text-lg font-bold">
+            {title} <span className="ml-2 text-xs font-normal opacity-70">({count} Tasks)</span>
+          </div>
         </div>
         <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
       </button>
-      
+
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -1265,10 +1446,13 @@ function CategorySection({
             <div className="p-4 text-sm leading-relaxed opacity-90 border-b border-current/10">
               {description}
             </div>
-            
+
             <div className="p-4 space-y-3 bg-background/50">
-              {tasks.map(t => (
-                <div key={t.id} className="rounded-lg border border-border bg-background p-4 shadow-sm">
+              {tasks.map((t) => (
+                <div
+                  key={t.id}
+                  className="rounded-lg border border-border bg-background p-4 shadow-sm"
+                >
                   <h5 className="font-semibold text-foreground mb-1">{t.title}</h5>
                   <p className="text-xs text-muted-foreground mb-3">{t.reason}</p>
                   <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
@@ -1278,17 +1462,28 @@ function CategorySection({
                     </div>
                     <div className="flex flex-col">
                       <span className="font-medium text-muted-foreground">Risk Level</span>
-                      <span className={`font-bold ${t.riskLevel === 'High' ? 'text-rose-500' : 'text-emerald-500'}`}>{t.riskLevel}</span>
+                      <span
+                        className={`font-bold ${t.riskLevel === "High" ? "text-rose-500" : "text-emerald-500"}`}
+                      >
+                        {t.riskLevel}
+                      </span>
                     </div>
                     <div className="flex flex-col">
                       <span className="font-medium text-muted-foreground">Future Imp.</span>
                       <span className="font-bold text-foreground">{t.futureImp}</span>
                     </div>
                     <div className="flex flex-col flex-1">
-                      <span className="font-medium text-muted-foreground mb-1">Recommended Tools</span>
+                      <span className="font-medium text-muted-foreground mb-1">
+                        Recommended Tools
+                      </span>
                       <div className="flex gap-1.5 flex-wrap">
                         {t.tools.map((tool: string) => (
-                          <span key={tool} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold">{tool}</span>
+                          <span
+                            key={tool}
+                            className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold"
+                          >
+                            {tool}
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -1305,7 +1500,7 @@ function CategorySection({
 
 function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["draft"] }) {
   const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
-  
+
   const analyzedTasks = useMemo(() => {
     return selectedTasks.map((t, idx) => {
       let category: "BUILD" | "BOT" | "BLEND" = "BLEND";
@@ -1313,7 +1508,7 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
       let autoPotential = 50;
       let riskLevel: "Low" | "Medium" | "High" = "Medium";
       let futureImp: "Low" | "Medium" | "High" = "High";
-      
+
       if (idx % 3 === 0) {
         category = "BUILD";
         reason = "Human-first work requiring creativity, strategy, leadership, or deep expertise.";
@@ -1327,7 +1522,7 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
         riskLevel = "High";
         futureImp = "Low";
       }
-      
+
       return {
         ...t,
         category3B: category,
@@ -1335,30 +1530,35 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
         autoPotential,
         riskLevel,
         futureImp,
-        tools: ["ChatGPT", "Copilot", "Claude"].slice(0, (idx % 3) + 1)
+        tools: ["ChatGPT", "Copilot", "Claude"].slice(0, (idx % 3) + 1),
       };
     });
   }, [selectedTasks]);
 
-  const buildTasks = analyzedTasks.filter(t => t.category3B === "BUILD");
-  const botTasks = analyzedTasks.filter(t => t.category3B === "BOT");
-  const blendTasks = analyzedTasks.filter(t => t.category3B === "BLEND");
-  
+  const buildTasks = analyzedTasks.filter((t) => t.category3B === "BUILD");
+  const botTasks = analyzedTasks.filter((t) => t.category3B === "BOT");
+  const blendTasks = analyzedTasks.filter((t) => t.category3B === "BLEND");
+
   const totalTasks = analyzedTasks.length || 1;
-  const autoOpp = Math.round((analyzedTasks.reduce((acc, t) => acc + t.autoPotential, 0)) / totalTasks);
-  
+  const autoOpp = Math.round(
+    analyzedTasks.reduce((acc, t) => acc + t.autoPotential, 0) / totalTasks,
+  );
+
   const [expandedSection, setExpandedSection] = useState<"BUILD" | "BOT" | "BLEND" | null>("BUILD");
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight">3B Career Intelligence Analysis</h2>
+          <h2 className="font-display text-2xl font-bold tracking-tight">
+            3B Career Intelligence Analysis
+          </h2>
           <p className="text-sm text-muted-foreground mt-1 max-w-xl">
-            We've analyzed your daily responsibilities to understand where AI will enhance, automate, or amplify your work.
+            We've analyzed your daily responsibilities to understand where AI will enhance,
+            automate, or amplify your work.
           </p>
         </div>
-        
+
         <div className="inline-flex items-center gap-3 rounded-lg border border-primary/20 bg-brand px-4 py-2 shadow-sm shrink-0">
           <div className="text-sm">
             <span className="font-semibold text-primary-foreground">Analysis Complete</span>
@@ -1369,20 +1569,28 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
       </div>
 
       <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">Task Distribution Overview</h3>
-        
+        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+          Task Distribution Overview
+        </h3>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div>
             <div className="text-xs font-semibold text-muted-foreground">BUILD</div>
-            <div className="font-display text-2xl font-bold text-emerald-500">{buildTasks.length} <span className="text-xs font-medium opacity-70">Tasks</span></div>
+            <div className="font-display text-2xl font-bold text-emerald-500">
+              {buildTasks.length} <span className="text-xs font-medium opacity-70">Tasks</span>
+            </div>
           </div>
           <div>
             <div className="text-xs font-semibold text-muted-foreground">BOT</div>
-            <div className="font-display text-2xl font-bold text-rose-500">{botTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span></div>
+            <div className="font-display text-2xl font-bold text-rose-500">
+              {botTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span>
+            </div>
           </div>
           <div>
             <div className="text-xs font-semibold text-muted-foreground">BLEND</div>
-            <div className="font-display text-2xl font-bold text-blue-500">{blendTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span></div>
+            <div className="font-display text-2xl font-bold text-blue-500">
+              {blendTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span>
+            </div>
           </div>
           <div className="border-l border-border pl-4">
             <div className="text-xs font-semibold text-muted-foreground">Automation Opp.</div>
@@ -1391,15 +1599,27 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
         </div>
 
         <div className="flex h-4 w-full overflow-hidden rounded-full border border-border/50">
-          <div style={{ width: `${(buildTasks.length/totalTasks)*100}%` }} className="bg-emerald-500 transition-all duration-1000" title={`BUILD: ${buildTasks.length}`} />
-          <div style={{ width: `${(blendTasks.length/totalTasks)*100}%` }} className="bg-blue-500 transition-all duration-1000" title={`BLEND: ${blendTasks.length}`} />
-          <div style={{ width: `${(botTasks.length/totalTasks)*100}%` }} className="bg-rose-500 transition-all duration-1000" title={`BOT: ${botTasks.length}`} />
+          <div
+            style={{ width: `${(buildTasks.length / totalTasks) * 100}%` }}
+            className="bg-emerald-500 transition-all duration-1000"
+            title={`BUILD: ${buildTasks.length}`}
+          />
+          <div
+            style={{ width: `${(blendTasks.length / totalTasks) * 100}%` }}
+            className="bg-blue-500 transition-all duration-1000"
+            title={`BLEND: ${blendTasks.length}`}
+          />
+          <div
+            style={{ width: `${(botTasks.length / totalTasks) * 100}%` }}
+            className="bg-rose-500 transition-all duration-1000"
+            title={`BOT: ${botTasks.length}`}
+          />
         </div>
       </div>
 
       <div className="space-y-4">
-        <CategorySection 
-          title="BUILD Tasks" 
+        <CategorySection
+          title="BUILD Tasks"
           category="BUILD"
           count={buildTasks.length}
           description="These tasks represent human-first work requiring creativity, strategy, leadership, or deep expertise. AI cannot replace these activities in the near future."
@@ -1407,8 +1627,8 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
           isExpanded={expandedSection === "BUILD"}
           onToggle={() => setExpandedSection(expandedSection === "BUILD" ? null : "BUILD")}
         />
-        <CategorySection 
-          title="BOT Tasks" 
+        <CategorySection
+          title="BOT Tasks"
           category="BOT"
           count={botTasks.length}
           description="Highly automatable work that can largely be delegated to AI. Focus on mastering automation tools for these tasks to free up your time."
@@ -1416,8 +1636,8 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
           isExpanded={expandedSection === "BOT"}
           onToggle={() => setExpandedSection(expandedSection === "BOT" ? null : "BOT")}
         />
-        <CategorySection 
-          title="BLEND Tasks" 
+        <CategorySection
+          title="BLEND Tasks"
           category="BLEND"
           count={blendTasks.length}
           description="Work where AI acts as a co-pilot, improving your productivity while human judgment remains essential. These tasks require a balance of tool proficiency and expertise."
@@ -1430,18 +1650,23 @@ function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["dr
       <div className="grid md:grid-cols-2 gap-4">
         <div className="rounded-xl border border-primary/20 bg-brand p-5 shadow-sm">
           <h3 className="mb-2 flex items-center gap-2 font-display text-base font-bold text-primary-foreground">
-             AI Recommendations
+            AI Recommendations
           </h3>
           <p className="text-sm leading-relaxed text-primary-foreground/90">
-            Focus on strengthening <strong className="font-semibold">BUILD</strong> skills. Use AI aggressively to automate <strong className="font-semibold">BOT</strong> tasks and improve efficiency in <strong className="font-semibold">BLEND</strong> activities.
+            Focus on strengthening <strong className="font-semibold">BUILD</strong> skills. Use AI
+            aggressively to automate <strong className="font-semibold">BOT</strong> tasks and
+            improve efficiency in <strong className="font-semibold">BLEND</strong> activities.
           </p>
         </div>
 
         <div className="rounded-xl border border-border bg-emerald-500 p-5 shadow-sm flex items-start gap-4">
           <div>
-            <h3 className="font-display text-base font-bold mb-1 text-primary-foreground">Up Next: AI Readiness</h3>
+            <h3 className="font-display text-base font-bold mb-1 text-primary-foreground">
+              Up Next: AI Readiness
+            </h3>
             <p className="text-sm text-primary-foreground/90 leading-relaxed">
-              We'll measure your overall AI Readiness and identify your biggest opportunities for career growth.
+              We'll measure your overall AI Readiness and identify your biggest opportunities for
+              career growth.
             </p>
           </div>
         </div>

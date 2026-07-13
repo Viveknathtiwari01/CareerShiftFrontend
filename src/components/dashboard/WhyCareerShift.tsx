@@ -18,17 +18,21 @@ export function WhyCareerShift() {
           </h2>
           <div className="space-y-4 text-medium text-muted-foreground leading-relaxed mb-8">
             <p>
-              We built CareerShift to solve a massive problem: <strong className="text-foreground">The "AI Fog."</strong>
+              We built CareerShift to solve a massive problem:{" "}
+              <strong className="text-foreground">The "AI Fog."</strong>
             </p>
             <p>
-              Professionals feel AI anxiety but lack specificity. You read headlines about AI replacing jobs, but you have no idea whether your specific daily tasks are at risk. 
-              Generic advice like "just learn AI" or "get certified" doesn't help because it ignores your unique, role-specific reality.
+              Professionals feel AI anxiety but lack specificity. You read headlines about AI
+              replacing jobs, but you have no idea whether your specific daily tasks are at risk.
+              Generic advice like "just learn AI" or "get certified" doesn't help because it ignores
+              your unique, role-specific reality.
             </p>
             <p>
-              CareerShift exists to bridge the gap between awareness that AI is changing work, and giving you the actionable clarity on exactly what to do about it:
+              CareerShift exists to bridge the gap between awareness that AI is changing work, and
+              giving you the actionable clarity on exactly what to do about it:
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {truths.map((truth, idx) => (
               <div

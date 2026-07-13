@@ -3,7 +3,7 @@ import { ArrowUpRight, Target, Activity, Zap, TrendingUp } from "lucide-react";
 
 export function InsightBanner() {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -18,7 +18,7 @@ export function InsightBanner() {
           CareerShift recommends strengthening your AI practical skills over the next 90 days.
         </p>
       </div>
-      
+
       <div className="flex flex-wrap gap-4 lg:flex-nowrap shrink-0 relative z-10 w-full lg:w-auto">
         <div className="bg-muted/50 rounded-xl p-4 border border-border flex-1 min-w-[140px] flex flex-col justify-between group hover:border-primary/50 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-3">
@@ -29,15 +29,19 @@ export function InsightBanner() {
             76<span className="text-base font-normal text-muted-foreground ml-1">/100</span>
           </p>
         </div>
-        
+
         <div className="bg-muted/50 rounded-xl p-4 border border-border flex-1 min-w-[180px] flex flex-col justify-between group hover:border-primary/50 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-3">
             <Zap className="w-4 h-4 text-warm" />
             <p className="text-xs font-medium uppercase tracking-wider">Recommended Focus</p>
           </div>
           <div className="flex flex-wrap gap-1.5 mt-auto">
-            <span className="text-sm font-semibold text-primary-foreground bg-primary/90 px-2 py-0.5 rounded">Prompt Engineering</span>
-            <span className="text-sm font-semibold text-primary-foreground bg-primary/90 px-2 py-0.5 rounded">Workflows</span>
+            <span className="text-sm font-semibold text-primary-foreground bg-primary/90 px-2 py-0.5 rounded">
+              Prompt Engineering
+            </span>
+            <span className="text-sm font-semibold text-primary-foreground bg-primary/90 px-2 py-0.5 rounded">
+              Workflows
+            </span>
           </div>
         </div>
 

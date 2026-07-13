@@ -64,7 +64,9 @@ export default function AuthenticatedLayout() {
           <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary">
             <BrainCircuit className="h-4 w-4 text-primary-foreground" strokeWidth={2.5} />
           </div>
-          <span className="font-display text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600">CareerShift</span>
+          <span className="font-display text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600">
+            CareerShift
+          </span>
         </Link>
         <button
           aria-label="Toggle nav"
@@ -87,7 +89,7 @@ export default function AuthenticatedLayout() {
               to="/dashboard"
               className="hidden items-center gap-1 border-b border-border px-6 lg:flex"
             >
-             <img src="/Logo_text_.png" alt="Logo" className="w-42 h-24" />
+              <img src="/Logo_text_.png" alt="Logo" className="w-42 h-24" />
             </Link>
 
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
@@ -113,7 +115,6 @@ export default function AuthenticatedLayout() {
                 );
               })}
 
-
               <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/50">
                 Account
               </p>
@@ -128,7 +129,6 @@ export default function AuthenticatedLayout() {
                 <UserIcon className="h-4 w-4" />
                 Profile
               </Link>
-
             </nav>
 
             <div className="border-t border-border p-4">

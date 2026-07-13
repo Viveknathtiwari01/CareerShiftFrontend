@@ -65,7 +65,9 @@ export function VideoModal({ isOpen, onClose, videoUrl, title, description }: Vi
             <div className="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
               <div className="flex justify-between items-center p-4 border-b border-slate-800">
                 <div>
-                  <h3 id="modal-title" className="text-lg font-semibold text-white">{title}</h3>
+                  <h3 id="modal-title" className="text-lg font-semibold text-white">
+                    {title}
+                  </h3>
                   <p className="text-sm text-slate-400">{description}</p>
                 </div>
                 <button

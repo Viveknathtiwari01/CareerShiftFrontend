@@ -33,7 +33,6 @@ export default function ReportPage() {
   return (
     <div className="min-h-screen bg-secondary/30">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-        
         <ReportHeader />
         <ReportHero />
 
@@ -88,7 +87,6 @@ export default function ReportPage() {
 
         <HealthIndicators />
         <ReportFooter />
-        
       </div>
     </div>
   );

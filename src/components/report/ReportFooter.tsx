@@ -7,7 +7,7 @@ export function ReportFooter() {
         <Info className="h-4 w-4" />
         <span className="font-medium">Career Intelligence Assessment v2.4.1</span>
       </div>
-      
+
       <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
         <div className="flex items-center gap-2">
           <span>Generated On:</span>

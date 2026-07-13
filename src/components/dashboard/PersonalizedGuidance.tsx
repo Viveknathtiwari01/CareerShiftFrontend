@@ -8,7 +8,7 @@ const actions = [
     time: "10 mins",
     impact: "Provides immediate clarity on your strengths and gaps.",
     cta: "View Report",
-    priority: "High"
+    priority: "High",
   },
   {
     title: "Start Prompt Engineering Workshop",
@@ -16,8 +16,8 @@ const actions = [
     time: "1.5 hours",
     impact: "Saves you 2-4 hours per week by automating drafting and research.",
     cta: "Start Workshop",
-    priority: "Medium"
-  }
+    priority: "Medium",
+  },
 ];
 
 export function PersonalizedGuidance() {
@@ -25,43 +25,58 @@ export function PersonalizedGuidance() {
     <div className="py-6">
       <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
         <div className="mb-6">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">Recommended Next Actions</h2>
-        <p className="mt-2 text-base text-muted-foreground">Personalized guidance based on your profile.</p>
-      </div>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            Recommended Next Actions
+          </h2>
+          <p className="mt-2 text-base text-muted-foreground">
+            Personalized guidance based on your profile.
+          </p>
+        </div>
 
-      <div className="space-y-3">
-        {actions.map((action, idx) => (
-          <div key={idx} className="bg-card border border-border p-4 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold text-foreground text-lg">{action.title}</h3>
-                {action.priority === "High" && (
-                  <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
-                    Priority
-                  </span>
-                )}
+        <div className="space-y-3">
+          {actions.map((action, idx) => (
+            <div
+              key={idx}
+              className="bg-card border border-border p-4 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
+            >
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-semibold text-foreground text-lg">{action.title}</h3>
+                  {action.priority === "High" && (
+                    <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                      Priority
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">{action.why}</p>
+
+                <div className="flex flex-wrap gap-3 text-xs">
+                  <div className="flex items-center gap-1 text-muted-foreground">
+                    <Clock className="w-3 h-3 text-primary" />
+                    <span>
+                      <strong className="text-foreground">Est. Time:</strong> {action.time}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 text-muted-foreground">
+                    <Target className="w-3 h-3 text-primary" />
+                    <span>
+                      <strong className="text-foreground">Impact:</strong> {action.impact}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground mb-3">{action.why}</p>
-              
-              <div className="flex flex-wrap gap-3 text-xs">
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <Clock className="w-3 h-3 text-primary" />
-                  <span><strong className="text-foreground">Est. Time:</strong> {action.time}</span>
-                </div>
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <Target className="w-3 h-3 text-primary" />
-                  <span><strong className="text-foreground">Impact:</strong> {action.impact}</span>
-                </div>
+
+              <div className="shrink-0">
+                <Button
+                  size="sm"
+                  variant={action.priority === "High" ? "default" : "outline"}
+                  className={`w-full md:w-auto text-sm h-10 px-4 ${action.priority === "High" ? "bg-[#0A121F] text-white hover:bg-[#141F32]" : "bg-white text-[#0A121F] border border-[#E2E8F0] hover:bg-gray-50"}`}
+                >
+                  {action.cta} <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
               </div>
             </div>
-            
-            <div className="shrink-0">
-              <Button size="sm" variant={action.priority === "High" ? "default" : "outline"} className={`w-full md:w-auto text-sm h-10 px-4 ${action.priority === "High" ? "bg-[#0A121F] text-white hover:bg-[#141F32]" : "bg-white text-[#0A121F] border border-[#E2E8F0] hover:bg-gray-50"}`}>
-                {action.cta} <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+          ))}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export function ReportHero() {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -22,13 +22,15 @@ export function ReportHero() {
           <h2 className="font-display text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 mb-4">
             AI-Augmented Backend Engineer
           </h2>
-          
+
           <div className="rounded-2xl border border-border bg-background/50 p-6 shadow-sm mt-8 backdrop-blur-sm">
             <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-brand" /> Executive Summary
             </h3>
             <p className="text-muted-foreground leading-relaxed font-medium">
-              Your strong backend engineering expertise and growing AI adoption position you well for the future. By strengthening AI workflow design and leadership skills, you can transition into high-value AI-augmented engineering roles.
+              Your strong backend engineering expertise and growing AI adoption position you well
+              for the future. By strengthening AI workflow design and leadership skills, you can
+              transition into high-value AI-augmented engineering roles.
             </p>
           </div>
         </div>
@@ -38,9 +40,11 @@ export function ReportHero() {
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <Activity className="h-3.5 w-3.5" /> AI Readiness
             </div>
-            <div className="text-3xl font-display font-black text-brand">76<span className="text-lg text-muted-foreground">/100</span></div>
+            <div className="text-3xl font-display font-black text-brand">
+              76<span className="text-lg text-muted-foreground">/100</span>
+            </div>
           </div>
-          
+
           <div className="rounded-2xl border border-border bg-background/50 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-center">
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
               <ShieldAlert className="h-3.5 w-3.5" /> Career Risk
