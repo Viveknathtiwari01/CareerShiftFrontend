@@ -38,7 +38,7 @@ export function PricingCard() {
               <Button size="lg" className="w-full h-14 text-base font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
                 Enroll Now
               </Button>
-              <Button variant="outline" size="lg" className="w-full h-14 text-base font-semibold rounded-xl border-white/20 text-white hover:text-primary-foreground hover:bg-primary">
+              <Button variant="outline" size="lg" className="w-full h-14 text-base font-semibold rounded-xl border-white/20 text-base hover:text-primary-foreground hover:bg-primary">
                 <Download className="w-4 h-4 mr-2" /> Download Syllabus
               </Button>
             </div>

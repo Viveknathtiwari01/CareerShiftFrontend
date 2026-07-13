@@ -28,7 +28,7 @@ export function WorkshopHero() {
       >
         <motion.div variants={itemVars} className="mb-6 flex justify-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary ring-1 ring-inset ring-primary/30 backdrop-blur-sm">
-            <Sparkles className="h-4 w-4" />
+             
             AI + Professional Collaboration
           </span>
         </motion.div>

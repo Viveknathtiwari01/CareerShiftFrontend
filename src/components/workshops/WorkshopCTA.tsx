@@ -27,7 +27,7 @@ export function WorkshopCTA() {
             <Button size="lg" className="rounded-full w-full sm:w-auto text-lg h-14 px-8 bg-primary text-primary-foreground hover:bg-primary/90 font-bold shadow-xl shadow-primary/20 transition-all hover:scale-105">
               Enroll in Workshop
             </Button>
-            <Button variant="outline" size="lg" className="rounded-full w-full sm:w-auto text-lg h-14 px-8 group border-primary/30 text-white hover:text-primary-foreground hover:bg-primary backdrop-blur-sm font-semibold transition-all">
+            <Button variant="outline" size="lg" className="rounded-full w-full sm:w-auto text-lg h-14 px-8 group border-primary/30 text-base hover:text-primary-foreground hover:bg-primary backdrop-blur-sm font-semibold transition-all">
               <Play className="mr-2 h-5 w-5 transition-transform group-hover:scale-110 fill-current" />
               Watch Preview Again
             </Button>

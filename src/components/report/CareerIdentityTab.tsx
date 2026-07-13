@@ -17,7 +17,7 @@ export function CareerIdentityTab() {
 
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary mb-6 shadow-sm">
-            <Sparkles className="h-4 w-4" /> Career Identity
+              Career Identity
           </div>
           <h3 className="font-display text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 mb-2">
             AI-Augmented Backend Engineer
