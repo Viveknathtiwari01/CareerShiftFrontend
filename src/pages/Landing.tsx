@@ -46,7 +46,6 @@ function Landing() {
       <HowItWorks />
       <ReportPreview />
       <Features />
-      <WorkshopTeaser />
       <Testimonials />
       <Pricing />
       <OurStory />
@@ -231,16 +230,16 @@ function Problem() {
     {
       icon: <Compass className="h-5 w-5" />,
       title: "You don't know where to start",
-      body: "Generic AI advice doesn't map to your role, industry, or daily workflow.",
+      body: "Generic AI advice doesn't map to your actual role, industry, or daily workflow so you're guessing while others are adapting.",
     },
     {
       icon: <ShieldCheck className="h-5 w-5" />,
       title: "You can't tell hype from risk",
-      body: "Which tasks are actually at risk of automation — and which give you leverage?",
+      body: "Which tasks are about to be automated and which ones, if you master AI first, make you irreplaceable?",
     },
     {
       icon: <Rocket className="h-5 w-5" />,
-      title: "You're missing a plan",
+      title: "You're running without a roadmap.",
       body: "No clear roadmap of tools, skills, and moves that compound over the next 12 months.",
     },
   ];
@@ -250,10 +249,10 @@ function Problem() {
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow>The problem</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            AI anxiety is a planning problem, not an information problem.
+            AI won't take your job. But someone who uses AI might.
           </h2>
           <p className="mt-4 text-muted-foreground">
-            You've read the think-pieces. You need clarity on{" "}
+            The gap isn't knowledge. It's a plan. You need clarity on{" "}
             <span className="text-brand font-bold">your</span> role,
             <span className="text-brand font-bold"> your</span> tasks, and{" "}
             <span className="text-brand font-bold">your</span> next move.
@@ -284,7 +283,7 @@ function Framework3B() {
       icon: <Sprout className="h-6 w-6" />,
       title: "BUILD IT",
       subtitle: "Human Mastery",
-      body: "Tasks requiring human judgment, emotional intelligence, leadership, and relationships. AI cannot replace these — you must develop and own them as human capabilities.",
+      body: "Tasks requiring human judgment, emotional intelligence, leadership, and relationships. AI cannot replace these you must develop and own them as human capabilities.",
       color: "border-brand/20",
     },
     {
@@ -350,7 +349,7 @@ function HowItWorks() {
       n: "02",
       icon: <BrainCircuit className="h-5 w-5" />,
       title: "AI analyzes every task",
-      body: "Each task is routed to Build, Bot, or Blend — with risk, leverage, and hours saved.",
+      body: "Each task is routed to Build, Bot, or Blend with risk, leverage, and hours saved.",
     },
     {
       n: "03",
@@ -398,7 +397,7 @@ function ReportPreview() {
         <div>
           <SectionEyebrow dark>Sample report</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
-            A consulting-grade report — not another quiz result.
+            A consulting-grade report not another quiz result.
           </h2>
           <p className="mt-5 text-white/70">
             Every report is packed with visual insights: an AI Readiness Score, task-by-task
@@ -469,7 +468,7 @@ function ReportMockup() {
           <Zap className="h-3.5 w-3.5 text-brand" /> Top recommendation
         </div>
         <p className="mt-2 text-sm text-white/90">
-          Automate briefing docs with an AI writing workflow — saves ~4.2h/week and lifts throughput
+          Automate briefing docs with an AI writing workflow saves ~4.2h/week and lifts throughput
           28%.
         </p>
       </div>
@@ -554,28 +553,28 @@ function Features() {
   const feats = [
     {
       icon: <BarChart3 className="h-5 w-5" />,
-      title: "AI Readiness Score",
-      body: "A single, defensible number that captures your position — with the signals behind it.",
+      title: "Know exactly where you stand.",
+      body: "A percentage score that measures your automation risk - with a full breakdown of what's driving it.",
     },
     {
       icon: <Bot className="h-5 w-5" />,
-      title: "Task Routing",
-      body: "Every task categorized as Build, Bot, or Blend based on impact and automation potential.",
+      title: "Build it. Bot it. Blend it.",
+      body: "Every task mapped to one of three actions: <b>Build</b> (master the skill), <b>Bot</b> (automate it), or <b>Blend</b> (augment with AI) — ranked by impact and automation potential.",
     },
     {
       icon: <Sparkles className="h-5 w-5" />,
-      title: "AI Toolkit",
-      body: "Curated tools matched to your workflow — with pricing, ratings, and setup time.",
+      title: "The right tools, not the most popular ones.",
+      body: "Hand-picked AI tools matched to your actual tasks — with real pricing, honest ratings, and realistic setup time.",
     },
     {
       icon: <Rocket className="h-5 w-5" />,
-      title: "Learning Roadmap",
-      body: "Prioritized skills and courses, sequenced across 30, 60, and 90-day horizons.",
+      title: "A plan you can actually follow.",
+      body: "Week-by-week skill building across 30, 60, and 90 days — sequenced so each step compounds into the next",
     },
     {
       icon: <TrendingUp className="h-5 w-5" />,
-      title: "Market Insights",
-      body: "Salary premiums, demand trends, and role trajectories for your industry.",
+      title: "Cost & ROI Analysis",
+      body: "<b>Know what this pays for itself.</b> A breakdown of tool costs vs. hours saved per week with payback period and annual value. No guesswork, just your actual task math.",
     },
     {
       icon: <ShieldCheck className="h-5 w-5" />,
@@ -584,171 +583,27 @@ function Features() {
     },
   ];
   return (
-    <section id="features" className="bg-[#0A1525] py-24 text-white">
-      <div className="container-page">
+    <section id="features" className="bg-background py-24 text-foreground">
+      <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow dark>Features</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
-            Everything you need to future-proof your role.
+          <SectionEyebrow>Features</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+            Your AI readiness, mapped end to end.
           </h2>
         </div>
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3 ">
           {feats.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl bg-white/5 border border-white/10 p-6 hover:-translate-y-1 transition-transform group"
+              className="surface-card p-6 hover-lift group"
             >
-              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-brand text-brand-foreground shadow-soft transition-transform group-hover:scale-105">
+              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform group-hover:scale-105">
                 {f.icon}
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-white">{f.title}</h3>
-              <p className="mt-2 text-sm text-white/60">{f.body}</p>
+              <h3 className="mt-5 font-display text-lg font-semibold text-background">{f.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: f.body }} />
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- WORKSHOP TEASER ---------- */
-function WorkshopTeaser() {
-  return (
-    <section id="workshop" className="bg-surface-2 py-24">
-      <div className="container-page animate-fade-in-up">
-        <div className="mx-auto max-w-2xl text-center mb-16">
-          <SectionEyebrow>Recommended Next Actions</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-            Personalized guidance based on your profile.
-          </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Your assessment is just the beginning. CareerShift provides the structured guidance you
-            need to turn insights into action.
-          </p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr] items-stretch">
-          {/* Left Column: Actions & Insights */}
-          <div className="flex flex-col gap-6">
-            <div className="bg-card rounded-[2rem] p-8 shadow-soft border border-border group hover:border-primary/30 transition-colors relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-display text-xl font-bold text-foreground flex items-center gap-2 relative z-10">
-                  <BarChart3 className="w-5 h-5 text-primary" />
-                  Review Your Career Intelligence Report
-                </h3>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/10 text-red-500 px-2 py-1 rounded relative z-10">
-                  Priority
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-6 leading-relaxed relative z-10">
-                Your assessment is complete. Reviewing this report will give you a clear baseline of
-                your current AI readiness.
-              </p>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-xs font-medium text-muted-foreground mb-6 relative z-10">
-                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full">
-                  <Clock className="w-4 h-4 text-primary" /> Est. Time: 10 mins
-                </span>
-                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full">
-                  <Target className="w-4 h-4 text-primary" /> Impact: Immediate clarity
-                </span>
-              </div>
-              <Link
-                to="/report"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 relative z-10 w-full sm:w-auto"
-              >
-                View Report <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="bg-primary/5 rounded-[2rem] p-8 border border-primary/20 relative overflow-hidden flex-1 flex flex-col justify-center">
-              <div className="absolute -top-4 -right-4 opacity-5">
-                <MessageSquare className="w-32 h-32 text-primary" />
-              </div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-4 relative z-10">
-                <Zap className="w-4 h-4" /> Today's Insight
-              </div>
-              <blockquote className="text-foreground/90 italic font-medium leading-relaxed mb-6 relative z-10 text-lg border-l-2 border-primary/30 pl-4">
-                "Professionals who combine domain expertise with AI consistently outperform those
-                who rely on either one alone."
-              </blockquote>
-              <div className="flex items-center justify-between mt-auto">
-                <span className="text-xs font-semibold text-muted-foreground">2 Min Read</span>
-                <Link
-                  to="/workshops"
-                  className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 relative z-10"
-                >
-                  Learn More <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Featured Workshop */}
-          <div className="surface-card rounded-[2rem] p-8 md:p-12 shadow-elevated border border-border relative overflow-hidden h-full flex flex-col group text-white">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 group-hover:bg-primary/20 transition-colors duration-700" />
-
-            <div className="flex-1 relative z-10">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-3 py-1.5 text-xs font-semibold text-white mb-6 backdrop-blur-sm">
-                <GraduationCap className="h-4 w-4" />
-                Featured Workshop
-              </div>
-
-              <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-                Master AI for Everyday Professionals
-              </h3>
-
-              <p className="text-white/80 leading-relaxed mb-8 text-lg">
-                Learn practical AI workflows that save time, improve productivity, and make you more
-                valuable in your current role. This is the foundational skill required to
-                communicate effectively with AI tools in your daily work.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 mb-10">
-                <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
-                  <Clock className="w-6 h-6 text-primary mb-3" />
-                  <div className="text-base font-bold text-white">6 Hours</div>
-                  <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">
-                    Duration
-                  </div>
-                </div>
-                <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
-                  <Target className="w-6 h-6 text-teal-400 mb-3" />
-                  <div className="text-base font-bold text-white">Beginner to Int.</div>
-                  <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">
-                    Level
-                  </div>
-                </div>
-                <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
-                  <CheckCircle2 className="w-6 h-6 text-primary mb-3" />
-                  <div className="text-base font-bold text-white">Included</div>
-                  <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">
-                    Certificate
-                  </div>
-                </div>
-                <div className="bg-white/5 rounded-2xl p-5 border border-white/10 hover-lift transition-all backdrop-blur-sm">
-                  <Zap className="w-6 h-6 text-warm mb-3" />
-                  <div className="text-base font-bold text-white">2-4 hrs/week</div>
-                  <div className="text-xs text-white/60 font-medium uppercase tracking-wider mt-1">
-                    Est. Time Saved
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-auto relative z-10">
-              <Link
-                to="/workshops"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-base font-semibold text-background shadow-soft transition-transform hover:scale-[1.02] hover:shadow-lg"
-              >
-                Explore Workshop
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-              <p className="text-center text-xs text-white/50 mt-4 font-medium">
-                Lifetime access to all materials and updates.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -772,44 +627,46 @@ function Testimonials() {
     },
     {
       quote:
-        "Reads like a consulting brief. Confident, specific, and finally actionable — worth every minute.",
+        "Reads like a consulting brief. Confident, specific, and finally actionable worth every minute.",
       name: "Elena Rossi",
       role: "Senior Consultant",
     },
   ];
   return (
-    <section className="container-page animate-fade-in-up py-24">
-      <div className="mx-auto max-w-2xl text-center">
-        <SectionEyebrow>Testimonials</SectionEyebrow>
-        <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-          Professionals who stopped guessing.
-        </h2>
-      </div>
-      <div className="mt-14 grid gap-5 md:grid-cols-3">
-        {items.map((t) => (
-          <figure key={t.name} className="surface-card flex flex-col p-6">
-            <div className="flex gap-0.5 text-brand">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-current" />
-              ))}
-            </div>
-            <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-background text-base ">
-              "{t.quote}"
-            </blockquote>
-            <figcaption className="mt-6 flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary font-display text-sm font-semibold text-foreground">
-                {t.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+    <section className="bg-[#0A1525] py-24 text-white">
+      <div className="container-page animate-fade-in-up">
+        <div className="mx-auto max-w-2xl text-center">
+          <SectionEyebrow dark>Testimonials</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
+            Professionals who stopped guessing.
+          </h2>
+        </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {items.map((t) => (
+            <figure key={t.name} className="flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 hover:-translate-y-1 transition-transform group">
+              <div className="flex gap-0.5 text-brand">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-current" />
+                ))}
               </div>
-              <div>
-                <div className="text-sm font-base text-background">{t.name}</div>
-                <div className="text-xs text-muted-foreground">{t.role}</div>
-              </div>
-            </figcaption>
-          </figure>
-        ))}
+              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white text-base ">
+                "{t.quote}"
+              </blockquote>
+              <figcaption className="mt-6 flex items-center gap-3">
+                <div className="grid h-10 w-10 place-items-center rounded-full bg-brand font-display text-sm font-semibold text-brand-foreground">
+                  {t.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+                <div>
+                  <div className="text-sm font-base text-white">{t.name}</div>
+                  <div className="text-xs text-white/60">{t.role}</div>
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -819,44 +676,43 @@ function Testimonials() {
 function Pricing() {
   const tiers = [
     {
-      name: "Explorer",
-      price: "Free",
-      sub: "Try the assessment risk-free",
-      features: [
-        "12-minute AI assessment",
-        "Basic readiness score",
-        "3 tool recommendations",
-        "Email report",
-      ],
-      cta: "Start free",
-      highlighted: false,
-    },
-    {
-      name: "Professional",
+      name: 'Professional - "The Roadmap"',
       price: "$29",
       per: "/ one-time",
-      sub: "Full report + 12-month roadmap",
+      sub: "Your complete 12-month plan. One-time purchase.",
       features: [
-        "Complete AI Readiness Report",
-        "Task routing & hours-saved analysis",
+        "Full AI Readiness Report",
+        "Complete breakdown across all task categories in your role",
+        "Task Routing & Hours-Saved Analysis",
+        "Every task mapped: Automate / Augment / Master + hours saved per week",
         "Full AI Toolkit with ROI",
-        "Learning roadmap (30/60/90-day)",
-        "PDF export & shareable link",
+        "5–8 curated tools, cost vs. time saved, payback period",
+        "30/60/90-Day Learning Roadmap",
+        "Week-by-week skill plan, not just a list",
+        "PDF Export + Shareable Link",
+        "For performance reviews, LinkedIn, or manager conversations"
       ],
       cta: "Get my report",
       highlighted: true,
     },
     {
-      name: "Team",
+      name: 'Enterprise - "The Workforce Plan"',
       price: "$199",
       per: "/ mo",
-      sub: "For teams of 5–50",
+      sub: "Transform your team, not just your people.",
       features: [
-        "Everything in Professional",
-        "Team dashboard & analytics",
-        "Role benchmarking",
-        "Admin & SSO",
-        "Priority support",
+       "Everything in Professional",
+       "Per-employee reports and roadmaps",
+       "Team Dashboard & Analytics",
+       "Org-wide AI readiness heatmap, risk clusters, upskill gaps",
+       "Role Benchmarking",
+       "Compare roles against industry AI adoption standards",
+       "Admin & SSO",
+       "User provisioning, seat management, security",
+       "Priority Support",
+       "Dedicated onboarding + quarterly business reviews",
+       "Custom Integrations",
+       "API access, LMS/LXP integration, custom role libraries"
       ],
       cta: "Contact sales",
       highlighted: false,
@@ -874,7 +730,7 @@ function Pricing() {
             Start free. Upgrade only when you want the full report and roadmap.
           </p>
         </div>
-        <div className="mx-auto mt-14 grid max-w-5xl gap-5 md:grid-cols-3">
+        <div className="mx-auto mt-14 grid max-w-8xl gap-14 md:grid-cols-2">
           {tiers.map((t) => (
             <div
               key={t.name}
@@ -885,7 +741,7 @@ function Pricing() {
               }`}
             >
               {t.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-card px-3 py-1 text-xs font-semibold text-brand-foreground">
                   Most popular
                 </span>
               )}
@@ -912,7 +768,7 @@ function Pricing() {
                   <li key={f} className="flex items-start gap-2.5 text-sm">
                     <CheckCircle2
                       className={`mt-0.5 h-4.5 w-4.5 shrink-0 ${
-                        t.highlighted ? "text-brand" : "text-brand"
+                        t.highlighted ? "text-primary-foreground" : "text-brand"
                       }`}
                     />
                     <span
@@ -944,40 +800,118 @@ function Pricing() {
 
 /* ---------- FAQ ---------- */
 function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const qs = [
-    {
-      q: "How is CareerShift different from a generic AI chatbot?",
-      a: "CareerShift is an assessment platform. It analyzes your specific tasks and role, then returns a structured report — not a conversation. You get a score, a task-routing breakdown, and a 12-month roadmap.",
-    },
-    {
-      q: "How long does the assessment take?",
-      a: "About 12 minutes on average. Progress is autosaved, so you can pause and resume anytime.",
-    },
-    {
-      q: "Who is it built for?",
-      a: "Mid-level and senior professionals with 5–20 years of experience — marketers, consultants, HR, finance, ops, and executives.",
-    },
-    {
-      q: "Is my data private?",
-      a: "Yes. Your data is encrypted in transit and at rest, and is never used to train third-party models.",
-    },
-    {
-      q: "Can I share my report with my manager?",
-      a: "Yes. Every paid report includes a PDF export and a private shareable link.",
-    },
-  ];
+  {
+    q: "Why I Built CareerShift",
+    a: `I kept watching smart, capable people freeze.
+
+Not because they were lazy. Not because they didn't care. But because every piece of AI advice fell into one of two traps: <b>too academic to act on</b>, or <b>so sensational it paralyzed them</b>.
+
+I knew this because I lived it. I spent months chasing the <b>"right"</b> AI tools</b>, burning money on software that promised to transform my work but never fit my actual day. I was learning plenty. I just wasn't getting any clearer on what <b>I should do</b>.
+<br/><br/>
+
+Then I started noticing something in the rooms I facilitated. The same hesitation. The same quiet hope that maybe this wave would pass before it reached their desk. People weren't resisting change they were <b>missing a map</b>.
+<br/><br/>
+
+That's when it hit me:it doesn't matter when your organization officially starts optimizing with AI. The market is already moving. Your old skill set won't be irrelevant someday it's becoming irrelevant now.
+
+I built CareerShift because I was tired of watching talented people get left behind by generic noise. I wanted something that didn't just explain AI, but told you exactly which parts of <b>your role to automate </b>, which human skills to double down on, and what your next 12 months should actually look like.
+<br/><br/>
+No more guesswork. No more hype. Just a clear, personal roadmap.
+<br/><br/>
+Because the goal isn't to turn you into an AI expert. It's to make sure <b>you're not replaced by one.</b>`,
+  },
+  {
+    q: "How is CareerShift different from a generic AI chatbot?",
+    a: `CareerShift isn't a chatbot, and it's not an LLM guessing at your job.
+
+Generic AI tools will happily suggest random tasks to automate based on a prompt. CareerShift is built on a structured competency engine embedded with globally accepted skills and performance frameworks that organizations actually use as their talent backbone.
+<br/><br/>
+We anchor your assessment to real, validated job architecture. Our intelligence layer draws from globally accepted frameworks the same structured definitions of tasks, skills, and competencies used by governments and enterprises to map workforce capability. This isn't AI making up what it thinks you do. It's AI routing your actual role against verified industry standards.
+<br/><br/>
+The result? You don't get a conversation. You get a score, a task-routing breakdown (automate vs. augment vs. master), and a 12-month roadmap grounded in how talent actually gets measured and developed.
+<br/><br/>
+In short: Chatbots give opinions. CareerShift gives an assessment, direction, and guidance.`,
+  },
+  {
+    q: "What is CareerShift?",
+    a: `CareerShift is an AI readiness assessment platform. It analyzes your specific role and tasks, then delivers a structured report with your automation risk score, a task-routing breakdown, and a 12-month upskill roadmap grounded in real competency frameworks, not generic advice.
+<br/><br/>
+You can auto-generate tasks based on your role title, or manually enter your own and you have full control to edit, refine, or rewrite the final description of each task. That way, the tools and suggestions you get back are mapped to what you actually do, not what a database thinks you do.`,
+  },
+  {
+    q: "Who is it built for?",
+    a: "Mid-level and senior professionals with 5–20 years of experience marketers, consultants, HR, finance, ops, and executives. If you have a defined role with real tasks to analyze, CareerShift can map it.",
+  },
+  {
+    q: "How long does the assessment take?",
+    a: `12–20 minutes. Progress autosaves, so you can pause and resume anytime.
+<br/><br/>
+Most people finish in one sitting because the questions are tied to your actual tasks not abstract personality quizzes. You can auto-populate tasks or enter your own, and you control the final wording so the analysis maps to your real workflow. When you're done, your report generates instantly.`,
+  },
+  {
+    q: "Is the $29 report really one-time?",
+    a: `Yes. One payment. One comprehensive report.
+<br/><br/>
+No subscription, no hidden fees, and no "upgrade to unlock" games. We priced it like a book that changes your career because that's what it is.`,
+  },
+  {
+    q: "Can my team or company use this?",
+    a: `Absolutely.
+<br/><br/>
+For teams of 5–50, we offer an Enterprise tier with a team dashboard, role benchmarking, admin controls, and SSO.
+<br/><br/>
+For larger organizations, we build custom workforce readiness programs. Contact sales to learn more.`,
+  },
+  {
+    q: "What if my role is niche?",
+    a: `The assessment adapts to your inputs. Even if your title is uncommon, CareerShift maps your actual tasks against validated competency frameworks.
+<br/><br/>
+You can auto-generate a task list from your role, type in your own tasks from scratch, or mix both and you have full control to edit the final description of every task. The more specific and accurate you are about what you actually do, the sharper your tool recommendations and roadmap become.`,
+  },
+  {
+    q: "Is my data private?",
+    a: `Yes. Your data is encrypted in transit and at rest, and is never used to train third-party models.
+<br/><br/>
+Your report is yours. Period.`,
+  },
+  {
+    q: "Can I share my report with my manager?",
+    a: `Yes. Every paid report includes a PDF export and a private shareable link perfect for performance reviews, career conversations, or proving you're thinking ahead.`,
+  },
+  {
+    q: "Who built this?",
+    a: `CareerShift was built by Nureen Choudhary a talent and capability professional with 15+ years of experience at the intersection of AI transformation and workforce development.
+<br/><br/>
+After watching brilliant colleagues paralyzed by generic AI noise, she built the tool she wished existed: a personalized compass, not another conversation.`,
+  },
+  {
+    q: "Do you offer workshops for teams or organizations?",
+    a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and readiness scores first, then design the workshop around the specific gaps and opportunities in your organization.
+<br/><br/>
+You don't get a standard slide deck. You get a session mapped to your workflows, your tools, and your productivity bottlenecks so every minute drives real efficiency, not just awareness.
+<br/><br/>
+Workshops are available as part of our Enterprise tier. Contact sales to learn more.`,
+  },
+];
   return (
     <section id="faq" className="container-page animate-fade-in-up py-24">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto w-full">
         <div className="text-center">
           <SectionEyebrow>FAQ</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Questions, answered.
           </h2>
         </div>
-        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-card text-card-foreground">
-          {qs.map((item) => (
-            <FaqItem key={item.q} {...item} />
+        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-card text-card-foreground w-full">
+          {qs.map((item, index) => (
+            <FaqItem
+              key={item.q}
+              {...item}
+              isOpen={openIndex === index}
+              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+            />
           ))}
         </div>
       </div>
@@ -985,29 +919,28 @@ function FAQ() {
   );
 }
 
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
+function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boolean; onToggle: () => void }) {
   return (
     <div className="px-6">
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 py-5 text-left"
-        aria-expanded={open}
+        aria-expanded={isOpen}
       >
         <span className="font-display text-base font-semibold">{q}</span>
         <ChevronDown
           className={`h-5 w-5 shrink-0 text-card-foreground/70 transition-transform ${
-            open ? "rotate-180" : ""
+            isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
       <div
         className={`grid overflow-hidden transition-all ${
-          open ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"
+          isOpen ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"
         }`}
       >
         <div className="min-h-0">
-          <p className="text-sm leading-relaxed text-card-foreground/80">{a}</p>
+          <div className="text-sm leading-relaxed text-card-foreground/80 faq-content" dangerouslySetInnerHTML={{ __html: a }} />
         </div>
       </div>
     </div>
@@ -1181,24 +1114,29 @@ function OurStory() {
   return (
     <section id="our-story" className="bg-[#0A1525] py-24 text-white">
       <div className="container-page animate-fade-in-up">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12 lg:p-16">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-            <div className="relative">
-              <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-brand/20 to-primary/20 blur-2xl opacity-40"></div>
-              <img
-                src="/nc.jpeg"
-                alt="Owner of CareerShift"
-                className="w-full max-w-md mx-auto rounded-2xl shadow-elevated object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <SectionEyebrow dark>Our Story</SectionEyebrow>
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
-                Why I Built CareerShift
-              </h2>
-              <div className="mt-6 space-y-4 text-white/70 leading-relaxed">
+        <div className="mx-auto max-w-4xl text-center">
+          <SectionEyebrow dark>Our Story</SectionEyebrow>
+          <div className="mx-auto w-32 h-32 my-10 relative">
+            <div className="absolute -inset-2 -z-10 rounded-full bg-gradient-to-tr from-brand/20 to-primary/20 blur-xl opacity-60"></div>
+            <img
+              src="/nc.jpeg"
+              alt="Owner of CareerShift"
+              className="w-full h-full rounded-[2.5rem] shadow-elevated object-cover border-2 border-white/10"
+            />
+          </div>
+          <div className="font-display font-semibold text-xl text-white mb-10">
+            CareerShift Founder - Nurren Chaudhry
+          </div>
+
+          <div className="relative rounded-[2.5rem] border border-white/10 bg-white/5 p-8 md:p-12 text-left shadow-soft mt-8 mx-auto">
+             <div className="absolute -top-6 -left-6 md:-left-8 text-brand opacity-30">
+                <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+             </div>
+             <div className="space-y-6 text-white/90 text-lg md:text-xl font-medium leading-relaxed italic relative z-10 md:px-8">
                 <p>
-                  As a professional navigating the rapid advancements in AI, I saw brilliant
+                  "As a professional navigating the rapid advancements in AI, I saw brilliant
                   colleagues feeling overwhelmed and uncertain about their future. The advice out
                   there was either too academic or just sensationalist fear-mongering.
                 </p>
@@ -1210,15 +1148,9 @@ function OurStory() {
                 <p>
                   That's why CareerShift was born. My mission is to empower professionals to move
                   from anxiety to advantage, giving them a clear, actionable roadmap to thrive in
-                  the age of AI.
+                  the age of AI."
                 </p>
-              </div>
-              <div className="mt-8 flex items-center gap-4">
-                <div className="font-display font-semibold text-white">Nurren Chaudhry</div>
-                <div className="h-4 w-px bg-white/20"></div>
-                <div className="text-sm text-white/50">Founder of CareerShift</div>
-              </div>
-            </div>
+             </div>
           </div>
         </div>
       </div>
@@ -1234,10 +1166,10 @@ function ContactUs() {
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow dark>Contact Us</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
-            Let's talk about your career.
+            Let's talk about your next move.
           </h2>
           <p className="mt-4 text-white/60">
-            Have questions? Want to discuss a team plan? Reach out or book a consultation directly.
+            Whether you're mapping your own AI readiness or building a workforce plan for your team, we're here to help you get clarity fast.
           </p>
         </div>
 
@@ -1386,11 +1318,11 @@ function Footer() {
   const cols = [
     {
       title: "Product",
-      links: ["Features", "How it works", "Sample report", "Pricing"],
+      links: ["For Teams", "Workshops"],
     },
-    { title: "Resources", links: ["AI toolkit", "Learning hub"] },
-    { title: "Company", links: ["About", "Careers", "Contact"] },
-    { title: "Legal", links: ["Privacy", "Terms"] },
+    { title: "Resources", links: ["FAQ"] },
+    { title: "Company", links: ["About", "Join Us", "Contact"] },
+    { title: "Legal", links: ["Privacy", "Terms","Cookies"] },
   ];
   return (
     <footer className="border-t border-border bg-[#0A1525]">
@@ -1401,10 +1333,10 @@ function Footer() {
               <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-white/45">
-              Bridge your career to the AI future — with clarity, confidence, and a plan.
+              Bridge your career to the AI future with clarity, confidence, and a plan.
             </p>
             <div className="mt-5 flex gap-2">
-              {[Twitter, Linkedin, Github].map((Icon, i) => (
+              {[Linkedin].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
