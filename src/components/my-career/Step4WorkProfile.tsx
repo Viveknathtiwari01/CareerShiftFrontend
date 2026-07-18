@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
 import { DAILY_ACTIVITIES } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   data: WizardData;
@@ -10,13 +12,39 @@ interface Props {
 }
 
 export function Step4WorkProfile({ data, updateData }: Props) {
+  const [showOther, setShowOther] = useState(false);
+
+  const customActivities = data.dailyActivities.filter(a => !DAILY_ACTIVITIES.includes(a));
+  const hasCustom = customActivities.length > 0;
+  const isOtherChecked = showOther || hasCustom;
+
+  const toggleOther = () => {
+    const isNowChecked = !isOtherChecked;
+    setShowOther(isNowChecked);
+    if (!isNowChecked) {
+      const standardActivities = data.dailyActivities.filter(a => DAILY_ACTIVITIES.includes(a));
+      updateData({ dailyActivities: standardActivities });
+    }
+  };
+
+  const handleCustomChange = (val: string) => {
+    const standardActivities = data.dailyActivities.filter(a => DAILY_ACTIVITIES.includes(a));
+    if (val) {
+      updateData({ dailyActivities: [...standardActivities, val] });
+    } else {
+      updateData({ dailyActivities: standardActivities });
+    }
+  };
   const toggleActivity = (activity: string) => {
     const current = data.dailyActivities;
-    const newActivities = current.includes(activity)
-      ? current.filter((a) => a !== activity)
-      : [...current, activity];
-
-    updateData({ dailyActivities: newActivities });
+    if (current.includes(activity)) {
+      updateData({ dailyActivities: current.filter((a) => a !== activity) });
+    } else {
+      if (current.length >= 5) {
+        return; // Max 5 selections
+      }
+      updateData({ dailyActivities: [...current, activity] });
+    }
   };
 
   return (
@@ -55,7 +83,32 @@ export function Step4WorkProfile({ data, updateData }: Props) {
                 </div>
               );
             })}
+            <div
+              className={`flex items-center space-x-3 border rounded-lg p-4 cursor-pointer transition-colors ${isOtherChecked ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
+              onClick={toggleOther}
+            >
+              <Checkbox
+                id="activity-other"
+                checked={isOtherChecked}
+                onCheckedChange={toggleOther}
+              />
+              <label
+                htmlFor="activity-other"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+              >
+                Other
+              </label>
+            </div>
           </div>
+          {isOtherChecked && (
+            <div className="mt-4">
+              <Input
+                placeholder="Please specify your daily activities"
+                value={customActivities[0] || ""}
+                onChange={(e) => handleCustomChange(e.target.value)}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </motion.div>

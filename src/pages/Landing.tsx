@@ -72,7 +72,7 @@ function Nav() {
     { label: "Contact", href: "#contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 animate-fade-in-up backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-black/10 animate-fade-in-up bg-[#f6f5ec]">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-14 object-contain" />
@@ -102,21 +102,21 @@ function Nav() {
         </div>
         <button
           aria-label="Toggle menu"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg border border-black/10 text-black md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
       {open && (
-        <div className="border-t border-white/10 bg-[#0A1525] md:hidden">
+        <div className="border-t border-black/10 bg-[#f6f5ec] md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
+                className="rounded-md px-3 py-2 text-sm font-medium text-black/70 hover:bg-black/5 hover:text-black"
               >
                 {l.label}
               </a>
@@ -124,7 +124,7 @@ function Nav() {
             <div className="mt-2 flex gap-2 px-1">
               <Link
                 to="/auth"
-                className="flex-1 rounded-lg border border-white/10 px-4 py-2 text-center text-sm font-medium text-white"
+                className="flex-1 rounded-lg border border-black/10 px-4 py-2 text-center text-sm font-medium text-black"
               >
                 Log in
               </Link>
@@ -1214,9 +1214,9 @@ function OurStory() {
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-4">
-                <div className="font-display font-semibold text-white">Alex Founder</div>
+                <div className="font-display font-semibold text-white">Nurren Chaudhry</div>
                 <div className="h-4 w-px bg-white/20"></div>
-                <div className="text-sm text-white/50">Founder & CEO</div>
+                <div className="text-sm text-white/50">Founder of CareerShift</div>
               </div>
             </div>
           </div>

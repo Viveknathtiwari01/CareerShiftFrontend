@@ -6,42 +6,117 @@ import {
   Loader2,
   Lock,
   Mail,
-  Target,
-  User as UserIcon,
-  Zap,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { useAuth } from "@/store/mock-store";
 import { toast } from "sonner";
+import { fetchApi } from "@/lib/api";
+
+type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
 export default function AuthPage() {
-  const { user, login, register, loading } = useAuth();
+  const { user, login, loading } = useAuth();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [name, setName] = useState("");
+  const [mode, setMode] = useState<AuthMode>("login");
+  
+  // Form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [verificationToken, setVerificationToken] = useState("");
+  
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(user.onboarded ? "/dashboard" : "/onboarding", { replace: true });
+      navigate("/my-profile", { replace: true });
     }
   }, [user, loading, navigate]);
+
+  async function handleLogin() {
+    await login(email, password);
+    toast.success("Welcome back");
+  }
+
+  async function handleRegisterRequest() {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    await fetchApi("/auth/register/request-otp", {
+      method: "POST",
+      body: JSON.stringify({ 
+        email, 
+        password, 
+        username: email.split("@")[0] // Auto-generated username
+      }),
+    });
+    toast.success("OTP sent to your email!");
+    setMode("register-verify");
+  }
+
+  async function handleRegisterVerify() {
+    await fetchApi("/auth/register/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ email, otp }),
+    });
+    toast.success("Account created successfully! Please log in.");
+    setMode("login");
+    setOtp("");
+    setPassword("");
+    setConfirmPassword("");
+  }
+
+  async function handleForgotRequest() {
+    await fetchApi("/auth/password/forgot", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+    toast.success("Password reset OTP sent to your email!");
+    setMode("forgot-verify");
+  }
+
+  async function handleForgotVerify() {
+    const res = await fetchApi("/auth/password/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ email, otp }),
+    });
+    setVerificationToken(res.data.verification_token);
+    toast.success("OTP verified. Please enter your new password.");
+    setMode("forgot-reset");
+  }
+
+  async function handleForgotReset() {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    await fetchApi("/auth/password/reset", {
+      method: "POST",
+      body: JSON.stringify({ verification_token: verificationToken, new_password: password }),
+    });
+    toast.success("Password reset successfully! Please log in.");
+    setMode("login");
+    setPassword("");
+    setConfirmPassword("");
+    setOtp("");
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (submitting) return;
     setSubmitting(true);
     try {
-      if (mode === "login") {
-        await login(email, password);
-        toast.success("Welcome back");
-      } else {
-        await register(name || email.split("@")[0], email, password);
-        toast.success("Account created");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      if (mode === "login") await handleLogin();
+      else if (mode === "register") await handleRegisterRequest();
+      else if (mode === "register-verify") await handleRegisterVerify();
+      else if (mode === "forgot") await handleForgotRequest();
+      else if (mode === "forgot-verify") await handleForgotVerify();
+      else if (mode === "forgot-reset") await handleForgotReset();
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
       console.error(err);
     } finally {
       setSubmitting(false);
@@ -53,12 +128,6 @@ export default function AuthPage() {
       {/* Left: brand panel */}
       <aside className="bg-[#0A1525] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
-          {/* <div className="relative grid h-9 w-9 place-items-center rounded-lg bg-white/10 ring-1 ring-white/20">
-            <Zap className="h-5 w-5" strokeWidth={2.5} />
-          </div>
-          <h1 className="font-display text-xl font-bold leading-tight">
-            Career <span className="opacity-80">Shift</span>
-          </h1> */}
           <img src="/log_text.jpeg" alt="logo" className="object-cover w-50" />
         </Link>
 
@@ -80,9 +149,7 @@ export default function AuthPage() {
                 "Curated AI toolkit and 12-week learning plan",
               ].map((s) => (
                 <li key={s} className="flex items-center gap-2">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10">
-                    ✓
-                  </span>
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10">✓</span>
                   {s}
                 </li>
               ))}
@@ -105,76 +172,107 @@ export default function AuthPage() {
             <span className="font-display text-lg font-bold">CareerShift</span>
           </Link>
 
-          <div className="mb-6 inline-flex rounded-full border border-border bg-brand p-1 text-sm">
-            <button
-              className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
-                mode === "login"
-                  ? "bg-white/80 shadow-soft text-foreground"
-                  : "text-muted-foreground"
-              }`}
-              onClick={() => setMode("login")}
-              type="button"
-            >
-              Log in
-            </button>
-            <button
-              className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
-                mode === "register"
-                  ? "bg-background shadow-soft text-foreground"
-                  : "text-muted-foreground"
-              }`}
-              onClick={() => setMode("register")}
-              type="button"
-            >
-              Create account
-            </button>
-          </div>
+          {(mode === "login" || mode === "register") && (
+            <div className="mb-6 inline-flex rounded-full border border-border bg-brand p-1 text-sm">
+              <button
+                className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
+                  mode === "login"
+                    ? "bg-white/80 shadow-soft text-foreground"
+                    : "text-muted-foreground"
+                }`}
+                onClick={() => setMode("login")}
+                type="button"
+              >
+                Log in
+              </button>
+              <button
+                className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
+                  mode === "register"
+                    ? "bg-background shadow-soft text-foreground"
+                    : "text-muted-foreground"
+                }`}
+                onClick={() => setMode("register")}
+                type="button"
+              >
+                Create account
+              </button>
+            </div>
+          )}
 
           <h2 className="font-display text-3xl font-bold tracking-tight">
-            {mode === "login" ? "Welcome back" : "Create your account"}
+            {mode === "login" && "Welcome back"}
+            {mode === "register" && "Create your account"}
+            {mode === "register-verify" && "Verify your email"}
+            {mode === "forgot" && "Reset Password"}
+            {mode === "forgot-verify" && "Verify OTP"}
+            {mode === "forgot-reset" && "Create New Password"}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            {mode === "login"
-              ? "Sign in to continue your career readiness journey."
-              : "Get started with your free AI Career Readiness assessment."}
+            {mode === "login" && "Sign in to continue your career readiness journey."}
+            {mode === "register" && "Get started with your free AI Career Readiness assessment."}
+            {mode === "register-verify" && `We sent a 6-digit code to ${email}.`}
+            {mode === "forgot" && "Enter your email to receive a password reset code."}
+            {mode === "forgot-verify" && `We sent a password reset code to ${email}.`}
+            {mode === "forgot-reset" && "Enter a new secure password for your account."}
           </p>
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            {mode === "register" && (
+            
+            {(mode === "login" || mode === "register" || mode === "forgot") && (
               <Field
-                icon={<UserIcon className="h-4 w-4" />}
-                label="Full name"
-                type="text"
-                value={name}
-                onChange={setName}
-                placeholder="Ada Lovelace"
-                autoComplete="name"
+                icon={<Mail className="h-4 w-4" />}
+                label="Email"
+                type="email"
+                value={email}
+                onChange={setEmail}
+                placeholder="you@company.com"
+                required
               />
             )}
-            <Field
-              icon={<Mail className="h-4 w-4" />}
-              label="Work email"
-              type="email"
-              value={email}
-              onChange={setEmail}
-              placeholder="you@company.com"
-              autoComplete="email"
-              required
-            />
-            <Field
-              icon={<Lock className="h-4 w-4" />}
-              label="Password"
-              type="password"
-              value={password}
-              onChange={setPassword}
-              placeholder="••••••••"
-              autoComplete={mode === "login" ? "current-password" : "new-password"}
-              required
-            />
+
+            {(mode === "login" || mode === "register" || mode === "forgot-reset") && (
+              <Field
+                icon={<Lock className="h-4 w-4" />}
+                label={mode === "forgot-reset" ? "New Password" : "Password"}
+                type="password"
+                value={password}
+                onChange={setPassword}
+                placeholder="••••••••"
+                required
+              />
+            )}
+
+            {(mode === "register" || mode === "forgot-reset") && (
+              <Field
+                icon={<Lock className="h-4 w-4" />}
+                label="Confirm Password"
+                type="password"
+                value={confirmPassword}
+                onChange={setConfirmPassword}
+                placeholder="••••••••"
+                required
+              />
+            )}
+
+            {(mode === "register-verify" || mode === "forgot-verify") && (
+              <Field
+                icon={<Lock className="h-4 w-4" />}
+                label="6-Digit OTP"
+                type="text"
+                value={otp}
+                onChange={setOtp}
+                placeholder="123456"
+                required
+              />
+            )}
 
             {mode === "login" && (
               <div className="flex justify-end">
-                <button type="button" className="text-xs font-medium text-brand hover:underline">
+                <button 
+                  type="button" 
+                  onClick={() => setMode("forgot")}
+                  className="text-xs font-medium text-brand hover:underline"
+                >
                   Forgot password?
                 </button>
               </div>
@@ -186,31 +284,26 @@ export default function AuthPage() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70"
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {mode === "login" ? "Log in" : "Create account"}
+              {mode === "login" && "Log in"}
+              {mode === "register" && "Continue"}
+              {mode === "register-verify" && "Verify & Create Account"}
+              {mode === "forgot" && "Send Reset Code"}
+              {mode === "forgot-verify" && "Verify Code"}
+              {mode === "forgot-reset" && "Set New Password"}
               {!submitting && <ArrowRight className="h-4 w-4" />}
             </button>
 
-            <div className="relative py-2 text-center text-xs text-muted-foreground">
-              <span className="relative bg-background px-3 text-black">or continue with</span>
-              <span className="absolute inset-x-0 top-1/2 -z-0 h-px bg-border" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <SocialButton label="Google" />
-              <SocialButton label="LinkedIn" />
-            </div>
-
-            <p className="pt-2 text-center text-xs text-muted-foreground">
-              By continuing you agree to our{" "}
-              <a href="#" className="underline hover:text-foreground">
-                Terms
-              </a>{" "}
-              and{" "}
-              <a href="#" className="underline hover:text-foreground">
-                Privacy Policy
-              </a>
-              .
-            </p>
+            {mode !== "login" && mode !== "register" && (
+               <div className="flex justify-center mt-4">
+                 <button 
+                   type="button" 
+                   onClick={() => setMode("login")}
+                   className="text-xs font-medium text-muted-foreground hover:text-foreground"
+                 >
+                   Back to login
+                 </button>
+               </div>
+            )}
           </form>
         </div>
       </main>
@@ -225,7 +318,6 @@ function Field({
   value,
   onChange,
   placeholder,
-  autoComplete,
   required,
 }: {
   icon: React.ReactNode;
@@ -234,35 +326,35 @@ function Field({
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
-  autoComplete?: string;
   required?: boolean;
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+
   return (
     <label className="block">
       <span className="mb-1.5 block text-xs font-medium text-foreground">{label}</span>
       <div className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-2.5 shadow-soft focus-within:ring-2 focus-within:ring-ring">
         <span className="text-muted-foreground">{icon}</span>
         <input
-          type={type}
+          type={inputType}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          autoComplete={autoComplete}
           required={required}
           className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
         />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="text-muted-foreground hover:text-foreground focus:outline-none"
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        )}
       </div>
     </label>
-  );
-}
-
-function SocialButton({ label }: { label: string }) {
-  return (
-    <button
-      type="button"
-      className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-    >
-      {label}
-    </button>
   );
 }

@@ -86,54 +86,88 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(USER_KEY);
-      if (raw) setUser(JSON.parse(raw));
-    } catch {
-      /* noop */
-    }
-    setLoading(false);
-  }, []);
-
-  const persist = useCallback((next: User | null) => {
+  const persist = useCallback((next: User | null, token?: string) => {
     setUser(next);
     if (typeof window === "undefined") return;
-    if (next) localStorage.setItem(USER_KEY, JSON.stringify(next));
-    else localStorage.removeItem(USER_KEY);
+    if (next && token) {
+      localStorage.setItem("careershift.token", token);
+      localStorage.setItem(USER_KEY, JSON.stringify(next));
+    } else if (!next) {
+      localStorage.removeItem("careershift.token");
+      localStorage.removeItem(USER_KEY);
+    }
   }, []);
 
-  const login = useCallback<AuthCtx["login"]>(
-    async (email) => {
-      await new Promise((r) => setTimeout(r, 400));
+  const fetchUser = useCallback(async () => {
+    if (!localStorage.getItem("careershift.token")) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const { fetchApi } = await import("@/lib/api");
+      const res = await fetchApi("/users/me");
       const u: User = {
-        id: crypto.randomUUID(),
-        name: email.split("@")[0] ?? "there",
-        email,
-        onboarded: true,
+        id: res.data.id,
+        name: res.data.first_name ? `${res.data.first_name} ${res.data.last_name || ""}`.trim() : res.data.username,
+        email: res.data.email,
+        onboarded: !!res.data.first_name,
       };
-      persist(u);
+      persist(u, localStorage.getItem("careershift.token") || undefined);
+    } catch {
+      persist(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [persist]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  const login = useCallback<AuthCtx["login"]>(
+    async (email, password) => {
+      const { fetchApi } = await import("@/lib/api");
+      const res = await fetchApi("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      const token = res.data.access_token;
+      
+      const userRes = await fetchApi("/users/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      const u: User = {
+        id: userRes.data.id,
+        name: userRes.data.first_name ? `${userRes.data.first_name} ${userRes.data.last_name || ""}`.trim() : userRes.data.username,
+        email: userRes.data.email,
+        onboarded: !!userRes.data.first_name,
+      };
+      persist(u, token);
       return u;
     },
     [persist],
   );
 
   const register = useCallback<AuthCtx["register"]>(
-    async (name, email) => {
-      await new Promise((r) => setTimeout(r, 500));
-      const u: User = {
-        id: crypto.randomUUID(),
-        name,
-        email,
-        onboarded: false,
-      };
-      persist(u);
-      return u;
+    async (name, email, password) => {
+      // In the real flow, the register method here might not be called directly since it's a 2-step process.
+      // But we'll leave this to mock the creation or you can handle it inside Auth.tsx.
+      throw new Error("Use step-by-step registration in Auth.tsx");
     },
     [persist],
   );
 
-  const logout = useCallback(() => persist(null), [persist]);
+  const logout = useCallback(async () => {
+    try {
+      const { fetchApi } = await import("@/lib/api");
+      await fetchApi("/auth/logout", { method: "POST" });
+    } catch {
+      // Ignore errors, we clear local storage anyway
+    } finally {
+      persist(null);
+    }
+  }, [persist]);
 
   const updateUser = useCallback<AuthCtx["updateUser"]>((patch) => {
     setUser((prev) => {

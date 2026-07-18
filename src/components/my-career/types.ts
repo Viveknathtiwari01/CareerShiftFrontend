@@ -14,8 +14,10 @@ export interface WizardData {
 
   // Step 3
   technicalSkills: string[];
-  businessSkills: string[];
+  professionalSkills: string[];
   softSkills: string[];
+  behaviouralSkills: string[];
+  aiSkills: string[];
 
   // Step 4
   dailyActivities: string[];

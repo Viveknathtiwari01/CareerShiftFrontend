@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
 import { EXPERIENCE_LEVELS, PREFERRED_LOCATIONS } from "@/lib/mock-data";
@@ -19,10 +20,47 @@ interface Props {
 }
 
 export function Step2Background({ data, updateData }: Props) {
+  const [showOtherExp, setShowOtherExp] = useState(false);
+  const [showOtherLoc, setShowOtherLoc] = useState(false);
+
   const toggleLocation = (loc: string) => {
     const current = data.preferredLocation || [];
     const newLocs = current.includes(loc) ? current.filter((l) => l !== loc) : [...current, loc];
     updateData({ preferredLocation: newLocs });
+  };
+
+  const handleExpChange = (val: string) => {
+    if (val === "Other") {
+      setShowOtherExp(true);
+      updateData({ experience: "" });
+    } else {
+      setShowOtherExp(false);
+      updateData({ experience: val });
+    }
+  };
+
+  const isExpCustom = showOtherExp || (data.experience ? !EXPERIENCE_LEVELS.includes(data.experience) : false);
+
+  const customLocations = (data.preferredLocation || []).filter(l => !PREFERRED_LOCATIONS.includes(l));
+  const hasCustomLoc = customLocations.length > 0;
+  const isOtherLocChecked = showOtherLoc || hasCustomLoc;
+
+  const toggleOtherLoc = () => {
+    const isNowChecked = !isOtherLocChecked;
+    setShowOtherLoc(isNowChecked);
+    if (!isNowChecked) {
+      const standardLocs = (data.preferredLocation || []).filter(l => PREFERRED_LOCATIONS.includes(l));
+      updateData({ preferredLocation: standardLocs });
+    }
+  };
+
+  const handleCustomLocChange = (val: string) => {
+    const standardLocs = (data.preferredLocation || []).filter(l => PREFERRED_LOCATIONS.includes(l));
+    if (val) {
+      updateData({ preferredLocation: [...standardLocs, val] });
+    } else {
+      updateData({ preferredLocation: standardLocs });
+    }
   };
 
   return (
@@ -41,8 +79,8 @@ export function Step2Background({ data, updateData }: Props) {
           <div className="space-y-2">
             <Label htmlFor="experience">Total Experience</Label>
             <Select
-              value={data.experience}
-              onValueChange={(val) => updateData({ experience: val })}
+              value={isExpCustom ? "Other" : data.experience}
+              onValueChange={handleExpChange}
             >
               <SelectTrigger id="experience">
                 <SelectValue placeholder="Select your experience" />
@@ -53,8 +91,17 @@ export function Step2Background({ data, updateData }: Props) {
                     {exp}
                   </SelectItem>
                 ))}
+                <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
+            {isExpCustom && (
+              <Input
+                placeholder="Please specify your experience"
+                value={data.experience}
+                onChange={(e) => updateData({ experience: e.target.value })}
+                className="mt-2"
+              />
+            )}
           </div>
 
           <div className="space-y-2">
@@ -102,7 +149,31 @@ export function Step2Background({ data, updateData }: Props) {
                   </div>
                 );
               })}
+              <div
+                className={`flex items-center space-x-3 border rounded-lg p-3 cursor-pointer transition-colors ${isOtherLocChecked ? "border-primary bg-primary/5" : "hover:border-primary/50"}`}
+                onClick={toggleOtherLoc}
+              >
+                <Checkbox
+                  id="loc-other"
+                  checked={isOtherLocChecked}
+                  onCheckedChange={toggleOtherLoc}
+                />
+                <label
+                  htmlFor="loc-other"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
+                >
+                  Other
+                </label>
+              </div>
             </div>
+            {isOtherLocChecked && (
+              <Input
+                placeholder="Please specify preferred location"
+                value={customLocations[0] || ""}
+                onChange={(e) => handleCustomLocChange(e.target.value)}
+                className="mt-2"
+              />
+            )}
           </div>
         </CardContent>
       </Card>
