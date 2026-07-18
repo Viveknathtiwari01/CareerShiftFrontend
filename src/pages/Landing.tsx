@@ -1318,11 +1318,14 @@ function Footer() {
   const cols = [
     {
       title: "Product",
-      links: ["For Teams", "Workshops"],
+      links: [
+        { label: "For Teams", href: "#" },
+        { label: "Workshops", href: "#workshops" },
+      ],
     },
-    { title: "Resources", links: ["FAQ"] },
-    { title: "Company", links: ["About", "Join Us", "Contact"] },
-    { title: "Legal", links: ["Privacy", "Terms","Cookies"] },
+    { title: "Resources", links: [{ label: "FAQ", href: "#faq" }] },
+    { title: "Company", links: [{ label: "About", href: "#our-story" }, { label: "Join Us", href: "#" }, { label: "Contact", href: "#contact" }] },
+    { title: "Legal", links: [{ label: "Privacy", href: "#" }, { label: "Terms", href: "#" }, { label: "Cookies", href: "#" }] },
   ];
   return (
     <footer className="border-t border-border bg-[#0A1525]">
@@ -1353,13 +1356,31 @@ function Footer() {
               <h4 className="font-display text-sm font-semibold text-white">{c.title}</h4>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
-                      className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
-                    >
-                      {l}
-                    </a>
+                  <li key={l.label}>
+                    {l.href.startsWith('/') ? (
+                      <Link
+                        to={l.href}
+                        className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
+                      >
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={l.href}
+                        onClick={(e) => {
+                          if (l.href.startsWith("#") && l.href.length > 1) {
+                            const el = document.querySelector(l.href);
+                            if (el) {
+                              e.preventDefault();
+                              el.scrollIntoView({ behavior: "smooth" });
+                            }
+                          }
+                        }}
+                        className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
+                      >
+                        {l.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
