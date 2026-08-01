@@ -25,11 +25,7 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
-            <div className="text-sm text-muted-foreground">Current Job Title</div>
-            <div className="font-medium">{data.jobTitle}</div>
-          </div>
-          <div>
-            <div className="text-sm text-muted-foreground">Current Company / Industry</div>
+            <div className="text-sm text-muted-foreground">Industry</div>
             <div className="font-medium">{data.industry}</div>
           </div>
           <div>
@@ -43,6 +39,10 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
           <div>
             <div className="text-sm text-muted-foreground">Specialization</div>
             <div className="font-medium">{data.specialization}</div>
+          </div>
+          <div>
+            <div className="text-sm text-muted-foreground">Current Job Title</div>
+            <div className="font-medium">{data.jobTitle}</div>
           </div>
         </CardContent>
       </Card>
@@ -64,18 +64,8 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
             <div className="font-medium">{data.experience} years</div>
           </div>
           <div>
-            <div className="text-sm text-muted-foreground">Current Location</div>
-            <div className="font-medium">{data.location}</div>
-          </div>
-          <div>
             <div className="text-sm text-muted-foreground">Current Salary</div>
             <div className="font-medium">{data.salary || "Not provided"}</div>
-          </div>
-          <div>
-            <div className="text-sm text-muted-foreground">Preferred Work Location</div>
-            <div className="font-medium">
-              {data.preferredLocation?.length > 0 ? data.preferredLocation.join(", ") : "Not provided"}
-            </div>
           </div>
         </CardContent>
       </Card>
@@ -125,9 +115,9 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
             </div>
           </div>
           <div>
-            <div className="text-sm text-muted-foreground mb-2">AI Skills</div>
+            <div className="text-sm text-muted-foreground mb-2">Digital Skills</div>
             <div className="flex flex-wrap gap-2">
-              {data.aiSkills?.map((s) => (
+              {data.digitalSkills?.map((s) => (
                 <Badge key={s} variant="secondary">{s}</Badge>
               ))}
             </div>
@@ -135,33 +125,13 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
         </CardContent>
       </Card>
 
-      {/* Card 4: Current Work Profile */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
-            Current Work Profile
-          </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(4)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
-            <Pencil className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {data.dailyActivities?.map((s) => (
-              <Badge key={s} variant="outline" className="bg-primary/5">{s}</Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Card 5: AI Readiness */}
+      {/* Card 4: AI Readiness */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
             AI Readiness
           </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(5)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
+          <Button variant="outline" size="sm" onClick={() => onEdit(4)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
             <Pencil className="h-4 w-4 mr-2" />
             Edit
           </Button>

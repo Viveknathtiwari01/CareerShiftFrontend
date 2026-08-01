@@ -1,23 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
-import {
-  JOB_TITLES,
-  INDUSTRIES,
-  BUSINESS_FUNCTIONS,
-  DOMAINS,
-  SPECIALIZATIONS,
-} from "@/lib/mock-data";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Combobox } from "@/components/ui/combobox";
+import { useMasterData } from "@/api/master";
+import { useDebounce } from "@/hooks/use-debounce"; // Assuming this exists or I will create it. Actually I can just use react state if cmdk filters locally, which it does. Let's just use local filtering for now to keep it snappy.
 
 interface Props {
   data: WizardData;
@@ -25,20 +13,95 @@ interface Props {
 }
 
 export function Step1CareerIdentity({ data, updateData }: Props) {
-  const [showOther, setShowOther] = useState<Record<string, boolean>>({});
+  const { 
+    useSectors, 
+    useDepartments, 
+    useFunctionalDomains, 
+    useSpecializations, 
+    useJobTitles,
+    prefetchDepartments,
+    prefetchFunctionalDomains,
+    prefetchSpecializations,
+    prefetchJobTitles
+  } = useMasterData();
 
-  const handleSelectChange = (field: keyof WizardData, val: string) => {
-    if (val === "Other") {
-      setShowOther((prev) => ({ ...prev, [field]: true }));
-      updateData({ [field]: "" });
-    } else {
-      setShowOther((prev) => ({ ...prev, [field]: false }));
-      updateData({ [field]: val });
-    }
+  // Queries
+  const { data: sectors = [], isLoading: loadingSectors } = useSectors();
+  const { data: departments = [], isLoading: loadingDepartments } = useDepartments(data.sector_id);
+  const { data: functionalDomains = [], isLoading: loadingFunctionalDomains } = useFunctionalDomains(data.department_id);
+  const { data: specializations = [], isLoading: loadingSpecializations } = useSpecializations(data.functional_domain_id);
+  const { data: jobTitles = [], isLoading: loadingJobTitles } = useJobTitles(data.specialization_id);
+
+  // Mappers for Combobox
+  const sectorOptions = useMemo(() => sectors.map((s: any) => ({ value: s.id, label: s.name })), [sectors]);
+  const departmentOptions = useMemo(() => departments.map((s: any) => ({ value: s.id, label: s.name })), [departments]);
+  const functionalDomainOptions = useMemo(() => functionalDomains.map((s: any) => ({ value: s.id, label: s.name })), [functionalDomains]);
+  const specializationOptions = useMemo(() => specializations.map((s: any) => ({ value: s.id, label: s.name })), [specializations]);
+  const jobTitleOptions = useMemo(() => jobTitles.map((s: any) => ({ value: s.id, label: s.job_title })), [jobTitles]);
+
+  // Handlers
+  const handleSectorChange = (idOrCustom: string) => {
+    const selected = sectors.find((s: any) => s.id === idOrCustom);
+    updateData({
+      industry: selected ? selected.name : idOrCustom,
+      sector_id: selected ? selected.id : undefined,
+      businessFunction: "",
+      department_id: undefined,
+      domain: "",
+      functional_domain_id: undefined,
+      specialization: "",
+      specialization_id: undefined,
+      jobTitle: "",
+      job_title_id: undefined
+    });
+    if (selected) prefetchDepartments(selected.id);
   };
 
-  const isCustom = (field: string, val: string, list: string[]) => {
-    return showOther[field] || (val ? !list.includes(val) : false);
+  const handleDepartmentChange = (idOrCustom: string) => {
+    const selected = departments.find((s: any) => s.id === idOrCustom);
+    updateData({
+      businessFunction: selected ? selected.name : idOrCustom,
+      department_id: selected ? selected.id : undefined,
+      domain: "",
+      functional_domain_id: undefined,
+      specialization: "",
+      specialization_id: undefined,
+      jobTitle: "",
+      job_title_id: undefined
+    });
+    if (selected) prefetchFunctionalDomains(selected.id);
+  };
+
+  const handleFunctionalDomainChange = (idOrCustom: string) => {
+    const selected = functionalDomains.find((s: any) => s.id === idOrCustom);
+    updateData({
+      domain: selected ? selected.name : idOrCustom,
+      functional_domain_id: selected ? selected.id : undefined,
+      specialization: "",
+      specialization_id: undefined,
+      jobTitle: "",
+      job_title_id: undefined
+    });
+    if (selected) prefetchSpecializations(selected.id);
+  };
+
+  const handleSpecializationChange = (idOrCustom: string) => {
+    const selected = specializations.find((s: any) => s.id === idOrCustom);
+    updateData({
+      specialization: selected ? selected.name : idOrCustom,
+      specialization_id: selected ? selected.id : undefined,
+      jobTitle: "",
+      job_title_id: undefined
+    });
+    if (selected) prefetchJobTitles(selected.id);
+  };
+
+  const handleJobTitleChange = (idOrCustom: string) => {
+    const selected = jobTitles.find((s: any) => s.id === idOrCustom);
+    updateData({
+      jobTitle: selected ? selected.job_title : idOrCustom,
+      job_title_id: selected ? selected.id : undefined,
+    });
   };
 
   return (
@@ -54,145 +117,71 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
           <CardDescription>Tell us about your current professional role.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          
           <div className="space-y-2">
-            <Label htmlFor="jobTitle">Current Job Title *</Label>
-            <Select 
-              value={isCustom("jobTitle", data.jobTitle, JOB_TITLES) ? "Other" : data.jobTitle} 
-              onValueChange={(val) => handleSelectChange("jobTitle", val)}
-            >
-              <SelectTrigger id="jobTitle">
-                <SelectValue placeholder="Select your job title" />
-              </SelectTrigger>
-              <SelectContent>
-                {JOB_TITLES.map((title) => (
-                  <SelectItem key={title} value={title}>
-                    {title}
-                  </SelectItem>
-                ))}
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {isCustom("jobTitle", data.jobTitle, JOB_TITLES) && (
-              <Input
-                placeholder="Please specify your job title"
-                value={data.jobTitle}
-                onChange={(e) => updateData({ jobTitle: e.target.value })}
-                className="mt-2"
-              />
-            )}
+            <Label>Industry *</Label>
+            <Combobox
+              options={sectorOptions}
+              value={data.sector_id || data.industry}
+              onChange={handleSectorChange}
+              placeholder="Select your industry"
+              searchPlaceholder="Search industries..."
+              loading={loadingSectors}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="industry">Current Company/Industry *</Label>
-            <Select 
-              value={isCustom("industry", data.industry, INDUSTRIES) ? "Other" : data.industry} 
-              onValueChange={(val) => handleSelectChange("industry", val)}
-            >
-              <SelectTrigger id="industry">
-                <SelectValue placeholder="Select your industry" />
-              </SelectTrigger>
-              <SelectContent>
-                {INDUSTRIES.map((ind) => (
-                  <SelectItem key={ind} value={ind}>
-                    {ind}
-                  </SelectItem>
-                ))}
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {isCustom("industry", data.industry, INDUSTRIES) && (
-              <Input
-                placeholder="Please specify your industry"
-                value={data.industry}
-                onChange={(e) => updateData({ industry: e.target.value })}
-                className="mt-2"
-              />
-            )}
+            <Label>Department / Business Function *</Label>
+            <Combobox
+              options={departmentOptions}
+              value={data.department_id || data.businessFunction}
+              onChange={handleDepartmentChange}
+              placeholder="Select your business function"
+              searchPlaceholder="Search departments..."
+              disabled={!data.sector_id && !data.industry}
+              loading={loadingDepartments}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="businessFunction">Department / Business Function *</Label>
-            <Select
-              value={isCustom("businessFunction", data.businessFunction, BUSINESS_FUNCTIONS) ? "Other" : data.businessFunction}
-              onValueChange={(val) => handleSelectChange("businessFunction", val)}
-            >
-              <SelectTrigger id="businessFunction">
-                <SelectValue placeholder="Select your business function" />
-              </SelectTrigger>
-              <SelectContent>
-                {BUSINESS_FUNCTIONS.map((bf) => (
-                  <SelectItem key={bf} value={bf}>
-                    {bf}
-                  </SelectItem>
-                ))}
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {isCustom("businessFunction", data.businessFunction, BUSINESS_FUNCTIONS) && (
-              <Input
-                placeholder="Please specify your business function"
-                value={data.businessFunction}
-                onChange={(e) => updateData({ businessFunction: e.target.value })}
-                className="mt-2"
-              />
-            )}
+            <Label>Functional Domain *</Label>
+            <Combobox
+              options={functionalDomainOptions}
+              value={data.functional_domain_id || data.domain}
+              onChange={handleFunctionalDomainChange}
+              placeholder="Select your functional domain"
+              searchPlaceholder="Search domains..."
+              disabled={!data.department_id && !data.businessFunction}
+              loading={loadingFunctionalDomains}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="domain">Functional Domain *</Label>
-            <Select 
-              value={isCustom("domain", data.domain, DOMAINS) ? "Other" : data.domain} 
-              onValueChange={(val) => handleSelectChange("domain", val)}
-            >
-              <SelectTrigger id="domain">
-                <SelectValue placeholder="Select your domain" />
-              </SelectTrigger>
-              <SelectContent>
-                {DOMAINS.map((domain) => (
-                  <SelectItem key={domain} value={domain}>
-                    {domain}
-                  </SelectItem>
-                ))}
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {isCustom("domain", data.domain, DOMAINS) && (
-              <Input
-                placeholder="Please specify your domain"
-                value={data.domain}
-                onChange={(e) => updateData({ domain: e.target.value })}
-                className="mt-2"
-              />
-            )}
+            <Label>Specialization *</Label>
+            <Combobox
+              options={specializationOptions}
+              value={data.specialization_id || data.specialization}
+              onChange={handleSpecializationChange}
+              placeholder="Select your specialization"
+              searchPlaceholder="Search specializations..."
+              disabled={!data.functional_domain_id && !data.domain}
+              loading={loadingSpecializations}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="specialization">Specialization *</Label>
-            <Select
-              value={isCustom("specialization", data.specialization, SPECIALIZATIONS) ? "Other" : data.specialization}
-              onValueChange={(val) => handleSelectChange("specialization", val)}
-            >
-              <SelectTrigger id="specialization">
-                <SelectValue placeholder="Select your specialization" />
-              </SelectTrigger>
-              <SelectContent>
-                {SPECIALIZATIONS.map((spec) => (
-                  <SelectItem key={spec} value={spec}>
-                    {spec}
-                  </SelectItem>
-                ))}
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {isCustom("specialization", data.specialization, SPECIALIZATIONS) && (
-              <Input
-                placeholder="Please specify your specialization"
-                value={data.specialization}
-                onChange={(e) => updateData({ specialization: e.target.value })}
-                className="mt-2"
-              />
-            )}
+            <Label>Current Job Title *</Label>
+            <Combobox
+              options={jobTitleOptions}
+              value={data.job_title_id || data.jobTitle}
+              onChange={handleJobTitleChange}
+              placeholder="Select your job title"
+              searchPlaceholder="Search job titles..."
+              disabled={!data.specialization_id && !data.specialization}
+              loading={loadingJobTitles}
+            />
           </div>
+
         </CardContent>
       </Card>
     </motion.div>

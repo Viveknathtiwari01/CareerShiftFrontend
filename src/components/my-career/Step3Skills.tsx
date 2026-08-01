@@ -15,14 +15,14 @@ interface Props {
   updateData: (fields: Partial<WizardData>) => void;
 }
 
-type SkillCategory = "technicalSkills" | "professionalSkills" | "softSkills" | "behaviouralSkills" | "aiSkills";
+type SkillCategory = "technicalSkills" | "professionalSkills" | "softSkills" | "behaviouralSkills" | "digitalSkills";
 
 const CATEGORY_LABELS: Record<SkillCategory, string> = {
   technicalSkills: "Technical Skills",
   professionalSkills: "Professional Skills",
   softSkills: "Soft Skills",
   behaviouralSkills: "Behavioural Skills",
-  aiSkills: "AI Skills",
+  digitalSkills: "Digital Skills",
 };
 
 function CustomSkillInput({
@@ -143,20 +143,20 @@ export function Step3Skills({ data, updateData }: Props) {
     professionalSkills: string[];
     softSkills: string[];
     behaviouralSkills: string[];
-    aiSkills: string[];
+    digitalSkills: string[];
   } | null>(() => {
     const hasAny = data.technicalSkills.length > 0 || 
                    data.professionalSkills.length > 0 || 
                    data.softSkills.length > 0 || 
                    data.behaviouralSkills.length > 0 || 
-                   data.aiSkills.length > 0;
+                   data.digitalSkills.length > 0;
     if (hasAny) {
       return {
         technicalSkills: data.technicalSkills,
         professionalSkills: data.professionalSkills,
         softSkills: data.softSkills,
         behaviouralSkills: data.behaviouralSkills,
-        aiSkills: data.aiSkills,
+        digitalSkills: data.digitalSkills,
       };
     }
     return null;
@@ -167,7 +167,7 @@ export function Step3Skills({ data, updateData }: Props) {
     professionalSkills: false,
     softSkills: false,
     behaviouralSkills: false,
-    aiSkills: false,
+    digitalSkills: false,
   });
 
   const toggleSkill = (category: SkillCategory, skill: string) => {
@@ -189,15 +189,20 @@ export function Step3Skills({ data, updateData }: Props) {
         result.professionalSkills?.length ||
         result.softSkills?.length ||
         result.behaviouralSkills?.length ||
-        result.aiSkills?.length
+        result.digitalSkills?.length
       ) {
         setGeneratedSkills({
           technicalSkills: result.technicalSkills || [],
           professionalSkills: result.professionalSkills || [],
           softSkills: result.softSkills || [],
           behaviouralSkills: result.behaviouralSkills || [],
-          aiSkills: result.aiSkills || [],
+          digitalSkills: result.digitalSkills || [],
         });
+        
+        // Save the dynamically generated AI tools for Step 5
+        if (result.aiTools?.length) {
+          updateData({ suggestedAiTools: result.aiTools });
+        }
       } else {
         throw new Error("Unable to fetch skills");
       }
@@ -209,7 +214,7 @@ export function Step3Skills({ data, updateData }: Props) {
           professionalSkills: [],
           softSkills: [],
           behaviouralSkills: [],
-          aiSkills: [],
+          digitalSkills: [],
         });
       }
     } finally {
@@ -222,7 +227,7 @@ export function Step3Skills({ data, updateData }: Props) {
     "professionalSkills",
     "softSkills",
     "behaviouralSkills",
-    "aiSkills",
+    "digitalSkills",
   ];
 
   return (

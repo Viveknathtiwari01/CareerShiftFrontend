@@ -33,7 +33,9 @@ export function Step5AIReadiness({ data, updateData }: Props) {
   };
   const isFreqCustom = showOtherFreq || (data.aiFrequency ? !AI_FREQUENCY.includes(data.aiFrequency) : false);
 
-  const customTools = data.aiTools.filter(t => !AI_TOOLS.includes(t));
+  const currentAiTools = data.suggestedAiTools && data.suggestedAiTools.length > 0 ? data.suggestedAiTools : AI_TOOLS;
+
+  const customTools = data.aiTools.filter(t => !currentAiTools.includes(t));
   const hasCustomTool = customTools.length > 0;
   const isOtherToolChecked = showOtherTool || hasCustomTool;
 
@@ -41,7 +43,7 @@ export function Step5AIReadiness({ data, updateData }: Props) {
     const isNowChecked = !isOtherToolChecked;
     setShowOtherTool(isNowChecked);
     if (!isNowChecked) {
-      const standardTools = data.aiTools.filter(t => AI_TOOLS.includes(t));
+      const standardTools = data.aiTools.filter(t => currentAiTools.includes(t));
       updateData({ aiTools: standardTools });
     }
   };
@@ -128,7 +130,7 @@ export function Step5AIReadiness({ data, updateData }: Props) {
           <div className="space-y-4">
             <Label className="text-base">Which AI tools do you use?</Label>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {AI_TOOLS.map((tool) => {
+              {currentAiTools.map((tool) => {
                 const isSelected = data.aiTools.includes(tool);
                 return (
                   <div

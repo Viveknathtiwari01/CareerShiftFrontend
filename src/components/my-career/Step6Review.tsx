@@ -70,6 +70,22 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
                     {data.businessFunction || "Not specified"}
                   </span>
                 </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground text-xs uppercase tracking-wider">
+                    Domain
+                  </span>
+                  <span className="font-medium text-base">
+                    {data.domain || "Not specified"}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground text-xs uppercase tracking-wider">
+                    Specialization
+                  </span>
+                  <span className="font-medium text-base">
+                    {data.specialization || "Not specified"}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -98,12 +114,6 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground text-xs uppercase tracking-wider">
-                    Location
-                  </span>
-                  <span className="font-medium text-base">{data.location || "Not specified"}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-muted-foreground text-xs uppercase tracking-wider">
                     Salary
                   </span>
                   <span className="font-medium text-base">{data.salary || "Not specified"}</span>
@@ -112,33 +122,73 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
             </div>
           </div>
 
-          {/* Work Profile */}
+          {/* Skills Intelligence */}
           <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-5 space-y-4 relative group">
             <div className="flex justify-between items-center border-b pb-3">
-              <h3 className="font-semibold text-lg text-primary">Primary Activities</h3>
+              <h3 className="font-semibold text-lg text-primary">Skills Intelligence</h3>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => goToStep(4)}
+                onClick={() => goToStep(3)}
                 title="Edit"
                 className="opacity-70 hover:opacity-100 group-hover:bg-primary/10"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
             </div>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {data.dailyActivities.length > 0 ? (
-                data.dailyActivities.map((act) => (
-                  <Badge
-                    key={act}
-                    variant="secondary"
-                    className="px-3 py-1 text-sm bg-primary/10 text-primary hover:bg-primary/20 border-none"
-                  >
-                    {act}
-                  </Badge>
-                ))
-              ) : (
-                <span className="text-sm text-muted-foreground italic">None selected</span>
+            <div className="space-y-4 pt-1">
+              {data.technicalSkills && data.technicalSkills.length > 0 && (
+                <div>
+                  <div className="text-sm text-muted-foreground mb-1.5">Technical Skills</div>
+                  <div className="flex flex-wrap gap-2">
+                    {data.technicalSkills.map((s) => (
+                      <Badge key={s} variant="secondary" className="font-normal">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {data.professionalSkills && data.professionalSkills.length > 0 && (
+                <div>
+                  <div className="text-sm text-muted-foreground mb-1.5">Professional Skills</div>
+                  <div className="flex flex-wrap gap-2">
+                    {data.professionalSkills.map((s) => (
+                      <Badge key={s} variant="secondary" className="font-normal">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {data.softSkills && data.softSkills.length > 0 && (
+                <div>
+                  <div className="text-sm text-muted-foreground mb-1.5">Soft Skills</div>
+                  <div className="flex flex-wrap gap-2">
+                    {data.softSkills.map((s) => (
+                      <Badge key={s} variant="secondary" className="font-normal">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {data.behaviouralSkills && data.behaviouralSkills.length > 0 && (
+                <div>
+                  <div className="text-sm text-muted-foreground mb-1.5">Behavioural Skills</div>
+                  <div className="flex flex-wrap gap-2">
+                    {data.behaviouralSkills.map((s) => (
+                      <Badge key={s} variant="secondary" className="font-normal">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {data.digitalSkills && data.digitalSkills.length > 0 && (
+                <div>
+                  <div className="text-sm text-muted-foreground mb-1.5">Digital Skills</div>
+                  <div className="flex flex-wrap gap-2">
+                    {data.digitalSkills.map((s) => (
+                      <Badge key={s} variant="secondary" className="font-normal">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {!data.technicalSkills?.length && !data.professionalSkills?.length && !data.softSkills?.length && !data.behaviouralSkills?.length && !data.digitalSkills?.length && (
+                <span className="text-sm text-muted-foreground italic">No skills generated</span>
               )}
             </div>
           </div>
@@ -150,7 +200,7 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => goToStep(5)}
+                onClick={() => goToStep(4)}
                 title="Edit"
                 className="opacity-70 hover:opacity-100 group-hover:bg-primary/10"
               >

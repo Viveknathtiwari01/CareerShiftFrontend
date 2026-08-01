@@ -4,7 +4,6 @@ import { WizardData } from "@/components/my-career/types";
 import { Step1CareerIdentity } from "@/components/my-career/Step1CareerIdentity";
 import { Step2Background } from "@/components/my-career/Step2Background";
 import { Step3Skills } from "@/components/my-career/Step3Skills";
-import { Step4WorkProfile } from "@/components/my-career/Step4WorkProfile";
 import { Step5AIReadiness } from "@/components/my-career/Step5AIReadiness";
 import { Step6Review } from "@/components/my-career/Step6Review";
 import { ProfileView } from "@/components/my-career/ProfileView";
@@ -16,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getProfile, createProfile, updateProfile } from "@/api/profile";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 4;
 
 const initialData: WizardData = {
   jobTitle: "",
@@ -25,17 +24,15 @@ const initialData: WizardData = {
   domain: "",
   specialization: "",
   experience: "",
-  location: "",
   salary: "",
-  preferredLocation: [],
   technicalSkills: [],
   professionalSkills: [],
   softSkills: [],
   behaviouralSkills: [],
-  aiSkills: [],
-  dailyActivities: [],
+  digitalSkills: [],
   aiFrequency: "",
   aiTools: [],
+  suggestedAiTools: [],
   aiComfortLevel: 5,
 };
 
@@ -143,9 +140,8 @@ export default function MyCareerProfile() {
       case 1: return <Step1CareerIdentity key="step1" data={data} updateData={updateData} />;
       case 2: return <Step2Background key="step2" data={data} updateData={updateData} />;
       case 3: return <Step3Skills key="step3" data={data} updateData={updateData} />;
-      case 4: return <Step4WorkProfile key="step4" data={data} updateData={updateData} />;
-      case 5: return <Step5AIReadiness key="step5" data={data} updateData={updateData} />;
-      case 6: return <Step6Review key="step6" data={data} goToStep={setCurrentStep} onSubmit={handleSubmit} />;
+      case 4: return <Step5AIReadiness key="step4" data={data} updateData={updateData} />;
+      case 5: return <Step6Review key="step5" data={data} goToStep={setCurrentStep} onSubmit={handleSubmit} />;
       default: return null;
     }
   };

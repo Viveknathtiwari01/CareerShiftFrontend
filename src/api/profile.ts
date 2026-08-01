@@ -9,15 +9,12 @@ function mapToBackend(data: Partial<WizardData>) {
   if (data.domain !== undefined) mapped.domain = data.domain;
   if (data.specialization !== undefined) mapped.specialization = data.specialization;
   if (data.experience !== undefined) mapped.experience_years = parseInt(data.experience) || 0;
-  if (data.location !== undefined) mapped.location = data.location;
   if (data.salary !== undefined) mapped.salary = data.salary;
-  if (data.preferredLocation !== undefined) mapped.preferred_location = data.preferredLocation;
   if (data.technicalSkills !== undefined) mapped.technical_skills = data.technicalSkills;
   if (data.professionalSkills !== undefined) mapped.professional_skills = data.professionalSkills;
   if (data.softSkills !== undefined) mapped.soft_skills = data.softSkills;
   if (data.behaviouralSkills !== undefined) mapped.behavioural_skills = data.behaviouralSkills;
-  if (data.aiSkills !== undefined) mapped.ai_skills = data.aiSkills;
-  if (data.dailyActivities !== undefined) mapped.daily_activities = data.dailyActivities;
+  if (data.digitalSkills !== undefined) mapped.digital_skills = data.digitalSkills;
   if (data.aiFrequency !== undefined) mapped.ai_frequency = data.aiFrequency;
   if (data.aiTools !== undefined) mapped.ai_tools = data.aiTools;
   if (data.aiComfortLevel !== undefined) mapped.ai_comfort_level = data.aiComfortLevel;
@@ -32,15 +29,12 @@ function mapToFrontend(data: any): WizardData {
     domain: data.domain || "",
     specialization: data.specialization || "",
     experience: data.experience_years ? data.experience_years.toString() : "",
-    location: data.location || "",
     salary: data.salary || "",
-    preferredLocation: data.preferred_location || [],
     technicalSkills: data.technical_skills || [],
     professionalSkills: data.professional_skills || [],
     softSkills: data.soft_skills || [],
     behaviouralSkills: data.behavioural_skills || [],
-    aiSkills: data.ai_skills || [],
-    dailyActivities: data.daily_activities || [],
+    digitalSkills: data.digital_skills || [],
     aiFrequency: data.ai_frequency || "",
     aiTools: data.ai_tools || [],
     aiComfortLevel: data.ai_comfort_level || 5,
@@ -89,7 +83,7 @@ export async function generateSkills(data: Partial<WizardData>): Promise<{
   professionalSkills: string[];
   softSkills: string[];
   behaviouralSkills: string[];
-  aiSkills: string[];
+  digitalSkills: string[];
 }> {
   const payload = {
     job_title: data.jobTitle || "",
