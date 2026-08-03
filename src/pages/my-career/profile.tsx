@@ -126,9 +126,15 @@ export default function MyCareerProfile() {
   if (viewMode === "view" && profile) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Your Professional Profile</h1>
-          <p className="text-muted-foreground mt-1">Manage your career identity and skills.</p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Your Professional Profile</h1>
+            <p className="text-muted-foreground mt-1">Manage your career identity and skills.</p>
+          </div>
+          <Button onClick={() => navigate("/assessment")} className="shrink-0">
+            Start Assessment
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
         <ProfileView data={profile} onEdit={handleEdit} />
       </div>
