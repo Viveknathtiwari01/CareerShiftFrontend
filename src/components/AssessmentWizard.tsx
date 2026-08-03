@@ -46,6 +46,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAssessment, type Task } from "@/store/mock-store";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "@/api/profile";
 
 const TOOL_OPTIONS = [
   "ChatGPT",
@@ -68,10 +70,6 @@ const GOAL_OPTIONS = [
 ];
 
 const STEPS = [
-  { key: "role", label: "Career Profile Review", icon: ClipboardList },
-  { key: "tools", label: "Tools", icon: Wrench },
-  { key: "attitude", label: "Attitude", icon: Heart },
-  { key: "goals", label: "Goals", icon: Target },
   { key: "finalReport", label: "Review Assessment", icon: CheckCircle2 },
   { key: "competencies", label: "Competencies", icon: Map },
   { key: "taskGen", label: "Task Generator", icon: ListTodo },
@@ -115,7 +113,7 @@ function AssessmentWizard() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <ol className="mt-6 hidden grid-cols-9 gap-2 md:grid">
+        <ol className="mt-6 hidden grid-cols-5 gap-2 md:grid">
           {STEPS.map((s, i) => {
             const Icon = s.icon;
             const active = i === step;
@@ -145,10 +143,7 @@ function AssessmentWizard() {
       </div>
 
       <div className=" bg-card p-6 md:p-10 rounded-lg shadow-md">
-        {STEPS[step].key === "role" && <StepRole draft={draft} setDraft={setDraft} />}
-        {STEPS[step].key === "tools" && <StepTools draft={draft} setDraft={setDraft} />}
-        {STEPS[step].key === "attitude" && <StepAttitude draft={draft} setDraft={setDraft} />}
-        {STEPS[step].key === "goals" && <StepGoals draft={draft} setDraft={setDraft} />}
+        {STEPS[step].key === "finalReport" && <StepReview />}
         {STEPS[step].key === "competencies" && (
           <StepCompetencies draft={draft} setDraft={setDraft} />
         )}
@@ -157,7 +152,6 @@ function AssessmentWizard() {
           <StepTasks draft={draft} updateTask={updateTask} removeTask={removeTask} />
         )}
         {STEPS[step].key === "3bAnalysis" && <Step3BAnalysis draft={draft} />}
-        {STEPS[step].key === "finalReport" && <StepReview />}
       </div>
 
       <div className="mt-6 flex items-center justify-between">
@@ -672,6 +666,15 @@ function StepGoals({
 
 function StepReview() {
   const { draft } = useAssessment();
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  if (isLoading) {
+    return <div className="flex justify-center py-20 text-muted-foreground animate-pulse">Loading profile...</div>;
+  }
+
   return (
     <div>
       <StepHeader
@@ -679,21 +682,13 @@ function StepReview() {
         description="Confirm everything looks right before we generate your Report."
       />
       <dl className="grid gap-4 md:grid-cols-2">
-        <ReviewRow label="Role" value={draft.role || "—"} />
-        <ReviewRow label="Industry" value={draft.industry || "—"} />
-        <ReviewRow label="Experience" value={`${draft.yearsExp} years`} />
-        <ReviewRow label="AI usage today" value={draft.aiUsage} />
-        <ReviewRow label="Tools" value={draft.tools.length ? draft.tools.join(", ") : "—"} />
-        <ReviewRow
-          label="Competencies"
-          value={draft.competencies?.length ? draft.competencies.join(", ") : "—"}
-        />
-        <ReviewRow label="Goals" value={draft.goals.length ? draft.goals.join(", ") : "—"} />
+        <ReviewRow label="Role" value={profile?.jobTitle || "—"} />
+        <ReviewRow label="Industry" value={profile?.industry || "—"} />
+        <ReviewRow label="Experience" value={profile?.experience || "—"} />
+        <ReviewRow label="AI usage today" value={profile?.aiFrequency || "—"} />
+        <ReviewRow label="Tools" value={profile?.aiTools?.length ? profile.aiTools.join(", ") : "—"} className="md:col-span-2" />
       </dl>
       <div className="mt-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Tasks ({draft.tasks.length})
-        </p>
         <ul className="space-y-2">
           {draft.tasks.map((t) => (
             <li
@@ -712,9 +707,9 @@ function StepReview() {
   );
 }
 
-function ReviewRow({ label, value }: { label: string; value: string }) {
+function ReviewRow({ label, value, className }: { label: string; value: string; className?: string }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-3">
+    <div className={`rounded-lg border border-border bg-background p-3 ${className || ""}`}>
       <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
         {label}
       </dt>
