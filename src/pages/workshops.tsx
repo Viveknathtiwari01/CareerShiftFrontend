@@ -13,7 +13,7 @@ import { WorkshopCTA } from "@/components/workshops/WorkshopCTA";
 
 export default function Workshops() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12 space-y-2">
+    <div className="space-y-2">
       <WorkshopHero />
       <InsightBanner />
       <PremiumCards />

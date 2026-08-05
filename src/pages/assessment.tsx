@@ -20,6 +20,7 @@ import {
   Loader2,
 } from "lucide-react";
 import AssessmentWizard from "@/components/AssessmentWizard";
+import { PageHeader, PageShell } from "@/components/layout/PageShell";
 import { useAssessment } from "@/store/mock-store";
 import { getCurrentAssessment, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
@@ -110,60 +111,50 @@ export default function AssessmentPage() {
   const hasHistory = submitted !== null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      {/* Header Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
-      >
-        <div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-foreground">
-            AI Based Career Assessment
-          </h1>
-          <p className="mt-2 max-w-2xl text-lg text-muted-foreground">
-            Understand how AI will impact your career, analyze your daily work, measure your AI
-            readiness, and receive a personalized career transformation roadmap.
-          </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-3">
-          {!profileComplete && (
-            <Link
-              to="/my-profile"
-              className="text-sm font-medium text-brand hover:underline"
-            >
-              Complete My Career profile first
-            </Link>
-          )}
-          {hasSavedAssessment && (
+    <PageShell>
+      <PageHeader
+        eyebrow="Career Assessment"
+        title="AI Based Career Assessment"
+        description="Understand how AI will impact your career, analyze your daily work, measure your AI readiness, and receive a personalized transformation roadmap."
+        actions={
+          <>
+            {!profileComplete && (
+              <Link
+                to="/my-profile"
+                className="text-sm font-medium text-brand hover:underline"
+              >
+                Complete profile first
+              </Link>
+            )}
+            {hasSavedAssessment && (
+              <button
+                type="button"
+                onClick={handleRegenerateFromScratch}
+                disabled={!profileComplete || wizardLoading}
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+              >
+                Regenerate from scratch
+              </button>
+            )}
             <button
               type="button"
-              onClick={handleRegenerateFromScratch}
+              onClick={() => openWizard(false)}
               disabled={!profileComplete || wizardLoading}
-              className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Regenerate from scratch
+              {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
+              <ArrowRight className="h-4 w-4" />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={() => openWizard(false)}
-            disabled={!profileComplete || wizardLoading}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-      </motion.div>
+          </>
+        }
+      />
 
       {/* Hero Overview Card */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="mb-12 overflow-hidden rounded-2xl border border-border bg-card shadow-soft"
+        transition={{ duration: 0.4 }}
+        className="panel mb-12 overflow-hidden"
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-3">
           <div className="col-span-1 p-8 lg:col-span-2">
@@ -520,37 +511,37 @@ export default function AssessmentPage() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 md:p-12"
+        className="hero-ink p-8 md:p-12"
       >
-        <div className="absolute right-0 top-0 opacity-10 blur-3xl">
-          <Bot className="h-96 w-96 text-white" />
+        <div className="absolute right-0 top-0 opacity-10 blur-3xl pointer-events-none">
+          <Bot className="h-96 w-96 text-sidebar-foreground" />
         </div>
-        <div className="relative z-10 max-w-2xl text-primary-foreground">
+        <div className="relative z-10 max-w-2xl">
           <h2 className="font-display text-3xl font-bold md:text-4xl">
             Ready to Discover Your AI Career Potential?
           </h2>
-          <p className="mt-4 text-lg text-primary-foreground/80">
+          <p className="mt-4 text-base text-sidebar-foreground/75">
             Complete your first AI Career Assessment and receive personalized insights into your
             strengths, automation opportunities, AI readiness, and future career strategy.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => openWizard(false)}
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-primary shadow-elevated transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
             >
               {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-transparent px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-sidebar-foreground/20 px-6 py-3 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-white/8"
             >
               Learn More
             </Link>
           </div>
         </div>
       </motion.div>
-    </div>
+    </PageShell>
   );
 }

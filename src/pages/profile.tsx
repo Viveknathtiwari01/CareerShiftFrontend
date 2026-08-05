@@ -119,7 +119,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div>
       
       <div className="grid gap-6 md:grid-cols-[220px_1fr] lg:grid-cols-[220px_1fr_300px]">
         

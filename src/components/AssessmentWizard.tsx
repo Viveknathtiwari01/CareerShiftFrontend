@@ -163,16 +163,16 @@ function AssessmentWizard({
   if (submitted) return <Success onContinue={() => navigate("/report")} />;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="page-shell animate-fade-in">
       {/* Stepper */}
       <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between text-2xs font-medium text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5 text-brand">Assessment Profile</span>
+        <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
+          <span className="text-brand">Assessment Profile</span>
           <span>{Math.round(progress)}% complete</span>
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+        <div className="h-1 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-brand to-teal transition-all"
+            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -186,10 +186,10 @@ function AssessmentWizard({
                 <div
                   className={`grid h-9 w-9 place-items-center rounded-full border transition-colors ${
                     done
-                      ? "border-teal bg-teal text-primary-foreground"
+                      ? "border-primary bg-primary text-primary-foreground"
                       : active
                         ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                        : "border-border bg-background text-muted-foreground"
+                        : "border-border bg-card text-muted-foreground"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -205,7 +205,7 @@ function AssessmentWizard({
         </ol>
       </div>
 
-      <div className=" bg-card p-6 md:p-10 rounded-lg shadow-md">
+      <div className="panel p-6 md:p-10">
         {STEPS[step].key === "finalReport" && (
           <StepReview pipelineStatus={pipeline.status} isProcessing={pipeline.isProcessing} />
         )}
@@ -283,7 +283,7 @@ function AssessmentWizard({
             type="button"
             onClick={goTo3BAnalysis}
             disabled={isSavingTasks}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand to-teal px-8 py-3 text-sm font-bold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {isSavingTasks ? (
               <>

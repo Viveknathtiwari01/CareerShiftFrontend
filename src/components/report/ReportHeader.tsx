@@ -5,8 +5,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { AIReadinessResult } from "@/api/readiness";
 
-export function ReportHeader() {
+function formatReportDate(iso: string | null | undefined) {
+  if (!iso) return new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+export function ReportHeader({
+  readiness,
+  completedAt,
+}: {
+  readiness: AIReadinessResult | null;
+  completedAt?: string | null;
+}) {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-border/40">
       <div>
@@ -20,17 +32,18 @@ export function ReportHeader() {
 
         <div className="flex flex-wrap items-center gap-4 mt-6 text-sm font-semibold">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
-            <span className="text-muted-foreground">Date:</span> Oct 24, 2026
+            <span className="text-muted-foreground">Date:</span> {formatReportDate(completedAt)}
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
-            <span className="text-muted-foreground">Version:</span> 2.4.1
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand border border-brand/20">
-            <span className="text-brand/70">Score:</span> 76/100
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-            <span className="text-primary/70">Reading Time:</span> ~12 min
-          </div>
+          {readiness && (
+            <>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand border border-brand/20">
+                <span className="text-brand/70">Score:</span> {readiness.overall_score}/100
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                <span className="text-primary/70">Tier:</span> {readiness.tier_label}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
