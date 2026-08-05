@@ -33,6 +33,7 @@ export type Task = {
   description?: string;
   confidence?: number;
   selected?: boolean;
+  source?: "AI_GENERATED" | "USER";
   frequency?: "Multiple times daily" | "Daily" | "Weekly" | "Monthly" | "Occasionally";
   businessCriticality?: "Mission Critical" | "High" | "Medium" | "Low";
   timeAllocation?: number;

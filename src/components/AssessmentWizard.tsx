@@ -46,8 +46,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAssessment, type Task } from "@/store/mock-store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfile } from "@/api/profile";
+import { saveAssessmentTasks, mapBackendTaskToFrontend } from "@/api/tasks";
+import {
+  groupCompetenciesByCategory,
+  type AssessmentStartResponse,
+  type CompetencyItem,
+  type CompetencyMappingOutput,
+} from "@/api/assessment";
+import { useCompetencyAssessment } from "@/hooks/use-competency-assessment";
+import StepTaskGenerator from "@/components/assessment/StepTaskGenerator";
+import { Loader2, RefreshCw } from "lucide-react";
 
 const TOOL_OPTIONS = [
   "ChatGPT",
@@ -70,26 +80,79 @@ const GOAL_OPTIONS = [
 ];
 
 const STEPS = [
-  { key: "finalReport", label: "Review Assessment", icon: CheckCircle2 },
+  { key: "finalReport", label: "Review Report", icon: CheckCircle2 },
   { key: "competencies", label: "Competencies", icon: Map },
   { key: "taskGen", label: "Task Generator", icon: ListTodo },
   { key: "tasks", label: "Task Intelligence Review", icon: Cpu },
-  { key: "3bAnalysis", label: "3B Analysis", icon: Brain },
 ] as const;
 
-function AssessmentWizard() {
+function AssessmentWizard({
+  prefetchedSession = null,
+}: {
+  prefetchedSession?: AssessmentStartResponse | null;
+}) {
   const { draft, setDraft, addTask, updateTask, removeTask, submit } = useAssessment();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [isSavingTasks, setIsSavingTasks] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [tasksReviewComplete, setTasksReviewComplete] = useState(false);
+  const pipeline = useCompetencyAssessment({ prefetchedSession });
 
   const progress = ((step + 1) / STEPS.length) * 100;
+  const currentStepKey = STEPS[step].key;
+  const canContinue =
+    currentStepKey !== "competencies" || pipeline.isComplete;
 
-  function next() {
+  async function persistTasks() {
+    if (!pipeline.assessmentId || draft.tasks.length === 0) return;
+    const saved = await saveAssessmentTasks(pipeline.assessmentId, draft.tasks);
+    const mapped = saved.map(mapBackendTaskToFrontend);
+    setDraft({ tasks: mapped });
+    queryClient.setQueryData(["assessment-tasks", pipeline.assessmentId], saved);
+    queryClient.invalidateQueries({ queryKey: ["assessment-analysis", pipeline.assessmentId] });
+    setSaveError(null);
+  }
+
+  async function next() {
+    if (
+      pipeline.assessmentId &&
+      (currentStepKey === "taskGen" || currentStepKey === "tasks")
+    ) {
+      setIsSavingTasks(true);
+      setSaveError(null);
+      try {
+        await persistTasks();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to save tasks";
+        setSaveError(message);
+        console.error("Failed to save tasks", err);
+        return;
+      } finally {
+        setIsSavingTasks(false);
+      }
+    }
     if (step < STEPS.length - 1) setStep((s) => s + 1);
   }
   function prev() {
     if (step > 0) setStep((s) => s - 1);
+  }
+
+  async function goTo3BAnalysis() {
+    setIsSavingTasks(true);
+    setSaveError(null);
+    try {
+      await persistTasks();
+      navigate("/3b-analysis");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save tasks";
+      setSaveError(message);
+      console.error("Failed to save tasks before 3B analysis", err);
+    } finally {
+      setIsSavingTasks(false);
+    }
   }
 
   function handleSubmit() {
@@ -113,7 +176,7 @@ function AssessmentWizard() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <ol className="mt-6 hidden grid-cols-5 gap-2 md:grid">
+        <ol className="mt-6 hidden grid-cols-4 gap-2 md:grid">
           {STEPS.map((s, i) => {
             const Icon = s.icon;
             const active = i === step;
@@ -143,16 +206,49 @@ function AssessmentWizard() {
       </div>
 
       <div className=" bg-card p-6 md:p-10 rounded-lg shadow-md">
-        {STEPS[step].key === "finalReport" && <StepReview />}
+        {STEPS[step].key === "finalReport" && (
+          <StepReview pipelineStatus={pipeline.status} isProcessing={pipeline.isProcessing} />
+        )}
         {STEPS[step].key === "competencies" && (
-          <StepCompetencies draft={draft} setDraft={setDraft} />
+          <StepCompetencies
+            draft={draft}
+            setDraft={setDraft}
+            competencyMapping={pipeline.competencyMapping}
+            status={pipeline.status}
+            pipelineProgress={pipeline.pipelineProgress}
+            isProcessing={pipeline.isProcessing}
+            isComplete={pipeline.isComplete}
+            isFailed={pipeline.isFailed}
+            profileStale={pipeline.profileStale}
+            pipelineError={pipeline.pipelineError}
+            startError={pipeline.error}
+            onRetry={pipeline.retry}
+            isRetrying={pipeline.isRetrying}
+          />
         )}
-        {STEPS[step].key === "taskGen" && <StepTaskGenerator draft={draft} setDraft={setDraft} />}
+        {STEPS[step].key === "taskGen" && (
+          <StepTaskGenerator
+            assessmentId={pipeline.assessmentId}
+            isCompetencyComplete={pipeline.isComplete}
+            draft={draft}
+            setDraft={setDraft}
+          />
+        )}
         {STEPS[step].key === "tasks" && (
-          <StepTasks draft={draft} updateTask={updateTask} removeTask={removeTask} />
+          <StepTasks
+            draft={draft}
+            updateTask={updateTask}
+            removeTask={removeTask}
+            onReviewComplete={setTasksReviewComplete}
+          />
         )}
-        {STEPS[step].key === "3bAnalysis" && <Step3BAnalysis draft={draft} />}
       </div>
+
+      {saveError && (
+        <div className="mt-6 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {saveError}
+        </div>
+      )}
 
       <div className="mt-6 flex items-center justify-between">
         <button
@@ -165,16 +261,46 @@ function AssessmentWizard() {
         {step < STEPS.length - 1 ? (
           <button
             onClick={next}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
+            disabled={!canContinue || isSavingTasks}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Continue <ArrowRight className="h-4 w-4" />
+            {isSavingTasks ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Saving tasks...
+              </>
+            ) : currentStepKey === "competencies" && pipeline.isProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Mapping competencies...
+              </>
+            ) : (
+              <>
+                Continue <ArrowRight className="h-4 w-4" />
+              </>
+            )}
+          </button>
+        ) : tasksReviewComplete ? (
+          <button
+            type="button"
+            onClick={goTo3BAnalysis}
+            disabled={isSavingTasks}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand to-teal px-8 py-3 text-sm font-bold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:opacity-50"
+          >
+            {isSavingTasks ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Saving...
+              </>
+            ) : (
+              <>
+                View Your 3B Analysis <ArrowRight className="h-5 w-5" />
+              </>
+            )}
           </button>
         ) : (
           <button
-            onClick={handleSubmit}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated"
+            disabled
+            className="inline-flex items-center gap-2 rounded-xl bg-muted px-6 py-2.5 text-sm font-medium text-muted-foreground"
           >
-            View AI Readiness Score
+            Complete all task reviews to continue
           </button>
         )}
       </div>
@@ -312,10 +438,12 @@ function StepTasks({
   draft,
   updateTask,
   removeTask,
+  onReviewComplete,
 }: {
   draft: ReturnType<typeof useAssessment>["draft"];
   updateTask: ReturnType<typeof useAssessment>["updateTask"];
   removeTask: ReturnType<typeof useAssessment>["removeTask"];
+  onReviewComplete?: (complete: boolean) => void;
 }) {
   const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
   const [expandedId, setExpandedId] = useState<string | null>(selectedTasks[0]?.id || null);
@@ -353,6 +481,12 @@ function StepTasks({
   if (avgAiScore > 0 && avgAiScore <= 1) avgAiText = "Low";
   else if (avgAiScore > 1 && avgAiScore <= 2) avgAiText = "Medium";
   else if (avgAiScore > 2) avgAiText = "High";
+
+  useEffect(() => {
+    const allReviewed =
+      selectedTasks.length > 0 && tasksReviewed === selectedTasks.length;
+    onReviewComplete?.(allReviewed);
+  }, [selectedTasks.length, tasksReviewed, onReviewComplete]);
 
   return (
     <div>
@@ -552,7 +686,12 @@ function StepTasks({
 
             {tasksReviewed < selectedTasks.length && (
               <div className="rounded-2xl border border-amber/20 bg-amber/5 p-4 text-xs text-amber-900 dark:text-amber-200">
-                Please complete the review for all tasks to unlock maximum AI accuracy.
+                Complete the review for all tasks to unlock your 3B Analysis.
+              </div>
+            )}
+            {tasksReviewed === selectedTasks.length && selectedTasks.length > 0 && (
+              <div className="rounded-2xl border border-teal/20 bg-teal/5 p-4 text-xs text-teal-900 dark:text-teal-100">
+                All tasks reviewed — use the button below to view your 3B Analysis.
               </div>
             )}
           </div>
@@ -664,45 +803,64 @@ function StepGoals({
   );
 }
 
-function StepReview() {
-  const { draft } = useAssessment();
+function StepReview({
+  pipelineStatus,
+  isProcessing,
+}: {
+  pipelineStatus?: string;
+  isProcessing: boolean;
+}) {
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
 
   if (isLoading) {
-    return <div className="flex justify-center py-20 text-muted-foreground animate-pulse">Loading profile...</div>;
+    return (
+      <div className="flex justify-center py-20 text-muted-foreground animate-pulse">
+        Loading profile...
+      </div>
+    );
   }
 
   return (
     <div>
       <StepHeader
-        title="Review & submit"
-        description="Confirm everything looks right before we generate your Report."
+        title="Review your career profile"
+        description="Confirm your role context before we map competencies from your profile."
       />
+
+      {isProcessing && (
+        <div className="mb-6 flex items-center gap-3 rounded-2xl border border-primary/20 bg-brand/10 p-4">
+          <Loader2 className="h-5 w-5 shrink-0 animate-spin text-brand" />
+          <div>
+            <p className="text-sm font-semibold text-foreground">AI competency mapping in progress</p>
+            <p className="text-xs text-muted-foreground">
+              Status: {pipelineStatus ?? "STARTING"} — this usually takes 1–3 minutes. You can
+              continue to the next step once mapping completes.
+            </p>
+          </div>
+        </div>
+      )}
+
       <dl className="grid gap-4 md:grid-cols-2">
-        <ReviewRow label="Role" value={profile?.jobTitle || "—"} />
+        <ReviewRow label="Job title" value={profile?.jobTitle || "—"} />
         <ReviewRow label="Industry" value={profile?.industry || "—"} />
-        <ReviewRow label="Experience" value={profile?.experience || "—"} />
-        <ReviewRow label="AI usage today" value={profile?.aiFrequency || "—"} />
-        <ReviewRow label="Tools" value={profile?.aiTools?.length ? profile.aiTools.join(", ") : "—"} className="md:col-span-2" />
+        <ReviewRow label="Business function" value={profile?.businessFunction || "—"} />
+        <ReviewRow label="Domain" value={profile?.domain || "—"} />
+        <ReviewRow label="Specialization" value={profile?.specialization || "—"} />
+        <ReviewRow
+          label="Experience"
+          value={profile?.experience ? `${profile.experience} years` : "—"}
+        />
+        <ReviewRow label="Salary" value={profile?.salary ? `$${profile.salary}` : "—"} />
+        <ReviewRow label="AI usage" value={profile?.aiFrequency || "—"} />
+        <ReviewRow
+          label="AI tools"
+          value={profile?.aiTools?.length ? profile.aiTools.join(", ") : "—"}
+          className="md:col-span-2"
+        />
       </dl>
-      <div className="mt-6">
-        <ul className="space-y-2">
-          {draft.tasks.map((t) => (
-            <li
-              key={t.id}
-              className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2 text-sm"
-            >
-              <span className="truncate">{t.title}</span>
-              <span className="text-xs text-muted-foreground">
-                {t.hoursPerWeek}h · {t.complexity}/{t.creativity}/{t.humanTouch}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
@@ -743,107 +901,221 @@ function Success({ onContinue }: { onContinue: () => void }) {
   );
 }
 
-const MOCK_COMPETENCIES = {
-  Technical: [
-    "REST API Development",
-    "Node.js",
-    "Express.js",
-    "PostgreSQL",
-    "Authentication",
-    "System Design",
-    "Microservices",
-    "Docker",
-  ],
-  Business: [
-    "Requirement Gathering",
-    "Client Communication",
-    "Stakeholder Management",
-    "Healthcare Compliance",
-    "Estimation",
-  ],
-  Behavioral: [
-    "Leadership",
-    "Problem Solving",
-    "Critical Thinking",
-    "Decision Making",
-    "Mentoring",
-  ],
-};
 
 function StepCompetencies({
   draft,
   setDraft,
+  competencyMapping,
+  status,
+  pipelineProgress,
+  isProcessing,
+  isComplete,
+  isFailed,
+  profileStale,
+  pipelineError,
+  startError,
+  onRetry,
+  isRetrying,
 }: {
   draft: ReturnType<typeof useAssessment>["draft"];
   setDraft: ReturnType<typeof useAssessment>["setDraft"];
+  competencyMapping: CompetencyMappingOutput | null;
+  status?: string;
+  pipelineProgress: { completed: number; total: number; currentStage: string | null };
+  isProcessing: boolean;
+  isComplete: boolean;
+  isFailed: boolean;
+  profileStale?: boolean;
+  pipelineError: { message: string; failed_stage?: string | null } | null;
+  startError: Error | null;
+  onRetry: () => void;
+  isRetrying: boolean;
 }) {
-  const [expanded, setExpanded] = useState<string>("Technical");
-  const [customInput, setCustomInput] = useState<Record<string, string>>({
-    Technical: "",
-    Business: "",
-    Behavioral: "",
-  });
+  const [expanded, setExpanded] = useState<string>("");
 
-  // Default to selecting all mock competencies if none are selected yet
+  const competencies = competencyMapping?.competencies ?? [];
+  const grouped = useMemo(
+    () => groupCompetenciesByCategory(competencies),
+    [competencies],
+  );
+  const categories = useMemo(() => Object.keys(grouped), [grouped]);
+  const competencyNamesKey = useMemo(
+    () => competencies.map((c) => c.name).join("\0"),
+    [competencies],
+  );
+
   useEffect(() => {
-    if (!draft.competencies || draft.competencies.length === 0) {
-      const all = Object.values(MOCK_COMPETENCIES).flat();
-      setDraft({ competencies: all });
+    if (!competencyNamesKey) return;
+    setDraft({ competencies: competencyNamesKey.split("\0") });
+  }, [competencyNamesKey, setDraft]);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      setExpanded((prev) => prev || categories[0]);
     }
-  }, []);
+  }, [categories]);
 
-  const selected = new Set(draft.competencies || []);
-
-  function toggle(c: string) {
-    const s = new Set(selected);
-    if (s.has(c)) s.delete(c);
-    else s.add(c);
-    setDraft({ competencies: [...s] });
+  if (startError) {
+    return (
+      <div className="py-12 text-center">
+        <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
+        <h3 className="mt-4 font-semibold">Could not start assessment</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {(startError as Error).message || "Please complete your My Career profile first."}
+        </p>
+      </div>
+    );
   }
 
-  function addCustom(cat: string) {
-    const val = customInput[cat]?.trim();
-    if (!val) return;
-    const s = new Set(selected);
-    s.add(val);
-    setDraft({ competencies: [...s] });
-    setCustomInput((p) => ({ ...p, [cat]: "" }));
-    // Add to MOCK_COMPETENCIES locally so it shows up in this category
-    if (!MOCK_COMPETENCIES[cat as keyof typeof MOCK_COMPETENCIES].includes(val)) {
-      MOCK_COMPETENCIES[cat as keyof typeof MOCK_COMPETENCIES].push(val);
-    }
+  if (isFailed) {
+    return (
+      <div className="py-12 text-center">
+        <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
+        <h3 className="mt-4 font-semibold">Competency mapping failed</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {pipelineError?.message ?? "The AI pipeline encountered an error."}
+          {pipelineError?.failed_stage && (
+            <span className="block mt-1">Failed at: {pipelineError.failed_stage}</span>
+          )}
+        </p>
+        <button
+          onClick={onRetry}
+          disabled={isRetrying}
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+        >
+          {isRetrying ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <RefreshCw className="h-4 w-4" />
+          )}
+          Retry mapping
+        </button>
+      </div>
+    );
   }
 
-  const counts = {
-    Technical: MOCK_COMPETENCIES.Technical.filter((c) => selected.has(c)).length,
-    Business: MOCK_COMPETENCIES.Business.filter((c) => selected.has(c)).length,
-    Behavioral: MOCK_COMPETENCIES.Behavioral.filter((c) => selected.has(c)).length,
-    Total: selected.size,
-  };
+  if (isComplete && !competencyMapping) {
+    return (
+      <div className="py-12 text-center">
+        <AlertTriangle className="mx-auto h-10 w-10 text-amber-500" />
+        <h3 className="mt-4 font-semibold">Mapping completed without results</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The pipeline finished but no competencies were returned. Try running the mapping again.
+        </p>
+        <button
+          onClick={onRetry}
+          disabled={isRetrying}
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+        >
+          {isRetrying ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+          Retry mapping
+        </button>
+      </div>
+    );
+  }
+
+  if (isProcessing) {
+    const stageLabel = pipelineProgress.currentStage
+      ? pipelineProgress.currentStage.replace(/_/g, " ")
+      : "initializing";
+    const progressPct = Math.round(
+      (pipelineProgress.completed / pipelineProgress.total) * 100,
+    );
+
+    return (
+      <div className="py-16 text-center">
+        <Loader2 className="mx-auto h-12 w-12 animate-spin text-brand" />
+        <h3 className="mt-6 font-display text-xl font-bold">
+          {profileStale ? "Updating competency mapping" : "Mapping your competencies"}
+        </h3>
+        <p className="mt-2 max-w-md mx-auto text-sm text-muted-foreground">
+          {profileStale
+            ? "Your career profile changed — we're regenerating competencies from your latest profile."
+            : "Running AI analysis on your role profile. This typically takes 1-2 minutes across 5 stages."}
+        </p>
+
+        <div className="mx-auto mt-8 max-w-sm">
+          <div className="mb-2 flex justify-between text-xs font-medium text-muted-foreground">
+            <span>Stage {pipelineProgress.completed + 1} of {pipelineProgress.total}</span>
+            <span>{progressPct}%</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-brand transition-all duration-500"
+              style={{ width: `${Math.max(progressPct, 5)}%` }}
+            />
+          </div>
+          <p className="mt-3 text-xs capitalize text-muted-foreground">
+            Current: {stageLabel}
+          </p>
+          <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            Status: {status ?? "STARTING"}
+          </p>
+        </div>
+
+        {pipelineProgress.completed === 0 && status === "PROCESSING" && (
+          <p className="mt-6 text-xs text-muted-foreground">
+            If this takes longer than 8 minutes, use Retry below.
+          </p>
+        )}
+
+        {pipelineProgress.completed >= 1 && (
+          <button
+            onClick={onRetry}
+            disabled={isRetrying}
+            className="mt-8 inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
+          >
+            {isRetrying ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Stuck? Retry mapping
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  const counts = categories.reduce<Record<string, number>>((acc, cat) => {
+    acc[cat] = grouped[cat].length;
+    return acc;
+  }, {});
+  const totalCount = competencies.length;
 
   return (
     <div>
       <StepHeader
         title="Competency Mapping"
-        description="We've identified the key competencies expected for your current role. Review them before continuing."
+        description="AI-identified competencies for your role based on your career profile."
       />
 
+      {competencyMapping.profession_summary && (
+        <div className="mb-8 rounded-2xl border border-primary/20 bg-brand/10 p-5">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+            Profession summary
+          </h3>
+          <p className="text-sm leading-relaxed text-foreground">
+            {competencyMapping.profession_summary}
+          </p>
+        </div>
+      )}
+
       <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-brand p-4 text-foreground">
+        <Sparkles className="h-5 w-5 shrink-0 mt-0.5" />
         <div className="flex-1">
-          <h3 className="font-semibold">AI Generated</h3>
+          <h3 className="font-semibold">AI Generated from your profile</h3>
           <p className="text-sm opacity-80">
-            We've auto-generated these tasks based on industry benchmarks for your role.
+            Competencies mapped for your job title, industry, business function, domain, and
+            specialization.
           </p>
         </div>
         <div className="text-right">
-          <div className="text-sm font-bold">94%</div>
-          <div className="text-[10px] uppercase tracking-wider opacity-80">Confidence</div>
+          <div className="text-sm font-bold">{totalCount}</div>
+          <div className="text-[10px] uppercase tracking-wider opacity-80">Competencies</div>
         </div>
       </div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex-1 space-y-4">
-          {Object.entries(MOCK_COMPETENCIES).map(([cat, list]) => {
+          {categories.map((cat) => {
+            const list = grouped[cat];
             const isExpanded = expanded === cat;
             return (
               <div
@@ -854,7 +1126,8 @@ function StepCompetencies({
                   onClick={() => setExpanded(isExpanded ? "" : cat)}
                   className="flex w-full items-center justify-between bg-muted/30 px-6 py-4 transition-colors hover:bg-muted/50"
                 >
-                  <span className="font-display text-lg font-semibold">{cat} Competencies</span>
+                  <span className="font-display text-lg font-semibold">{cat}</span>
+                  <span className="mr-2 text-sm text-muted-foreground">{list.length}</span>
                   <ChevronDown
                     className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
                   />
@@ -867,51 +1140,10 @@ function StepCompetencies({
                       exit={{ height: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-6">
-                        <div className="flex flex-wrap gap-2">
-                          {list.map((c) => {
-                            const active = selected.has(c);
-                            const confidence = ["High", "Medium", "Low"][
-                              Math.floor(Math.random() * 3)
-                            ];
-                            return (
-                              <button
-                                key={c}
-                                onClick={() => toggle(c)}
-                                className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                                  active
-                                    ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                                    : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                                }`}
-                              >
-                                {c}
-                                {active && (
-                                  <span className="ml-1 inline-flex items-center rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                                    {confidence}
-                                  </span>
-                                )}
-                              </button>
-                            );
-                          })}
-                        </div>
-                        <div className="mt-4 flex max-w-sm items-center gap-2">
-                          <input
-                            type="text"
-                            placeholder="Add custom competency..."
-                            value={customInput[cat]}
-                            onChange={(e) =>
-                              setCustomInput((p) => ({ ...p, [cat]: e.target.value }))
-                            }
-                            onKeyDown={(e) => e.key === "Enter" && addCustom(cat)}
-                            className="flex-1 rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
-                          />
-                          <button
-                            onClick={() => addCustom(cat)}
-                            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90"
-                          >
-                            <Plus className="h-5 w-5" />
-                          </button>
-                        </div>
+                      <div className="p-6 space-y-3">
+                        {list.map((c) => (
+                          <CompetencyCard key={c.name} competency={c} />
+                        ))}
                       </div>
                     </motion.div>
                   )}
@@ -925,747 +1157,78 @@ function StepCompetencies({
           <div className="sticky top-6 rounded-2xl border border-border bg-background p-6 shadow-soft">
             <h3 className="mb-4 font-display text-lg font-bold">Summary</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Technical</span>
-                <span className="font-semibold text-foreground">{counts.Technical}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Business</span>
-                <span className="font-semibold text-foreground">{counts.Business}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Behavioral</span>
-                <span className="font-semibold text-foreground">{counts.Behavioral}</span>
-              </div>
+              {categories.map((cat) => (
+                <div key={cat} className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{cat}</span>
+                  <span className="font-semibold text-foreground">{counts[cat]}</span>
+                </div>
+              ))}
               <div className="my-4 h-px w-full bg-border" />
               <div className="flex items-center justify-between text-base font-bold">
                 <span className="text-foreground">Total</span>
-                <span className="text-brand">{counts.Total}</span>
+                <span className="text-brand">{totalCount}</span>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const MOCK_TASKS = [
-  {
-    title: "Build REST APIs",
-    category: "Development",
-    description: "Develop and maintain scalable RESTful API endpoints.",
-    confidence: 95,
-    hoursPerWeek: 18,
-  },
-  {
-    title: "Develop Backend Services",
-    category: "Development",
-    description: "Create robust backend microservices.",
-    confidence: 88,
-    hoursPerWeek: 12,
-  },
-  {
-    title: "Write Unit Tests",
-    category: "Development",
-    description: "Ensure code quality through comprehensive testing.",
-    confidence: 90,
-    hoursPerWeek: 5,
-  },
-  {
-    title: "Design APIs",
-    category: "Architecture",
-    description: "Architect API contracts and data models.",
-    confidence: 92,
-    hoursPerWeek: 4,
-  },
-  {
-    title: "Database Design",
-    category: "Architecture",
-    description: "Design schema and optimize queries.",
-    confidence: 85,
-    hoursPerWeek: 3,
-  },
-  {
-    title: "Client Meetings",
-    category: "Collaboration",
-    description: "Meet with stakeholders to discuss requirements.",
-    confidence: 80,
-    hoursPerWeek: 4,
-  },
-  {
-    title: "Sprint Planning",
-    category: "Collaboration",
-    description: "Plan and estimate tasks for the sprint.",
-    confidence: 85,
-    hoursPerWeek: 2,
-  },
-  {
-    title: "Deployment",
-    category: "Operations",
-    description: "Manage release pipelines and production deployments.",
-    confidence: 75,
-    hoursPerWeek: 3,
-  },
-];
-
-const SUGGESTED_MISSING = [
-  {
-    title: "Documentation",
-    category: "Development",
-    description: "Write and maintain technical docs.",
-    confidence: 70,
-    hoursPerWeek: 2,
-  },
-  {
-    title: "Mentoring",
-    category: "Collaboration",
-    description: "Mentor junior team members.",
-    confidence: 60,
-    hoursPerWeek: 3,
-  },
-  {
-    title: "Code Reviews",
-    category: "Development",
-    description: "Review peer code changes.",
-    confidence: 85,
-    hoursPerWeek: 5,
-  },
-];
-
-function StepTaskGenerator({
-  draft,
-  setDraft,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  setDraft: ReturnType<typeof useAssessment>["setDraft"];
-}) {
-  const [isAdding, setIsAdding] = useState(false);
-  const [newTask, setNewTask] = useState({
-    title: "",
-    category: "Development",
-    description: "",
-    hoursPerWeek: 5,
-  });
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editTitle, setEditTitle] = useState("");
-
-  useEffect(() => {
-    if (draft.tasks.length === 0) {
-      const initialTasks = MOCK_TASKS.map((t) => ({
-        id: crypto.randomUUID(),
-        title: t.title,
-        category: t.category,
-        description: t.description,
-        hoursPerWeek: t.hoursPerWeek,
-        confidence: t.confidence,
-        selected: true,
-        complexity: "medium" as const,
-        creativity: "medium" as const,
-        humanTouch: "medium" as const,
-      }));
-      setDraft({ tasks: initialTasks });
-    }
-  }, []);
-
-  function toggleTask(id: string) {
-    setDraft({
-      tasks: draft.tasks.map((t) => (t.id === id ? { ...t, selected: !(t.selected ?? true) } : t)),
-    });
-  }
-
-  function deleteTask(id: string) {
-    setDraft({ tasks: draft.tasks.filter((t) => t.id !== id) });
-  }
-
-  function startEdit(t: any) {
-    setEditingId(t.id);
-    setEditTitle(t.title);
-  }
-
-  function saveEdit(id: string) {
-    setDraft({
-      tasks: draft.tasks.map((t) => (t.id === id ? { ...t, title: editTitle } : t)),
-    });
-    setEditingId(null);
-  }
-
-  function handleAddCustom() {
-    if (!newTask.title.trim()) return;
-    setDraft({
-      tasks: [
-        ...draft.tasks,
-        {
-          id: crypto.randomUUID(),
-          title: newTask.title,
-          category: newTask.category,
-          description: newTask.description,
-          hoursPerWeek: newTask.hoursPerWeek,
-          selected: true,
-          complexity: "medium",
-          creativity: "medium",
-          humanTouch: "medium",
-        },
-      ],
-    });
-    setIsAdding(false);
-    setNewTask({ title: "", category: "Development", description: "", hoursPerWeek: 5 });
-  }
-
-  function addSuggested(s: (typeof SUGGESTED_MISSING)[0]) {
-    setDraft({
-      tasks: [
-        ...draft.tasks,
-        {
-          id: crypto.randomUUID(),
-          title: s.title,
-          category: s.category,
-          description: s.description,
-          hoursPerWeek: s.hoursPerWeek,
-          confidence: s.confidence,
-          selected: true,
-          complexity: "medium",
-          creativity: "medium",
-          humanTouch: "medium",
-        },
-      ],
-    });
-  }
-
-  const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
-  const totalHours = selectedTasks.reduce((acc, t) => acc + t.hoursPerWeek, 0);
-  const categoriesCovered = new Set(selectedTasks.map((t) => t.category || "Uncategorized")).size;
-
-  // Group tasks by category
-  const groupedTasks = draft.tasks.reduce(
-    (acc, t) => {
-      const cat = t.category || "Uncategorized";
-      if (!acc[cat]) acc[cat] = [];
-      acc[cat].push(t);
-      return acc;
-    },
-    {} as Record<string, typeof draft.tasks>,
-  );
-
-  return (
-    <div>
-      <StepHeader
-        title="Daily Work Profile"
-        description="Based on your career profile and competencies, we've identified the activities that likely occupy your working day."
-      />
-
-      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-brand p-4 text-foreground">
-        <div className="flex-1">
-          <h3 className="font-semibold">AI Generated</h3>
-          <p className="text-sm opacity-80">
-            We've auto-generated these tasks based on industry benchmarks for your role.
-          </p>
-        </div>
-        <div className="text-right">
-          <div className="text-sm font-bold">94%</div>
-          <div className="text-[10px] uppercase tracking-wider opacity-80">Confidence</div>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1 space-y-8">
-          {Object.entries(groupedTasks).map(([cat, tasks]) => (
-            <div key={cat}>
-              <h3 className="mb-4 font-display text-lg font-bold">{cat}</h3>
-              <div className="space-y-3">
-                {tasks.map((t) => {
-                  const isSelected = t.selected ?? true;
-                  const isEditing = editingId === t.id;
-                  return (
-                    <div
-                      key={t.id}
-                      className={`relative overflow-hidden rounded-xl border p-4 transition-all ${
-                        isSelected
-                          ? "border-primary/50 bg-primary/5 shadow-soft"
-                          : "border-border bg-background opacity-60"
-                      }`}
-                    >
-                      <div className="flex items-start gap-4">
-                        <button
-                          onClick={() => toggleTask(t.id)}
-                          className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-md border transition-colors ${
-                            isSelected
-                              ? "border-primary bg-primary text-primary-foreground"
-                              : "border-input bg-background"
-                          }`}
-                        >
-                          {isSelected && <CheckCircle2 className="h-3 w-3" />}
-                        </button>
-
-                        <div className="flex-1 min-w-0">
-                          {isEditing ? (
-                            <div className="flex items-center gap-2 mb-2">
-                              <input
-                                autoFocus
-                                value={editTitle}
-                                onChange={(e) => setEditTitle(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && saveEdit(t.id)}
-                                className="w-full rounded-md border border-input bg-background px-2 py-1 text-sm outline-none focus:border-primary"
-                              />
-                              <button
-                                onClick={() => saveEdit(t.id)}
-                                className="text-xs font-semibold text-primary"
-                              >
-                                Save
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold text-foreground truncate">{t.title}</h4>
-                              <button
-                                onClick={() => startEdit(t)}
-                                className="text-muted-foreground hover:text-foreground"
-                              >
-                                <Edit2 className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                          )}
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                            {t.description}
-                          </p>
-                        </div>
-
-                        <div className="shrink-0 text-right">
-                          <div className="text-sm font-semibold text-foreground">
-                            {t.hoursPerWeek} hrs
-                          </div>
-                          {t.confidence && (
-                            <div className="mt-1 inline-flex items-center rounded-full bg-teal/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-teal">
-                              {t.confidence}% Conf
-                            </div>
-                          )}
-                        </div>
-
-                        <button
-                          onClick={() => deleteTask(t.id)}
-                          className="ml-2 text-muted-foreground hover:text-danger"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-
-          {isAdding ? (
-            <div className="rounded-2xl border border-border bg-muted/30 p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-semibold">Add Custom Task</h4>
-                <button
-                  onClick={() => setIsAdding(false)}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium">Task Name</span>
-                  <input
-                    type="text"
-                    value={newTask.title}
-                    onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                    className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium">Category</span>
-                  <input
-                    type="text"
-                    value={newTask.category}
-                    onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
-                    className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </label>
-                <label className="block md:col-span-2">
-                  <span className="mb-1 block text-xs font-medium">Description</span>
-                  <input
-                    type="text"
-                    value={newTask.description}
-                    onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                    className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs font-medium">Weekly Hours</span>
-                  <input
-                    type="number"
-                    min={1}
-                    value={newTask.hoursPerWeek}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, hoursPerWeek: Number(e.target.value) })
-                    }
-                    className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </label>
-              </div>
-              <button
-                onClick={handleAddCustom}
-                className="mt-4 w-full rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-              >
-                Add Task
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setIsAdding(true)}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-muted/20 py-4 text-sm font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-            >
-              <Plus className="h-4 w-4" /> Add Task
-            </button>
-          )}
-
-          <div className="pt-8">
-            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-              Suggested Missing Tasks
-            </h3>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {SUGGESTED_MISSING.filter((s) => !draft.tasks.some((t) => t.title === s.title)).map(
-                (s) => (
-                  <button
-                    key={s.title}
-                    onClick={() => addSuggested(s)}
-                    className="group flex items-center justify-between rounded-xl border border-border bg-background p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5"
-                  >
-                    <div>
-                      <div className="font-semibold text-foreground group-hover:text-primary">
-                        {s.title}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {s.category} · {s.hoursPerWeek} hrs
-                      </div>
-                    </div>
-                    <Plus className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full shrink-0 lg:w-72">
-          <div className="sticky top-6 space-y-4">
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-              <h3 className="mb-4 font-display text-lg font-bold">Statistics</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Total Tasks</span>
-                  <span className="font-semibold text-foreground">{draft.tasks.length}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Selected Tasks</span>
-                  <span className="font-semibold text-foreground">{selectedTasks.length}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Categories Covered</span>
-                  <span className="font-semibold text-foreground">{categoriesCovered}</span>
-                </div>
-                <div className="my-4 h-px w-full bg-border" />
-                <div className="flex items-center justify-between text-base font-bold">
-                  <span className="text-foreground">Weekly Hours</span>
-                  <span className="text-brand">{totalHours}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-teal/20 bg-teal/5 p-5 text-sm text-teal-950 dark:text-teal-100">
-              <h4 className="mb-2 font-bold flex items-center gap-1.5">
-                <Bot className="h-4 w-4" /> Next Step
-              </h4>
-              <p className="opacity-90">
-                The selected tasks will be analyzed in the next step using the CareerShift 3B
-                Framework (BUILD • BOT • BLEND) to determine automation opportunities, AI
-                augmentation potential, and long-term career impact.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CategorySection({
-  title,
-  category,
-  count,
-  description,
-  tasks,
-  isExpanded,
-  onToggle,
-}: {
-  title: string;
-  category: "BUILD" | "BOT" | "BLEND";
-  count: number;
-  description: string;
-  tasks: any[];
-  isExpanded: boolean;
-  onToggle: () => void;
-}) {
-  const color =
-    category === "BUILD"
-      ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/5"
-      : category === "BOT"
-        ? "text-rose-500 border-rose-500/20 bg-rose-500/5"
-        : "text-blue-500 border-blue-500/20 bg-blue-500/5";
-
-  return (
-    <div
-      className={`overflow-hidden rounded-xl border transition-colors ${isExpanded ? color : "border-border bg-background shadow-sm"}`}
-    >
-      <button onClick={onToggle} className="flex w-full items-center justify-between p-4 text-left">
-        <div className="flex items-center gap-3">
-          <div className="font-display text-lg font-bold">
-            {title} <span className="ml-2 text-xs font-normal opacity-70">({count} Tasks)</span>
-          </div>
-        </div>
-        <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-      </button>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="border-t border-current/10"
-          >
-            <div className="p-4 text-sm leading-relaxed opacity-90 border-b border-current/10">
-              {description}
-            </div>
-
-            <div className="p-4 space-y-3 bg-background/50">
-              {tasks.map((t) => (
-                <div
-                  key={t.id}
-                  className="rounded-lg border border-border bg-background p-4 shadow-sm"
-                >
-                  <h5 className="font-semibold text-foreground mb-1">{t.title}</h5>
-                  <p className="text-xs text-muted-foreground mb-3">{t.reason}</p>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-muted-foreground">Auto Potential</span>
-                      <span className="font-bold text-foreground">{t.autoPotential}%</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-muted-foreground">Risk Level</span>
-                      <span
-                        className={`font-bold ${t.riskLevel === "High" ? "text-rose-500" : "text-emerald-500"}`}
-                      >
-                        {t.riskLevel}
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-muted-foreground">Future Imp.</span>
-                      <span className="font-bold text-foreground">{t.futureImp}</span>
-                    </div>
-                    <div className="flex flex-col flex-1">
-                      <span className="font-medium text-muted-foreground mb-1">
-                        Recommended Tools
-                      </span>
-                      <div className="flex gap-1.5 flex-wrap">
-                        {t.tools.map((tool: string) => (
-                          <span
-                            key={tool}
-                            className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold"
-                          >
-                            {tool}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function Step3BAnalysis({ draft }: { draft: ReturnType<typeof useAssessment>["draft"] }) {
-  const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
-
-  const analyzedTasks = useMemo(() => {
-    return selectedTasks.map((t, idx) => {
-      let category: "BUILD" | "BOT" | "BLEND" = "BLEND";
-      let reason = "AI accelerates this workflow, but human judgment remains essential.";
-      let autoPotential = 50;
-      let riskLevel: "Low" | "Medium" | "High" = "Medium";
-      let futureImp: "Low" | "Medium" | "High" = "High";
-
-      if (idx % 3 === 0) {
-        category = "BUILD";
-        reason = "Human-first work requiring creativity, strategy, leadership, or deep expertise.";
-        autoPotential = 15;
-        riskLevel = "Low";
-        futureImp = "High";
-      } else if (idx % 3 === 1) {
-        category = "BOT";
-        reason = "Highly automatable work that can largely be delegated to AI.";
-        autoPotential = 85;
-        riskLevel = "High";
-        futureImp = "Low";
-      }
-
-      return {
-        ...t,
-        category3B: category,
-        reason,
-        autoPotential,
-        riskLevel,
-        futureImp,
-        tools: ["ChatGPT", "Copilot", "Claude"].slice(0, (idx % 3) + 1),
-      };
-    });
-  }, [selectedTasks]);
-
-  const buildTasks = analyzedTasks.filter((t) => t.category3B === "BUILD");
-  const botTasks = analyzedTasks.filter((t) => t.category3B === "BOT");
-  const blendTasks = analyzedTasks.filter((t) => t.category3B === "BLEND");
-
-  const totalTasks = analyzedTasks.length || 1;
-  const autoOpp = Math.round(
-    analyzedTasks.reduce((acc, t) => acc + t.autoPotential, 0) / totalTasks,
-  );
-
-  const [expandedSection, setExpandedSection] = useState<"BUILD" | "BOT" | "BLEND" | null>("BUILD");
-
-  return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-        <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight">
-            3B Career Intelligence Analysis
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1 max-w-xl">
-            We've analyzed your daily responsibilities to understand where AI will enhance,
-            automate, or amplify your work.
-          </p>
-        </div>
-
-        <div className="inline-flex items-center gap-3 rounded-lg border border-primary/20 bg-brand px-4 py-2 shadow-sm shrink-0">
-          <div className="text-sm">
-            <span className="font-semibold text-primary-foreground">Analysis Complete</span>
-            <span className="mx-2 text-primary-foreground/30">|</span>
-            <span className="text-primary-foreground/80">94% Confidence</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-xl border border-border bg-background p-5 shadow-sm">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
-          Task Distribution Overview
-        </h3>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div>
-            <div className="text-xs font-semibold text-muted-foreground">BUILD</div>
-            <div className="font-display text-2xl font-bold text-emerald-500">
-              {buildTasks.length} <span className="text-xs font-medium opacity-70">Tasks</span>
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-muted-foreground">BOT</div>
-            <div className="font-display text-2xl font-bold text-rose-500">
-              {botTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span>
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-muted-foreground">BLEND</div>
-            <div className="font-display text-2xl font-bold text-blue-500">
-              {blendTasks.length} <span className="text-sm font-medium opacity-70">Tasks</span>
-            </div>
-          </div>
-          <div className="border-l border-border pl-4">
-            <div className="text-xs font-semibold text-muted-foreground">Automation Opp.</div>
-            <div className="font-display text-2xl font-bold text-primary">{autoOpp}%</div>
-          </div>
-        </div>
-
-        <div className="flex h-4 w-full overflow-hidden rounded-full border border-border/50">
-          <div
-            style={{ width: `${(buildTasks.length / totalTasks) * 100}%` }}
-            className="bg-emerald-500 transition-all duration-1000"
-            title={`BUILD: ${buildTasks.length}`}
-          />
-          <div
-            style={{ width: `${(blendTasks.length / totalTasks) * 100}%` }}
-            className="bg-blue-500 transition-all duration-1000"
-            title={`BLEND: ${blendTasks.length}`}
-          />
-          <div
-            style={{ width: `${(botTasks.length / totalTasks) * 100}%` }}
-            className="bg-rose-500 transition-all duration-1000"
-            title={`BOT: ${botTasks.length}`}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <CategorySection
-          title="BUILD Tasks"
-          category="BUILD"
-          count={buildTasks.length}
-          description="These tasks represent human-first work requiring creativity, strategy, leadership, or deep expertise. AI cannot replace these activities in the near future."
-          tasks={buildTasks}
-          isExpanded={expandedSection === "BUILD"}
-          onToggle={() => setExpandedSection(expandedSection === "BUILD" ? null : "BUILD")}
-        />
-        <CategorySection
-          title="BOT Tasks"
-          category="BOT"
-          count={botTasks.length}
-          description="Highly automatable work that can largely be delegated to AI. Focus on mastering automation tools for these tasks to free up your time."
-          tasks={botTasks}
-          isExpanded={expandedSection === "BOT"}
-          onToggle={() => setExpandedSection(expandedSection === "BOT" ? null : "BOT")}
-        />
-        <CategorySection
-          title="BLEND Tasks"
-          category="BLEND"
-          count={blendTasks.length}
-          description="Work where AI acts as a co-pilot, improving your productivity while human judgment remains essential. These tasks require a balance of tool proficiency and expertise."
-          tasks={blendTasks}
-          isExpanded={expandedSection === "BLEND"}
-          onToggle={() => setExpandedSection(expandedSection === "BLEND" ? null : "BLEND")}
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-primary/20 bg-brand p-5 shadow-sm">
-          <h3 className="mb-2 flex items-center gap-2 font-display text-base font-bold text-primary-foreground">
-            AI Recommendations
-          </h3>
-          <p className="text-sm leading-relaxed text-primary-foreground/90">
-            Focus on strengthening <strong className="font-semibold">BUILD</strong> skills. Use AI
-            aggressively to automate <strong className="font-semibold">BOT</strong> tasks and
-            improve efficiency in <strong className="font-semibold">BLEND</strong> activities.
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-border bg-emerald-500 p-5 shadow-sm flex items-start gap-4">
-          <div>
-            <h3 className="font-display text-base font-bold mb-1 text-primary-foreground">
-              Up Next: AI Readiness
-            </h3>
-            <p className="text-sm text-primary-foreground/90 leading-relaxed">
-              We'll measure your overall AI Readiness and identify your biggest opportunities for
-              career growth.
+            <p className="mt-4 text-xs text-muted-foreground">
+              Review these competencies before continuing to task analysis.
             </p>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CompetencyCard({ competency }: { competency: CompetencyItem }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-xl border border-border bg-muted/20 p-4">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-start justify-between gap-3 text-left"
+      >
+        <div>
+          <div className="font-medium text-foreground">{competency.name}</div>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {competency.importance && (
+              <span className="inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                {competency.importance}
+              </span>
+            )}
+            {competency.expected_level && (
+              <span className="inline-flex rounded-full bg-teal/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-teal">
+                {competency.expected_level}
+              </span>
+            )}
+          </div>
+        </div>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="mt-3 space-y-2 text-sm text-muted-foreground border-t border-border pt-3">
+          {competency.what_it_is && (
+            <p>
+              <span className="font-semibold text-foreground">What: </span>
+              {competency.what_it_is}
+            </p>
+          )}
+          {competency.why_it_matters && (
+            <p>
+              <span className="font-semibold text-foreground">Why: </span>
+              {competency.why_it_matters}
+            </p>
+          )}
+          {competency.professional_context && (
+            <p>
+              <span className="font-semibold text-foreground">Context: </span>
+              {competency.professional_context}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -25,7 +25,17 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(data?.detail || data?.message || "An error occurred");
+    const detail = data?.detail;
+    const backendErrors = Array.isArray(data?.errors)
+      ? data.errors.filter(Boolean).join(", ")
+      : "";
+    const message =
+      typeof detail === "string"
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((e: { msg?: string }) => e.msg).join(", ")
+          : backendErrors || data?.message || "An error occurred";
+    throw new Error(message);
   }
 
   return data;
