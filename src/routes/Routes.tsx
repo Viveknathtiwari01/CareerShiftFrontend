@@ -15,6 +15,7 @@ import MyProfile from "../pages/my-career/profile";
 import AIReadiness from "../pages/ai-readiness";
 import CareerIdentity from "../pages/career-identity";
 import Workshops from "../pages/workshops";
+import ThreeBAnalysisPage from "../pages/three-b-analysis";
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
       <Route element={<AuthenticatedLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/assessment" element={<Assessment />} />
+        <Route path="/3b-analysis" element={<ThreeBAnalysisPage />} />
         <Route path="/history" element={<History />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/onboarding" element={<Onboarding />} />

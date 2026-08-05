@@ -131,7 +131,7 @@ export default function MyCareerProfile() {
             <h1 className="text-3xl font-bold tracking-tight">Your Professional Profile</h1>
             <p className="text-muted-foreground mt-1">Manage your career identity and skills.</p>
           </div>
-          <Button onClick={() => navigate("/assessment")} className="shrink-0">
+          <Button onClick={() => navigate("/assessment", { state: { openWizard: true } })} className="shrink-0">
             Start Assessment
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>

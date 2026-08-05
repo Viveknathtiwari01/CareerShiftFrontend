@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
   BarChart,
@@ -16,16 +17,93 @@ import {
   Map,
   PlayCircle,
   Sparkles,
+  Loader2,
 } from "lucide-react";
 import AssessmentWizard from "@/components/AssessmentWizard";
 import { useAssessment } from "@/store/mock-store";
+import { getCurrentAssessment, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
+import { getProfileStatus } from "@/api/profile";
 
 export default function AssessmentPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [view, setView] = useState<"dashboard" | "wizard">("dashboard");
+  const [wizardKey, setWizardKey] = useState(0);
+  const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
+  const [wizardLoading, setWizardLoading] = useState(false);
   const { draft, submitted } = useAssessment();
 
+  const { data: profileStatus, isLoading: profileLoading } = useQuery({
+    queryKey: ["profile-status"],
+    queryFn: getProfileStatus,
+  });
+
+  const profileComplete = profileStatus?.is_completed ?? false;
+
+  const { data: currentAssessment } = useQuery({
+    queryKey: ["assessment-current"],
+    queryFn: getCurrentAssessment,
+    enabled: profileComplete && view === "dashboard",
+  });
+
+  const hasSavedAssessment =
+    currentAssessment?.reused_existing === true &&
+    currentAssessment?.status === "COMPLETED";
+
+  useEffect(() => {
+    if (!profileComplete || profileLoading) return;
+    if (location.state?.openWizard) {
+      navigate("/assessment", { replace: true, state: {} });
+      setPrefetchedSession(null);
+      setView("wizard");
+    }
+  }, [profileComplete, profileLoading, location.state, navigate]);
+
+  async function openWizard(fresh = false) {
+    if (!profileComplete) {
+      navigate("/my-profile");
+      return;
+    }
+
+    if (fresh) {
+      setWizardLoading(true);
+      try {
+        const result = await startAssessment({ force: true });
+        sessionStorage.setItem("careershift.assessment.active", result.assessment_id);
+        setPrefetchedSession(result);
+        setWizardKey((k) => k + 1);
+        setView("wizard");
+      } catch (err) {
+        console.error("Failed to start new assessment", err);
+      } finally {
+        setWizardLoading(false);
+      }
+      return;
+    }
+
+    setPrefetchedSession(null);
+    setView("wizard");
+  }
+
+  function handleRegenerateFromScratch() {
+    const confirmed = window.confirm(
+      "Regenerate from scratch? This runs a new AI competency analysis and replaces your current task list. Your profile must be up to date.",
+    );
+    if (confirmed) void openWizard(true);
+  }
+
+  if (profileLoading || wizardLoading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-brand" />
+      </div>
+    );
+  }
+
   if (view === "wizard") {
-    return <AssessmentWizard />;
+    return (
+      <AssessmentWizard key={wizardKey} prefetchedSession={prefetchedSession} />
+    );
   }
 
   const hasDraft = draft.tasks.length > 0 || draft.role !== "";
@@ -50,18 +128,32 @@ export default function AssessmentPage() {
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
+          {!profileComplete && (
+            <Link
+              to="/my-profile"
+              className="text-sm font-medium text-brand hover:underline"
+            >
+              Complete My Career profile first
+            </Link>
+          )}
+          {hasSavedAssessment && (
+            <button
+              type="button"
+              onClick={handleRegenerateFromScratch}
+              disabled={!profileComplete || wizardLoading}
+              className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+            >
+              Regenerate from scratch
+            </button>
+          )}
           <button
-            disabled={!hasDraft}
-            onClick={() => setView("wizard")}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-muted disabled:opacity-50"
+            type="button"
+            onClick={() => openWizard(false)}
+            disabled={!profileComplete || wizardLoading}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Continue Draft
-          </button>
-          <button
-            onClick={() => setView("wizard")}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
-          >
-            Start New Assessment <ArrowRight className="h-4 w-4" />
+            {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </motion.div>
@@ -149,10 +241,11 @@ export default function AssessmentPage() {
                 </div>
               </div>
               <button
-                onClick={() => setView("wizard")}
+                type="button"
+                onClick={() => openWizard(false)}
                 className="mt-6 w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
               >
-                Start Assessment
+                {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
               </button>
             </div>
           </div>
@@ -442,10 +535,12 @@ export default function AssessmentPage() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button
-              onClick={() => setView("wizard")}
+              type="button"
+              onClick={() => openWizard(false)}
               className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-primary shadow-elevated transition-transform hover:scale-[1.02]"
             >
-              Start Assessment <ArrowRight className="h-4 w-4" />
+              {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
+              <ArrowRight className="h-4 w-4" />
             </button>
             <Link
               to="/dashboard"
