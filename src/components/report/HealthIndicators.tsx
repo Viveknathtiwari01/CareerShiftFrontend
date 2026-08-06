@@ -1,15 +1,78 @@
 import { motion } from "framer-motion";
-import { Activity, Brain, ShieldCheck, Zap, Briefcase, Cpu, ArrowDown } from "lucide-react";
+import { Activity, Brain, ShieldCheck, Zap, Briefcase, Cpu, ArrowDown, type LucideIcon } from "lucide-react";
+import type { AIReadinessResult } from "@/api/readiness";
 
-export function HealthIndicators() {
-  const kpis = [
-    { label: "AI Adoption", value: "High", icon: Zap, color: "text-brand" },
-    { label: "Learning Velocity", value: "Medium", icon: Brain, color: "text-primary" },
-    { label: "Automation Readiness", value: "Good", icon: ShieldCheck, color: "text-primary" },
-    { label: "Leadership", value: "Emerging", icon: Briefcase, color: "text-primary" },
-    { label: "Technical Depth", value: "Expert", icon: Cpu, color: "text-primary" },
-    { label: "Business Acumen", value: "Medium", icon: Activity, color: "text-primary" },
+function scoreToLabel(score: number): string {
+  if (score >= 75) return "High";
+  if (score >= 50) return "Good";
+  if (score >= 35) return "Medium";
+  return "Emerging";
+}
+
+export function HealthIndicators({
+  readiness,
+  profile,
+}: {
+  readiness: AIReadinessResult | null;
+  profile: { jobTitle?: string; experience?: string } | null;
+}) {
+  const dimensionMap = Object.fromEntries(
+    (readiness?.dimensions ?? []).map((d) => [d.subject, d.score]),
+  );
+
+  const factorMap = Object.fromEntries(
+    (readiness?.factors ?? []).map((f) => [f.key, f.score]),
+  );
+
+  const kpis: { label: string; value: string; icon: LucideIcon; color: string }[] = readiness
+    ? [
+        {
+          label: "AI Adoption",
+          value: scoreToLabel(factorMap.adoption ?? 0),
+          icon: Zap,
+          color: "text-brand",
+        },
+        {
+          label: "Learning Readiness",
+          value: scoreToLabel(dimensionMap["Learning Readiness"] ?? 0),
+          icon: Brain,
+          color: "text-primary",
+        },
+        {
+          label: "Automation Ready",
+          value: scoreToLabel(factorMap.automation ?? 0),
+          icon: ShieldCheck,
+          color: "text-primary",
+        },
+        {
+          label: "Human Edge",
+          value: scoreToLabel(factorMap.build_strength ?? 0),
+          icon: Briefcase,
+          color: "text-primary",
+        },
+        {
+          label: "BLEND Fluency",
+          value: scoreToLabel(factorMap.blend_fluency ?? 0),
+          icon: Cpu,
+          color: "text-primary",
+        },
+        {
+          label: "Overall Health",
+          value: readiness.tier_label,
+          icon: Activity,
+          color: "text-brand",
+        },
+      ]
+    : [];
+
+  const timeline = [
+    { label: "Today", role: profile?.jobTitle || "Current role", active: true },
+    { label: "Next", role: "AI-Augmented Professional", active: false },
+    { label: "Growth", role: readiness?.career_opportunity ?? "Specialist path", active: false },
+    { label: "Future", role: "Future-ready career", active: false },
   ];
+
+  if (!readiness) return null;
 
   return (
     <div className="mt-16 space-y-12">
@@ -27,7 +90,7 @@ export function HealthIndicators() {
               className="rounded-2xl border border-border bg-background p-5 shadow-sm text-center flex flex-col items-center justify-center"
             >
               <kpi.icon className={`h-6 w-6 mb-3 ${kpi.color}`} />
-              <div className="text-xl font-base mb-1">{kpi.value}</div>
+              <div className="text-lg font-semibold mb-1 leading-tight">{kpi.value}</div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                 {kpi.label}
               </div>
@@ -37,17 +100,9 @@ export function HealthIndicators() {
       </div>
 
       <div className="border-t border-border pt-12 pb-8">
-        <h3 className="mb-10 font-display text-2xl font-bold text-center">
-          Career Progress Timeline
-        </h3>
+        <h3 className="mb-10 font-display text-2xl font-bold text-center">Career Progress Timeline</h3>
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
-          {[
-            { label: "Today", role: "Senior Backend Engineer", active: true },
-            { label: "Step 1", role: "AI-Augmented Professional", active: false },
-            { label: "Step 2", role: "Senior Specialist", active: false },
-            { label: "Step 3", role: "Leadership Role", active: false },
-            { label: "Future", role: "Future AI Career", active: false },
-          ].map((node, i, arr) => (
+          {timeline.map((node, i, arr) => (
             <div
               key={node.label}
               className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto"
@@ -59,7 +114,7 @@ export function HealthIndicators() {
                   {node.label}
                 </span>
                 <span
-                  className={`font-base text-sm md:text-base px-6 py-4 rounded-2xl border ${node.active ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105" : "bg-background border-border text-foreground"}`}
+                  className={`font-base text-sm md:text-base px-6 py-4 rounded-2xl border max-w-[200px] ${node.active ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105" : "bg-background border-border text-foreground"}`}
                 >
                   {node.role}
                 </span>

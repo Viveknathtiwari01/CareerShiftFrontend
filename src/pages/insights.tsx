@@ -14,7 +14,7 @@ const INSIGHTS = [
 
 function Insights() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div>
       <h1 className="font-display text-3xl font-bold tracking-tight">Market insights</h1>
       <p className="mt-2 text-muted-foreground">What's happening in your field, curated weekly.</p>
       <div className="mt-8 space-y-4">

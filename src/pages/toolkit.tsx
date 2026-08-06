@@ -11,7 +11,7 @@ const TOOLS = [
 
 function Toolkit() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div>
       <h1 className="font-display text-3xl font-bold tracking-tight">Your AI toolkit</h1>
       <p className="mt-2 text-muted-foreground">Curated tools matched to your role and tasks.</p>
       <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

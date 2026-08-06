@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 export default function CareerIdentity() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div>
         <h2 className="mb-3 font-display text-4xl font-bold tracking-tight">
           Your Career Identity
