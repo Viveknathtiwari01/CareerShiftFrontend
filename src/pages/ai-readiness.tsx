@@ -41,7 +41,7 @@ export default function AIReadiness() {
               to="/3b-analysis"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
             >
-              Complete 3B Analysis first <ArrowRight className="h-4 w-4" />
+              Submit assessment for report <ArrowRight className="h-4 w-4" />
             </Link>
           }
         />

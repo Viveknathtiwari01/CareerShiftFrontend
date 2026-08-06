@@ -91,11 +91,10 @@ function AssessmentWizard({
 }: {
   prefetchedSession?: AssessmentStartResponse | null;
 }) {
-  const { draft, setDraft, addTask, updateTask, removeTask, submit } = useAssessment();
+  const { draft, setDraft, addTask, updateTask, removeTask } = useAssessment();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
   const [isSavingTasks, setIsSavingTasks] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [tasksReviewComplete, setTasksReviewComplete] = useState(false);
@@ -154,13 +153,6 @@ function AssessmentWizard({
       setIsSavingTasks(false);
     }
   }
-
-  function handleSubmit() {
-    submit();
-    navigate("/ai-readiness");
-  }
-
-  if (submitted) return <Success onContinue={() => navigate("/report")} />;
 
   return (
     <div className="page-shell animate-fade-in">
@@ -872,31 +864,6 @@ function ReviewRow({ label, value, className }: { label: string; value: string; 
         {label}
       </dt>
       <dd className="mt-1 truncate text-sm font-medium capitalize text-foreground">{value}</dd>
-    </div>
-  );
-}
-
-function Success({ onContinue }: { onContinue: () => void }) {
-  return (
-    <div className="mx-auto grid min-h-[70vh] max-w-xl place-items-center px-6 text-center">
-      <div>
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-teal/15 text-teal">
-          <CheckCircle2 className="h-8 w-8" />
-        </div>
-        <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
-          Your Report is ready
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          We analyzed your role, tools, and tasks. Head to your personalized AI Career Readiness
-          Report.
-        </p>
-        <button
-          onClick={onContinue}
-          className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02]"
-        >
-          View my Report <ArrowRight className="h-4 w-4" />
-        </button>
-      </div>
     </div>
   );
 }

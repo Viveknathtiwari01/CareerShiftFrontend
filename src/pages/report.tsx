@@ -38,7 +38,7 @@ export default function ReportPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-muted-foreground">
         <Loader2 className="h-10 w-10 animate-spin text-brand" />
-        <p className="mt-4 text-sm">Loading your career intelligence report…</p>
+        <p className="mt-4 text-sm">Generating your career intelligence report…</p>
       </div>
     );
   }
@@ -57,11 +57,33 @@ export default function ReportPage() {
     );
   }
 
-  const professionSummary = report.assessment?.competency_mapping?.profession_summary;
+  if (report.isError || !report.report) {
+    return (
+      <div className="rounded-2xl border border-border bg-muted/30 px-6 py-16 text-center">
+        <p className="text-muted-foreground">
+          {report.error?.message ||
+            "Your career intelligence report has not been generated yet."}
+        </p>
+        <Link
+          to="/3b-analysis"
+          className="mt-4 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+        >
+          Complete & Submit Assessment
+        </Link>
+      </div>
+    );
+  }
+
+  const data = report.report;
+  const professionSummary = data.career_identity.narrative;
 
   return (
     <div className="min-h-screen bg-secondary/30 space-y-0">
-      <ReportHeader readiness={report.readiness} completedAt={report.completedAt} />
+      <ReportHeader
+        assessmentId={report.assessmentId}
+        readiness={report.readiness}
+        completedAt={report.completedAt}
+      />
       <ReportHero
         profile={report.profile}
         readiness={report.readiness}
@@ -107,25 +129,32 @@ export default function ReportPage() {
               <OverviewTab
                 profile={report.profile}
                 readiness={report.readiness}
-                taskCount={report.selectedTasks.length}
-                competencyCount={report.competencies.length}
+                taskCount={data.daily_work.tasks.length}
+                competencyCount={data.competencies.reduce(
+                  (sum, group) => sum + group.items.length,
+                  0,
+                )}
                 automationPct={report.automationPct}
               />
             )}
-            {activeTab === "competencies" && <CompetencyTab />}
-            {activeTab === "work" && <DailyWorkTab />}
+            {activeTab === "competencies" && <CompetencyTab groups={data.competencies} />}
+            {activeTab === "work" && <DailyWorkTab dailyWork={data.daily_work} />}
             {activeTab === "3b" && <ThreeBAnalysisTab />}
-            {activeTab === "readiness" && <AIReadinessTab />}
-            {activeTab === "identity" && <CareerIdentityTab />}
-            {activeTab === "roadmap" && <LearningRoadmapTab />}
-            {activeTab === "tools" && <AIToolsTab />}
-            {activeTab === "action" && <ActionPlanTab />}
+            {activeTab === "readiness" && <AIReadinessTab readiness={report.readiness} />}
+            {activeTab === "identity" && <CareerIdentityTab identity={data.career_identity} />}
+            {activeTab === "roadmap" && <LearningRoadmapTab roadmap={data.upskill_roadmap} />}
+            {activeTab === "tools" && <AIToolsTab toolkit={data.ai_toolkit} />}
+            {activeTab === "action" && <ActionPlanTab actionPlan={data.action_plan} />}
           </motion.div>
         </AnimatePresence>
       </div>
 
       <HealthIndicators readiness={report.readiness} profile={report.profile} />
-      <ReportFooter />
+      <ReportFooter
+        generatedAt={report.completedAt}
+        reportVersion={report.reportVersion}
+        strategicNote={report.strategicNote}
+      />
     </div>
   );
 }

@@ -2,35 +2,15 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import {
   AIReadinessEmpty,
-  AIReadinessLoading,
   AIReadinessView,
 } from "@/components/readiness/AIReadinessView";
-import { useReportData } from "@/hooks/use-report-data";
+import type { AIReadinessResult } from "@/api/readiness";
 
-export function AIReadinessTab() {
-  const { assessmentId, isLoading, isError, error, readiness } = useReportData();
-
-  if (isLoading) {
-    return <AIReadinessLoading />;
-  }
-
-  if (!assessmentId) {
+export function AIReadinessTab({ readiness }: { readiness: AIReadinessResult | null }) {
+  if (!readiness) {
     return (
       <AIReadinessEmpty
-        message="Run an assessment to see your AI readiness score in this report."
-        action={
-          <Link to="/assessment" className="text-sm font-semibold text-brand hover:underline">
-            Start assessment →
-          </Link>
-        }
-      />
-    );
-  }
-
-  if (isError || !readiness) {
-    return (
-      <AIReadinessEmpty
-        message={error?.message || "Complete 3B analysis to calculate your readiness score."}
+        message="Complete 3B analysis and generate your report to see AI readiness here."
         action={
           <Link
             to="/3b-analysis"

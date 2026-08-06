@@ -422,3 +422,25 @@
 @utility animate-valRadarWave {
   animation: valRadarWave 4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
+
+@media print {
+  aside,
+  [data-sidebar],
+  .sticky {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  button,
+  [role="menu"],
+  [data-radix-popper-content-wrapper] {
+    display: none !important;
+  }
+
+  .min-h-screen {
+    min-height: auto !important;
+  }
+}

@@ -22,7 +22,7 @@ import {
 import AssessmentWizard from "@/components/AssessmentWizard";
 import { PageHeader, PageShell } from "@/components/layout/PageShell";
 import { useAssessment } from "@/store/mock-store";
-import { getCurrentAssessment, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
+import { getCurrentAssessment, listAssessments, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
 
 export default function AssessmentPage() {
@@ -32,7 +32,7 @@ export default function AssessmentPage() {
   const [wizardKey, setWizardKey] = useState(0);
   const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
   const [wizardLoading, setWizardLoading] = useState(false);
-  const { draft, submitted } = useAssessment();
+  const { draft } = useAssessment();
 
   const { data: profileStatus, isLoading: profileLoading } = useQuery({
     queryKey: ["profile-status"],
@@ -44,6 +44,12 @@ export default function AssessmentPage() {
   const { data: currentAssessment } = useQuery({
     queryKey: ["assessment-current"],
     queryFn: getCurrentAssessment,
+    enabled: profileComplete && view === "dashboard",
+  });
+
+  const { data: assessments = [] } = useQuery({
+    queryKey: ["assessments-list"],
+    queryFn: listAssessments,
     enabled: profileComplete && view === "dashboard",
   });
 
@@ -108,7 +114,14 @@ export default function AssessmentPage() {
   }
 
   const hasDraft = draft.tasks.length > 0 || draft.role !== "";
-  const hasHistory = submitted !== null;
+  const completedAssessments = assessments.filter((item) => item.status === "COMPLETED");
+  const latestCompleted = completedAssessments[0] ?? null;
+  const hasHistory = completedAssessments.length > 0;
+  const lastAssessmentLabel = latestCompleted?.completed_at
+    ? new Date(latestCompleted.completed_at).toLocaleDateString()
+    : latestCompleted?.created_at
+      ? new Date(latestCompleted.created_at).toLocaleDateString()
+      : "Never";
 
   return (
     <PageShell>
@@ -124,6 +137,14 @@ export default function AssessmentPage() {
                 className="text-sm font-medium text-brand hover:underline"
               >
                 Complete profile first
+              </Link>
+            )}
+            {latestCompleted && (
+              <Link
+                to={`/report?assessmentId=${latestCompleted.assessment_id}`}
+                className="inline-flex items-center gap-2 rounded-xl border border-brand/30 bg-brand/10 px-4 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-brand/15"
+              >
+                View Report
               </Link>
             )}
             {hasSavedAssessment && (
@@ -215,7 +236,7 @@ export default function AssessmentPage() {
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Last Assessment</span>
                 <span className="font-medium text-foreground">
-                  {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
+                  {hasHistory ? lastAssessmentLabel : "Never"}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
@@ -492,7 +513,7 @@ export default function AssessmentPage() {
             Assessments Completed
           </p>
           <div className="mt-2 font-display text-3xl font-bold text-foreground">
-            {hasHistory ? "1" : "0"}
+            {hasHistory ? String(completedAssessments.length) : "0"}
           </div>
         </div>
         <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
@@ -500,7 +521,7 @@ export default function AssessmentPage() {
             Last Assessment
           </p>
           <div className="mt-2 font-display text-2xl font-bold text-foreground">
-            {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
+            {hasHistory ? lastAssessmentLabel : "Never"}
           </div>
         </div>
       </motion.div>

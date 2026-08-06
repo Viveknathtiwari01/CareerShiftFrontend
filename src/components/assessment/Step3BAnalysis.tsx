@@ -21,6 +21,7 @@ import {
   type AnalyzedTask,
   type ThreeBCategory,
 } from "@/api/analysis";
+import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
 
 const CATEGORIES: ThreeBCategory[] = ["BUILD", "BLEND", "BOT"];
 
@@ -666,12 +667,9 @@ export default function Step3BAnalysis({
               })}
             </ul>
             {showFooterLinks && (
-              <Link
-                to="/ai-readiness"
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
-              >
-                Continue to AI Readiness Score <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-4">
+                <SubmitAssessmentButton assessmentId={assessmentId} />
+              </div>
             )}
           </div>
         </div>

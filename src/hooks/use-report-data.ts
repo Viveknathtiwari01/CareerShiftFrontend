@@ -1,95 +1,68 @@
-import { useQueries } from "@tanstack/react-query";
-import { getAssessment } from "@/api/assessment";
-import { getTaskAnalysis } from "@/api/analysis";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 import { getProfile } from "@/api/profile";
-import { getAIReadiness, type AIReadinessResult } from "@/api/readiness";
-import { getAssessmentTasks } from "@/api/tasks";
+import { getCareerReport, type CareerIntelligenceReport } from "@/api/report";
 import type { WizardData } from "@/components/my-career/types";
 import { useActiveAssessmentId } from "@/hooks/use-active-assessment";
 
-export function useReportData() {
-  const { data: assessmentId, isLoading: loadingId } = useActiveAssessmentId();
+function automationPctFromReport(report: CareerIntelligenceReport | null): number | null {
+  if (!report) return null;
+  const mix = report.ai_readiness.portfolio_mix;
+  const total = (mix.BUILD ?? 0) + (mix.BLEND ?? 0) + (mix.BOT ?? 0);
+  if (total > 0) {
+    return Math.round(((mix.BOT ?? 0) / total) * 100);
+  }
+  const analyses = report.task_routing.analyses;
+  if (analyses.length === 0) return null;
+  return Math.round(
+    analyses.reduce((sum, item) => sum + (item.auto_potential ?? 0), 0) / analyses.length,
+  );
+}
 
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ["report-assessment", assessmentId],
-        queryFn: () => getAssessment(assessmentId!),
-        enabled: !!assessmentId,
-        staleTime: 60_000,
-      },
-      {
-        queryKey: ["report-profile"],
-        queryFn: getProfile,
-        staleTime: 120_000,
-      },
-      {
-        queryKey: ["ai-readiness", assessmentId],
-        queryFn: () => getAIReadiness(assessmentId!),
-        enabled: !!assessmentId,
-        staleTime: 60_000,
-      },
-      {
-        queryKey: ["report-tasks", assessmentId],
-        queryFn: () => getAssessmentTasks(assessmentId!),
-        enabled: !!assessmentId,
-        staleTime: 60_000,
-      },
-      {
-        queryKey: ["report-analysis", assessmentId],
-        queryFn: () => getTaskAnalysis(assessmentId!),
-        enabled: !!assessmentId,
-        staleTime: 60_000,
-      },
-    ],
+export function useReportData() {
+  const [searchParams] = useSearchParams();
+  const paramAssessmentId = searchParams.get("assessmentId");
+  const { data: activeAssessmentId, isLoading: loadingId } = useActiveAssessmentId(
+    !paramAssessmentId,
+  );
+  const assessmentId = paramAssessmentId ?? activeAssessmentId ?? null;
+
+  const profileQuery = useQuery({
+    queryKey: ["report-profile"],
+    queryFn: getProfile,
+    staleTime: 120_000,
   });
 
-  const [assessmentQuery, profileQuery, readinessQuery, tasksQuery, analysisQuery] = results;
+  const reportQuery = useQuery({
+    queryKey: ["career-report", assessmentId],
+    queryFn: () => getCareerReport(assessmentId!),
+    enabled: !!assessmentId,
+    staleTime: 60_000,
+    retry: 1,
+  });
 
-  const profile = profileQuery.data ?? null;
-  const readiness = readinessQuery.data ?? null;
-  const assessment = assessmentQuery.data ?? null;
-  const tasks = tasksQuery.data ?? [];
-  const selectedTasks = tasks.filter((t) => t.selected !== false);
-  const analyses = analysisQuery.data?.analyses ?? [];
-  const competencies = assessment?.competency_mapping?.competencies ?? [];
-
-  const portfolioTotal =
-    (readiness?.portfolio_mix.BUILD ?? 0) +
-    (readiness?.portfolio_mix.BLEND ?? 0) +
-    (readiness?.portfolio_mix.BOT ?? 0);
-
-  const automationPct =
-    portfolioTotal > 0
-      ? Math.round(((readiness?.portfolio_mix.BOT ?? 0) / portfolioTotal) * 100)
-      : analyses.length > 0
-        ? Math.round(
-            analyses.reduce((sum, a) => sum + (a.auto_potential ?? 0), 0) / analyses.length,
-          )
-        : null;
+  const report = reportQuery.data ?? null;
+  const readiness = report?.ai_readiness ?? null;
+  const automationPct = automationPctFromReport(report);
 
   const isLoading =
-    loadingId ||
-    assessmentQuery.isLoading ||
-    profileQuery.isLoading ||
-    readinessQuery.isLoading ||
-    tasksQuery.isLoading ||
-    analysisQuery.isLoading;
-
-  const isError = readinessQuery.isError && !readiness;
+    (!!paramAssessmentId ? false : loadingId) || profileQuery.isLoading || reportQuery.isLoading;
+  const isError = reportQuery.isError && !report;
 
   return {
-    assessmentId: assessmentId ?? null,
+    assessmentId,
     isLoading,
     isError,
-    error: (readinessQuery.error ?? assessmentQuery.error) as Error | null,
-    profile: profile as WizardData | null,
-    assessment,
-    readiness: readiness as AIReadinessResult | null,
-    selectedTasks,
-    analyses,
-    competencies,
+    error: (reportQuery.error ?? profileQuery.error) as Error | null,
+    profile: profileQuery.data as WizardData | null,
+    report,
+    readiness,
+    selectedTasks: report?.daily_work.tasks ?? [],
+    analyses: report?.task_routing.analyses ?? [],
+    competencies: report?.competencies ?? [],
     automationPct,
-    completedAt: assessment?.metadata?.completed_at ?? null,
+    completedAt: report?.generated_at ?? null,
+    reportVersion: report?.report_version ?? null,
+    strategicNote: report?.strategic_note ?? null,
   };
 }
