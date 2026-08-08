@@ -145,6 +145,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const accessToken = res.data.access_token as string;
       const refreshToken = res.data.refresh_token as string;
 
+      // Save the tokens now so that fetchApi("/users/me") can use the new access token
+      setTokens(accessToken, refreshToken);
+
       const userRes = await fetchApi("/users/me");
 
       const u: User = {
