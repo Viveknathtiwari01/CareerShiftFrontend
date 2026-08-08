@@ -24,8 +24,15 @@ export function clearAuthSession() {
 
 export function redirectToLogin() {
   if (typeof window === "undefined") return;
+<<<<<<< HEAD
   if (window.location.pathname.startsWith("/auth")) return;
   window.location.href = `/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+=======
+  const onAuthPage = window.location.pathname.startsWith("/auth");
+  if (!onAuthPage) {
+    window.location.href = `/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+  }
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
 }
 
 async function refreshAccessToken(apiBaseUrl: string): Promise<string | null> {
@@ -38,7 +45,13 @@ async function refreshAccessToken(apiBaseUrl: string): Promise<string | null> {
     body: JSON.stringify({ refresh_token: refreshToken }),
   });
 
+<<<<<<< HEAD
   if (!response.ok) return null;
+=======
+  if (!response.ok) {
+    return null;
+  }
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
 
   const payload = await response.json();
   const access = payload?.data?.access_token as string | undefined;

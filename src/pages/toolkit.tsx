@@ -9,6 +9,7 @@ function Toolkit() {
   const tools = report?.ai_toolkit ?? [];
 
   return (
+<<<<<<< HEAD
     <div className="w-full">
       <PageHeader
         title="Your AI toolkit"
@@ -33,6 +34,23 @@ function Toolkit() {
           ))}
         </div>
       )}
+=======
+    <div>
+      <h1 className="font-display text-3xl font-bold tracking-tight">Your AI toolkit</h1>
+      <p className="mt-2 text-muted-foreground">Curated tools matched to your role and tasks.</p>
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {TOOLS.map((t) => (
+          <div key={t.name} className="surface-card p-5">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-lg font-bold">{t.name}</h3>
+              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-brand">{t.cat}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t.use}</p>
+          </div>
+        ))}
+      </div>
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
     </div>
   );
 }

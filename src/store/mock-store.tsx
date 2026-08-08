@@ -144,8 +144,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       const accessToken = res.data.access_token as string;
       const refreshToken = res.data.refresh_token as string;
+<<<<<<< HEAD
       setTokens(accessToken, refreshToken);
       const userRes = await fetchApi("/users/me");
+=======
+
+      // Save the tokens now so that fetchApi("/users/me") can use the new access token
+      setTokens(accessToken, refreshToken);
+
+      const userRes = await fetchApi("/users/me");
+
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       const u: User = {
         id: userRes.data.id,
         name: userRes.data.first_name ? `${userRes.data.first_name} ${userRes.data.last_name || ""}`.trim() : userRes.data.username,
@@ -215,29 +224,23 @@ export function useAuth() {
 
 type AssessCtx = {
   draft: Assessment;
-  submitted: Assessment | null;
   setDraft: (patch: Partial<Assessment>) => void;
   addTask: (task: Task) => void;
   updateTask: (id: string, patch: Partial<Task>) => void;
   removeTask: (id: string) => void;
-  submit: () => void;
   reset: () => void;
 };
 
 const AssessContext = createContext<AssessCtx | null>(null);
 const DRAFT_KEY = "careershift.assessment.draft";
-const SUBMITTED_KEY = "careershift.assessment.submitted";
 
 export function AssessmentProvider({ children }: { children: ReactNode }) {
   const [draft, setDraftState] = useState<Assessment>(emptyAssessment);
-  const [submitted, setSubmitted] = useState<Assessment | null>(null);
 
   useEffect(() => {
     try {
       const d = localStorage.getItem(DRAFT_KEY);
       if (d) setDraftState({ ...emptyAssessment, ...JSON.parse(d) });
-      const s = localStorage.getItem(SUBMITTED_KEY);
-      if (s) setSubmitted(JSON.parse(s));
     } catch {
       /* noop */
     }
@@ -270,30 +273,19 @@ export function AssessmentProvider({ children }: { children: ReactNode }) {
     setDraftState((prev) => ({ ...prev, tasks: prev.tasks.filter((t) => t.id !== id) }));
   }, []);
 
-  const submit = useCallback(() => {
-    const done: Assessment = { ...draft, completedAt: new Date().toISOString() };
-    setSubmitted(done);
-    try {
-      localStorage.setItem(SUBMITTED_KEY, JSON.stringify(done));
-    } catch {
-      /* noop */
-    }
-  }, [draft]);
-
   const reset = useCallback(() => {
     setDraftState(emptyAssessment);
-    setSubmitted(null);
     try {
       localStorage.removeItem(DRAFT_KEY);
-      localStorage.removeItem(SUBMITTED_KEY);
+      localStorage.removeItem("careershift.assessment.submitted");
     } catch {
       /* noop */
     }
   }, []);
 
   const value = useMemo(
-    () => ({ draft, submitted, setDraft, addTask, updateTask, removeTask, submit, reset }),
-    [draft, submitted, setDraft, addTask, updateTask, removeTask, submit, reset],
+    () => ({ draft, setDraft, addTask, updateTask, removeTask, reset }),
+    [draft, setDraft, addTask, updateTask, removeTask, reset],
   );
 
   return <AssessContext.Provider value={value}>{children}</AssessContext.Provider>;

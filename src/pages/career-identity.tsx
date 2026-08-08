@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { useReportData } from "@/hooks/use-report-data";
 
 export default function CareerIdentity() {
+<<<<<<< HEAD
   const { report, isLoading, isError, error } = useReportData();
 
   if (isLoading) {
@@ -20,6 +21,18 @@ export default function CareerIdentity() {
         <AlertCircle className="mx-auto h-10 w-10 text-muted-foreground" />
         <p className="type-body mt-4 text-muted-foreground">
           {error instanceof Error ? error.message : "Submit your assessment to see career identity."}
+=======
+  return (
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div>
+        <h2 className="mb-3 font-display text-4xl font-bold tracking-tight">
+          Your Career Identity
+        </h2>
+        <p className="max-w-6xl text-lg text-muted-foreground">
+          Based on your experience, competencies, work patterns, and AI readiness, CareerShift has
+          created a personalized career identity that reflects where you are today and where you can
+          grow next.
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
         </p>
         <Link to="/assessment" className="type-body mt-4 inline-block font-semibold text-brand">
           Go to Assessment →

@@ -28,7 +28,11 @@ function Onboarding() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="w-full">
+=======
+    <div className="mx-auto max-w-3xl w-full">
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       <div className="mb-8 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-brand">
         <Sparkles className="h-3.5 w-3.5" /> Step 1 of 2
       </div>

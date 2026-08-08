@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -218,116 +219,27 @@ function Stat({
     </div>
   );
 }
+=======
+import Step3BAnalysis from "@/components/assessment/Step3BAnalysis";
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
 
 type Props = {
   assessmentId: string | null;
+  /** @deprecated use showFooterLinks on Step3BAnalysis directly */
   impressMode?: boolean;
   showFooterLinks?: boolean;
+  variant?: "page" | "embedded";
 };
 
+/** @deprecated Use Step3BAnalysis directly */
 export default function ThreeBAnalysisView({
   assessmentId,
-  impressMode = false,
   showFooterLinks = false,
+  variant,
+  impressMode,
 }: Props) {
-  const queryClient = useQueryClient();
-  const analyzeRequestedRef = useRef(false);
-  const [expandedSection, setExpandedSection] = useState<ThreeBCategory | null>("BUILD");
-
-  const analysisQuery = useQuery({
-    queryKey: ["assessment-analysis", assessmentId],
-    queryFn: () => getTaskAnalysis(assessmentId!),
-    enabled: !!assessmentId,
-    staleTime: 60_000,
-  });
-
-  const analyzeMutation = useMutation({
-    mutationFn: (regenerate: boolean) => runTaskAnalysis(assessmentId!, regenerate),
-    onSuccess: (data) => {
-      queryClient.setQueryData(["assessment-analysis", assessmentId], data);
-    },
-  });
-
-  useEffect(() => {
-    analyzeRequestedRef.current = false;
-  }, [assessmentId]);
-
-  useEffect(() => {
-    if (!assessmentId || analysisQuery.isLoading) return;
-    if ((analysisQuery.data?.analyses?.length ?? 0) > 0) return;
-    if (!analyzeRequestedRef.current && !analyzeMutation.isPending) {
-      analyzeRequestedRef.current = true;
-      analyzeMutation.mutate(false);
-    }
-  }, [assessmentId, analysisQuery.data, analysisQuery.isLoading, analyzeMutation.isPending]);
-
-  const analyzedTasks = useMemo(
-    () => (analysisQuery.data?.analyses ?? []).map(mapAnalysisToDisplay),
-    [analysisQuery.data?.analyses],
-  );
-
-  const buildTasks = analyzedTasks.filter((t) => t.category3B === "BUILD");
-  const botTasks = analyzedTasks.filter((t) => t.category3B === "BOT");
-  const blendTasks = analyzedTasks.filter((t) => t.category3B === "BLEND");
-
-  const totalTasks = analyzedTasks.length || 1;
-  const autoOpp = Math.round(
-    analyzedTasks.reduce((acc, t) => acc + t.autoPotential, 0) / totalTasks,
-  );
-  const summaryConfidence = analysisQuery.data?.summary_confidence ?? autoOpp;
-
-  if (!assessmentId) {
-    return (
-      <div className="rounded-2xl border border-border bg-card p-10 text-center">
-        <Brain className="mx-auto h-10 w-10 text-muted-foreground" />
-        <h3 className="mt-4 font-display text-xl font-bold">Complete your assessment first</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Finish competency mapping and task review to unlock your 3B analysis.
-        </p>
-        <Link
-          to="/assessment"
-          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          Go to Assessment <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-    );
-  }
-
-  if (analysisQuery.isLoading || (analyzeMutation.isPending && analyzedTasks.length === 0)) {
-    return (
-      <div className="py-20 text-center">
-        <div className="relative mx-auto h-20 w-20">
-          <div className="absolute inset-0 animate-ping rounded-full bg-brand/20" />
-          <Loader2 className="relative mx-auto h-20 w-20 animate-spin text-brand" />
-        </div>
-        <h3 className="mt-8 font-display text-2xl font-bold">Analyzing your work through 3B</h3>
-        <p className="mx-auto mt-3 max-w-md text-muted-foreground">
-          Routing each task into BUILD, BOT, or BLEND with personalized actions…
-        </p>
-      </div>
-    );
-  }
-
-  if (analyzeMutation.isError || analysisQuery.isError) {
-    const err = (analyzeMutation.error ?? analysisQuery.error) as Error;
-    return (
-      <div className="py-12 text-center">
-        <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
-        <h3 className="mt-4 font-semibold">3B analysis failed</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{err.message}</p>
-        <button
-          type="button"
-          onClick={() => analyzeMutation.mutate(true)}
-          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <RefreshCw className="h-4 w-4" /> Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
+<<<<<<< HEAD
     <div className="space-y-10">
       {impressMode && (
         <div className="grid gap-4 md:grid-cols-3">
@@ -461,5 +373,12 @@ export default function ThreeBAnalysisView({
         </div>
       )}
     </div>
+=======
+    <Step3BAnalysis
+      assessmentId={assessmentId}
+      showFooterLinks={showFooterLinks || variant === "page" || impressMode}
+      embedded={variant === "page" || impressMode}
+    />
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
   );
 }

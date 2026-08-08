@@ -43,7 +43,7 @@ function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <Nav />
       <Hero />
       <Problem />
@@ -196,7 +196,7 @@ function Hero() {
           </dl>
         </div>
 
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
           <HeroGraphic />
         </div>
@@ -736,7 +736,7 @@ function Pricing() {
             Start free. Upgrade only when you want the full report and roadmap.
           </p>
         </div>
-        <div className="mx-auto mt-14 grid max-w-8xl gap-14 md:grid-cols-2">
+        <div className="mx-auto mt-14 grid w-full max-w-5xl gap-14 md:grid-cols-2">
           {tiers.map((t) => (
             <div
               key={t.name}
@@ -955,7 +955,7 @@ function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center">
+    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center">
       {/* Concentric rings */}
       <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>

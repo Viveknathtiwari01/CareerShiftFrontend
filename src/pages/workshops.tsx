@@ -13,7 +13,11 @@ import { WorkshopCTA } from "@/components/workshops/WorkshopCTA";
 
 export default function Workshops() {
   return (
+<<<<<<< HEAD
     <div className="w-full space-y-2">
+=======
+    <div className="space-y-2">
+>>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       <WorkshopHero />
       <InsightBanner />
       <PremiumCards />
