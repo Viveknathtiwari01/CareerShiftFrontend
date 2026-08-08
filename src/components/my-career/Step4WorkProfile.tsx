@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
-import { DAILY_ACTIVITIES } from "@/lib/mock-data";
+import { DAILY_ACTIVITIES } from "@/lib/app-enums";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";

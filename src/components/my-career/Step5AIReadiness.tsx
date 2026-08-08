@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
-import { AI_FREQUENCY, AI_TOOLS } from "@/lib/mock-data";
+import { AI_FREQUENCY, AI_TOOLS } from "@/lib/app-enums";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

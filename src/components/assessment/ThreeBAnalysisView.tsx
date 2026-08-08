@@ -92,21 +92,21 @@ function CategorySection({
         <button
           type="button"
           onClick={onToggle}
-          className="flex w-full items-center justify-between p-5 text-left"
+          className="flex w-full items-center justify-between p-6 text-left"
         >
           <div className="flex items-center gap-4">
             <div
-              className={`grid h-11 w-11 place-items-center rounded-xl border ${meta.badge}`}
+              className={`grid h-12 w-12 place-items-center rounded-xl border ${meta.badge}`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-6 w-6" />
             </div>
             <div>
-              <div className="font-display text-lg font-bold">
+              <div className="type-card-title">
                 {title}{" "}
-                <span className="text-sm font-normal text-muted-foreground">({count})</span>
+                <span className="text-base font-normal text-muted-foreground">({count})</span>
               </div>
               {impressMode && (
-                <p className="text-xs font-medium text-muted-foreground">{meta.tagline}</p>
+                <p className="type-body-sm mt-1 text-muted-foreground">{meta.tagline}</p>
               )}
             </div>
           </div>
@@ -123,31 +123,31 @@ function CategorySection({
               exit={{ height: 0, opacity: 0 }}
               className="border-t border-border"
             >
-              <div className="border-b border-border bg-muted/30 p-4 text-sm leading-relaxed text-muted-foreground">
+              <div className="border-b border-border bg-muted/30 p-5 type-body text-muted-foreground">
                 {description}
               </div>
-              <div className="space-y-3 p-4">
+              <div className="space-y-4 p-5">
                 {tasks.map((t, i) => (
                   <motion.div
                     key={t.id}
                     initial={impressMode ? { opacity: 0, y: 12 } : false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="rounded-xl border border-border bg-card p-5 shadow-soft"
+                    className="rounded-xl border border-border bg-card p-6 shadow-soft"
                   >
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <h5 className="font-display text-base font-bold text-foreground">{t.title}</h5>
+                    <div className="mb-3 flex flex-wrap items-center gap-2">
+                      <h5 className="type-card-title text-foreground">{t.title}</h5>
                       {t.rationale && (
                         <span
-                          className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${meta.badge}`}
+                          className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${meta.badge}`}
                         >
                           {t.rationale}
                         </span>
                       )}
                     </div>
-                    <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{t.reason}</p>
+                    <p className="type-body mb-5 text-muted-foreground">{t.reason}</p>
 
-                    <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div className="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
                       <Stat label="Auto potential" value={`${t.autoPotential}%`} />
                       <Stat
                         label="Risk"
@@ -157,14 +157,12 @@ function CategorySection({
                       <Stat label="Future impact" value={t.futureImp} />
                       {t.tools.length > 0 && (
                         <div className="col-span-2 sm:col-span-1">
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                            Tools
-                          </p>
-                          <div className="mt-1 flex flex-wrap gap-1">
+                          <p className="type-stat-label text-muted-foreground">Tools</p>
+                          <div className="mt-1.5 flex flex-wrap gap-1.5">
                             {t.tools.map((tool) => (
                               <span
                                 key={tool}
-                                className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold"
+                                className="rounded-md bg-muted px-2.5 py-1 text-xs font-semibold"
                               >
                                 {tool}
                               </span>
@@ -175,15 +173,15 @@ function CategorySection({
                     </div>
 
                     {t.next_actions.length > 0 && (
-                      <div className="rounded-lg border border-border bg-muted/20 p-3">
-                        <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
-                          <Zap className="h-3.5 w-3.5 text-brand" /> Your next 3 actions
+                      <div className="rounded-lg border border-border bg-muted/20 p-4">
+                        <p className="type-label mb-3 flex items-center gap-2 text-foreground">
+                          <Zap className="h-4 w-4 text-brand" /> Your next 3 actions
                         </p>
-                        <ol className="space-y-2">
+                        <ol className="space-y-3">
                           {t.next_actions.map((action, idx) => (
-                            <li key={action} className="flex gap-2 text-sm text-foreground">
+                            <li key={action} className="flex gap-3 type-body text-foreground">
                               <span
-                                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${meta.badge}`}
+                                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${meta.badge}`}
                               >
                                 {idx + 1}
                               </span>
@@ -215,8 +213,8 @@ function Stat({
 }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className={`font-display text-lg font-bold ${highlight ?? "text-foreground"}`}>{value}</p>
+      <p className="type-stat-label text-muted-foreground">{label}</p>
+      <p className={`type-stat-value ${highlight ?? "text-foreground"}`}>{value}</p>
     </div>
   );
 }
@@ -347,9 +345,9 @@ export default function ThreeBAnalysisView({
                 className={`rounded-2xl border p-5 shadow-sm ${f.badge}`}
               >
                 <Icon className="mb-3 h-7 w-7" />
-                <div className="font-display text-3xl font-bold">{count}</div>
-                <div className="text-sm font-bold">{f.label}</div>
-                <p className="mt-2 text-xs leading-relaxed opacity-80">{f.description}</p>
+                <div className="type-section-title">{count}</div>
+                <div className="text-base font-bold">{f.label}</div>
+                <p className="type-body-sm mt-2 opacity-80">{f.description}</p>
               </div>
             );
           })}
@@ -360,24 +358,24 @@ export default function ThreeBAnalysisView({
         <div>
           {!impressMode && (
             <>
-              <h2 className="font-display text-2xl font-bold">3B Task Routing</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h2 className="type-section-title">3B Task Routing</h2>
+              <p className="type-body-sm mt-2 text-muted-foreground">
                 BUILD · BOT · BLEND classification for every selected task
               </p>
             </>
           )}
         </div>
-        <div className="inline-flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-2 shadow-soft">
-          <span className="text-sm font-semibold text-foreground">
+        <div className="inline-flex items-center gap-3 rounded-xl border border-border bg-card px-5 py-3 shadow-soft">
+          <span className="type-body font-semibold text-foreground">
             {summaryConfidence}% confidence
           </span>
           <span className="text-muted-foreground">·</span>
-          <span className="text-sm text-muted-foreground">{autoOpp}% automation opportunity</span>
+          <span className="type-body-sm text-muted-foreground">{autoOpp}% automation opportunity</span>
           <button
             type="button"
             onClick={() => analyzeMutation.mutate(true)}
             disabled={analyzeMutation.isPending}
-            className="ml-2 text-xs font-medium text-brand hover:underline"
+            className="ml-2 text-sm font-semibold text-brand hover:underline"
           >
             Re-run
           </button>
@@ -385,9 +383,7 @@ export default function ThreeBAnalysisView({
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft">
-        <p className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-          Portfolio distribution
-        </p>
+        <p className="type-label mb-4 text-muted-foreground">Portfolio distribution</p>
         <div className="flex h-5 w-full overflow-hidden rounded-full bg-muted">
           <div
             style={{ width: `${(buildTasks.length / totalTasks) * 100}%` }}
@@ -402,7 +398,7 @@ export default function ThreeBAnalysisView({
             className="bg-teal transition-all duration-700"
           />
         </div>
-        <div className="mt-3 flex flex-wrap gap-4 text-xs font-medium">
+        <div className="mt-4 flex flex-wrap gap-5 text-sm font-semibold">
           <span className="text-primary">BUILD {buildTasks.length}</span>
           <span className="text-brand">BLEND {blendTasks.length}</span>
           <span className="text-teal">BOT {botTasks.length}</span>
@@ -448,10 +444,8 @@ export default function ThreeBAnalysisView({
             to="/ai-readiness"
             className="group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:border-primary/40 hover:shadow-elevated"
           >
-            <h3 className="font-display text-lg font-bold group-hover:text-brand">
-              AI Readiness Score →
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h3 className="type-card-title group-hover:text-brand">AI Readiness Score →</h3>
+            <p className="type-body-sm mt-3 text-muted-foreground">
               See how your 3B mix translates into a 0–100 readiness baseline.
             </p>
           </Link>
@@ -459,10 +453,8 @@ export default function ThreeBAnalysisView({
             to="/report"
             className="group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:border-primary/40 hover:shadow-elevated"
           >
-            <h3 className="font-display text-lg font-bold group-hover:text-brand">
-              Full Career Report →
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h3 className="type-card-title group-hover:text-brand">Full Career Report →</h3>
+            <p className="type-body-sm mt-3 text-muted-foreground">
               Explore your complete Career Intelligence Report with roadmap and toolkit.
             </p>
           </Link>

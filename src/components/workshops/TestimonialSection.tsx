@@ -19,12 +19,11 @@ const testimonials = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
   },
   {
-    name: "Elena Rodriguez",
+    name: "Vivek Nath Tiwari",
     profession: "Product Manager",
     feedback:
       "The prompt engineering module alone is worth the price. It's not just theory; it's exactly what you need to succeed today.",
-    photo:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200",
+    photo: "/vivek.jpeg",
   },
 ];
 
@@ -56,7 +55,7 @@ export function TestimonialSection() {
               <img
                 src={testimonial.photo}
                 alt={testimonial.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-border"
+                className="w-14 h-16 rounded-full object-cover border-2 border-border"
                 loading="lazy"
               />
               <div>

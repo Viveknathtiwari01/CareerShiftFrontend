@@ -1,4 +1,8 @@
-// Master Data (Job Titles, Industries, etc) has been moved to the backend APIs.
+/**
+ * Application enums — fixed UX vocabulary shared with backend string fields.
+ * These are NOT master/business data (job titles, industries, taxonomy).
+ * Keep in sync with profile/assessment schema allowed values.
+ */
 
 export const EXPERIENCE_LEVELS = [
   "0-1 Years",
@@ -7,22 +11,7 @@ export const EXPERIENCE_LEVELS = [
   "5-8 Years",
   "8-12 Years",
   "12+ Years",
-];
-
-export const PREFERRED_LOCATIONS = [
-  "Remote",
-  "Hybrid",
-  "United States",
-  "United Kingdom",
-  "Canada",
-  "Australia",
-  "India",
-  "UAE",
-  "Singapore",
-  "Europe",
-];
-
-
+] as const;
 
 export const DAILY_ACTIVITIES = [
   "Software Development",
@@ -44,8 +33,8 @@ export const DAILY_ACTIVITIES = [
   "Finance & Budgeting",
   "Operations Management",
   "Research & Innovation",
-  "Customer Success"
-];
+  "Customer Success",
+] as const;
 
 export const AI_FREQUENCY = [
   "Never",
@@ -54,8 +43,8 @@ export const AI_FREQUENCY = [
   "Weekly",
   "Several Times a Week",
   "Daily",
-  "Multiple Times a Day"
-];
+  "Multiple Times a Day",
+] as const;
 
 export const AI_TOOLS = [
   "ChatGPT",
@@ -76,5 +65,8 @@ export const AI_TOOLS = [
   "ElevenLabs",
   "Runway ML",
   "Adobe Firefly",
-  "Hugging Face"
-];
+  "Hugging Face",
+] as const;
+
+export type ExperienceLevel = (typeof EXPERIENCE_LEVELS)[number];
+export type AiFrequency = (typeof AI_FREQUENCY)[number];

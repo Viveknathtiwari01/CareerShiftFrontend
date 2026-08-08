@@ -9,13 +9,13 @@ import {
   BrainCircuit,
   Briefcase,
   CheckCircle2,
-  ChevronRight,
   ClipboardList,
   Compass,
   Cpu,
   FileText,
   Map,
   PlayCircle,
+  RotateCcw,
   Sparkles,
   Loader2,
 } from "lucide-react";
@@ -31,7 +31,7 @@ export default function AssessmentPage() {
   const [wizardKey, setWizardKey] = useState(0);
   const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
   const [wizardLoading, setWizardLoading] = useState(false);
-  const { draft, submitted } = useAssessment();
+  const { draft } = useAssessment();
 
   const { data: profileStatus, isLoading: profileLoading } = useQuery({
     queryKey: ["profile-status"],
@@ -49,6 +49,24 @@ export default function AssessmentPage() {
   const hasSavedAssessment =
     currentAssessment?.reused_existing === true &&
     currentAssessment?.status === "COMPLETED";
+
+  const assessmentStatusLabel = !profileComplete
+    ? "Profile incomplete"
+    : currentAssessment?.status === "PROCESSING"
+      ? "In progress"
+      : hasSavedAssessment
+        ? "Ready to continue"
+        : "Not started";
+
+  const assessmentProgress = !profileComplete
+    ? 0
+    : currentAssessment?.status === "PROCESSING"
+      ? 40
+      : hasSavedAssessment
+        ? 75
+        : profileComplete
+          ? 15
+          : 0;
 
   useEffect(() => {
     if (!profileComplete || profileLoading) return;
@@ -107,10 +125,9 @@ export default function AssessmentPage() {
   }
 
   const hasDraft = draft.tasks.length > 0 || draft.role !== "";
-  const hasHistory = submitted !== null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="w-full">
       {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -119,10 +136,10 @@ export default function AssessmentPage() {
         className="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
       >
         <div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-foreground">
+          <h1 className="type-page-title text-foreground">
             AI Based Career Assessment
           </h1>
-          <p className="mt-2 max-w-2xl text-lg text-muted-foreground">
+          <p className="type-page-lead mt-3 max-w-3xl text-muted-foreground">
             Understand how AI will impact your career, analyze your daily work, measure your AI
             readiness, and receive a personalized career transformation roadmap.
           </p>
@@ -141,8 +158,9 @@ export default function AssessmentPage() {
               type="button"
               onClick={handleRegenerateFromScratch}
               disabled={!profileComplete || wizardLoading}
-              className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/50 hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
             >
+              <RotateCcw className="h-4 w-4" />
               Regenerate from scratch
             </button>
           )}
@@ -206,47 +224,83 @@ export default function AssessmentPage() {
             </div>
           </div>
 
-          <div className="border-t border-border bg-background p-8 md:border-l md:border-t-0">
-            <h3 className="mb-6 font-display text-lg font-bold">Assessment Status</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Career Profile</span>
-                <span className="flex items-center gap-1 font-medium text-foreground">
-                  Completed <CheckCircle2 className="h-4 w-4 text-brand" />
-                </span>
+          <div className="border-t border-border bg-muted/20 p-6 md:border-l md:border-t-0 lg:p-8">
+            <div className="flex h-full flex-col rounded-2xl border border-border/80 bg-card p-6 shadow-soft">
+              <div className="mb-6 flex items-start gap-3">
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <ClipboardList className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-display text-lg font-bold">Assessment Status</h3>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    Track where you are in the journey
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Assessment</span>
-                <span className="font-medium text-foreground">
-                  {hasHistory ? "Completed" : "Not Started"}
-                </span>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background px-4 py-3">
+                  <span className="text-sm text-muted-foreground">Career profile</span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1 text-xs font-semibold text-teal">
+                    {profileComplete ? (
+                      <>
+                        Completed <CheckCircle2 className="h-3.5 w-3.5" />
+                      </>
+                    ) : (
+                      "Incomplete"
+                    )}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background px-4 py-3">
+                  <span className="text-sm text-muted-foreground">Assessment</span>
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                      hasSavedAssessment
+                        ? "bg-brand/15 text-brand"
+                        : currentAssessment?.status === "PROCESSING"
+                          ? "bg-primary/15 text-primary"
+                          : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {assessmentStatusLabel}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background px-4 py-3">
+                  <span className="text-sm text-muted-foreground">Estimated duration</span>
+                  <span className="text-sm font-semibold text-foreground">7–10 minutes</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Last Assessment</span>
-                <span className="font-medium text-foreground">
-                  {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Estimated Duration</span>
-                <span className="font-medium text-foreground">7–10 Minutes</span>
-              </div>
-              <div>
+
+              <div className="mt-6">
                 <div className="mb-2 flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Assessment Progress</span>
-                  <span className="font-medium text-brand">0%</span>
+                  <span className="font-medium text-foreground">Overall progress</span>
+                  <span className="font-semibold text-brand">{assessmentProgress}%</span>
                 </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                  <div className="h-full w-[0%] bg-gradient-to-r from-brand to-teal" />
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-brand to-teal transition-all duration-500"
+                    style={{ width: `${assessmentProgress}%` }}
+                  />
                 </div>
               </div>
+
               <button
                 type="button"
                 onClick={() => openWizard(false)}
-                className="mt-6 w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
+                disabled={!profileComplete || wizardLoading}
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
+                <ArrowRight className="h-4 w-4" />
               </button>
+
+              {hasDraft && !hasSavedAssessment ? (
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  You have a draft in progress — continue where you left off.
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -312,80 +366,6 @@ export default function AssessmentPage() {
               </motion.div>
             );
           })}
-        </div>
-      </motion.div>
-
-      {/* Assessment History */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-16"
-      >
-        <h2 className="mb-8 font-display text-2xl font-bold tracking-tight">Assessment History</h2>
-        <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-soft">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px] text-left text-sm">
-              <thead className="border-b border-border bg-muted/40">
-                <tr>
-                  <th className="px-6 py-4 font-semibold text-foreground">Assessment Date</th>
-                  <th className="px-6 py-4 font-semibold text-foreground">Assessment Score</th>
-                  <th className="px-6 py-4 font-semibold text-foreground">Career Identity</th>
-                  <th className="px-6 py-4 font-semibold text-foreground">Status</th>
-                  <th className="px-6 py-4 text-right font-semibold text-foreground">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                <tr className="transition-colors hover:bg-muted/20">
-                  <td className="px-6 py-4 text-muted-foreground">12 Jul 2026</td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-2.5 py-1 font-semibold text-brand">
-                      74 / 100
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 font-medium text-foreground">
-                    AI-Augmented Backend Engineer
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1 text-xs font-semibold text-teal">
-                      Completed
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <Link
-                      to="/report"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
-                    >
-                      View Report <ChevronRight className="h-3 w-3" />
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="transition-colors hover:bg-muted/20">
-                  <td className="px-6 py-4 text-muted-foreground">18 Apr 2026</td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-1 font-semibold text-amber-600 dark:text-amber-400">
-                      69 / 100
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 font-medium text-foreground">Backend Engineer</td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1 text-xs font-semibold text-teal">
-                      Completed
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <Link
-                      to="/report"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
-                    >
-                      View Report <ChevronRight className="h-3 w-3" />
-                    </Link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </motion.div>
 
@@ -464,52 +444,6 @@ export default function AssessmentPage() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Assessment Insights Cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Current AI Readiness
-          </p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-display text-3xl font-bold text-foreground">
-              {hasHistory ? "74" : "N/A"}
-            </span>
-            <span className="text-sm text-muted-foreground">/ 100</span>
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Career Profile
-          </p>
-          <div className="mt-2 flex items-center gap-2">
-            <CheckCircle2 className="h-6 w-6 text-teal" />
-            <span className="font-display text-2xl font-bold text-foreground">Completed</span>
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Assessments Completed
-          </p>
-          <div className="mt-2 font-display text-3xl font-bold text-foreground">
-            {hasHistory ? "1" : "0"}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Last Assessment
-          </p>
-          <div className="mt-2 font-display text-2xl font-bold text-foreground">
-            {hasHistory ? new Date(submitted!.completedAt!).toLocaleDateString() : "Never"}
           </div>
         </div>
       </motion.div>

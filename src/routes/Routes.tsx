@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Landing from "../pages/Landing";
 import Auth from "../pages/Auth";
+import Privacy from "../pages/Privacy";
+import Terms from "../pages/Terms";
 import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
 import Dashboard from "../pages/dashboard";
 import Assessment from "../pages/assessment";
@@ -22,6 +24,8 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/auth" element={<Auth />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
 
       <Route element={<AuthenticatedLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />

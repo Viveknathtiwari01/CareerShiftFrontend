@@ -17,8 +17,8 @@ export function MentorCard() {
           {/* Small Photo Section */}
           <div className="shrink-0 relative">
             <img
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300"
-              alt="Mentor"
+              src="/nc.jpeg"
+              alt="Nureen Chaudhary"
               className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover border-4 border-card shadow-elevated"
             />
             <div className="absolute -bottom-2 -right-2 bg-primary text-primary-foreground p-2 rounded-full shadow-lg">
@@ -31,7 +31,7 @@ export function MentorCard() {
             <div className="mb-2 text-primary font-semibold tracking-wide uppercase text-sm">
               Meet Your Mentor
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">David Carter</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">Nureen Chaudhary</h2>
             <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6 text-sm text-white/80">
               <span className="flex items-center gap-1.5">
                 <Briefcase className="w-4 h-4 text-primary" /> Founder of CareerShift

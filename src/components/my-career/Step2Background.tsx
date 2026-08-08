@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
-import { EXPERIENCE_LEVELS } from "@/lib/mock-data";
+import { EXPERIENCE_LEVELS } from "@/lib/app-enums";
 import { Label } from "@/components/ui/label";
 import {
   Select,

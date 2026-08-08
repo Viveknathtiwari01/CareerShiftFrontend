@@ -81,7 +81,7 @@ export default function AuthenticatedLayout() {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-72 shrink-0 border-r border-border bg-[#141F32] text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-50 w-80 shrink-0 border-r border-border bg-[#141F32] text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
             mobileNav ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -94,7 +94,7 @@ export default function AuthenticatedLayout() {
             </Link>
 
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+              <p className="mb-3 px-3 text-sm font-bold uppercase tracking-wider text-white/60">
                 Workspace
               </p>
               {NAV.map((item) => {
@@ -104,42 +104,42 @@ export default function AuthenticatedLayout() {
                   <Link
                     key={item.to}
                     to={item.to}
-                    className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
                       active
                         ? "bg-primary text-primary-foreground shadow-soft"
-                        : "text-white/70 hover:bg-white/10 hover:text-white"
+                        : "text-white/85 hover:bg-white/10 hover:text-white"
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-5 w-5 shrink-0" />
                     {item.label}
                   </Link>
                 );
               })}
 
-              <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+              <p className="mb-3 mt-8 px-3 text-sm font-bold uppercase tracking-wider text-white/60">
                 Account
               </p>
               <Link
                 to="/profile"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
                   pathname === "/profile"
                     ? "bg-primary text-primary-foreground shadow-soft"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                    : "text-white/85 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                <UserIcon className="h-4 w-4" />
+                <UserIcon className="h-5 w-5 shrink-0" />
                 Profile
               </Link>
             </nav>
 
             <div className="border-t border-border p-4">
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                <div className="grid h-11 w-11 place-items-center rounded-full bg-primary text-base font-semibold text-primary-foreground">
                   {user.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-white">{user.name}</p>
-                  <p className="truncate text-xs text-white/70">{user.email}</p>
+                  <p className="truncate text-base font-semibold text-white">{user.name}</p>
+                  <p className="truncate text-sm text-white/80">{user.email}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -147,9 +147,9 @@ export default function AuthenticatedLayout() {
                     navigate("/", { replace: true });
                   }}
                   aria-label="Log out"
-                  className="grid h-8 w-8 place-items-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
+                  className="grid h-9 w-9 place-items-center rounded-lg text-white/75 hover:bg-white/10 hover:text-white"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -163,8 +163,10 @@ export default function AuthenticatedLayout() {
           />
         )}
 
-        <main className="min-w-0 flex-1">
-          <Outlet />
+        <main className="min-w-0 w-full flex-1">
+          <div className="app-page">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

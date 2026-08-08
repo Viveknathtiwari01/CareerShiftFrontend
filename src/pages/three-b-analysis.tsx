@@ -10,6 +10,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import ThreeBAnalysisView from "@/components/assessment/ThreeBAnalysisView";
+import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useActiveAssessmentId } from "@/hooks/use-active-assessment";
 
 const FRAMEWORK_PREVIEW = [
@@ -40,34 +42,36 @@ export default function ThreeBAnalysisPage() {
   const { data: assessmentId, isLoading } = useActiveAssessmentId();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="w-full space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div>
         <Link
           to="/assessment"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+          className="type-body-sm mb-6 inline-flex items-center gap-2 font-medium text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Assessment
         </Link>
-        <h2 className="mb-3 font-display text-4xl font-bold tracking-tight">3B Analysis</h2>
-        <p className="max-w-3xl text-lg text-muted-foreground">
-          CareerShift routes every task in your role into{" "}
-          <span className="font-semibold text-primary">BUILD</span>,{" "}
-          <span className="font-semibold text-brand">BLEND</span>, or{" "}
-          <span className="font-semibold text-teal">BOT</span> — with reasoning and three concrete
-          next actions per task.
-        </p>
+        <PageHeader
+          title="3B Analysis"
+          description={
+            <>
+              CareerShift routes every task in your role into{" "}
+              <span className="font-semibold text-primary">BUILD</span>,{" "}
+              <span className="font-semibold text-brand">BLEND</span>, or{" "}
+              <span className="font-semibold text-teal">BOT</span> — with reasoning and three
+              concrete next actions per task.
+            </>
+          }
+        />
       </div>
 
       <div className="rounded-2xl border border-primary/20 bg-brand p-8 text-center shadow-soft relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_55%)]" />
         <div className="relative">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
-            <BrainCircuit className="h-3.5 w-3.5" /> CareerShift Core Engine
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white">
+            <BrainCircuit className="h-4 w-4" /> CareerShift Core Engine
           </div>
-          <h3 className="font-display text-2xl font-bold text-white md:text-3xl">
-            Your personalized 3B intelligence map
-          </h3>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/85 md:text-base">
+          <h3 className="type-section-title text-white">Your personalized 3B intelligence map</h3>
+          <p className="type-body-sm mx-auto mt-4 max-w-2xl text-white/90">
             This is the heart of your assessment — where daily work becomes a clear AI strategy:
             what to deepen, what to automate, and what to augment.
           </p>
@@ -83,8 +87,8 @@ export default function ThreeBAnalysisPage() {
                   className="rounded-xl border border-white/20 bg-white/10 p-4 text-white"
                 >
                   <Icon className="mx-auto mb-2 h-5 w-5 opacity-90" />
-                  <div className="font-display text-lg font-bold">{item.label}</div>
-                  <div className="mt-1 text-xs text-white/75">{item.tagline}</div>
+                  <div className="type-card-title">{item.label}</div>
+                  <div className="type-body-sm mt-1 text-white/80">{item.tagline}</div>
                 </motion.div>
               );
             })}
@@ -103,8 +107,8 @@ export default function ThreeBAnalysisPage() {
               <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-background/70">
                 <Icon className="h-5 w-5" />
               </div>
-              <div className="font-display text-lg font-bold">{item.label}</div>
-              <p className="mt-1 text-sm opacity-80">{item.tagline}</p>
+              <div className="type-card-title">{item.label}</div>
+              <p className="type-body-sm mt-2 opacity-80">{item.tagline}</p>
             </div>
           );
         })}
@@ -125,22 +129,22 @@ export default function ThreeBAnalysisPage() {
         )}
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-muted/30 p-5">
-        <p className="text-sm text-muted-foreground">
-          Continue your journey with AI readiness scoring and your full career report.
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-muted/30 p-6">
+        <p className="type-body-sm text-muted-foreground">
+          Submit to generate your Career Intelligence Report from live assessment data.
         </p>
         <div className="flex flex-wrap gap-3">
+          {assessmentId ? (
+            <SubmitAssessmentButton
+              assessmentId={assessmentId}
+              className="type-body inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-soft disabled:opacity-60"
+            />
+          ) : null}
           <Link
             to="/ai-readiness"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-semibold hover:bg-muted"
+            className="type-body inline-flex items-center gap-2 rounded-xl border border-border bg-background px-6 py-3 font-semibold hover:bg-muted"
           >
             AI Readiness Score <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            to="/report"
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft"
-          >
-            Full Report <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

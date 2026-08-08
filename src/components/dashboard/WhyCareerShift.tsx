@@ -12,7 +12,7 @@ export function WhyCareerShift() {
   return (
     <div className="py-6">
       <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
-        <div className="max-w-6xl">
+        <div className="w-full">
           <h2 className="text-4xl font-bold tracking-tight text-foreground mb-4">
             Why We Built CareerShift
           </h2>

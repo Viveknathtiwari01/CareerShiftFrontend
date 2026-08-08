@@ -128,7 +128,7 @@ export default function AuthPage() {
       {/* Left: brand panel */}
       <aside className="bg-[#0A1525] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/log_text.jpeg" alt="logo" className="object-cover w-50" />
+          <img src="/Logo_text_.png" alt="logo" className="object-cover w-50" />
         </Link>
 
         <div className="relative">

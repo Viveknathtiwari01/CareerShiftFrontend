@@ -163,7 +163,7 @@ function AssessmentWizard({
   if (submitted) return <Success onContinue={() => navigate("/report")} />;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="w-full">
       {/* Stepper */}
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-between text-2xs font-medium text-muted-foreground">

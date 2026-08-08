@@ -14,27 +14,25 @@ import { DashboardNavigation } from "@/components/dashboard/DashboardNavigation"
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl px-4 py-8 sm:px-6 lg:px-12 lg:py-12 space-y-8">
-        <DashboardHero />
-        <WhyCareerShift />
-        <MythVsReality />
-        <CareerShiftJourney />
-        <PersonalizedProgress />
-        <AISuccessStories />
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <PersonalizedGuidance />
-          </div>
-          <div className="space-y-8">
-            <DailyInsight />
-            <FeaturedWorkshop />
-          </div>
+    <div className="space-y-8">
+      <DashboardHero />
+      <WhyCareerShift />
+      <MythVsReality />
+      <CareerShiftJourney />
+      <PersonalizedProgress />
+      <AISuccessStories />
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="space-y-8 lg:col-span-2">
+          <PersonalizedGuidance />
         </div>
-        <Principles />
-        <MotivationBanner />
-        <DashboardNavigation />
+        <div className="space-y-8">
+          <DailyInsight />
+          <FeaturedWorkshop />
+        </div>
       </div>
+      <Principles />
+      <MotivationBanner />
+      <DashboardNavigation />
     </div>
   );
 }

@@ -1,4 +1,10 @@
 import {
+  clearAuthSession,
+  getAccessToken,
+  getRefreshToken,
+  setTokens,
+} from "@/lib/auth-session";
+import {
   createContext,
   useCallback,
   useContext,
@@ -87,20 +93,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const persist = useCallback((next: User | null, token?: string) => {
+  const persist = useCallback((next: User | null, accessToken?: string, refreshToken?: string) => {
     setUser(next);
     if (typeof window === "undefined") return;
-    if (next && token) {
-      localStorage.setItem("careershift.token", token);
+    if (next && accessToken && refreshToken) {
+      setTokens(accessToken, refreshToken);
       localStorage.setItem(USER_KEY, JSON.stringify(next));
     } else if (!next) {
-      localStorage.removeItem("careershift.token");
-      localStorage.removeItem(USER_KEY);
+      clearAuthSession();
     }
   }, []);
 
   const fetchUser = useCallback(async () => {
-    if (!localStorage.getItem("careershift.token")) {
+    if (!getAccessToken()) {
       setLoading(false);
       return;
     }
@@ -113,7 +118,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: res.data.email,
         onboarded: !!res.data.first_name,
       };
-      persist(u, localStorage.getItem("careershift.token") || undefined);
+      const refresh = getRefreshToken();
+      if (refresh) {
+        persist(u, getAccessToken() || undefined, refresh);
+      } else {
+        persist(null);
+      }
     } catch {
       persist(null);
     } finally {
@@ -132,19 +142,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
-      const token = res.data.access_token;
-      
-      const userRes = await fetchApi("/users/me", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
+      const accessToken = res.data.access_token as string;
+      const refreshToken = res.data.refresh_token as string;
+      setTokens(accessToken, refreshToken);
+      const userRes = await fetchApi("/users/me");
       const u: User = {
         id: userRes.data.id,
         name: userRes.data.first_name ? `${userRes.data.first_name} ${userRes.data.last_name || ""}`.trim() : userRes.data.username,
         email: userRes.data.email,
         onboarded: !!userRes.data.first_name,
       };
-      persist(u, token);
+      persist(u, accessToken, refreshToken);
       return u;
     },
     [persist],
@@ -162,9 +170,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(async () => {
     try {
       const { fetchApi } = await import("@/lib/api");
-      await fetchApi("/auth/logout", { method: "POST" });
+      const refreshToken = getRefreshToken();
+      await fetchApi("/auth/logout", {
+        method: "POST",
+        body: JSON.stringify(refreshToken ? { refresh_token: refreshToken } : {}),
+      });
     } catch {
-      // Ignore errors, we clear local storage anyway
+      /* ignore */
     } finally {
       persist(null);
     }

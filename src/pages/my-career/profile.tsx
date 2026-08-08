@@ -125,7 +125,7 @@ export default function MyCareerProfile() {
 
   if (viewMode === "view" && profile) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+      <div className="w-full">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Your Professional Profile</h1>
@@ -154,7 +154,7 @@ export default function MyCareerProfile() {
 
   if (viewMode === "edit" && editStep) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+      <div className="w-full">
         <div className="mb-8">
           <Button variant="ghost" onClick={() => { setViewMode("view"); setData(profile!); }} className="mb-4">
             <ChevronLeft className="mr-2 h-4 w-4" /> Cancel Edit
@@ -179,7 +179,7 @@ export default function MyCareerProfile() {
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="w-full">
       {currentStep <= TOTAL_STEPS && (
         <div className="mb-8 space-y-4">
           <div className="flex justify-between items-end">

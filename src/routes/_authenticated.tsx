@@ -97,7 +97,7 @@ function AuthedShell() {
             </Link>
 
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mb-3 px-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">
                 Workspace
               </p>
               {NAV.map((item) => {
@@ -107,42 +107,42 @@ function AuthedShell() {
                   <Link
                     key={item.to}
                     to={item.to}
-                    className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
                       active
                         ? "bg-primary text-primary-foreground shadow-soft"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-5 w-5 shrink-0" />
                     {item.label}
                   </Link>
                 );
               })}
 
-              <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mb-3 mt-8 px-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">
                 Account
               </p>
               <Link
                 to="/profile"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
                   pathname === "/profile"
                     ? "bg-primary text-primary-foreground shadow-soft"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <UserIcon className="h-4 w-4" />
+                <UserIcon className="h-5 w-5 shrink-0" />
                 Profile
               </Link>
             </nav>
 
             <div className="border-t border-border p-4">
               <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/40 p-3">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                <div className="grid h-11 w-11 place-items-center rounded-full bg-primary text-base font-semibold text-primary-foreground">
                   {user.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-foreground">{user.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                  <p className="truncate text-base font-semibold text-foreground">{user.name}</p>
+                  <p className="truncate text-sm text-muted-foreground">{user.email}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -166,8 +166,10 @@ function AuthedShell() {
           />
         )}
 
-        <main className="min-w-0 flex-1">
-          <Outlet />
+        <main className="min-w-0 w-full flex-1">
+          <div className="app-page">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

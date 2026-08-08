@@ -29,7 +29,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { restoreSectionFromHash, scrollToSection } from "@/lib/scroll-to-section";
 import heroImg from "@/assets/hero.jpg";
 import logoImg from "@/assets/Logo.png";
 import ownerPhoto from "@/assets/owner_photo.png";
@@ -37,6 +38,10 @@ import ownerPhoto from "@/assets/owner_photo.png";
 export default Landing;
 
 function Landing() {
+  useEffect(() => {
+    restoreSectionFromHash();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
@@ -58,18 +63,19 @@ function Landing() {
 }
 
 /* ---------- NAV ---------- */
+const NAV_LINKS = [
+  { label: "Features", sectionId: "features" },
+  { label: "How it works", sectionId: "how" },
+  { label: "Sample report", sectionId: "report" },
+  { label: "Workshop", sectionId: "faq" },
+  { label: "Pricing", sectionId: "pricing" },
+  { label: "Our Story", sectionId: "our-story" },
+  { label: "FAQ", sectionId: "faq" },
+  { label: "Contact", sectionId: "contact" },
+] as const;
+
 function Nav() {
   const [open, setOpen] = useState(false);
-  const links = [
-    { label: "Features", href: "#features" },
-    { label: "How it works", href: "#how" },
-    { label: "Sample report", href: "#report" },
-    { label: "Workshop", href: "#workshop" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Our Story", href: "#our-story" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Contact", href: "#contact" },
-  ];
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 animate-fade-in-up bg-[#f6f5ec]">
       <div className="container-page flex h-16 items-center justify-between">
@@ -77,14 +83,14 @@ function Nav() {
           <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-14 object-contain" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
+          {NAV_LINKS.map((l) => (
+            <SectionLink
+              key={l.label}
+              sectionId={l.sectionId}
               className="text-sm font-medium text-black/90 transition-colors hover:text-black"
             >
               {l.label}
-            </a>
+            </SectionLink>
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
@@ -110,15 +116,15 @@ function Nav() {
       {open && (
         <div className="border-t border-black/10 bg-[#f6f5ec] md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-black/70 hover:bg-black/5 hover:text-black"
+            {NAV_LINKS.map((l) => (
+              <SectionLink
+                key={l.label}
+                sectionId={l.sectionId}
+                onNavigate={() => setOpen(false)}
+                className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/70 hover:bg-black/5 hover:text-black"
               >
                 {l.label}
-              </a>
+              </SectionLink>
             ))}
             <div className="mt-2 flex gap-2 px-1">
               <Link
@@ -169,12 +175,12 @@ function Hero() {
               Start free assessment
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href="#report"
+            <SectionLink
+              sectionId="report"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
               View sample report
-            </a>
+            </SectionLink>
           </div>
           <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6">
             {[
@@ -1293,19 +1299,19 @@ function FinalCTA() {
             your career.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="#"
+            <Link
+              to="/auth"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-primary shadow-soft transition-transform hover:scale-[1.02]"
             >
               Start free assessment
               <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#report"
+            </Link>
+            <SectionLink
+              sectionId="report"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur transition-colors hover:bg-white/10"
             >
               See sample report
-            </a>
+            </SectionLink>
           </div>
         </div>
       </div>
@@ -1314,18 +1320,34 @@ function FinalCTA() {
 }
 
 /* ---------- FOOTER ---------- */
+type FooterLink =
+  | { label: string; to: string }
+  | { label: string; sectionId: string };
+
 function Footer() {
-  const cols = [
+  const cols: { title: string; links: FooterLink[] }[] = [
     {
       title: "Product",
       links: [
-        { label: "For Teams", href: "#" },
-        { label: "Workshops", href: "#workshops" },
+        { label: "Features", sectionId: "features" },
+        { label: "Workshops", sectionId: "pricing" },
       ],
     },
-    { title: "Resources", links: [{ label: "FAQ", href: "#faq" }] },
-    { title: "Company", links: [{ label: "About", href: "#our-story" }, { label: "Join Us", href: "#" }, { label: "Contact", href: "#contact" }] },
-    { title: "Legal", links: [{ label: "Privacy", href: "#" }, { label: "Terms", href: "#" }, { label: "Cookies", href: "#" }] },
+    { title: "Resources", links: [{ label: "FAQ", sectionId: "faq" }] },
+    {
+      title: "Company",
+      links: [
+        { label: "About", sectionId: "our-story" },
+        { label: "Contact", sectionId: "contact" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Privacy", to: "/privacy" },
+        { label: "Terms", to: "/terms" },
+      ],
+    },
   ];
   return (
     <footer className="border-t border-border bg-[#0A1525]">
@@ -1335,16 +1357,18 @@ function Footer() {
             <Link to="/" className="flex items-center gap-2">
               <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-white/45">
+            <p className="mt-1 max-w-xs text-lg text-white/45">
               Bridge your career to the AI future with clarity, confidence, and a plan.
             </p>
             <div className="mt-5 flex gap-2">
               {[Linkedin].map((Icon, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-white/55 transition-colors hover:bg-white/10 hover:text-[#C9A84C]"
-                  aria-label="Social link"
+                  aria-label="CareerShift on LinkedIn"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -1357,29 +1381,20 @@ function Footer() {
               <ul className="mt-4 space-y-2.5">
                 {c.links.map((l) => (
                   <li key={l.label}>
-                    {l.href.startsWith('/') ? (
+                    {"to" in l ? (
                       <Link
-                        to={l.href}
+                        to={l.to}
                         className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
                       >
                         {l.label}
                       </Link>
                     ) : (
-                      <a
-                        href={l.href}
-                        onClick={(e) => {
-                          if (l.href.startsWith("#") && l.href.length > 1) {
-                            const el = document.querySelector(l.href);
-                            if (el) {
-                              e.preventDefault();
-                              el.scrollIntoView({ behavior: "smooth" });
-                            }
-                          }
-                        }}
+                      <SectionLink
+                        sectionId={l.sectionId}
                         className="text-sm text-white/55 transition-colors hover:text-[#C9A84C]"
                       >
                         {l.label}
-                      </a>
+                      </SectionLink>
                     )}
                   </li>
                 ))}
@@ -1387,7 +1402,7 @@ function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/6 pt-6 text-xs text-white/25 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-8 text-sm font-medium text-white/70 sm:flex-row sm:items-center md:text-base">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
           <span>Built for professionals navigating the AI shift.</span>
         </div>
@@ -1397,6 +1412,31 @@ function Footer() {
 }
 
 /* ---------- SHARED ---------- */
+function SectionLink({
+  sectionId,
+  children,
+  className,
+  onNavigate,
+}: {
+  sectionId: string;
+  children: React.ReactNode;
+  className?: string;
+  onNavigate?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        scrollToSection(sectionId);
+        onNavigate?.();
+      }}
+      className={className}
+    >
+      {children}
+    </button>
+  );
+}
+
 function SectionEyebrow({ children, dark }: { children: React.ReactNode; dark?: boolean }) {
   return (
     <span

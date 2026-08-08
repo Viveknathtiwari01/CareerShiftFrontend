@@ -9,7 +9,7 @@ export function DashboardHero() {
       <div className="pointer-events-none absolute -left-12 -top-12 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-emerald-500/20 blur-3xl" />
 
-      <div className="relative z-10 mx-auto max-w-6xl flex flex-col">
+      <div className="relative z-10 flex w-full flex-col">
         {/* Badge */}
         <div className="mb-6 self-center inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-[#C9A84C]/20 px-3 py-1 text-sm font-medium text-[#C9A84C] shadow-sm backdrop-blur-sm">
           <span>Welcome to your new career advantage</span>
@@ -23,7 +23,7 @@ export function DashboardHero() {
         </h1>
 
         {/* Subtitle */}
-        <p className="mt-6 text-base sm:text-lg text-white/80 leading-relaxed max-w-6xl mx-auto">
+        <p className="mt-6 text-base sm:text-lg text-white/80 leading-relaxed max-w-4xl">
           Most professionals fear AI because they don't know how to use it effectively. CareerShift
           gives you a personalized diagnosis of your AI exposure, and pairs it with the exact tools,
           courses, and timelines to upskill.
