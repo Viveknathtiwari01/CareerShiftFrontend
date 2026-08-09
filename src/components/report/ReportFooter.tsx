@@ -1,6 +1,5 @@
 import { Calendar, Info } from "lucide-react";
 
-<<<<<<< HEAD
 type Props = {
   assessmentId: string;
   generatedAt?: string;
@@ -29,38 +28,6 @@ export function ReportFooter({ assessmentId, generatedAt, version = "1.0.0" }: P
         <div className="flex items-center gap-2">
           <span>Generated On:</span>
           <span className="font-semibold text-foreground">{generated}</span>
-=======
-function formatReportDate(iso: string | null | undefined) {
-  if (!iso) {
-    return new Date().toLocaleDateString(undefined, {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  }
-  return new Date(iso).toLocaleDateString(undefined, {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-export function ReportFooter({
-  generatedAt,
-  reportVersion,
-  strategicNote,
-}: {
-  generatedAt?: string | null;
-  reportVersion?: string | null;
-  strategicNote?: string | null;
-}) {
-  return (
-    <footer className="mt-16 border-t border-border/40 py-12 space-y-8">
-      {strategicNote && (
-        <div className="rounded-2xl border border-brand/20 bg-brand/5 p-6 md:p-8">
-          <h3 className="font-display text-lg font-bold text-brand mb-3">Strategic Note</h3>
-          <p className="text-muted-foreground leading-relaxed font-medium">{strategicNote}</p>
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
         </div>
       )}
 

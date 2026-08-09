@@ -131,35 +131,11 @@ export default function Profile() {
   const initials = getInitials(firstName, lastName, user?.name);
 
   return (
-<<<<<<< HEAD
     <div className="w-full space-y-8">
       <PageHeader
         title="Account Settings"
         description="Manage your personal information and account security."
       />
-=======
-    <div>
-      
-      <div className="grid gap-6 md:grid-cols-[220px_1fr] lg:grid-cols-[220px_1fr_300px]">
-        
-        {/* Left Sidebar Menu */}
-        <aside className="rounded-2xl border border-border bg-white p-4 shadow-soft hidden md:block">
-          <nav className="space-y-1">
-            <SidebarButton 
-              icon={<UserIcon className="h-4 w-4" />} 
-              label="Profile" 
-              active={activeTab === "profile"} 
-              onClick={() => setActiveTab("profile")} 
-            />
-            <SidebarButton 
-              icon={<ShieldCheck className="h-4 w-4" />} 
-              label="Account Security" 
-              active={activeTab === "security"} 
-              onClick={() => setActiveTab("security")} 
-            />
-          </nav>
-        </aside>
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
 
       {/* Profile summary */}
       <section className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 shadow-soft sm:flex-row sm:items-center sm:gap-6">

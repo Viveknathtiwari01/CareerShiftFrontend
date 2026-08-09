@@ -132,7 +132,6 @@ export default function AssessmentPage() {
   }
 
   const hasDraft = draft.tasks.length > 0 || draft.role !== "";
-<<<<<<< HEAD
 
   return (
     <div className="w-full">
@@ -162,66 +161,14 @@ export default function AssessmentPage() {
             </Link>
           )}
           {hasSavedAssessment && (
-=======
-  const completedAssessments = assessments.filter((item) => item.status === "COMPLETED");
-  const latestCompleted = completedAssessments[0] ?? null;
-  const hasHistory = completedAssessments.length > 0;
-  const lastAssessmentLabel = latestCompleted?.completed_at
-    ? new Date(latestCompleted.completed_at).toLocaleDateString()
-    : latestCompleted?.created_at
-      ? new Date(latestCompleted.created_at).toLocaleDateString()
-      : "Never";
-
-  return (
-    <PageShell>
-      <PageHeader
-        eyebrow="Career Assessment"
-        title="AI Based Career Assessment"
-        description="Understand how AI will impact your career, analyze your daily work, measure your AI readiness, and receive a personalized transformation roadmap."
-        actions={
-          <>
-            {!profileComplete && (
-              <Link
-                to="/my-profile"
-                className="text-sm font-medium text-brand hover:underline"
-              >
-                Complete profile first
-              </Link>
-            )}
-            {latestCompleted && (
-              <Link
-                to={`/report?assessmentId=${latestCompleted.assessment_id}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-brand/30 bg-brand/10 px-4 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-brand/15"
-              >
-                View Report
-              </Link>
-            )}
-            {hasSavedAssessment && (
-              <button
-                type="button"
-                onClick={handleRegenerateFromScratch}
-                disabled={!profileComplete || wizardLoading}
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
-              >
-                Regenerate from scratch
-              </button>
-            )}
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
             <button
               type="button"
               onClick={() => openWizard(false)}
               disabled={!profileComplete || wizardLoading}
-<<<<<<< HEAD
               className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/50 hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <RotateCcw className="h-4 w-4" />
               Regenerate from scratch
-=======
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
-              <ArrowRight className="h-4 w-4" />
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
             </button>
           </>
         }
@@ -323,22 +270,8 @@ export default function AssessmentPage() {
                   <span className="text-sm font-semibold text-foreground">7–10 minutes</span>
                 </div>
               </div>
-<<<<<<< HEAD
 
               <div className="mt-6">
-=======
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Last Assessment</span>
-                <span className="font-medium text-foreground">
-                  {hasHistory ? lastAssessmentLabel : "Never"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Estimated Duration</span>
-                <span className="font-medium text-foreground">7–10 Minutes</span>
-              </div>
-              <div>
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
                 <div className="mb-2 flex items-center justify-between text-sm">
                   <span className="font-medium text-foreground">Overall progress</span>
                   <span className="font-semibold text-brand">{assessmentProgress}%</span>
@@ -513,55 +446,6 @@ export default function AssessmentPage() {
         </div>
       </motion.div>
 
-<<<<<<< HEAD
-=======
-      {/* Assessment Insights Cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Current AI Readiness
-          </p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-display text-3xl font-bold text-foreground">
-              {hasHistory ? "74" : "N/A"}
-            </span>
-            <span className="text-sm text-muted-foreground">/ 100</span>
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Career Profile
-          </p>
-          <div className="mt-2 flex items-center gap-2">
-            <CheckCircle2 className="h-6 w-6 text-teal" />
-            <span className="font-display text-2xl font-bold text-foreground">Completed</span>
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Assessments Completed
-          </p>
-          <div className="mt-2 font-display text-3xl font-bold text-foreground">
-            {hasHistory ? String(completedAssessments.length) : "0"}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Last Assessment
-          </p>
-          <div className="mt-2 font-display text-2xl font-bold text-foreground">
-            {hasHistory ? lastAssessmentLabel : "Never"}
-          </div>
-        </div>
-      </motion.div>
-
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       {/* CTA Section */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

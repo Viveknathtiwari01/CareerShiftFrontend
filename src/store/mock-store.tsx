@@ -144,17 +144,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       const accessToken = res.data.access_token as string;
       const refreshToken = res.data.refresh_token as string;
-<<<<<<< HEAD
       setTokens(accessToken, refreshToken);
       const userRes = await fetchApi("/users/me");
-=======
-
-      // Save the tokens now so that fetchApi("/users/me") can use the new access token
-      setTokens(accessToken, refreshToken);
-
-      const userRes = await fetchApi("/users/me");
-
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       const u: User = {
         id: userRes.data.id,
         name: userRes.data.first_name ? `${userRes.data.first_name} ${userRes.data.last_name || ""}`.trim() : userRes.data.username,

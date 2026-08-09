@@ -155,11 +155,7 @@ function AssessmentWizard({
   }
 
   return (
-<<<<<<< HEAD
     <div className="w-full">
-=======
-    <div className="page-shell animate-fade-in">
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       {/* Stepper */}
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">

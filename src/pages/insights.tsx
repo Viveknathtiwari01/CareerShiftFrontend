@@ -14,11 +14,7 @@ const INSIGHTS = [
 
 function Insights() {
   return (
-<<<<<<< HEAD
     <div className="w-full">
-=======
-    <div>
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       <h1 className="font-display text-3xl font-bold tracking-tight">Market insights</h1>
       <p className="mt-2 text-muted-foreground">What's happening in your field, curated weekly.</p>
       <div className="mt-8 space-y-4">

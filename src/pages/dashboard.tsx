@@ -13,11 +13,7 @@ import { DashboardNavigation } from "@/components/dashboard/DashboardNavigation"
 
 export default function Dashboard() {
   return (
-<<<<<<< HEAD
     <div className="space-y-8">
-=======
-    <div className="space-y-8 pb-2">
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
       <DashboardHero />
       <WhyCareerShift />
       <MythVsReality />

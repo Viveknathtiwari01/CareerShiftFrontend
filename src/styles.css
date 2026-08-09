@@ -475,13 +475,7 @@
     color: var(--color-foreground);
     font-size: 1rem;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-<<<<<<< HEAD
     line-height: 1.65;
-=======
-    line-height: 1.6;
-    overflow-x: hidden;
-    min-width: 0;
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
   }
   h1,
   h2,
@@ -559,31 +553,16 @@
 }
 
 @media print {
-<<<<<<< HEAD
   .sticky,
   nav,
   header,
   button {
-=======
-  aside,
-  [data-sidebar],
-  .sticky {
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
     display: none !important;
   }
 
   body {
     background: white !important;
-<<<<<<< HEAD
     color: black !important;
-=======
-  }
-
-  button,
-  [role="menu"],
-  [data-radix-popper-content-wrapper] {
-    display: none !important;
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
   }
 
   .min-h-screen {

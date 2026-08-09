@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -219,9 +218,6 @@ function Stat({
     </div>
   );
 }
-=======
-import Step3BAnalysis from "@/components/assessment/Step3BAnalysis";
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
 
 type Props = {
   assessmentId: string | null;
@@ -239,7 +235,6 @@ export default function ThreeBAnalysisView({
   impressMode,
 }: Props) {
   return (
-<<<<<<< HEAD
     <div className="space-y-10">
       {impressMode && (
         <div className="grid gap-4 md:grid-cols-3">
@@ -373,12 +368,5 @@ export default function ThreeBAnalysisView({
         </div>
       )}
     </div>
-=======
-    <Step3BAnalysis
-      assessmentId={assessmentId}
-      showFooterLinks={showFooterLinks || variant === "page" || impressMode}
-      embedded={variant === "page" || impressMode}
-    />
->>>>>>> 9ce78241cdcadf8a8ff9a2d4d098b916476f5962
   );
 }
