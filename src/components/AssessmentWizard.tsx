@@ -48,7 +48,14 @@ import {
 import { useAssessment, type Task } from "@/store/mock-store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfile } from "@/api/profile";
-import { saveAssessmentTasks, mapBackendTaskToFrontend } from "@/api/tasks";
+import {
+  saveAssessmentTasks,
+  mapBackendTaskToFrontend,
+  isTaskReviewComplete,
+  getEffectiveTimeAllocation,
+  getEffectiveConfidenceScore,
+} from "@/api/tasks";
+import { runTaskAnalysis } from "@/api/analysis";
 import {
   groupCompetenciesByCategory,
   type AssessmentStartResponse,
@@ -144,6 +151,12 @@ function AssessmentWizard({
     setSaveError(null);
     try {
       await persistTasks();
+      if (pipeline.assessmentId) {
+        await runTaskAnalysis(pipeline.assessmentId, true);
+        queryClient.invalidateQueries({
+          queryKey: ["assessment-analysis", pipeline.assessmentId],
+        });
+      }
       navigate("/3b-analysis");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to save tasks";
@@ -279,7 +292,7 @@ function AssessmentWizard({
           >
             {isSavingTasks ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" /> Saving...
+                <Loader2 className="h-4 w-4 animate-spin" /> Preparing 3B analysis...
               </>
             ) : (
               <>
@@ -440,25 +453,17 @@ function StepTasks({
   const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
   const [expandedId, setExpandedId] = useState<string | null>(selectedTasks[0]?.id || null);
 
-  const tasksReviewed = selectedTasks.filter(
-    (t) =>
-      t.frequency &&
-      t.businessCriticality &&
-      t.timeAllocation !== undefined &&
-      t.aiAssistance &&
-      t.confidenceScore !== undefined,
-  ).length;
+  const tasksReviewed = selectedTasks.filter(isTaskReviewComplete).length;
 
-  const validConfidenceTasks = selectedTasks.filter((t) => t.confidenceScore !== undefined);
-  const avgConfidence = validConfidenceTasks.length
+  const avgConfidence = selectedTasks.length
     ? (
-        validConfidenceTasks.reduce((acc, t) => acc + t.confidenceScore!, 0) /
-        validConfidenceTasks.length
+        selectedTasks.reduce((acc, t) => acc + getEffectiveConfidenceScore(t), 0) /
+        selectedTasks.length
       ).toFixed(1)
     : "0.0";
 
   const totalHours = selectedTasks.reduce(
-    (acc, t) => acc + (t.timeAllocation ?? t.hoursPerWeek ?? 0),
+    (acc, t) => acc + getEffectiveTimeAllocation(t),
     0,
   );
 
@@ -496,12 +501,7 @@ function StepTasks({
           )}
           {selectedTasks.map((t) => {
             const isExpanded = expandedId === t.id;
-            const isReviewed =
-              t.frequency &&
-              t.businessCriticality &&
-              t.timeAllocation !== undefined &&
-              t.aiAssistance &&
-              t.confidenceScore !== undefined;
+            const isReviewed = isTaskReviewComplete(t);
 
             return (
               <div
@@ -573,14 +573,14 @@ function StepTasks({
                                 Approximately how much of your work week is spent on this task?
                               </h4>
                               <span className="text-sm font-bold text-primary">
-                                {t.timeAllocation ?? t.hoursPerWeek ?? 0} hrs
+                                {getEffectiveTimeAllocation(t)} hrs
                               </span>
                             </div>
                             <input
                               type="range"
                               min="0"
                               max="40"
-                              value={t.timeAllocation ?? t.hoursPerWeek ?? 0}
+                              value={getEffectiveTimeAllocation(t)}
                               onChange={(e) =>
                                 updateTask(t.id, { timeAllocation: Number(e.target.value) })
                               }
@@ -598,14 +598,14 @@ function StepTasks({
                                 How confident are you performing this task without assistance?
                               </h4>
                               <span className="text-sm font-bold text-primary">
-                                {t.confidenceScore ?? 5} / 10
+                                {getEffectiveConfidenceScore(t)} / 10
                               </span>
                             </div>
                             <input
                               type="range"
                               min="1"
                               max="10"
-                              value={t.confidenceScore ?? 5}
+                              value={getEffectiveConfidenceScore(t)}
                               onChange={(e) =>
                                 updateTask(t.id, { confidenceScore: Number(e.target.value) })
                               }

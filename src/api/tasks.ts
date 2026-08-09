@@ -39,6 +39,21 @@ export interface BackendTask {
   manual_notes?: string | null;
 }
 
+export const DEFAULT_TASK_CONFIDENCE_SCORE = 5;
+
+export function getEffectiveTimeAllocation(task: Task): number {
+  return task.timeAllocation ?? task.hoursPerWeek ?? 0;
+}
+
+export function getEffectiveConfidenceScore(task: Task): number {
+  return task.confidenceScore ?? DEFAULT_TASK_CONFIDENCE_SCORE;
+}
+
+/** True when the user has answered the required review questions (sliders use UI defaults). */
+export function isTaskReviewComplete(task: Task): boolean {
+  return Boolean(task.frequency && task.businessCriticality && task.aiAssistance);
+}
+
 export function mapBackendTaskToFrontend(task: BackendTask): Task {
   return {
     id: task.id,
@@ -77,9 +92,9 @@ export function mapFrontendTaskToBackend(task: Task, index: number): Record<stri
     sort_order: index,
     frequency: task.frequency ?? null,
     business_criticality: task.businessCriticality ?? null,
-    time_allocation: task.timeAllocation ?? null,
+    time_allocation: getEffectiveTimeAllocation(task),
     ai_assistance: task.aiAssistance ?? null,
-    confidence_score: task.confidenceScore ?? null,
+    confidence_score: getEffectiveConfidenceScore(task),
     manual_notes: task.manualNotes ?? null,
   };
 }
