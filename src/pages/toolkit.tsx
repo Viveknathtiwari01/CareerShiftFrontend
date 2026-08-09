@@ -7,7 +7,7 @@ import { useReportData } from "@/hooks/use-report-data";
 import type { ToolkitItem } from "@/api/report";
 import { cn } from "@/lib/utils";
 
-const PRIORITY_FILTERS = ["All", "Critical", "High", "Medium", "Supporting", "Existing"] as const;
+const PRIORITY_FILTERS = ["All", "Critical", "High", "Medium", "Supporting"] as const;
 
 function effectivePriority(tool: ToolkitItem, index: number): string {
   if (tool.priority_label) return tool.priority_label;

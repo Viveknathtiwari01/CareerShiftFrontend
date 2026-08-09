@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Download, Share2, FileText, Loader2 } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
-import { downloadReportDocx, downloadReportPdf } from "@/api/report";
+import { downloadReportDocx, downloadReportPdf, formatReportVersion } from "@/api/report";
 import { ReportShareDialog } from "@/components/report/ReportShareDialog";
 
 type Props = {
@@ -32,6 +32,8 @@ export function ReportHeader({ report }: Props) {
     }
   }
 
+  const versionLabel = formatReportVersion(report.report_version);
+
   return (
     <>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-border/40">
@@ -49,7 +51,7 @@ export function ReportHeader({ report }: Props) {
               <span className="text-muted-foreground">Date:</span> {generated}
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
-              <span className="text-muted-foreground">Version:</span> {report.report_version}
+              <span className="text-muted-foreground">Version:</span> {versionLabel}
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand border border-brand/20">
               <span className="text-brand/70">Score:</span> {report.overview.overall_score}/100

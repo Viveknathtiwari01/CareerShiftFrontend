@@ -139,6 +139,29 @@ function priorityLabelFromRank(rank: number): string {
   return "Supporting";
 }
 
+/** Parse stored report_version into a simple 1-based revision number. */
+export function reportRevisionNumber(version: string | null | undefined): number {
+  const value = (version ?? "1").trim();
+  if (/^\d+$/.test(value)) return Math.max(1, parseInt(value, 10));
+
+  const parts = value.split(".");
+  if (parts.length === 2 && /^\d+$/.test(parts[0]) && /^\d+$/.test(parts[1])) {
+    const major = parseInt(parts[0], 10);
+    const minor = parseInt(parts[1], 10);
+    if (major === 1) return Math.max(1, minor + 1);
+  }
+
+  if (parts[0] === "1") return Math.max(1, parts.length - 1);
+
+  const numericParts = parts.filter((part) => /^\d+$/.test(part));
+  return Math.max(1, numericParts.length || 1);
+}
+
+/** User-facing report version label, e.g. "1" or "3". */
+export function formatReportVersion(version: string | null | undefined): string {
+  return String(reportRevisionNumber(version));
+}
+
 function flattenToolkit(raw: unknown): ToolkitItem[] {
   if (!raw) return [];
 
@@ -221,7 +244,7 @@ export function normalizeReport(raw: Record<string, unknown>): CareerIntelligenc
 
   return {
     assessment_id: String(raw.assessment_id ?? ""),
-    report_version: String(raw.report_version ?? "1.0.0"),
+    report_version: String(raw.report_version ?? "1"),
     generated_at: String(raw.generated_at ?? new Date().toISOString()),
     strategic_note: raw.strategic_note ? String(raw.strategic_note) : null,
     overview: {
@@ -405,7 +428,13 @@ export async function downloadToolkitHtml(assessmentId: string) {
 export async function downloadReportDocx(assessmentId: string) {
   const { fetchBlob } = await import("@/lib/api");
   const blob = await fetchBlob(`/assessment/${assessmentId}/report/docx`);
-  downloadBlob(blob, "careershift-report.docx");
+  const docBlob =
+    blob.type && blob.type !== "application/json"
+      ? blob
+      : new Blob([blob], {
+          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+  downloadBlob(docBlob, "careershift-report.docx");
 }
 
 export async function downloadReportJson(assessmentId: string) {
