@@ -1,16 +1,19 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  ArrowUp,
   BarChart3,
   Bot,
+  Brain,
   BrainCircuit,
+  Briefcase,
   CheckCircle2,
   ChevronDown,
   Clock,
   Compass,
   FileText,
   Github,
-  GraduationCap,
+  Globe,
   Linkedin,
   Mail,
   Menu,
@@ -18,6 +21,7 @@ import {
   Phone,
   Rocket,
   ShieldCheck,
+  Signal,
   Sparkles,
   Sprout,
   Star,
@@ -25,6 +29,7 @@ import {
   TrendingUp,
   Twitter,
   User,
+  Users,
   Video,
   X,
   Zap,
@@ -52,12 +57,14 @@ function Landing() {
       <ReportPreview />
       <Features />
       <Testimonials />
+      <Workshop />
       <Pricing />
       <OurStory />
       <FAQ />
       <ContactUs />
       <FinalCTA />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
@@ -67,7 +74,7 @@ const NAV_LINKS = [
   { label: "Features", sectionId: "features" },
   { label: "How it works", sectionId: "how" },
   { label: "Sample report", sectionId: "report" },
-  { label: "Workshop", sectionId: "faq" },
+  { label: "Workshop", sectionId: "workshop" },
   { label: "Pricing", sectionId: "pricing" },
   { label: "Our Story", sectionId: "our-story" },
   { label: "FAQ", sectionId: "faq" },
@@ -675,6 +682,290 @@ function Testimonials() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ---------- WORKSHOP ---------- */
+function Workshop() {
+  const whyWorkshop = [
+    {
+      icon: Brain,
+      title: "Learn practical AI",
+      body: "Understand how professionals use AI every day to solve real problems — not how to build it from scratch.",
+    },
+    {
+      icon: Briefcase,
+      title: "AI tools for your job",
+      body: "Discover the AI tools every professional should know — matched to everyday work, not generic tech tutorials.",
+    },
+    {
+      icon: Zap,
+      title: "Real productivity gains",
+      body: "Learn workflows that save hours each week while keeping your expertise at the center.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Stay irreplaceable",
+      body: "Build the AI fluency employers expect now — so you lead the change instead of fearing it.",
+    },
+  ];
+
+  const overview = [
+    { label: "Duration", value: "6 Hours", icon: Clock },
+    { label: "Level", value: "Beginner to Intermediate", icon: Signal },
+    { label: "Community", value: "Included", icon: Users },
+    { label: "Language", value: "English", icon: Globe },
+  ];
+
+  const visionPoints = [
+    "Empower every professional to thrive in the AI era — not fear it.",
+    "Make essential AI tool literacy accessible to everyday workers.",
+    "Replace uncertainty with clarity on which skills and tools matter most.",
+  ];
+
+  const missionPoints = [
+    "Teach the AI tools every professional should know for real work.",
+    "Help people collaborate with AI as a partner, not compete against it.",
+    "Turn career anxiety into practical confidence and daily productivity.",
+  ];
+
+  const outcomeTrend = [
+    { label: "Start", value: 22 },
+    { label: "AI basics", value: 38 },
+    { label: "Prompts", value: 52 },
+    { label: "Workflows", value: 66 },
+    { label: "At work", value: 78 },
+    { label: "Tool stack", value: 88 },
+    { label: "Career ready", value: 96 },
+  ];
+
+  return (
+    <section id="workshop" className="bg-background py-24">
+      <div className="container-page space-y-20 animate-fade-in-up">
+        {/* Hero — matches in-app WorkshopHero messaging */}
+        <div className="relative overflow-hidden rounded-3xl bg-[#0A1525] px-6 py-16 sm:px-10 lg:px-16 text-center shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand/15 via-transparent to-teal/10" />
+          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand/20 blur-3xl" />
+          <div className="relative z-10 mx-auto max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full bg-brand/20 px-3 py-1 text-sm font-medium text-brand ring-1 ring-inset ring-brand/30">
+              <Sparkles className="h-3.5 w-3.5" />
+              AI + Professional Collaboration
+            </span>
+            <h2 className="mt-6 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              This is the AI era.{" "}
+              <span className="text-brand">Learn the tools — don&apos;t fear the future.</span>
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-white/75">
+              Everyone worries AI will take their job. CareerShift workshops teach the AI tools every
+              professional must know — so you work <em>with</em> AI, stay valuable, and move ahead
+              while others hesitate.
+            </p>
+            <p className="mt-4 text-base font-semibold text-white/90">
+              AI won&apos;t replace people. People who know AI will replace people who don&apos;t.
+            </p>
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                to="/auth"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand px-8 text-base font-semibold text-brand-foreground transition-transform hover:scale-[1.02] sm:w-auto"
+              >
+                Enroll in Workshop
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <SectionLink
+                sectionId="workshop-outcomes"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 sm:w-auto"
+              >
+                <TrendingUp className="h-4 w-4" />
+                See workshop outcomes
+              </SectionLink>
+            </div>
+          </div>
+        </div>
+
+        {/* Why this workshop */}
+        <div>
+          <div className="mx-auto max-w-2xl text-center md:text-left">
+            <SectionEyebrow>Why this workshop</SectionEyebrow>
+            <h3 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              We don&apos;t teach you to build AI. We teach you to use it.
+            </h3>
+            
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {whyWorkshop.map((item) => (
+              <div
+                key={item.title}
+                className="surface-card flex gap-5 p-6 transition-colors hover:border-brand/40"
+              >
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
+                  <item.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h4 className="font-display text-lg font-semibold text-foreground">{item.title}</h4>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Motivation quote */}
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0A1525] p-10 text-center shadow-2xl md:p-16">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand/15 via-transparent to-teal/10" />
+          <blockquote className="relative z-10 mx-auto max-w-4xl font-display text-2xl font-extrabold leading-tight text-white md:text-3xl">
+            <span className="text-brand/60">&ldquo;</span>
+            AI will not replace people who know their profession.{" "}
+            <span className="text-gradient-brand">
+              People who learn to collaborate with AI will lead the future.
+            </span>
+            <span className="text-brand/60">&rdquo;</span>
+          </blockquote>
+        </div>
+
+        {/* Vision & Mission */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-3xl border border-border bg-card p-8 shadow-soft">
+            <div className="mb-5 flex items-center gap-2">
+              <Compass className="h-5 w-5 text-brand" />
+              <h3 className="font-display text-2xl font-bold text-foreground">Vision</h3>
+            </div>
+            <ul className="space-y-3">
+              {visionPoints.map((point) => (
+                <li key={point} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-3xl border border-border bg-[#0A1525] p-8 shadow-elevated">
+            <div className="mb-5 flex items-center gap-2">
+              <Target className="h-5 w-5 text-brand" />
+              <h3 className="font-display text-2xl font-bold text-white">Mission</h3>
+            </div>
+            <ul className="space-y-3">
+              {missionPoints.map((point) => (
+                <li key={point} className="flex items-start gap-3 text-sm leading-relaxed text-white/75">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Overview */}
+        <div className="surface-card p-8">
+          <div className="text-center">
+            <SectionEyebrow>Workshop overview</SectionEyebrow>
+            <h3 className="mt-3 font-display text-3xl font-bold">Master AI for everyday work</h3>
+            <p className="mt-3 text-muted-foreground">
+              Everything you need to understand, adopt, and apply AI tools confidently.
+            </p>
+          </div>
+          <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+            {overview.map((item) => (
+              <div
+                key={item.label}
+                className="flex flex-col items-center rounded-xl border border-border bg-muted/40 p-4 text-center"
+              >
+                <div className="mb-3 grid h-11 w-11 place-items-center rounded-full bg-brand/10 text-brand">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <p className="text-xs text-muted-foreground">{item.label}</p>
+                <p className="mt-1 text-sm font-semibold text-foreground">{item.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Workshop outcomes — line graph */}
+        <div id="workshop-outcomes" className="surface-card p-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <SectionEyebrow>Workshop outcomes</SectionEyebrow>
+            <h3 className="mt-3 font-display text-3xl font-bold">Your growth through the workshop</h3>
+            <p className="mt-3 text-muted-foreground">
+              A practical path from AI uncertainty to confident, everyday use — measured by skill
+              and career readiness.
+            </p>
+          </div>
+          <div className="mt-10 overflow-x-auto">
+            <WorkshopOutcomesChart data={outcomeTrend} />
+          </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            {[
+              "Confident with AI tools",
+              "Save hours weekly",
+              "Less fear of replacement",
+              "Higher productivity",
+              "Stronger employability",
+              "Future-ready career",
+            ].map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WorkshopOutcomesChart({
+  data,
+}: {
+  data: Array<{ label: string; value: number }>;
+}) {
+  const width = 720;
+  const height = 280;
+  const padX = 48;
+  const padY = 36;
+  const chartW = width - padX * 2;
+  const chartH = height - padY * 2;
+  const maxY = 100;
+
+  const points = data.map((d, i) => {
+    const x = padX + (i / (data.length - 1)) * chartW;
+    const y = padY + chartH - (d.value / maxY) * chartH;
+    return { x, y, ...d };
+  });
+
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+  const areaPath = `${linePath} L ${points[points.length - 1].x} ${padY + chartH} L ${points[0].x} ${padY + chartH} Z`;
+
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="mx-auto w-full max-w-3xl"
+      role="img"
+      aria-label="Workshop outcomes growth line chart"
+    >
+      {[0, 25, 50, 75, 100].map((tick) => {
+        const y = padY + chartH - (tick / maxY) * chartH;
+        return (
+          <g key={tick}>
+            <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="currentColor" className="text-border" strokeDasharray="4 4" />
+            <text x={padX - 10} y={y + 4} textAnchor="end" className="fill-muted-foreground text-[10px]">
+              {tick}
+            </text>
+          </g>
+        );
+      })}
+      <path d={areaPath} className="fill-brand/15" />
+      <path d={linePath} fill="none" stroke="currentColor" className="text-brand" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      {points.map((p) => (
+        <g key={p.label}>
+          <circle cx={p.x} cy={p.y} r="5" className="fill-brand stroke-background" strokeWidth="2" />
+          <text x={p.x} y={height - 8} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+            {p.label}
+          </text>
+        </g>
+      ))}
+    </svg>
   );
 }
 
@@ -1330,7 +1621,7 @@ function Footer() {
       title: "Product",
       links: [
         { label: "Features", sectionId: "features" },
-        { label: "Workshops", sectionId: "pricing" },
+        { label: "Workshops", sectionId: "workshop" },
       ],
     },
     { title: "Resources", links: [{ label: "FAQ", sectionId: "faq" }] },
@@ -1404,10 +1695,45 @@ function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-8 text-sm font-medium text-white/70 sm:flex-row sm:items-center md:text-base">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-          <span>Built for professionals navigating the AI shift.</span>
+          <div className="flex flex-wrap items-center gap-4">
+            <span>Built for professionals navigating the AI shift.</span>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="inline-flex items-center gap-1.5 text-[#C9A84C] transition-colors hover:text-[#e8c96a]"
+            >
+              Back to top
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+/* ---------- SCROLL TO TOP ---------- */
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 480);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      type="button"
+      aria-label="Back to top"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-brand/30 bg-brand text-brand-foreground shadow-elevated transition-all hover:scale-105 hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    >
+      <ArrowUp className="h-5 w-5" />
+    </button>
   );
 }
 
