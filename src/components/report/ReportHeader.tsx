@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Download, Share2, FileJson, Loader2 } from "lucide-react";
+import { Download, Share2, FileText, Loader2 } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
-import { downloadReportJson, downloadReportPdf } from "@/api/report";
+import { downloadReportDocx, downloadReportPdf } from "@/api/report";
 import { ReportShareDialog } from "@/components/report/ReportShareDialog";
 
 type Props = {
@@ -19,12 +19,12 @@ export function ReportHeader({ report }: Props) {
     day: "numeric",
   });
 
-  async function runExport(action: "pdf" | "json") {
+  async function runExport(action: "pdf" | "docx") {
     setError(null);
     setBusy(action);
     try {
       if (action === "pdf") await downloadReportPdf(report.assessment_id);
-      if (action === "json") await downloadReportJson(report.assessment_id);
+      if (action === "docx") await downloadReportDocx(report.assessment_id);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Export failed");
     } finally {
@@ -70,19 +70,19 @@ export function ReportHeader({ report }: Props) {
           </button>
           <button
             type="button"
+            disabled={!!busy}
+            onClick={() => runExport("docx")}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted disabled:opacity-60"
+          >
+            {busy === "docx" ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+            Download DOC
+          </button>
+          <button
+            type="button"
             onClick={() => setShareOpen(true)}
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted"
           >
             <Share2 className="h-4 w-4" /> Share
-          </button>
-          <button
-            type="button"
-            disabled={!!busy}
-            onClick={() => runExport("json")}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted disabled:opacity-60"
-          >
-            {busy === "json" ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileJson className="h-4 w-4" />}
-            Export JSON
           </button>
         </div>
       </div>

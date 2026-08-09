@@ -72,79 +72,72 @@ export default function AuthenticatedLayout() {
         />
       )}
 
-      <div className="flex">
-        {/* Sidebar */}
-        <aside
-          className={`fixed inset-y-0 left-0 z-50 w-80 shrink-0 border-r border-border bg-[#141F32] text-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
-            mobileNav ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="flex h-full flex-col">
-            <Link
-              to="/dashboard"
-              className="hidden items-center gap-1 border-b border-border px-6 lg:flex"
-            >
-              <img src="/Logo_text_.png" alt="Logo" className="w-42 h-24" />
-            </Link>
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-sidebar/20 bg-sidebar text-sidebar-foreground shadow-xl transition-transform duration-300 ease-out lg:static lg:z-auto lg:shrink-0 lg:translate-x-0 lg:shadow-none",
+          mobileNav ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+        )}
+        aria-label="Main navigation"
+      >
+        <div className="flex min-h-0 flex-1 flex-col">
+          <Link
+            to="/dashboard"
+            className="hidden shrink-0 items-center border-b border-sidebar-foreground/10 px-6 py-5 lg:flex"
+          >
+            <img
+              src="/Logo_text_.png"
+              alt="CareerShift"
+              className="h-14 w-auto max-w-[168px] object-contain"
+            />
+          </Link>
 
-            <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-              <p className="mb-3 px-3 text-sm font-bold uppercase tracking-wider text-white/60">
-                Workspace
-              </p>
-              {NAV.map((item) => {
-                const active = pathname === item.to;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
-                      active
-                        ? "bg-primary text-primary-foreground shadow-soft"
-                        : "text-white/85 hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    {item.label}
-                  </Link>
-                );
-              })}
-
-              <p className="mb-3 mt-8 px-3 text-sm font-bold uppercase tracking-wider text-white/60">
-                Account
-              </p>
-              <Link
-                to="/profile"
-                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium leading-snug transition-colors ${
-                  pathname === "/profile"
-                    ? "bg-primary text-primary-foreground shadow-soft"
-                    : "text-white/85 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <UserIcon className="h-5 w-5 shrink-0" />
-                Profile
-              </Link>
-            </nav>
-
-            <div className="border-t border-border p-4">
-              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-primary text-base font-semibold text-primary-foreground">
-                  {user.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-base font-semibold text-white">{user.name}</p>
-                  <p className="truncate text-sm text-white/80">{user.email}</p>
-                </div>
-                <button
-                  onClick={() => {
-                    logout();
-                    navigate("/", { replace: true });
-                  }}
-                  aria-label="Log out"
-                  className="grid h-9 w-9 place-items-center rounded-lg text-white/75 hover:bg-white/10 hover:text-white"
+          <nav className="scrollbar-sidebar flex-1 space-y-1 overflow-y-auto overscroll-contain p-4">
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+              Workspace
+            </p>
+            {NAV.map((item) => {
+              const active = pathname === item.to;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => setMobileNav(false)}
+                  className={cn(
+                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    active
+                      ? "bg-primary text-primary-foreground shadow-soft"
+                      : "text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground",
+                  )}
                 >
-                  <LogOut className="h-5 w-5" />
-                </button>
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              );
+            })}
+
+            <p className="mb-2 mt-6 px-3 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+              Account
+            </p>
+            <Link
+              to="/profile"
+              onClick={() => setMobileNav(false)}
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                pathname === "/profile"
+                  ? "bg-primary text-primary-foreground shadow-soft"
+                  : "text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground",
+              )}
+            >
+              <UserIcon className="h-4 w-4 shrink-0" />
+              Profile
+            </Link>
+          </nav>
+
+          <div className="shrink-0 border-t border-sidebar-foreground/10 p-4">
+            <div className="flex items-center gap-3 rounded-xl border border-sidebar-foreground/10 bg-sidebar-foreground/5 p-3">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                {user.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{user.name}</p>
@@ -187,8 +180,13 @@ export default function AuthenticatedLayout() {
           </button>
         </header>
 
-        <main className="min-w-0 w-full flex-1">
-          <div className="app-page">
+        <main
+          className={cn(
+            "scrollbar-main min-h-0 w-full flex-1 overflow-x-hidden overscroll-contain",
+            mobileNav ? "overflow-hidden" : "overflow-y-auto",
+          )}
+        >
+          <div className="app-page pb-8">
             <Outlet />
           </div>
         </main>

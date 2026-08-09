@@ -20,8 +20,8 @@ export function AIToolsTab({ report }: Props) {
         Ranked by priority for your role — adopt Critical and High tools first for the fastest career impact.
       </p>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {tools.map((tool) => (
-          <ToolkitToolCard key={tool.name} tool={tool} variant="light" />
+        {tools.map((tool, idx) => (
+          <ToolkitToolCard key={tool.name} tool={tool} rank={tool.priority_rank ?? idx + 1} />
         ))}
       </div>
     </div>

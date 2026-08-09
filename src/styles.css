@@ -279,6 +279,13 @@
   background: color-mix(in oklab, var(--muted) 50%, var(--card));
 }
 
+@utility surface-card {
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow-soft-value);
+}
+
 @utility hero-ink {
   position: relative;
   overflow: hidden;

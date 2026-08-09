@@ -19,8 +19,8 @@ export function useReportData() {
   return {
     assessmentId,
     report: query.data,
-    isLoading: activeLoading || query.isLoading,
-    isError: query.isError,
+    isLoading: activeLoading || (!!assessmentId && query.isLoading),
+    isError: !!assessmentId && query.isError,
     error: query.error,
     refetch: query.refetch,
   };

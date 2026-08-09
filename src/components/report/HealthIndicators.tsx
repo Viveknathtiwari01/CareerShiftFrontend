@@ -12,7 +12,7 @@ export function HealthIndicators({ report }: Props) {
     { label: "Tier", value: ai_readiness.tier_label, icon: Brain, color: "text-primary" },
     { label: "Career Risk", value: overview.career_risk, icon: ShieldCheck, color: "text-primary" },
     { label: "Automation", value: `${overview.automation_pct}%`, icon: Activity, color: "text-primary" },
-    { label: "Role", value: overview.job_title.split(" ").slice(0, 2).join(" "), icon: Briefcase, color: "text-primary" },
+    { label: "Role", value: (overview.job_title ?? "Your role").split(" ").slice(0, 2).join(" "), icon: Briefcase, color: "text-primary" },
   ];
 
   const currentRole = String(before_after.current_role ?? overview.job_title);

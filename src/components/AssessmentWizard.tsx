@@ -242,7 +242,7 @@ function AssessmentWizard({
         </div>
       )}
 
-      <div className="mt-6 flex items-center justify-between">
+      <div className="sticky bottom-0 z-10 mt-6 flex items-center justify-between border-t border-border bg-background/95 py-4 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
         <button
           onClick={prev}
           disabled={step === 0}
@@ -1121,7 +1121,7 @@ function StepCompetencies({
         </div>
 
         <div className="w-full shrink-0 lg:w-72">
-          <div className="sticky top-6 rounded-2xl border border-border bg-background p-6 shadow-soft">
+          <div className="rounded-2xl border border-border bg-background p-6 shadow-soft lg:sticky lg:top-4">
             <h3 className="mb-4 font-display text-lg font-bold">Summary</h3>
             <div className="space-y-3">
               {categories.map((cat) => (

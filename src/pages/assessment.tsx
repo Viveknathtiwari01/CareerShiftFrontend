@@ -163,16 +163,16 @@ export default function AssessmentPage() {
           {hasSavedAssessment && (
             <button
               type="button"
-              onClick={() => openWizard(false)}
+              onClick={handleRegenerateFromScratch}
               disabled={!profileComplete || wizardLoading}
               className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/50 hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <RotateCcw className="h-4 w-4" />
               Regenerate from scratch
             </button>
-          </>
-        }
-      />
+          )}
+        </div>
+      </motion.div>
 
       {/* Hero Overview Card */}
       <motion.div
@@ -483,6 +483,6 @@ export default function AssessmentPage() {
           </div>
         </div>
       </motion.div>
-    </PageShell>
+    </div>
   );
 }

@@ -9,10 +9,34 @@ import {
   Loader2,
   Sparkles,
 } from "lucide-react";
-import ThreeBAnalysisView from "@/components/assessment/ThreeBAnalysisView";
+import Step3BAnalysis from "@/components/assessment/Step3BAnalysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useActiveAssessmentId } from "@/hooks/use-active-assessment";
+
+const FRAMEWORK_PREVIEW = [
+  {
+    key: "BUILD",
+    label: "BUILD IT",
+    tagline: "Deepen human mastery",
+    icon: Hammer,
+    cardClass: "border-primary/20 bg-primary/5 text-primary",
+  },
+  {
+    key: "BLEND",
+    label: "BLEND IT",
+    tagline: "Human + AI co-pilot",
+    icon: Sparkles,
+    cardClass: "border-brand/20 bg-brand/5 text-brand",
+  },
+  {
+    key: "BOT",
+    label: "BOT IT",
+    tagline: "Automate within 30 days",
+    icon: Bot,
+    cardClass: "border-teal/20 bg-teal/5 text-teal",
+  },
+] as const;
 
 export default function ThreeBAnalysisPage() {
   const { data: assessmentId, isLoading } = useActiveAssessmentId();
@@ -40,7 +64,7 @@ export default function ThreeBAnalysisPage() {
         />
       </div>
 
-      <div className="rounded-2xl border border-primary/20 bg-brand p-8 text-center shadow-soft relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-brand p-8 text-center shadow-soft">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_55%)]" />
         <div className="relative">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white">
@@ -76,10 +100,7 @@ export default function ThreeBAnalysisPage() {
         {FRAMEWORK_PREVIEW.map((item) => {
           const Icon = item.icon;
           return (
-            <div
-              key={item.key}
-              className={`rounded-2xl border p-5 shadow-sm ${item.cardClass}`}
-            >
+            <div key={item.key} className={`rounded-2xl border p-5 shadow-sm ${item.cardClass}`}>
               <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-background/70">
                 <Icon className="h-5 w-5" />
               </div>
@@ -97,9 +118,9 @@ export default function ThreeBAnalysisPage() {
             <p className="mt-4 text-sm">Loading your assessment…</p>
           </div>
         ) : (
-          <ThreeBAnalysisView
+          <Step3BAnalysis
             assessmentId={assessmentId ?? null}
-            impressMode
+            embedded
             showFooterLinks
           />
         )}

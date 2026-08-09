@@ -21,7 +21,7 @@ export function ReportHero({ report }: Props) {
       <div className="grid lg:grid-cols-3 gap-10 relative z-10">
         <div className="lg:col-span-2">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary mb-6 shadow-sm">
-            <Target className="h-4 w-4" /> {readiness ? `${readiness.tier} AI Readiness` : "Career Profile"}
+            <Target className="h-4 w-4" /> {ai_readiness.tier_label} AI Readiness
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 mb-4">
             {career_identity.identity_title}

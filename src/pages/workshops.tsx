@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/layout/PageHeader";
 import { WorkshopHero } from "@/components/workshops/WorkshopHero";
 import { InsightBanner } from "@/components/workshops/InsightBanner";
 import { PremiumCards } from "@/components/workshops/PremiumCards";
@@ -13,7 +14,12 @@ import { WorkshopCTA } from "@/components/workshops/WorkshopCTA";
 
 export default function Workshops() {
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-2 pb-8">
+      <PageHeader
+        eyebrow="Learning"
+        title="Workshops"
+        description="Practical AI training built on your CareerShift assessment — strengthen the skills your report recommends."
+      />
       <WorkshopHero />
       <InsightBanner />
       <PremiumCards />
