@@ -1,11 +1,11 @@
-import { useState, useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { WizardData } from "./types";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Combobox } from "@/components/ui/combobox";
 import { useMasterData } from "@/api/master";
-import { useDebounce } from "@/hooks/use-debounce"; // Assuming this exists or I will create it. Actually I can just use react state if cmdk filters locally, which it does. Let's just use local filtering for now to keep it snappy.
+import { wizardFieldLabelClass, wizardStepCardClass } from "./wizard-styles";
 
 interface Props {
   data: WizardData;
@@ -111,15 +111,15 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-none shadow-none">
-        <CardHeader>
-          <CardTitle className="text-2xl">Current Career Identity</CardTitle>
-          <CardDescription>Tell us about your current professional role.</CardDescription>
+      <Card className={wizardStepCardClass}>
+        <CardHeader className="px-4 pt-5 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl">Current Career Identity</CardTitle>
+          <CardDescription className="text-foreground/70">Tell us about your current professional role.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-5 px-4 pb-5 sm:space-y-6 sm:px-6 sm:pb-6">
           
           <div className="space-y-2">
-            <Label>Industry *</Label>
+            <Label className={wizardFieldLabelClass}>Industry *</Label>
             <Combobox
               options={sectorOptions}
               value={data.sector_id || data.industry}
@@ -131,7 +131,7 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
           </div>
 
           <div className="space-y-2">
-            <Label>Department / Business Function *</Label>
+            <Label className={wizardFieldLabelClass}>Department / Business Function *</Label>
             <Combobox
               options={departmentOptions}
               value={data.department_id || data.businessFunction}
@@ -144,7 +144,7 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
           </div>
 
           <div className="space-y-2">
-            <Label>Functional Domain *</Label>
+            <Label className={wizardFieldLabelClass}>Functional Domain *</Label>
             <Combobox
               options={functionalDomainOptions}
               value={data.functional_domain_id || data.domain}
@@ -157,7 +157,7 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
           </div>
 
           <div className="space-y-2">
-            <Label>Specialization *</Label>
+            <Label className={wizardFieldLabelClass}>Specialization *</Label>
             <Combobox
               options={specializationOptions}
               value={data.specialization_id || data.specialization}
@@ -170,7 +170,7 @@ export function Step1CareerIdentity({ data, updateData }: Props) {
           </div>
 
           <div className="space-y-2">
-            <Label>Current Job Title *</Label>
+            <Label className={wizardFieldLabelClass}>Current Job Title *</Label>
             <Combobox
               options={jobTitleOptions}
               value={data.job_title_id || data.jobTitle}

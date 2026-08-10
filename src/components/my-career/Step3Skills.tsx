@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { generateSkills } from "@/api/profile";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { wizardStepCardClass } from "./wizard-styles";
 
 interface Props {
   data: WizardData;
@@ -237,11 +238,11 @@ export function Step3Skills({ data, updateData }: Props) {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-none shadow-none">
-        <CardHeader className="flex flex-row items-start justify-between">
+      <Card className={wizardStepCardClass}>
+        <CardHeader className="flex flex-col gap-4 px-4 pt-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
           <div className="space-y-1.5">
-            <CardTitle className="text-2xl">Skills Intelligence</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl sm:text-2xl">Skills Intelligence</CardTitle>
+            <CardDescription className="text-foreground/70">
               Select all the skills you possess across different categories.
             </CardDescription>
           </div>
@@ -260,7 +261,7 @@ export function Step3Skills({ data, updateData }: Props) {
             Generate with AI
           </Button>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-8 px-4 pb-5 sm:px-6 sm:pb-6">
           {errorMsg && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />

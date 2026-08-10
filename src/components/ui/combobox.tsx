@@ -74,7 +74,11 @@ export function Combobox({
           role="combobox"
           aria-expanded={open}
           disabled={disabled || loading}
-          className={cn("w-full justify-between font-normal", className, !value && "text-muted-foreground")}
+          className={cn(
+            "h-12 w-full justify-between bg-card text-base font-normal shadow-sm sm:h-9 sm:text-sm",
+            className,
+            !value ? "text-foreground/60" : "text-foreground",
+          )}
         >
           {loading ? (
             <div className="flex items-center">

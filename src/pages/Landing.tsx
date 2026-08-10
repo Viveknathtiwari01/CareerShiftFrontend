@@ -162,8 +162,8 @@ function Logo() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#0A1525]">
-      <div className="container-page animate-fade-in-up relative grid gap-14 py-10 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
-        <div className="flex flex-col justify-center">
+      <div className="container-page animate-fade-in-up relative grid gap-10 py-10 md:gap-14 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
+        <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
             AI Career Readiness Report · Built for professionals
           </div>
@@ -174,22 +174,22 @@ function Hero() {
             Find out exactly what to build, what to automate, and how to become the person companies
             fight to keep. Receive your personalized AI Career Readiness Report in minutes.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row lg:items-start">
             <Link
               to="/auth"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02] sm:w-auto"
             >
               Start free assessment
               <ArrowRight className="h-4 w-4" />
             </Link>
             <SectionLink
               sectionId="report"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
               View sample report
             </SectionLink>
           </div>
-          <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6">
+          <dl className="mt-10 grid w-full max-w-lg grid-cols-3 gap-4 sm:gap-6">
             {[
               { k: "12 min", v: "Avg assessment" },
               { k: "40+", v: "Data signals" },
@@ -203,7 +203,7 @@ function Hero() {
           </dl>
         </div>
 
-        <div className="relative overflow-hidden">
+        <div className="relative mx-auto w-full max-w-[500px] overflow-hidden lg:mx-0">
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
           <HeroGraphic />
         </div>
@@ -1246,7 +1246,7 @@ function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center">
+    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center">
       {/* Concentric rings */}
       <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>

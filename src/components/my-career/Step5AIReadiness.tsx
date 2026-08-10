@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
+import { wizardFieldLabelClass, wizardInputClass, wizardStepCardClass } from "./wizard-styles";
 
 interface Props {
   data: WizardData;
@@ -85,14 +86,16 @@ export function Step5AIReadiness({ data, updateData }: Props) {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-none shadow-none">
-        <CardHeader>
-          <CardTitle className="text-2xl">AI Readiness</CardTitle>
-          <CardDescription>How are you leveraging AI in your career?</CardDescription>
+      <Card className={wizardStepCardClass}>
+        <CardHeader className="px-4 pt-5 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl">AI Readiness</CardTitle>
+          <CardDescription className="text-foreground/70">
+            How are you leveraging AI in your career?
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-8 px-4 pb-5 sm:px-6 sm:pb-6">
           <div className="space-y-4">
-            <Label className="text-base">How often do you use AI?</Label>
+            <Label className={wizardFieldLabelClass}>How often do you use AI?</Label>
             <RadioGroup
               value={isFreqCustom ? "Other" : data.aiFrequency}
               onValueChange={handleFreqChange}
@@ -123,12 +126,13 @@ export function Step5AIReadiness({ data, updateData }: Props) {
                 placeholder="Please specify how often you use AI"
                 value={data.aiFrequency}
                 onChange={(e) => updateData({ aiFrequency: e.target.value })}
+                className={wizardInputClass}
               />
             )}
           </div>
 
           <div className="space-y-4">
-            <Label className="text-base">Which AI tools do you use?</Label>
+            <Label className={wizardFieldLabelClass}>Which AI tools do you use?</Label>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               {currentAiTools.map((tool) => {
                 const isSelected = data.aiTools.includes(tool);
@@ -209,7 +213,7 @@ export function Step5AIReadiness({ data, updateData }: Props) {
 
           <div className="space-y-6 pt-4">
             <div className="flex justify-between items-center">
-              <Label className="text-base">How comfortable are you using AI?</Label>
+              <Label className={wizardFieldLabelClass}>How comfortable are you using AI?</Label>
               <span className="font-bold text-lg text-primary">{data.aiComfortLevel}/10</span>
             </div>
             <Slider
