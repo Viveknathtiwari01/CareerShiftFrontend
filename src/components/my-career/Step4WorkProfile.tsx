@@ -5,6 +5,7 @@ import { DAILY_ACTIVITIES } from "@/lib/app-enums";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { wizardInputClass, wizardStepCardClass } from "./wizard-styles";
 
 interface Props {
   data: WizardData;
@@ -54,12 +55,14 @@ export function Step4WorkProfile({ data, updateData }: Props) {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-none shadow-none">
-        <CardHeader>
-          <CardTitle className="text-2xl">Current Work Profile</CardTitle>
-          <CardDescription>Which best describes your daily work?</CardDescription>
+      <Card className={wizardStepCardClass}>
+        <CardHeader className="px-4 pt-5 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl">Current Work Profile</CardTitle>
+          <CardDescription className="text-foreground/70">
+            Which best describes your daily work?
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 pb-5 sm:px-6 sm:pb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {DAILY_ACTIVITIES.map((activity) => {
               const isSelected = data.dailyActivities.includes(activity);

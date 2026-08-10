@@ -163,19 +163,19 @@ export default function AuthPage() {
       </aside>
 
       {/* Right: form */}
-      <main className="flex flex-col justify-center px-6 py-12 sm:px-12">
-        <div className="mx-auto w-full max-w-md">
-          <Link to="/" className="mb-8 flex items-center gap-2 lg:hidden">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary">
-              <BrainCircuit className="h-4 w-4 text-primary-foreground" strokeWidth={2.5} />
+      <main className="flex min-h-screen flex-col justify-start px-4 py-8 sm:justify-center sm:px-12 sm:py-12">
+        <div className="mx-auto w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-soft sm:max-w-md sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+          <Link to="/" className="mb-6 flex items-center gap-2 sm:mb-8 lg:hidden">
+            <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary">
+              <BrainCircuit className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
             </div>
-            <span className="font-display text-lg font-bold">CareerShift</span>
+            <span className="font-display text-xl font-bold">CareerShift</span>
           </Link>
 
           {(mode === "login" || mode === "register") && (
-            <div className="mb-6 inline-flex rounded-full border border-border bg-brand p-1 text-sm">
+            <div className="mb-6 inline-flex w-full rounded-full border border-border bg-brand p-1 text-sm sm:w-auto">
               <button
-                className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
+                className={`flex-1 rounded-full px-4 py-2 font-medium transition-colors sm:flex-none sm:py-1.5 ${
                   mode === "login"
                     ? "bg-white/80 shadow-soft text-foreground"
                     : "text-muted-foreground"
@@ -186,7 +186,7 @@ export default function AuthPage() {
                 Log in
               </button>
               <button
-                className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
+                className={`flex-1 rounded-full px-4 py-2 font-medium transition-colors sm:flex-none sm:py-1.5 ${
                   mode === "register"
                     ? "bg-background shadow-soft text-foreground"
                     : "text-muted-foreground"
@@ -199,7 +199,7 @@ export default function AuthPage() {
             </div>
           )}
 
-          <h2 className="font-display text-3xl font-bold tracking-tight">
+          <h2 className="font-display text-[1.75rem] font-bold tracking-tight sm:text-3xl">
             {mode === "login" && "Welcome back"}
             {mode === "register" && "Create your account"}
             {mode === "register-verify" && "Verify your email"}
@@ -207,7 +207,7 @@ export default function AuthPage() {
             {mode === "forgot-verify" && "Verify OTP"}
             {mode === "forgot-reset" && "Create New Password"}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-sm">
             {mode === "login" && "Sign in to continue your career readiness journey."}
             {mode === "register" && "Get started with your free AI Career Readiness assessment."}
             {mode === "register-verify" && `We sent a 6-digit code to ${email}.`}
@@ -216,7 +216,7 @@ export default function AuthPage() {
             {mode === "forgot-reset" && "Enter a new secure password for your account."}
           </p>
 
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          <form onSubmit={onSubmit} className="mt-6 space-y-5 sm:mt-8 sm:space-y-4">
             
             {(mode === "login" || mode === "register" || mode === "forgot") && (
               <Field
@@ -271,7 +271,7 @@ export default function AuthPage() {
                 <button 
                   type="button" 
                   onClick={() => setMode("forgot")}
-                  className="text-xs font-medium text-brand hover:underline"
+                  className="text-sm font-medium text-brand hover:underline sm:text-xs"
                 >
                   Forgot password?
                 </button>
@@ -281,7 +281,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70 sm:py-3 sm:text-sm"
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {mode === "login" && "Log in"}
@@ -334,8 +334,8 @@ function Field({
 
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium text-foreground">{label}</span>
-      <div className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-2.5 shadow-soft focus-within:ring-2 focus-within:ring-ring">
+      <span className="mb-1.5 block text-sm font-medium text-foreground sm:text-xs">{label}</span>
+      <div className="flex items-center gap-2 rounded-xl border border-input bg-background px-3.5 py-3 shadow-soft focus-within:ring-2 focus-within:ring-ring sm:px-3 sm:py-2.5">
         <span className="text-muted-foreground">{icon}</span>
         <input
           type={inputType}
@@ -343,7 +343,7 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
-          className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          className="w-full bg-transparent text-base outline-none placeholder:text-muted-foreground sm:text-sm"
         />
         {isPassword && (
           <button

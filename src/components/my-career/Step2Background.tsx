@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { wizardFieldLabelClass, wizardInputClass, wizardSelectTriggerClass, wizardStepCardClass } from "./wizard-styles";
 
 interface Props {
   data: WizardData;
@@ -41,19 +42,23 @@ export function Step2Background({ data, updateData }: Props) {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-none shadow-none">
-        <CardHeader>
-          <CardTitle className="text-2xl">Professional Background</CardTitle>
-          <CardDescription>Tell us about your experience and preferences.</CardDescription>
+      <Card className={wizardStepCardClass}>
+        <CardHeader className="px-4 pt-5 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl">Professional Background</CardTitle>
+          <CardDescription className="text-foreground/70">
+            Tell us about your experience and preferences.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-5 px-4 pb-5 sm:space-y-6 sm:px-6 sm:pb-6">
           <div className="space-y-2">
-            <Label htmlFor="experience">Total Experience</Label>
+            <Label htmlFor="experience" className={wizardFieldLabelClass}>
+              Total Experience
+            </Label>
             <Select
               value={isExpCustom ? "Other" : data.experience}
               onValueChange={handleExpChange}
             >
-              <SelectTrigger id="experience">
+              <SelectTrigger id="experience" className={wizardSelectTriggerClass}>
                 <SelectValue placeholder="Select your experience" />
               </SelectTrigger>
               <SelectContent>
@@ -70,18 +75,21 @@ export function Step2Background({ data, updateData }: Props) {
                 placeholder="Please specify your experience"
                 value={data.experience}
                 onChange={(e) => updateData({ experience: e.target.value })}
-                className="mt-2"
+                className={wizardInputClass}
               />
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="salary">Salary</Label>
+            <Label htmlFor="salary" className={wizardFieldLabelClass}>
+              Salary
+            </Label>
             <Input
               id="salary"
               placeholder="e.g. 4-5LPA"
               value={data.salary}
               onChange={(e) => updateData({ salary: e.target.value })}
+              className={wizardInputClass}
             />
           </div>
         </CardContent>

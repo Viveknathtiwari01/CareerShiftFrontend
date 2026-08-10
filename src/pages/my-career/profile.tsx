@@ -179,44 +179,50 @@ export default function MyCareerProfile() {
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
 
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col pb-24 sm:pb-0">
       {currentStep <= TOTAL_STEPS && (
-        <div className="mb-8 space-y-4">
-          <div className="flex justify-between items-end">
+        <div className="mb-6 space-y-4 sm:mb-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Build Your Career Identity</h1>
-              <p className="text-muted-foreground mt-1">Let's map out your professional journey.</p>
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Build Your Career Identity
+              </h1>
+              <p className="mt-1 text-base text-foreground/75 sm:text-sm sm:text-muted-foreground">
+                Let's map out your professional journey.
+              </p>
             </div>
-            <div className="text-sm font-medium text-muted-foreground">
+            <div className="inline-flex w-fit items-center rounded-full border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground shadow-soft">
               Step {currentStep} of {TOTAL_STEPS}
             </div>
           </div>
-          <Progress value={progressPercentage} className="h-2" />
+          <Progress value={progressPercentage} className="h-2.5 bg-border/80" />
         </div>
       )}
 
-      <div className="flex-1 relative">
+      <div className="relative min-h-0 flex-1">
         <AnimatePresence mode="wait">
           {renderStep(currentStep)}
         </AnimatePresence>
       </div>
 
       {currentStep <= TOTAL_STEPS && (
-        <div className="mt-8 pt-6 border-t flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={handleBack}
-            disabled={currentStep === 1}
-            className="w-32"
-          >
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 px-4 py-3 shadow-[0_-4px_16px_rgba(10,18,31,0.06)] backdrop-blur-sm sm:static sm:mt-8 sm:border-t sm:bg-transparent sm:px-0 sm:py-0 sm:pt-6 sm:shadow-none sm:backdrop-blur-none">
+          <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
+            <Button
+              variant="outline"
+              onClick={handleBack}
+              disabled={currentStep === 1}
+              className="h-11 min-w-[7rem] flex-1 border-border bg-card text-foreground shadow-soft sm:w-32 sm:flex-none"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
 
-          <Button onClick={handleNext} className="w-32">
-            {currentStep === TOTAL_STEPS ? "Review" : "Next"}
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
+            <Button onClick={handleNext} className="h-11 min-w-[7rem] flex-1 sm:w-32 sm:flex-none">
+              {currentStep === TOTAL_STEPS ? "Review" : "Next"}
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
     </div>
