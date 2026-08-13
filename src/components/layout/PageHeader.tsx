@@ -8,7 +8,7 @@ type Props = {
 
 export function PageHeader({ title, description, children }: Props) {
   return (
-    <div className="mb-10">
+    <div className="mb-10 px-4 sm:px-6">
       <h1 className="type-page-title text-foreground">{title}</h1>
       {description ? (
         <p className="type-page-lead mt-3 max-w-4xl text-muted-foreground">{description}</p>

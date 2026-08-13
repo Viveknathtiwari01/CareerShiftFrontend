@@ -25,7 +25,7 @@ export function PageHeader({
   className?: string;
 }) {
   return (
-    <header className={cn("page-header", className)}>
+    <header className={cn("page-header px-4 sm:px-6", className)}>
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>

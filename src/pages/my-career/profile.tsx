@@ -296,7 +296,7 @@ export default function MyCareerProfile() {
   if (showPreIdentity) {
     return (
       <div className="flex w-full flex-col pb-8">
-        <div className="mb-6 space-y-2 sm:mb-8">
+        <div className="mb-6 space-y-2 px-4 sm:mb-8 sm:px-6">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Build Your Career Identity
           </h1>
@@ -340,7 +340,7 @@ export default function MyCareerProfile() {
   return (
     <div className="flex w-full flex-col pb-24 sm:pb-0">
       {currentStep <= TOTAL_STEPS && (
-        <div className="mb-6 space-y-4 sm:mb-8">
+        <div className="mb-6 space-y-4 px-4 sm:mb-8 sm:px-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

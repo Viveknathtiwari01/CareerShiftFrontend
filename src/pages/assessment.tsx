@@ -140,7 +140,7 @@ export default function AssessmentPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
+        className="mb-10 flex flex-col items-start justify-between gap-4 px-4 sm:px-6 md:flex-row md:items-center"
       >
         <div>
           <h1 className="type-page-title text-foreground">
