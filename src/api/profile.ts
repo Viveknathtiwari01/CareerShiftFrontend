@@ -1,5 +1,6 @@
 import { fetchApi } from "@/lib/api";
 import { WizardData } from "@/components/my-career/types";
+import type { SuggestIdentityResponse } from "@/components/my-career/identity-suggest";
 
 function mapToBackend(data: Partial<WizardData>) {
   const mapped: any = {};
@@ -97,6 +98,18 @@ export async function generateSkills(data: Partial<WizardData>): Promise<{
   const response = await fetchApi("/profile/generate-skills", {
     method: "POST",
     body: JSON.stringify(payload),
+  });
+  return response.data;
+}
+
+export async function suggestCareerIdentity(
+  professionalBackground: string,
+  options: { signal?: AbortSignal } = {},
+): Promise<SuggestIdentityResponse> {
+  const response = await fetchApi("/profile/suggest-identity", {
+    method: "POST",
+    body: JSON.stringify({ professional_background: professionalBackground }),
+    signal: options.signal,
   });
   return response.data;
 }
