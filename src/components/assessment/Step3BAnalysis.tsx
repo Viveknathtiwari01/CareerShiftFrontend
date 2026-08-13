@@ -22,6 +22,7 @@ import {
   type ThreeBCategory,
 } from "@/api/analysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
+import { getAssessmentTasks, mapBackendTaskToFrontend, isTaskReviewComplete } from "@/api/tasks";
 
 const CATEGORIES: ThreeBCategory[] = ["BUILD", "BLEND", "BOT"];
 
@@ -364,14 +365,36 @@ export default function Step3BAnalysis({
     analyzeRequestedRef.current = false;
   }, [assessmentId]);
 
+  const tasksQuery = useQuery({
+    queryKey: ["assessment-tasks", assessmentId],
+    queryFn: () => getAssessmentTasks(assessmentId!),
+    enabled: !!assessmentId,
+    staleTime: 60_000,
+  });
+
+  const areTasksReviewed = useMemo(() => {
+    if (!tasksQuery.data) return false;
+    const selectedTasks = tasksQuery.data.filter((t) => t.selected).map(mapBackendTaskToFrontend);
+    if (selectedTasks.length === 0) return false;
+    return selectedTasks.every(isTaskReviewComplete);
+  }, [tasksQuery.data]);
+
   useEffect(() => {
-    if (!assessmentId || analysisQuery.isLoading) return;
+    if (!assessmentId || analysisQuery.isLoading || tasksQuery.isLoading) return;
+    if (!areTasksReviewed) return;
     if ((analysisQuery.data?.analyses?.length ?? 0) > 0) return;
     if (!analyzeRequestedRef.current && !analyzeMutation.isPending) {
       analyzeRequestedRef.current = true;
       analyzeMutation.mutate(false);
     }
-  }, [assessmentId, analysisQuery.data, analysisQuery.isLoading, analyzeMutation.isPending]);
+  }, [
+    assessmentId,
+    analysisQuery.data,
+    analysisQuery.isLoading,
+    analyzeMutation.isPending,
+    areTasksReviewed,
+    tasksQuery.isLoading,
+  ]);
 
   const analyzedTasks = useMemo(
     () => (analysisQuery.data?.analyses ?? []).map(mapAnalysisToDisplay),
@@ -419,6 +442,22 @@ export default function Step3BAnalysis({
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
         >
           Go to Assessment <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    );
+  }
+
+  if (!tasksQuery.isLoading && !areTasksReviewed) {
+    return (
+      <div className="rounded-xl border border-border bg-muted/30 px-6 py-14 text-center">
+        <p className="text-muted-foreground">
+          You must complete the Task Intelligence Review before viewing your 3B analysis.
+        </p>
+        <Link
+          to="/assessment"
+          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+        >
+          Complete Task Review <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     );

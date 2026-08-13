@@ -573,22 +573,36 @@ function StepTasks({
                                 Approximately how much of your work week is spent on this task?
                               </h4>
                               <span className="text-sm font-bold text-primary">
-                                {getEffectiveTimeAllocation(t)} hrs
+                                {getEffectiveTimeAllocation(t) < 0.5 
+                                  ? "<15 min" 
+                                  : getEffectiveTimeAllocation(t) === 0.5 
+                                    ? "30 min" 
+                                    : getEffectiveTimeAllocation(t) === 1 
+                                      ? "1 hr" 
+                                      : `${getEffectiveTimeAllocation(t)} hrs`}
                               </span>
                             </div>
-                            <input
-                              type="range"
-                              min="0"
-                              max="40"
-                              value={getEffectiveTimeAllocation(t)}
-                              onChange={(e) =>
-                                updateTask(t.id, { timeAllocation: Number(e.target.value) })
-                              }
-                              className="w-full accent-primary"
-                            />
-                            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                              <span>0</span>
-                              <span>40 Hours</span>
+                            <div className="flex flex-wrap gap-2 text-xs">
+                              {[
+                                { label: "<15 min", val: 0.25 },
+                                { label: "15-30 min", val: 0.5 },
+                                { label: "30-60 min", val: 1 },
+                                { label: "1-2 hrs", val: 2 },
+                                { label: "2-4 hrs", val: 4 },
+                                { label: "4+ hrs", val: 8 },
+                              ].map((opt) => (
+                                <button
+                                  key={opt.label}
+                                  onClick={() => updateTask(t.id, { timeAllocation: opt.val })}
+                                  className={`rounded-md px-3 py-2 font-medium transition-colors border ${
+                                    getEffectiveTimeAllocation(t) === opt.val
+                                      ? "bg-primary border-primary text-primary-foreground shadow-soft"
+                                      : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                                  }`}
+                                >
+                                  {opt.label}
+                                </button>
+                              ))}
                             </div>
                           </div>
 
