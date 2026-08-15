@@ -40,7 +40,7 @@ export type Task = {
   confidence?: number;
   selected?: boolean;
   source?: "AI_GENERATED" | "USER";
-  frequency?: "Multiple times daily" | "Daily" | "Weekly" | "Monthly" | "Occasionally";
+  frequency?: "Multiple times daily" | "Daily" | "Weekly" | "Monthly" | "Occasionally" | "Quarterly" | "Half Yearly" | "Yearly";
   businessCriticality?: "Mission Critical" | "High" | "Medium" | "Low";
   timeAllocation?: number;
   aiAssistance?: "Never" | "Sometimes" | "Frequently" | "Always";

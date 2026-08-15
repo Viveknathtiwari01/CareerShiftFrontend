@@ -550,6 +550,9 @@ function StepTasks({
                                 "Weekly",
                                 "Monthly",
                                 "Occasionally",
+                                "Quarterly",
+                                "Half Yearly",
+                                "Yearly",
                               ]}
                               onChange={(v) => updateTask(t.id, { frequency: v as any })}
                             />
@@ -1134,7 +1137,7 @@ function StepCompetencies({
           })}
         </div>
 
-        <div className="w-full shrink-0 lg:w-72">
+        {/* <div className="w-full shrink-0 lg:w-72">
           <div className="rounded-2xl border border-border bg-background p-6 shadow-soft lg:sticky lg:top-4">
             <h3 className="mb-4 font-display text-lg font-bold">Summary</h3>
             <div className="space-y-3">
@@ -1154,7 +1157,7 @@ function StepCompetencies({
               Review these competencies before continuing to task analysis.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

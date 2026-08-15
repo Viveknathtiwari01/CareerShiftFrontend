@@ -162,9 +162,9 @@ export function AIAssistedProfileReview({
             </Button>
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               onClick={onEnterManually}
-              className="h-11"
+              className="h-11 border-border bg-card"
             >
               Enter manually instead
             </Button>

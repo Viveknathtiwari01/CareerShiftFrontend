@@ -24,6 +24,17 @@ import { PageHeader, PageShell } from "@/components/layout/PageShell";
 import { useAssessment } from "@/store/mock-store";
 import { getCurrentAssessment, listAssessments, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function AssessmentPage() {
   const navigate = useNavigate();
@@ -111,10 +122,7 @@ export default function AssessmentPage() {
   }
 
   function handleRegenerateFromScratch() {
-    const confirmed = window.confirm(
-      "Regenerate from scratch? This runs a new AI competency analysis and replaces your current task list. Your profile must be up to date.",
-    );
-    if (confirmed) void openWizard(true);
+    void openWizard(true);
   }
 
   if (profileLoading || wizardLoading) {
@@ -161,15 +169,32 @@ export default function AssessmentPage() {
             </Link>
           )}
           {hasSavedAssessment && (
-            <button
-              type="button"
-              onClick={handleRegenerateFromScratch}
-              disabled={!profileComplete || wizardLoading}
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/50 hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Regenerate from scratch
-            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button
+                  type="button"
+                  disabled={!profileComplete || wizardLoading}
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/50 hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Regenerate from scratch
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Regenerate from scratch?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This runs a new AI competency analysis and replaces your current task list. Your profile must be up to date.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleRegenerateFromScratch}>
+                    Regenerate
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </div>
       </motion.div>

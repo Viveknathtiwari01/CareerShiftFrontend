@@ -14,6 +14,7 @@ export interface WizardData {
   // Step 2
   experience: string;
   salary: string;
+  salary_currency?: string;
 
   // Step 3
   technicalSkills: string[];

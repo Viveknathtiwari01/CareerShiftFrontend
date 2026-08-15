@@ -12,6 +12,8 @@ import {
 import { useAuth } from "@/store/mock-store";
 import { toast } from "sonner";
 import { fetchApi } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { getProfileStatus } from "@/api/profile";
 
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
@@ -29,11 +31,21 @@ export default function AuthPage() {
   
   const [submitting, setSubmitting] = useState(false);
 
+  const { data: profileStatus, isLoading: isLoadingProfile } = useQuery({
+    queryKey: ["profile-status"],
+    queryFn: getProfileStatus,
+    enabled: !!user && !loading,
+  });
+
   useEffect(() => {
-    if (!loading && user) {
-      navigate("/my-profile", { replace: true });
+    if (!loading && user && !isLoadingProfile && profileStatus !== undefined) {
+      if (profileStatus.is_completed) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/my-profile", { replace: true });
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, profileStatus, isLoadingProfile]);
 
   async function handleLogin() {
     await login(email, password);

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Activity, Brain, ShieldCheck, Zap, Briefcase, ArrowDown } from "lucide-react";
+import { Activity, Brain, ShieldCheck, Zap, Briefcase, ArrowDown, Sparkles } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
 
 type Props = { report: CareerIntelligenceReport };
@@ -43,36 +43,74 @@ export function HealthIndicators({ report }: Props) {
         </div>
       </div>
 
-      <div className="border-t border-border pt-12 pb-8">
-        <h3 className="mb-10 font-display text-2xl font-bold text-center">Career Progress Timeline</h3>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
-          {[
-            { label: "Today", role: currentRole, active: true },
-            { label: "Next", role: futureRole, active: false },
-          ].map((node, i, arr) => (
-            <div
-              key={node.label}
-              className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto"
-            >
-              <div className="flex flex-col items-center text-center">
-                <span
-                  className={`text-[10px] font-black uppercase tracking-widest mb-3 ${node.active ? "text-primary" : "text-muted-foreground"}`}
-                >
-                  {node.label}
-                </span>
-                <span
-                  className={`font-base text-sm md:text-base px-6 py-4 rounded-2xl border ${node.active ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" : "bg-background border-border text-foreground"}`}
-                >
-                  {node.role}
+      <div className="border-t border-border pt-16 pb-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 pointer-events-none" />
+        <motion.h3 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 font-display text-3xl font-bold text-center relative z-10"
+        >
+          Career Progress Timeline
+        </motion.h3>
+        
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto relative z-10 px-4">
+          {/* Today Node */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+            className="flex flex-col items-center w-full md:w-auto"
+          >
+            <span className="text-[11px] font-black uppercase tracking-widest mb-4 text-muted-foreground">
+              Today
+            </span>
+            <div className="relative group w-full md:w-auto">
+              <div className="absolute -inset-0.5 bg-border rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500"></div>
+              <div className="relative flex items-center justify-center bg-card border border-border px-8 py-5 rounded-2xl text-center min-w-[200px] shadow-sm">
+                <span className="font-display font-medium text-foreground text-lg">
+                  {currentRole}
                 </span>
               </div>
-              {i < arr.length - 1 && (
-                <div className="flex justify-center my-2 md:my-0">
-                  <ArrowDown className="h-6 w-6 text-muted-foreground/30 md:-rotate-90 shrink-0" />
-                </div>
-              )}
             </div>
-          ))}
+          </motion.div>
+
+          {/* Connector */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="flex justify-center py-6 md:py-0"
+          >
+            <div className="h-12 w-px md:h-px md:w-20 bg-gradient-to-b md:bg-gradient-to-r from-border to-primary relative flex items-center justify-center">
+              <div className="absolute grid place-items-center h-8 w-8 rounded-full bg-background border border-primary/30 text-primary shadow-soft">
+                <ArrowDown className="h-4 w-4 md:-rotate-90 animate-pulse" />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Next Node */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3, type: "spring", bounce: 0.4 }}
+            className="flex flex-col items-center w-full md:w-auto"
+          >
+            <span className="text-[11px] font-black uppercase tracking-widest mb-4 text-primary flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5" /> Next Evolution
+            </span>
+            <div className="relative group w-full md:w-auto">
+              <div className="absolute -inset-1 bg-gradient-to-r from-brand to-primary rounded-2xl blur opacity-40 group-hover:opacity-70 transition duration-500"></div>
+              <div className="relative flex items-center justify-center bg-gradient-to-br from-primary to-brand border border-primary/50 px-8 py-5 rounded-2xl text-center shadow-xl shadow-primary/20 min-w-[220px]">
+                <span className="font-display font-bold text-primary-foreground text-lg flex items-center gap-2">
+                  {futureRole}
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

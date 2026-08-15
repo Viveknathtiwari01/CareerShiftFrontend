@@ -63,6 +63,36 @@ export default function Toolkit() {
     return Array.from(map.entries());
   }, [filtered]);
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  if (isError || !tools.length) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center px-4">
+        <div className="max-w-md w-full rounded-2xl border border-border bg-background p-8 text-center shadow-soft">
+          <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-xl bg-muted">
+            <Wrench className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <h1 className="font-display text-xl font-bold">No toolkit recommendations yet</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Complete your assessment, run 3B analysis, and submit to generate your ranked AI toolkit.
+          </p>
+          <Link
+            to="/assessment"
+            className="mt-6 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+          >
+            Go to Assessment
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full space-y-8">
       <PageHeader
@@ -70,104 +100,80 @@ export default function Toolkit() {
         description="Personalized tools from your 3B analysis and career profile — ranked by impact on your role."
       />
 
-      {isLoading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="h-10 w-10 animate-spin text-brand" />
+      {/* Summary */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label="Total tools" value={String(tools.length)} />
+        <StatCard label="Critical priority" value={String(stats.Critical ?? 0)} accent="brand" />
+        <StatCard label="High priority" value={String(stats.High ?? 0)} accent="teal" />
+        <StatCard label="Categories" value={String(categoryCount)} />
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <Filter className="h-4 w-4" />
+          Filter by priority
         </div>
-      ) : isError || !tools.length ? (
-        <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center shadow-soft">
-          <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-xl bg-muted">
-            <Wrench className="h-6 w-6 text-muted-foreground" />
-          </div>
-          <p className="font-medium text-foreground">No toolkit recommendations yet</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Complete your assessment, run 3B analysis, and submit to generate your ranked AI toolkit.
+        <div className="flex flex-wrap gap-2">
+          {PRIORITY_FILTERS.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setFilter(option)}
+              className={cn(
+                "rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
+                filter === option
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground",
+              )}
+            >
+              {option}
+              {option !== "All" && stats[option] != null ? ` (${stats[option]})` : ""}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grouped tools */}
+      <div className="space-y-10">
+        {grouped.map(([category, categoryTools]) => (
+          <section key={category}>
+            <div className="mb-4 flex items-center justify-between gap-4 border-b border-border pb-3">
+              <h2 className="font-display text-xl font-semibold text-foreground">{category}</h2>
+              <span className="text-sm text-muted-foreground">
+                {categoryTools.length} tool{categoryTools.length === 1 ? "" : "s"}
+              </span>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {categoryTools.map((tool) => {
+                const globalIndex = tools.findIndex(
+                  (t) => t.name === tool.name && t.category === tool.category,
+                );
+                return (
+                  <ToolkitToolCard
+                    key={`${category}-${tool.name}`}
+                    tool={tool}
+                    rank={tool.priority_rank ?? (globalIndex >= 0 ? globalIndex + 1 : undefined)}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {assessmentId && (
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-muted/30 px-6 py-5">
+          <p className="text-sm text-muted-foreground">
+            View your full toolkit in context with competencies, roadmap, and action plan.
           </p>
           <Link
-            to="/assessment"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+            to={`/report?assessmentId=${assessmentId}`}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-semibold hover:bg-muted"
           >
-            Go to Assessment <ArrowRight className="h-4 w-4" />
+            Open Career Report <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-      ) : (
-        <>
-          {/* Summary */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label="Total tools" value={String(tools.length)} />
-            <StatCard label="Critical priority" value={String(stats.Critical ?? 0)} accent="brand" />
-            <StatCard label="High priority" value={String(stats.High ?? 0)} accent="teal" />
-            <StatCard label="Categories" value={String(categoryCount)} />
-          </div>
-
-          {/* Filters */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Filter className="h-4 w-4" />
-              Filter by priority
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {PRIORITY_FILTERS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setFilter(option)}
-                  className={cn(
-                    "rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
-                    filter === option
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  {option}
-                  {option !== "All" && stats[option] != null ? ` (${stats[option]})` : ""}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grouped tools */}
-          <div className="space-y-10">
-            {grouped.map(([category, categoryTools]) => (
-              <section key={category}>
-                <div className="mb-4 flex items-center justify-between gap-4 border-b border-border pb-3">
-                  <h2 className="font-display text-xl font-semibold text-foreground">{category}</h2>
-                  <span className="text-sm text-muted-foreground">
-                    {categoryTools.length} tool{categoryTools.length === 1 ? "" : "s"}
-                  </span>
-                </div>
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  {categoryTools.map((tool) => {
-                    const globalIndex = tools.findIndex(
-                      (t) => t.name === tool.name && t.category === tool.category,
-                    );
-                    return (
-                      <ToolkitToolCard
-                        key={`${category}-${tool.name}`}
-                        tool={tool}
-                        rank={tool.priority_rank ?? (globalIndex >= 0 ? globalIndex + 1 : undefined)}
-                      />
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
-          </div>
-
-          {assessmentId && (
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-muted/30 px-6 py-5">
-              <p className="text-sm text-muted-foreground">
-                View your full toolkit in context with competencies, roadmap, and action plan.
-              </p>
-              <Link
-                to={`/report?assessmentId=${assessmentId}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-semibold hover:bg-muted"
-              >
-                Open Career Report <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          )}
-        </>
       )}
     </div>
   );
