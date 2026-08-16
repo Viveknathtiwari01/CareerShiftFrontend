@@ -24,6 +24,14 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
+import {
   getProfile,
   createProfile,
   updateProfile,
@@ -76,6 +84,7 @@ export default function MyCareerProfile() {
   const [data, setData] = useState<WizardData>(initialData);
   const [viewMode, setViewMode] = useState<"view" | "wizard" | "edit">("wizard");
   const [editStep, setEditStep] = useState<number | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // AI-assisted entry (first-time / no profile only)
   const [preIdentity, setPreIdentity] = useState<PreIdentityPhase>("background");
@@ -96,7 +105,7 @@ export default function MyCareerProfile() {
     onSuccess: (newProfile) => {
       queryClient.setQueryData(["profile"], newProfile);
       toast.success("Profile successfully created!");
-      setViewMode("view");
+      setShowSuccessModal(true);
     },
     onError: (err: any) => {
       toast.error(err.message || "Failed to create profile");
@@ -116,14 +125,16 @@ export default function MyCareerProfile() {
     },
   });
 
+  const isProfileEmpty = !profile || (!profile.jobTitle && !profile.industry);
+
   useEffect(() => {
     if (profile) {
       setData(profile);
-      if (viewMode === "wizard") {
+      if (viewMode === "wizard" && !isProfileEmpty) {
         setViewMode("view");
       }
     }
-  }, [profile, viewMode]);
+  }, [profile, viewMode, isProfileEmpty]);
 
   useEffect(() => {
     return () => {
@@ -168,7 +179,7 @@ export default function MyCareerProfile() {
     const controller = new AbortController();
     analyzeAbortRef.current = controller;
 
-    setAnalyzing(true);
+    setAnalyzing(true); 
     try {
       const suggestions = await suggestCareerIdentity(backgroundText, {
         signal: controller.signal,
@@ -217,6 +228,8 @@ export default function MyCareerProfile() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
+    } else if (currentStep === 1 && isProfileEmpty) {
+      setPreIdentity("background");
     }
   };
 
@@ -228,8 +241,54 @@ export default function MyCareerProfile() {
     }
   };
 
+  const successModal = (
+    <AlertDialog open={showSuccessModal} onOpenChange={(open) => {
+      if (!open) {
+        setShowSuccessModal(false);
+        setViewMode("view");
+      }
+    }}>
+      <AlertDialogContent className="max-w-md p-6">
+        <AlertDialogHeader className="text-center sm:text-center space-y-4">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
+            <span className="text-3xl">🎉</span>
+          </div>
+          <AlertDialogTitle className="text-2xl font-bold tracking-tight">Profile Completed!</AlertDialogTitle>
+          <AlertDialogDescription className="text-base text-muted-foreground leading-relaxed">
+            Your career identity is now mapped. To get the most out of CareerShift, take your career assessment next. It will analyze your profile and provide actionable insights.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="flex-col sm:flex-col gap-3 mt-8">
+          <Button 
+            size="lg" 
+            className="w-full text-base h-12" 
+            onClick={() => navigate("/assessment", { state: { openWizard: true } })}
+          >
+            Start Career Assessment
+            <ChevronRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="w-full text-muted-foreground hover:bg-muted/50" 
+            onClick={() => {
+              setShowSuccessModal(false);
+              setViewMode("view");
+            }}
+          >
+            Maybe Later
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+
   if (isLoading) {
-    return <div className="flex justify-center py-20 text-muted-foreground animate-pulse">Loading profile...</div>;
+    return (
+      <>
+        {successModal}
+        <div className="flex justify-center py-20 text-muted-foreground animate-pulse">Loading profile...</div>
+      </>
+    );
   }
 
   const handleEdit = (step: number) => {
@@ -240,6 +299,7 @@ export default function MyCareerProfile() {
   if (viewMode === "view" && profile) {
     return (
       <div className="w-full">
+        {successModal}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Your Professional Profile</h1>
@@ -269,6 +329,7 @@ export default function MyCareerProfile() {
   if (viewMode === "edit" && editStep) {
     return (
       <div className="w-full">
+        {successModal}
         <div className="mb-8">
           <Button variant="ghost" onClick={() => { setViewMode("view"); setData(profile!); }} className="mb-4">
             <ChevronLeft className="mr-2 h-4 w-4" /> Cancel Edit
@@ -290,21 +351,61 @@ export default function MyCareerProfile() {
     );
   }
 
-  // First-time onboarding: AI-assisted entry (profile === null && wizard)
-  const showPreIdentity = !profile && viewMode === "wizard" && preIdentity !== null;
+  // First-time onboarding: AI-assisted entry (isProfileEmpty && wizard)
+  const showPreIdentity = isProfileEmpty && viewMode === "wizard" && preIdentity !== null;
 
   if (showPreIdentity) {
     return (
-      <div className="flex w-full flex-col pb-8">
-        <div className="mb-6 space-y-2 px-4 sm:mb-8 sm:px-6">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Build Your Career Identity
-          </h1>
-          <p className="mt-1 text-base text-foreground/75 sm:text-sm sm:text-muted-foreground">
-            {preIdentity === "background"
-              ? "Start with your professional background, or enter career identity manually."
-              : "Review AI suggestions, then continue to the existing profile wizard."}
-          </p>
+      <div className="flex w-full flex-col pb-2">
+        {successModal}
+        <div className="mb-4 space-y-4 px-4 sm:mb-6 sm:px-6">
+          <div className="max-w-3xl">
+            <div className="mb-2 flex items-center text-[10px] font-bold uppercase tracking-widest text-[#B59146]">
+              Career Identity Setup
+            </div>
+            <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
+              Build Your Career Identity
+            </h1>
+            <p className="mt-2 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+              Three short steps set the Industry, Department, Functional Domain, Specialization, and Job Title that define your profile everywhere on the platform.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-xl border border-border bg-card p-2 shadow-sm">
+            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
+                1
+              </div>
+              <div>
+                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Choose a method</div>
+                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Describe it, or fill it in</div>
+              </div>
+            </div>
+            
+            <div className="hidden h-8 w-px bg-border sm:block"></div>
+            
+            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
+                2
+              </div>
+              <div>
+                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Add your details</div>
+                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Background or fields</div>
+              </div>
+            </div>
+            
+            <div className="hidden h-8 w-px bg-border sm:block"></div>
+            
+            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
+                3
+              </div>
+              <div>
+                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Review & confirm</div>
+                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Check your identity</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="relative min-h-0 flex-1">
@@ -339,6 +440,7 @@ export default function MyCareerProfile() {
 
   return (
     <div className="flex w-full flex-col pb-24 sm:pb-0">
+      {successModal}
       {currentStep <= TOTAL_STEPS && (
         <div className="mb-6 space-y-4 px-4 sm:mb-8 sm:px-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -370,7 +472,7 @@ export default function MyCareerProfile() {
             <Button
               variant="outline"
               onClick={handleBack}
-              disabled={currentStep === 1}
+              disabled={currentStep === 1 && !isProfileEmpty}
               className="h-11 min-w-[7rem] flex-1 border-border bg-card text-foreground shadow-soft sm:w-32 sm:flex-none"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />

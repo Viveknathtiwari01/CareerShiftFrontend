@@ -223,6 +223,21 @@ export function Step3Skills({ data, updateData }: Props) {
     }
   };
 
+  const handleSelectAll = (category: SkillCategory) => {
+    if (!generatedSkills) return;
+    const aiSkills = generatedSkills[category];
+    if (aiSkills.length === 0) return;
+
+    const current = data[category];
+    const allAiSelected = aiSkills.every((s) => current.includes(s));
+
+    if (allAiSelected) {
+      updateData({ [category]: current.filter((s) => !aiSkills.includes(s)) });
+    } else {
+      updateData({ [category]: Array.from(new Set([...current, ...aiSkills])) });
+    }
+  };
+
   const categories: SkillCategory[] = [
     "technicalSkills",
     "professionalSkills",
@@ -246,20 +261,6 @@ export function Step3Skills({ data, updateData }: Props) {
               Select all the skills you possess across different categories.
             </CardDescription>
           </div>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="gap-2 bg-primary/10 text-primary hover:bg-primary/20"
-            onClick={handleGenerateAI}
-            disabled={isGenerating}
-          >
-            {isGenerating ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Wand2 className="h-4 w-4" />
-            )}
-            Generate with AI
-          </Button>
         </CardHeader>
         <CardContent className="space-y-8 px-4 pb-5 sm:px-6 sm:pb-6">
           {errorMsg && (
@@ -270,11 +271,23 @@ export function Step3Skills({ data, updateData }: Props) {
           )}
 
           {!generatedSkills && !isGenerating && !errorMsg ? (
-            <div className="text-center py-12 border-2 border-dashed rounded-lg bg-muted/20">
-              <Wand2 className="h-8 w-8 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium">Generate Your Skills</h3>
-              <p className="text-muted-foreground mt-2 max-w-sm mx-auto text-sm">
-                Click "Generate with AI" above to automatically extract your skills based on your career identity and background.
+            <div className="text-center py-12 flex flex-col items-center justify-center border-2 border-dashed rounded-lg bg-muted/20">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="gap-2 bg-primary/70 text-black hover:bg-primary/80"
+                onClick={handleGenerateAI}
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Wand2 className="h-5 w-5" />
+                )}
+                Generate Your Skills
+              </Button>
+              <p className="text-muted-foreground mt-4 max-w-sm mx-auto text-sm">
+                Automatically extract your skills based on your career identity and background.
               </p>
             </div>
           ) : isGenerating && !generatedSkills ? (
@@ -286,9 +299,26 @@ export function Step3Skills({ data, updateData }: Props) {
               </p>
             </div>
           ) : generatedSkills ? (
-            categories.map((category) => (
+            categories.map((category) => {
+              const aiSkills = generatedSkills[category];
+              const hasAiSkills = aiSkills.length > 0;
+              const allAiSelected = hasAiSkills && aiSkills.every(s => data[category].includes(s));
+
+              return (
               <div key={category} className="space-y-4">
-                <h3 className="text-lg font-semibold">{CATEGORY_LABELS[category]}</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">{CATEGORY_LABELS[category]}</h3>
+                  {hasAiSkills && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handleSelectAll(category)}
+                      className="text-xs h-8 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    >
+                      {allAiSelected ? "Deselect All" : "Select All"}
+                    </Button>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {generatedSkills[category].map((skill) => {
                     const isSelected = data[category].includes(skill);
@@ -322,7 +352,8 @@ export function Step3Skills({ data, updateData }: Props) {
                   />
                 </div>
               </div>
-            ))
+            );
+          })
           ) : null}
         </CardContent>
       </Card>
