@@ -11,11 +11,9 @@ import Insights from "../pages/insights";
 import Onboarding from "../pages/onboarding";
 import Profile from "../pages/profile";
 import Report from "../pages/report";
-
 import Toolkit from "../pages/toolkit";
 import MyProfile from "../pages/my-career/profile";
 import AIReadiness from "../pages/ai-readiness";
-import CareerIdentity from "../pages/career-identity";
 import Workshops from "../pages/workshops";
 import ThreeBAnalysisPage from "../pages/three-b-analysis";
 
@@ -40,7 +38,6 @@ export default function AppRoutes() {
         <Route path="/toolkit" element={<Toolkit />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/ai-readiness" element={<AIReadiness />} />
-        <Route path="/career-identity" element={<CareerIdentity />} />
         <Route path="/workshops" element={<Workshops />} />
       </Route>
     </Routes>

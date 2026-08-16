@@ -12,8 +12,6 @@ import { ThreeBAnalysisTab } from "@/components/report/ThreeBAnalysisTab";
 import { AIReadinessTab } from "@/components/report/AIReadinessTab";
 import { LearningRoadmapTab } from "@/components/report/LearningRoadmapTab";
 import { AIToolsTab } from "@/components/report/AIToolsTab";
-import { CareerIdentityTab } from "@/components/report/CareerIdentityTab";
-import { ActionPlanTab } from "@/components/report/ActionPlanTab";
 import { HealthIndicators } from "@/components/report/HealthIndicators";
 import { ReportFooter } from "@/components/report/ReportFooter";
 import { useReportData } from "@/hooks/use-report-data";
@@ -24,10 +22,8 @@ const TABS = [
   { id: "work", label: "Daily Work" },
   { id: "3b", label: "3B Analysis" },
   { id: "readiness", label: "AI Readiness" },
-  { id: "identity", label: "Career Identity" },
-  { id: "roadmap", label: "Learning Roadmap" },
   { id: "tools", label: "AI Tools" },
-  { id: "action", label: "Action Plan" },
+  { id: "roadmap", label: "Learning Roadmap" },
 ];
 
 export default function ReportPage() {
@@ -129,10 +125,8 @@ export default function ReportPage() {
             {activeTab === "work" && <DailyWorkTab report={report} />}
             {activeTab === "3b" && <ThreeBAnalysisTab report={report} />}
             {activeTab === "readiness" && <AIReadinessTab report={report} />}
-            {activeTab === "identity" && <CareerIdentityTab report={report} />}
-            {activeTab === "roadmap" && <LearningRoadmapTab report={report} />}
             {activeTab === "tools" && <AIToolsTab report={report} />}
-            {activeTab === "action" && <ActionPlanTab report={report} />}
+            {activeTab === "roadmap" && <LearningRoadmapTab report={report} />}
           </motion.div>
         </AnimatePresence>
       </div>

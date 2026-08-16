@@ -30,7 +30,6 @@ const NAV = [
   { to: "/my-profile", label: "My Career", icon: UserIcon },
   { to: "/assessment", label: "Career Assessment", icon: ClipboardList },
   { to: "/ai-readiness", label: "AI Readiness Score", icon: Sparkles },
-  { to: "/career-identity", label: "Career Identity", icon: Target },
   { to: "/report", label: "Career Intelligence Report", icon: BarChart3 },
   { to: "/history", label: "Assessment History", icon: History },
   { to: "/toolkit", label: "AI Toolkit", icon: Wrench },
