@@ -11,38 +11,48 @@ const truths = [
 export function WhyCareerShift() {
   return (
     <div className="py-6">
-      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
-        <div className="w-full">
-          <h2 className="text-4xl font-bold tracking-tight text-foreground mb-4">
-            Why We Built CareerShift
-          </h2>
-          <div className="space-y-4 text-medium text-muted-foreground leading-relaxed mb-8">
-            <p>
-              We built CareerShift to solve a massive problem:{" "}
-              <strong className="text-foreground">The "AI Fog."</strong>
-            </p>
-            <p>
-              Professionals feel AI anxiety but lack specificity. You read headlines about AI
-              replacing jobs, but you have no idea whether your specific daily tasks are at risk.
-              Generic advice like "just learn AI" or "get certified" doesn't help because it ignores
-              your unique, role-specific reality.
-            </p>
-            <p>
-              CareerShift exists to bridge the gap between awareness that AI is changing work, and
-              giving you the actionable clarity on exactly what to do about it:
-            </p>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="grid lg:grid-cols-2">
+          {/* Left Side: Text Content */}
+          <div className="p-8 sm:p-12 flex flex-col justify-center">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-6">
+              Why We Built CareerShift
+            </h2>
+            <div className="space-y-5 text-base sm:text-lg text-muted-foreground leading-relaxed">
+              <p>
+                We built CareerShift to solve a massive problem:{" "}
+                <strong className="text-foreground">The "AI Fog."</strong>
+              </p>
+              <p>
+                Professionals feel AI anxiety but lack specificity. You read headlines about AI
+                replacing jobs, but you have no idea whether your specific daily tasks are at risk.
+                Generic advice like "just learn AI" or "get certified" doesn't help because it ignores
+                your unique, role-specific reality.
+              </p>
+              <p>
+                CareerShift exists to bridge the gap between awareness that AI is changing work, and
+                giving you the actionable clarity on exactly what to do about it:
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {truths.map((truth, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3 p-3 bg-[#141F32] rounded-full border border-[#E2E8F0]"
-              >
-                <truth.icon className="h-4 w-4 text-primary shrink-0" />
-                <span className="text-medium font-medium text-white/80">{truth.text}</span>
-              </div>
-            ))}
+          {/* Right Side: List of Truths */}
+          <div className="bg-muted/30 p-8 sm:p-12 border-t lg:border-t-0 lg:border-l border-border flex flex-col justify-center">
+            <div className="space-y-4">
+              {truths.map((truth, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-4 p-4 bg-background rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors"
+                >
+                  <div className="p-2 bg-primary/10 rounded-lg text-primary shrink-0 mt-0.5">
+                    <truth.icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-base font-medium text-foreground leading-snug">
+                    {truth.text}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

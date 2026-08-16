@@ -18,16 +18,33 @@ export function PersonalizedGuidance() {
     );
   }
 
+  if (status === "COMPLETED") {
+    return (
+      <div className="py-2">
+        <div className="bg-card border border-border rounded-xl px-5 py-4 shadow-sm flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold tracking-tight text-foreground">
+              Your Career Shift is Underway
+            </h2>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Based on your profile and 3B analysis you can see your <strong>AI readiness report</strong>, <strong>Career Identity</strong>, <strong>Suggested AI tools</strong> and <strong>Assessment history</strong> from the sidebar.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="py-6">
-      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            {status === "COMPLETED" ? "Your Career Shift is Underway" : "Recommended Next Action"}
+    <div className="py-2">
+      <div className="bg-card border border-border rounded-xl p-5 sm:p-6 shadow-sm">
+        <div className="mb-4">
+          <h2 className="text-xl font-bold tracking-tight text-foreground">
+            Recommended Next Action
           </h2>
-          <p className="mt-2 text-base text-muted-foreground">
-            Personalized guidance based on your journey progress.
-          </p>
         </div>
 
         <div className="space-y-4">
@@ -73,12 +90,6 @@ export function PersonalizedGuidance() {
               icon={Sparkles}
               isPrimary
             />
-          )}
-
-          {status === "COMPLETED" && (
-            <div className="bg-primary/5 border border-primary/20 p-5 rounded-xl text-sm text-foreground leading-relaxed">
-              Based on your profile and 3B analysis you can see your <strong>AI readiness report</strong>, <strong>Career Identity</strong>, <strong>Suggested AI tools</strong> and <strong>Assessment history</strong> by clicking on options from the Sidebar.
-            </div>
           )}
         </div>
       </div>
