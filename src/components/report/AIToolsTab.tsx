@@ -9,7 +9,7 @@ export function AIToolsTab({ report }: Props) {
   if (!tools.length) {
     return (
       <p className="text-center text-muted-foreground py-12">
-        No personalized tools yet — complete 3B analysis to populate recommendations.
+        No personalized tools yet complete 3B analysis to populate recommendations.
       </p>
     );
   }
@@ -17,7 +17,7 @@ export function AIToolsTab({ report }: Props) {
   return (
     <div className="space-y-4">
       <p className="type-body-sm text-muted-foreground">
-        Ranked by priority for your role — adopt Critical and High tools first for the fastest career impact.
+        Ranked by priority for your role adopt Critical and High tools first for the fastest career impact.
       </p>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool, idx) => (

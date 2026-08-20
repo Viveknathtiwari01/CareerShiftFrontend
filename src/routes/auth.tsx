@@ -70,11 +70,11 @@ function AuthPage() {
           <div className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
           <div className="relative">
             <h1 className="font-display text-4xl font-bold leading-tight">
-              Turn AI anxiety into <span className="text-teal">AI clarity.</span>
+              Turn AI anxiety into AI clarity.
             </h1>
             <p className="mt-4 max-w-md text-primary-foreground/70">
               Answer a few questions about your work and get a personalized AI Career Readiness
-              Report — with tools, learning paths, and a clear plan.
+              Report with tools, learning paths, and a clear plan.
             </p>
             <ul className="mt-8 space-y-3 text-sm text-primary-foreground/80">
               {[

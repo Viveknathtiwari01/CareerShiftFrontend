@@ -8,7 +8,7 @@ type Props = {
   variant?: "page" | "embedded";
 };
 
-/** Thin wrapper — prefer Step3BAnalysis for new code. */
+/** Thin wrapper prefer Step3BAnalysis for new code. */
 export default function ThreeBAnalysisView({
   assessmentId,
   showFooterLinks = false,

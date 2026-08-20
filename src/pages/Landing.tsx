@@ -572,17 +572,17 @@ function Features() {
     {
       icon: <Bot className="h-5 w-5" />,
       title: "Build it. Bot it. Blend it.",
-      body: "Every task mapped to one of three actions: <b>Build</b> (master the skill), <b>Bot</b> (automate it), or <b>Blend</b> (augment with AI) — ranked by impact and automation potential.",
+      body: "Every task mapped to one of three actions: <b>Build</b> (master the skill), <b>Bot</b> (automate it), or <b>Blend</b> (augment with AI) ranked by impact and automation potential.",
     },
     {
       icon: <Sparkles className="h-5 w-5" />,
       title: "The right tools, not the most popular ones.",
-      body: "Hand-picked AI tools matched to your actual tasks — with real pricing, honest ratings, and realistic setup time.",
+      body: "Hand-picked AI tools matched to your actual tasks with real pricing, honest ratings, and realistic setup time.",
     },
     {
       icon: <Rocket className="h-5 w-5" />,
       title: "A plan you can actually follow.",
-      body: "Week-by-week skill building across 30, 60, and 90 days — sequenced so each step compounds into the next",
+      body: "Week-by-week skill building across 30, 60, and 90 days sequenced so each step compounds into the next",
     },
     {
       icon: <TrendingUp className="h-5 w-5" />,
@@ -691,12 +691,12 @@ function Workshop() {
     {
       icon: Brain,
       title: "Learn practical AI",
-      body: "Understand how professionals use AI every day to solve real problems — not how to build it from scratch.",
+      body: "Understand how professionals use AI every day to solve real problems not how to build it from scratch.",
     },
     {
       icon: Briefcase,
       title: "AI tools for your job",
-      body: "Discover the AI tools every professional should know — matched to everyday work, not generic tech tutorials.",
+      body: "Discover the AI tools every professional should know matched to everyday work, not generic tech tutorials.",
     },
     {
       icon: Zap,
@@ -706,7 +706,7 @@ function Workshop() {
     {
       icon: ShieldCheck,
       title: "Stay irreplaceable",
-      body: "Build the AI fluency employers expect now — so you lead the change instead of fearing it.",
+      body: "Build the AI fluency employers expect now so you lead the change instead of fearing it.",
     },
   ];
 
@@ -718,7 +718,7 @@ function Workshop() {
   ];
 
   const visionPoints = [
-    "Empower every professional to thrive in the AI era — not fear it.",
+    "Empower every professional to thrive in the AI era not fear it.",
     "Make essential AI tool literacy accessible to everyday workers.",
     "Replace uncertainty with clarity on which skills and tools matter most.",
   ];
@@ -742,7 +742,7 @@ function Workshop() {
   return (
     <section id="workshop" className="bg-background py-24">
       <div className="container-page space-y-20 animate-fade-in-up">
-        {/* Hero — matches in-app WorkshopHero messaging */}
+        {/* Hero matches in-app WorkshopHero messaging */}
         <div className="relative overflow-hidden rounded-3xl bg-[#0A1525] px-6 py-16 sm:px-10 lg:px-16 text-center shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-brand/15 via-transparent to-teal/10" />
           <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand/20 blur-3xl" />
@@ -753,11 +753,11 @@ function Workshop() {
             </span>
             <h2 className="mt-6 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
               This is the AI era.{" "}
-              <span className="text-brand">Learn the tools — don&apos;t fear the future.</span>
+              <span className="text-brand">Learn the tools don&apos;t fear the future.</span>
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-white/75">
               Everyone worries AI will take their job. CareerShift workshops teach the AI tools every
-              professional must know — so you work <em>with</em> AI, stay valuable, and move ahead
+              professional must know so you work <em>with</em> AI, stay valuable, and move ahead
               while others hesitate.
             </p>
             <p className="mt-4 text-base font-semibold text-white/90">
@@ -879,13 +879,13 @@ function Workshop() {
           </div>
         </div>
 
-        {/* Workshop outcomes — line graph */}
+        {/* Workshop outcomes line graph */}
         <div id="workshop-outcomes" className="surface-card p-8">
           <div className="mx-auto max-w-2xl text-center">
             <SectionEyebrow>Workshop outcomes</SectionEyebrow>
             <h3 className="mt-3 font-display text-3xl font-bold">Your growth through the workshop</h3>
             <p className="mt-3 text-muted-foreground">
-              A practical path from AI uncertainty to confident, everyday use — measured by skill
+              A practical path from AI uncertainty to confident, everyday use measured by skill
               and career readiness.
             </p>
           </div>

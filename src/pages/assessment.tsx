@@ -321,7 +321,7 @@ export default function AssessmentPage() {
 
               {hasDraft && !hasSavedAssessment ? (
                 <p className="mt-3 text-center text-xs text-muted-foreground">
-                  You have a draft in progress — continue where you left off.
+                  You have a draft in progress continue where you left off.
                 </p>
               ) : null}
             </div>

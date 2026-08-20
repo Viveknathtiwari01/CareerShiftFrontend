@@ -97,7 +97,7 @@ export default function Toolkit() {
     <div className="w-full space-y-8">
       <PageHeader
         title="Your AI toolkit"
-        description="Personalized tools from your 3B analysis and career profile — ranked by impact on your role."
+        description="Personalized tools from your 3B analysis and career profile ranked by impact on your role."
       />
 
       {/* Summary */}

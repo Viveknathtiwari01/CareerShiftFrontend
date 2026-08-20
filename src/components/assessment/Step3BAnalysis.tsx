@@ -33,7 +33,7 @@ const FRAMEWORK = {
     tagline: "Deepen human mastery",
     description: "Judgment, relationships, ethics, and expertise AI cannot replace.",
     action: "Invest in skills & experience",
-    importance: "Highest — your irreplaceable edge",
+    importance: "Highest your irreplaceable edge",
     icon: Hammer,
     accent: "text-build",
     bg: "bg-build/[0.06]",
@@ -49,9 +49,9 @@ const FRAMEWORK = {
     label: "BLEND",
     title: "Blend It",
     tagline: "Human + AI co-pilot",
-    description: "AI drafts and analyzes — you decide, refine, and own the outcome.",
+    description: "AI drafts and analyzes you decide, refine, and own the outcome.",
     action: "Learn tools & prompt skills",
-    importance: "High — your biggest leverage zone",
+    importance: "High your biggest leverage zone",
     icon: Sparkles,
     accent: "text-blend",
     bg: "bg-blend/10",
@@ -67,9 +67,9 @@ const FRAMEWORK = {
     label: "BOT",
     title: "Bot It",
     tagline: "Automate within 30 days",
-    description: "Repetitive, templated work — delegate to AI and reclaim hours.",
+    description: "Repetitive, templated work delegate to AI and reclaim hours.",
     action: "Set up automation this month",
-    importance: "Quick wins — reclaim time fast",
+    importance: "Quick wins reclaim time fast",
     icon: Bot,
     accent: "text-bot-accent",
     bg: "bg-bot-accent/[0.07]",
@@ -235,7 +235,7 @@ function TaskCard({ task, category }: { task: AnalyzedTask; category: ThreeBCate
           <p className="text-sm leading-relaxed text-foreground">{task.reason}</p>
         </div>
 
-        {/* Task signals + Recommended tools — side by side */}
+        {/* Task signals + Recommended tools side by side */}
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-border bg-muted/20 p-4">
             <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
@@ -321,12 +321,12 @@ function buildStrategicSummary(
         ? "BOT"
         : "BLEND";
   if (dominant === "BUILD") {
-    return `${pct(build)}% of your work is human-first (BUILD). Your career edge is deepening expertise and judgment — use AI lightly here and invest in mastery.`;
+    return `${pct(build)}% of your work is human-first (BUILD). Your career edge is deepening expertise and judgment use AI lightly here and invest in mastery.`;
   }
   if (dominant === "BOT") {
-    return `${pct(bot)}% of your tasks are strong automation candidates (BOT). Prioritize quick wins — set up AI workflows in the next 30 days to reclaim significant weekly hours.`;
+    return `${pct(bot)}% of your tasks are strong automation candidates (BOT). Prioritize quick wins set up AI workflows in the next 30 days to reclaim significant weekly hours.`;
   }
-  return `${pct(blend)}% of your role sits in the BLEND zone. Your biggest leverage is learning AI co-pilot workflows — let AI draft while you refine and decide.`;
+  return `${pct(blend)}% of your role sits in the BLEND zone. Your biggest leverage is learning AI co-pilot workflows let AI draft while you refine and decide.`;
 }
 
 type Props = {
@@ -542,13 +542,13 @@ export default function Step3BAnalysis({
         </div>
       )}
 
-      {/* Step 1 — Framework */}
+      {/* Step 1 Framework */}
       <section>
         <SectionLabel step="1" title="Understand the 3B Framework" />
         <FrameworkGuide />
       </section>
 
-      {/* Step 2 — Portfolio snapshot */}
+      {/* Step 2 Portfolio snapshot */}
       <section>
         <SectionLabel step="2" title="Your portfolio at a glance" />
         <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
@@ -624,7 +624,7 @@ export default function Step3BAnalysis({
         </div>
       </section>
 
-      {/* Step 3 — Task details */}
+      {/* Step 3 Task details */}
       <section>
         <SectionLabel step="3" title="Explore your tasks by category" />
 
@@ -661,7 +661,7 @@ export default function Step3BAnalysis({
         {/* Category context */}
         <div className={`mb-5 rounded-xl border-l-4 ${activeMeta.border} border ${activeMeta.border} ${activeMeta.bgStrong} px-4 py-3`}>
           <p className={`text-sm font-bold ${activeMeta.accent}`}>
-            {activeMeta.title} — {activeMeta.tagline}
+            {activeMeta.title} {activeMeta.tagline}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{activeMeta.description}</p>
           <p className={`mt-2 text-xs font-semibold ${activeMeta.accent}`}>{activeMeta.importance}</p>
@@ -681,7 +681,7 @@ export default function Step3BAnalysis({
         )}
       </section>
 
-      {/* Step 4 — Strategic takeaway */}
+      {/* Step 4 Strategic takeaway */}
       <section>
         <SectionLabel step="4" title="What this means for you" />
         <div className="grid gap-4 md:grid-cols-2">

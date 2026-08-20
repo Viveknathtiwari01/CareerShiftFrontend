@@ -78,7 +78,7 @@ async function resolveAssessmentSession(
 }
 
 type Options = {
-  /** Set when user explicitly chose "Start New Assessment" — already POSTed with force. */
+  /** Set when user explicitly chose "Start New Assessment" already POSTed with force. */
   prefetchedSession?: AssessmentStartResponse | null;
 };
 

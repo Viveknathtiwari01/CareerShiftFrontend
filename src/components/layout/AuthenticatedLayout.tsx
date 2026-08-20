@@ -200,7 +200,7 @@ export default function AuthenticatedLayout() {
         </div>
       </aside>
 
-      {/* Main area — header stays put; only content scrolls */}
+      {/* Main area header stays put; only content scrolls */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <header className="z-30 flex shrink-0 items-center justify-between border-b border-border bg-background/95 px-4 py-3 backdrop-blur-xl lg:hidden">
           <Link to="/dashboard" className="flex min-w-0 items-center gap-2">

@@ -315,7 +315,7 @@ export function deriveReport(a: Assessment | null): DerivedReport {
       hoursSaved: 8,
       routed: [],
       strengths: ["Curious about AI", "Open to learning new tools"],
-      risks: ["Limited data — complete an assessment for personalized results"],
+      risks: ["Limited data complete an assessment for personalized results"],
     };
   }
 
