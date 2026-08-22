@@ -28,7 +28,14 @@ export function SubmitAssessmentButton({
   async function handleSubmit() {
     setError(null);
     try {
-      await submitAssessmentFlow({ assessmentId }, setStep);
+      await submitAssessmentFlow(
+        {
+          assessmentId,
+          regenerateAnalysis: true,
+          regenerateReport: true,
+        },
+        setStep,
+      );
       navigate(`/report?assessmentId=${assessmentId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Submission failed");
