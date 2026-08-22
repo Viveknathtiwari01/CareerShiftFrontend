@@ -12,6 +12,8 @@ import {
 import { useAuth } from "@/store/mock-store";
 import { toast } from "sonner";
 import { fetchApi } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { getProfileStatus } from "@/api/profile";
 
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
@@ -29,11 +31,21 @@ export default function AuthPage() {
   
   const [submitting, setSubmitting] = useState(false);
 
+  const { data: profileStatus, isLoading: isLoadingProfile } = useQuery({
+    queryKey: ["profile-status"],
+    queryFn: getProfileStatus,
+    enabled: !!user && !loading,
+  });
+
   useEffect(() => {
-    if (!loading && user) {
-      navigate("/my-profile", { replace: true });
+    if (!loading && user && !isLoadingProfile && profileStatus !== undefined) {
+      if (profileStatus.is_completed) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/my-profile", { replace: true });
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, profileStatus, isLoadingProfile]);
 
   async function handleLogin() {
     await login(email, password);
@@ -136,11 +148,10 @@ export default function AuthPage() {
           <div className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
           <div className="relative">
             <h1 className="font-display text-4xl font-bold leading-tight text-white">
-              Turn AI anxiety into <span className="text-blue-400">AI clarity.</span>
+              Turn AI anxiety into AI clarity.
             </h1>
             <p className="mt-4 max-w-md text-white/70">
-              Answer a few questions about your work and get a personalized AI Career Readiness
-              Report — with tools, learning paths, and a clear plan.
+              Answer a few questions about your work and get a personalized AI Career Readiness Report with tools, learning paths, and a clear plan.
             </p>
             <ul className="mt-8 space-y-3 text-sm text-white/80">
               {[

@@ -75,7 +75,7 @@ export function AIAssistedProfileReview({
         <CardHeader className="px-4 pt-5 sm:px-6">
           <CardTitle className="text-xl sm:text-2xl">Review AI suggestions</CardTitle>
           <CardDescription className="text-foreground/70">
-            Accept, edit, or replace each suggestion. Confirm only after you are satisfied — AI is
+            Accept, edit, or replace each suggestion. Confirm only after you are satisfied AI is
             an assistant, not the final authority.
           </CardDescription>
         </CardHeader>
@@ -162,9 +162,9 @@ export function AIAssistedProfileReview({
             </Button>
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               onClick={onEnterManually}
-              className="h-11"
+              className="h-11 border-border bg-card"
             >
               Enter manually instead
             </Button>

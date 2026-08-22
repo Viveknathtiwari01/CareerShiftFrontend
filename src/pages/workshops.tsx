@@ -18,7 +18,7 @@ export default function Workshops() {
       <PageHeader
         eyebrow="Learning"
         title="Workshops"
-        description="Practical AI training built on your CareerShift assessment — strengthen the skills your report recommends."
+        description="Practical AI training built on your CareerShift assessment strengthen the skills your report recommends."
       />
       <WorkshopHero />
       <InsightBanner />

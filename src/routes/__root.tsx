@@ -75,13 +75,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CareerShift — Bridge Your Career to the AI Future" },
+      { title: "CareerShift Bridge Your Career to the AI Future" },
       {
         name: "description",
         content:
           "CareerShift analyzes your daily work and delivers a personalized AI Career Readiness Report with tools, learning paths, and a clear next-step strategy.",
       },
-      { property: "og:title", content: "CareerShift — Bridge Your Career to the AI Future" },
+      { property: "og:title", content: "CareerShift Bridge Your Career to the AI Future" },
       {
         property: "og:description",
         content:

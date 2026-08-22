@@ -31,35 +31,41 @@ const steps = [
 export function CareerShiftJourney() {
   return (
     <div className="py-6">
-      <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            How CareerShift Helps You
-          </h2>
-          <p className="mt-2 text-base text-muted-foreground">
-            Your step-by-step roadmap to AI fluency.
-          </p>
-        </div>
+      <div className="mb-8 text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+          How CareerShift Helps You
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          Your step-by-step roadmap to achieving AI fluency and career resilience.
+        </p>
+      </div>
 
-        <div className="relative border-l border-border ml-3 md:ml-4 space-y-4">
-          {steps.map((item, index) => (
-            <div key={index} className="relative pl-6 md:pl-8">
-              <div className="absolute left-[-0.85rem] top-1 h-6 w-6 rounded-full bg-background border border-primary flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">{item.step}</span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        {steps.map((item, index) => (
+          <div 
+            key={index} 
+            className="bg-card border border-border p-6 rounded-2xl relative overflow-hidden group hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
+          >
+            {/* Big background number */}
+            <div className="absolute -right-2 -bottom-6 text-[120px] font-black text-muted/10 pointer-events-none group-hover:text-primary/5 transition-colors select-none leading-none">
+              {item.step}
+            </div>
+            
+            <div className="flex items-center gap-3 mb-4 relative z-10">
+              <div className="bg-primary/10 p-2.5 rounded-xl text-primary">
+                <item.icon className="w-5 h-5" />
               </div>
-
-              <div className="bg-card border border-border p-3 rounded-lg shadow-sm flex items-center gap-3">
-                <div className="bg-muted p-2 rounded-md text-primary">
-                  <item.icon className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-0.5">{item.name}</p>
-                </div>
+              <div className="text-sm font-bold uppercase tracking-wider text-primary">
+                Step {item.step}
               </div>
             </div>
-          ))}
-        </div>
+            
+            <div className="relative z-10">
+              <h3 className="text-lg font-bold text-foreground mb-1">{item.title}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{item.name}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

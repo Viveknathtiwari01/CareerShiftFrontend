@@ -8,7 +8,7 @@
 
 /*
  * CareerShift Design System
- * Premium enterprise SaaS — ink, gold, cream, slate.
+ * Premium enterprise SaaS ink, gold, cream, slate.
  * Consistent tokens for layout, panels, and accents.
  */
 
@@ -99,7 +99,7 @@
   --brand-foreground: #0a121f;
   --teal: #0d9488;
   /*
-   * 3B Framework — ink · gold · teal (premium, theme-aligned)
+   * 3B Framework ink · gold · teal (premium, theme-aligned)
    * BUILD  = human mastery (ink depth)
    * BLEND  = human + AI co-pilot (brand gold)
    * BOT    = automation & efficiency (teal)
@@ -152,7 +152,7 @@
   --surface-2: #1a273d;
 }
 
-/* Layout utilities — shared horizontal rhythm */
+/* Layout utilities shared horizontal rhythm */
 @utility container-page {
   width: 100%;
   max-width: 72rem;

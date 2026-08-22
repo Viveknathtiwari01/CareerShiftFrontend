@@ -6,6 +6,8 @@ import {
   ArrowRight,
   Bot,
   Hammer,
+  ChevronDown,
+  ChevronUp,
   Loader2,
   RefreshCw,
   Sparkles,
@@ -33,7 +35,7 @@ const FRAMEWORK = {
     tagline: "Deepen human mastery",
     description: "Judgment, relationships, ethics, and expertise AI cannot replace.",
     action: "Invest in skills & experience",
-    importance: "Highest — your irreplaceable edge",
+    importance: "Highest your irreplaceable edge",
     icon: Hammer,
     accent: "text-build",
     bg: "bg-build/[0.06]",
@@ -49,9 +51,9 @@ const FRAMEWORK = {
     label: "BLEND",
     title: "Blend It",
     tagline: "Human + AI co-pilot",
-    description: "AI drafts and analyzes — you decide, refine, and own the outcome.",
+    description: "AI drafts and analyzes you decide, refine, and own the outcome.",
     action: "Learn tools & prompt skills",
-    importance: "High — your biggest leverage zone",
+    importance: "High your biggest leverage zone",
     icon: Sparkles,
     accent: "text-blend",
     bg: "bg-blend/10",
@@ -67,9 +69,9 @@ const FRAMEWORK = {
     label: "BOT",
     title: "Bot It",
     tagline: "Automate within 30 days",
-    description: "Repetitive, templated work — delegate to AI and reclaim hours.",
+    description: "Repetitive, templated work delegate to AI and reclaim hours.",
     action: "Set up automation this month",
-    importance: "Quick wins — reclaim time fast",
+    importance: "Quick wins reclaim time fast",
     icon: Bot,
     accent: "text-bot-accent",
     bg: "bg-bot-accent/[0.07]",
@@ -235,51 +237,110 @@ function TaskCard({ task, category }: { task: AnalyzedTask; category: ThreeBCate
           <p className="text-sm leading-relaxed text-foreground">{task.reason}</p>
         </div>
 
-        {/* Task signals + Recommended tools — side by side */}
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-border bg-muted/20 p-4">
-            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-              <span className="grid h-6 w-6 place-items-center rounded-lg border border-border bg-background">
-                <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
-              </span>
-              Task signals
+        {/* Components Accordion */}
+        {task.category3B !== "BUILD" && task.components && task.components.length > 0 && (
+          <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <p className={`px-4 py-3 border-b border-border text-[11px] font-bold uppercase tracking-wide ${meta.accent} bg-muted/20 flex items-center gap-2`}>
+              <Wrench className="h-3.5 w-3.5" /> Work Components & Tool Options
             </p>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              <MetricCell
-                label="Automation"
-                value={`${task.autoPotential}%`}
-                tone={automationTone(task.autoPotential)}
-              />
-              <MetricCell label="Risk" value={task.riskLevel} tone={riskTone(task.riskLevel)} />
-              <MetricCell label="Future impact" value={task.futureImp} tone={impactTone(task.futureImp)} />
+            <div className="divide-y divide-border">
+              {task.components.map((comp, i) => (
+                <div key={i} className="p-4">
+                  <p className="font-semibold text-sm text-foreground mb-1">{comp.name}</p>
+                  <p className="text-xs text-muted-foreground mb-4">{comp.description}</p>
+                  
+                  {comp.tool_options && comp.tool_options.length > 0 ? (
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {comp.tool_options.map((tool, j) => (
+                        <div key={j} className="flex flex-col rounded-xl border border-border bg-muted/10 p-3 shadow-sm hover:border-primary/30 transition-colors">
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="font-semibold text-sm">{tool.name}</span>
+                            <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{tool.cost_tier}</span>
+                          </div>
+                          <span className={`text-[10px] font-semibold w-fit px-2 py-0.5 rounded-full mb-3 ${
+                            tool.feasibility === "Self-serve" ? "bg-green-500/10 text-green-600 border border-green-500/20" :
+                            tool.feasibility === "Company tech" ? "bg-blue-500/10 text-blue-600 border border-blue-500/20" :
+                            "bg-orange-500/10 text-orange-600 border border-orange-500/20"
+                          }`}>
+                            {tool.feasibility}
+                          </span>
+                          <div className="text-[11px] text-muted-foreground mt-auto space-y-1">
+                            <p><span className="text-green-600 font-semibold">+</span> {tool.pros}</p>
+                            <p><span className="text-red-500 font-semibold">-</span> {tool.cons}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-muted-foreground italic">No tools resolved for {comp.capability_id}</p>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
+        )}
 
+        {/* Fallback old tools view if no components (e.g. older analyses) or BUILD */}
+        {task.category3B === "BUILD" && (
           <div className={`flex flex-col rounded-xl border ${meta.border} bg-card p-4`}>
             <p className={`mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
               <span className={`grid h-6 w-6 place-items-center rounded-lg border ${meta.border} ${meta.bg}`}>
                 <Wrench className="h-3.5 w-3.5" />
               </span>
-              Recommended tools
+              Guidance
             </p>
-            {task.tools.length > 0 ? (
-              <div className="flex flex-1 flex-wrap content-start gap-2">
-                {task.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ${meta.badge}`}
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="flex flex-1 items-center text-sm text-muted-foreground">
-                No specific tools suggested for this task.
-              </p>
-            )}
+            <p className="text-sm text-muted-foreground">
+              This task relies on human judgment. Focus on deepening mastery and relationships rather than finding automation tools.
+            </p>
           </div>
-        </div>
+        )}
+        
+        {task.category3B !== "BUILD" && (!task.components || task.components.length === 0) && (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-xl border border-border bg-muted/20 p-4">
+              <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                <span className="grid h-6 w-6 place-items-center rounded-lg border border-border bg-background">
+                  <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
+                </span>
+                Task signals
+              </p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <MetricCell
+                  label="Automation"
+                  value={`${task.autoPotential}%`}
+                  tone={automationTone(task.autoPotential)}
+                />
+                <MetricCell label="Risk" value={task.riskLevel} tone={riskTone(task.riskLevel)} />
+                <MetricCell label="Future impact" value={task.futureImp} tone={impactTone(task.futureImp)} />
+              </div>
+            </div>
+
+            <div className={`flex flex-col rounded-xl border ${meta.border} bg-card p-4`}>
+              <p className={`mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
+                <span className={`grid h-6 w-6 place-items-center rounded-lg border ${meta.border} ${meta.bg}`}>
+                  <Wrench className="h-3.5 w-3.5" />
+                </span>
+                Recommended tools
+              </p>
+              {task.tools.length > 0 ? (
+                <div className="flex flex-1 flex-wrap content-start gap-2">
+                  {task.tools.map((tool) => (
+                    <span
+                      key={tool}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ${meta.badge}`}
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="flex flex-1 items-center text-sm text-muted-foreground">
+                  No specific tools suggested for this task.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Next actions */}
         {task.next_actions.length > 0 && (
@@ -321,12 +382,12 @@ function buildStrategicSummary(
         ? "BOT"
         : "BLEND";
   if (dominant === "BUILD") {
-    return `${pct(build)}% of your work is human-first (BUILD). Your career edge is deepening expertise and judgment — use AI lightly here and invest in mastery.`;
+    return `${pct(build)}% of your work is human-first (BUILD). Your career edge is deepening expertise and judgment use AI lightly here and invest in mastery.`;
   }
   if (dominant === "BOT") {
-    return `${pct(bot)}% of your tasks are strong automation candidates (BOT). Prioritize quick wins — set up AI workflows in the next 30 days to reclaim significant weekly hours.`;
+    return `${pct(bot)}% of your tasks are strong automation candidates (BOT). Prioritize quick wins set up AI workflows in the next 30 days to reclaim significant weekly hours.`;
   }
-  return `${pct(blend)}% of your role sits in the BLEND zone. Your biggest leverage is learning AI co-pilot workflows — let AI draft while you refine and decide.`;
+  return `${pct(blend)}% of your role sits in the BLEND zone. Your biggest leverage is learning AI co-pilot workflows let AI draft while you refine and decide.`;
 }
 
 type Props = {
@@ -542,20 +603,21 @@ export default function Step3BAnalysis({
         </div>
       )}
 
-      {/* Step 1 — Framework */}
+      {/* Step 1 Framework */}
       <section>
         <SectionLabel step="1" title="Understand the 3B Framework" />
         <FrameworkGuide />
       </section>
 
-      {/* Step 2 — Portfolio snapshot */}
+      {/* Step 2 Portfolio snapshot */}
       <section>
-        <SectionLabel step="2" title="Your portfolio at a glance" />
+        <SectionLabel step="2" title="Your weekly hours at a glance" />
         <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <div className="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {CATEGORIES.map((key) => {
               const meta = FRAMEWORK[key];
               const count = tasksByCategory[key].length;
+              const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
               return (
                 <button
                   key={key}
@@ -570,24 +632,26 @@ export default function Step3BAnalysis({
                   <p className={`text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
                     {meta.label}
                   </p>
-                  <p className={`mt-1 font-display text-3xl font-bold ${meta.accent}`}>{count}</p>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">{meta.importance}</p>
+                  <p className={`mt-1 font-display text-3xl font-bold ${meta.accent}`}>{hours}h</p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">across {count} tasks</p>
                 </button>
               );
             })}
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Automation opp.
+                Total Tracked
               </p>
-              <p className="mt-1 font-display text-3xl font-bold text-primary">{autoOpp}%</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">avg. potential</p>
+              <p className="mt-1 font-display text-3xl font-bold text-primary">{analysisQuery.data?.total_hours || 0}h</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">per week</p>
             </div>
           </div>
 
           <div className="border-t border-border pt-5">
             <div className="flex h-4 w-full overflow-hidden rounded-full border border-border/60 bg-muted">
               {CATEGORIES.map((key) => {
-                const width = (tasksByCategory[key].length / totalTasks) * 100;
+                const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
+                const totalH = analysisQuery.data?.total_hours || 1;
+                const width = (hours / totalH) * 100;
                 if (width === 0) return null;
                 return (
                   <div
@@ -601,8 +665,9 @@ export default function Step3BAnalysis({
             <div className="mt-3 flex w-full">
               {CATEGORIES.map((key) => {
                 const meta = FRAMEWORK[key];
-                const count = tasksByCategory[key].length;
-                const width = (count / totalTasks) * 100;
+                const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
+                const totalH = analysisQuery.data?.total_hours || 1;
+                const width = (hours / totalH) * 100;
                 if (width === 0) return null;
                 return (
                   <div
@@ -613,7 +678,7 @@ export default function Step3BAnalysis({
                     <span className={`flex items-center gap-1.5 text-[11px] font-medium sm:text-xs ${meta.accent}`}>
                       <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${meta.bar}`} />
                       <span className="truncate">
-                        {meta.label} · {count} tasks
+                        {meta.label} · {hours}h
                       </span>
                     </span>
                   </div>
@@ -624,7 +689,7 @@ export default function Step3BAnalysis({
         </div>
       </section>
 
-      {/* Step 3 — Task details */}
+      {/* Step 3 Task details */}
       <section>
         <SectionLabel step="3" title="Explore your tasks by category" />
 
@@ -661,7 +726,7 @@ export default function Step3BAnalysis({
         {/* Category context */}
         <div className={`mb-5 rounded-xl border-l-4 ${activeMeta.border} border ${activeMeta.border} ${activeMeta.bgStrong} px-4 py-3`}>
           <p className={`text-sm font-bold ${activeMeta.accent}`}>
-            {activeMeta.title} — {activeMeta.tagline}
+            {activeMeta.title} {activeMeta.tagline}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{activeMeta.description}</p>
           <p className={`mt-2 text-xs font-semibold ${activeMeta.accent}`}>{activeMeta.importance}</p>
@@ -681,7 +746,7 @@ export default function Step3BAnalysis({
         )}
       </section>
 
-      {/* Step 4 — Strategic takeaway */}
+      {/* Step 4 Strategic takeaway */}
       <section>
         <SectionLabel step="4" title="What this means for you" />
         <div className="grid gap-4 md:grid-cols-2">

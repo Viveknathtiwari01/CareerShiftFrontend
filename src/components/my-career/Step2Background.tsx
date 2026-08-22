@@ -13,7 +13,60 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Combobox } from "@/components/ui/combobox";
 import { wizardFieldLabelClass, wizardInputClass, wizardSelectTriggerClass, wizardStepCardClass } from "./wizard-styles";
+
+const CURRENCIES = [
+  { value: "INR", label: "INR" },
+  { value: "USD", label: "USD" },
+  { value: "EUR", label: "EUR" },
+  { value: "GBP", label: "GBP" },
+  { value: "JPY", label: "JPY" },
+  { value: "CNY", label: "CNY" },
+  { value: "AUD", label: "AUD" },
+  { value: "CAD", label: "CAD" },
+  { value: "CHF", label: "CHF" },
+  { value: "HKD", label: "HKD" },
+  { value: "SGD", label: "SGD" },
+  { value: "NZD", label: "NZD" },
+  { value: "KRW", label: "KRW" },
+  { value: "AED", label: "AED" },
+  { value: "SAR", label: "SAR" },
+  { value: "QAR", label: "QAR" },
+  { value: "KWD", label: "KWD" },
+  { value: "BHD", label: "BHD" },
+  { value: "OMR", label: "OMR" },
+  { value: "THB", label: "THB" },
+  { value: "MYR", label: "MYR" },
+  { value: "IDR", label: "IDR" },
+  { value: "PHP", label: "PHP" },
+  { value: "VND", label: "VND" },
+  { value: "PKR", label: "PKR" },
+  { value: "BDT", label: "BDT" },
+  { value: "LKR", label: "LKR" },
+  { value: "NPR", label: "NPR" },
+  { value: "BRL", label: "BRL" },
+  { value: "MXN", label: "MXN" },
+  { value: "ARS", label: "ARS" }, 
+  { value: "CLP", label: "CLP" },
+  { value: "COP", label: "COP" },
+  { value: "PEN", label: "PEN" },
+  { value: "ZAR", label: "ZAR" },
+  { value: "NGN", label: "NGN" },
+  { value: "EGP", label: "EGP" },
+  { value: "KES", label: "KES" },
+  { value: "MAD", label: "MAD" },
+  { value: "TRY", label: "TRY" },
+  { value: "RUB", label: "RUB" },
+  { value: "UAH", label: "UAH" },
+  { value: "PLN", label: "PLN" },
+  { value: "CZK", label: "CZK" },
+  { value: "SEK", label: "SEK" },
+  { value: "NOK", label: "NOK" },
+  { value: "DKK", label: "DKK" },
+  { value: "HUF", label: "HUF" },
+  { value: "ILS", label: "ILS" },
+];
 
 interface Props {
   data: WizardData;
@@ -84,13 +137,27 @@ export function Step2Background({ data, updateData }: Props) {
             <Label htmlFor="salary" className={wizardFieldLabelClass}>
               Salary
             </Label>
-            <Input
-              id="salary"
-              placeholder="e.g. 4-5LPA"
-              value={data.salary}
-              onChange={(e) => updateData({ salary: e.target.value })}
-              className={wizardInputClass}
-            />
+            <div className="flex gap-3">
+              <div className="w-1/4">
+                <Combobox
+                  options={CURRENCIES}
+                  value={data.salary_currency}
+                  onChange={(val) => updateData({ salary_currency: val })}
+                  placeholder="Currency"
+                  searchPlaceholder="Search currency..."
+                  emptyText="Not found"
+                />
+              </div>
+              <div className="w-3/4">
+                <Input
+                  id="salary"
+                  placeholder="e.g. 100000"
+                  value={data.salary}
+                  onChange={(e) => updateData({ salary: e.target.value })}
+                  className={wizardInputClass}
+                />
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

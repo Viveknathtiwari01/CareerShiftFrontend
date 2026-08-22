@@ -17,14 +17,20 @@ export default function AIReadiness() {
 
   if (isError || !report) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-16 text-center">
-        <AlertCircle className="mx-auto h-10 w-10 text-muted-foreground" />
-        <p className="mt-4 text-muted-foreground">
-          {error instanceof Error ? error.message : "Submit your assessment to see AI readiness."}
-        </p>
-        <Link to="/assessment" className="mt-4 inline-block text-brand font-semibold">
-          Go to Assessment →
-        </Link>
+      <div className="flex min-h-[400px] items-center justify-center px-4">
+        <div className="max-w-md w-full rounded-2xl border border-border bg-background p-8 text-center shadow-soft">
+          <AlertCircle className="mx-auto h-10 w-10 text-muted-foreground" />
+          <h1 className="mt-4 font-display text-xl font-bold">No AI readiness data</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {error instanceof Error ? error.message : "Submit your assessment to see AI readiness."}
+          </p>
+          <Link
+            to="/assessment"
+            className="mt-6 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+          >
+            Go to Assessment
+          </Link>
+        </div>
       </div>
     );
   }

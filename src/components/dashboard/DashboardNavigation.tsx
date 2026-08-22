@@ -9,6 +9,7 @@ import {
   BookOpen,
   Activity,
   ArrowRight,
+  Target
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +20,7 @@ const navCards = [
     why: "Identify what makes you unique in the AI era.",
     cta: "View Profile",
     icon: User,
-    to: "/career-profile",
+    to: "/my-profile",
   },
   {
     title: "AI Assessment",
@@ -27,7 +28,15 @@ const navCards = [
     why: "Find out where you can improve.",
     cta: "Take Assessment",
     icon: ClipboardList,
-    to: "/ai-readiness",
+    to: "/assessment",
+  },
+  {
+    title: "3B Analysis",
+    purpose: "Categorize your tasks.",
+    why: "Identify what to Build, Bot, or Blend.",
+    cta: "Run Analysis",
+    icon: Map,
+    to: "/3b-analysis",
   },
   {
     title: "Intelligence Report",
@@ -38,12 +47,12 @@ const navCards = [
     to: "/report",
   },
   {
-    title: "Learning Roadmap",
-    purpose: "Your structured path.",
-    why: "Know exactly what to learn next.",
-    cta: "View Roadmap",
-    icon: Map,
-    to: "/learning",
+    title: "AI Readiness Score",
+    purpose: "Check your score.",
+    why: "See how prepared you are for the AI era.",
+    cta: "View Score",
+    icon: Target,
+    to: "/ai-readiness",
   },
   {
     title: "Workshops",
@@ -59,15 +68,7 @@ const navCards = [
     why: "Find the best AI tools for your specific role.",
     cta: "Browse Tools",
     icon: Wrench,
-    to: "/ai-tools",
-  },
-  {
-    title: "Resources",
-    purpose: "Expand your knowledge.",
-    why: "Curated guides, templates, and cheat sheets.",
-    cta: "View Resources",
-    icon: BookOpen,
-    to: "/resources",
+    to: "/toolkit",
   },
   {
     title: "Progress Tracker",
@@ -75,7 +76,7 @@ const navCards = [
     why: "See how far you've come on your journey.",
     cta: "Track Progress",
     icon: Activity,
-    to: "/progress",
+    to: "/history",
   },
 ];
 
@@ -90,7 +91,11 @@ export function DashboardNavigation() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {navCards.map((card, idx) => (
-            <Link key={idx} to={card.to} className="block h-full">
+            <Link 
+              key={idx} 
+              to={card.to} 
+              className="block h-full"
+            >
               <div className="bg-card border border-border p-4 rounded-xl shadow-sm h-full flex flex-col hover:border-primary/50 transition-colors">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="bg-muted p-1.5 rounded text-primary">

@@ -57,7 +57,7 @@ export default function ThreeBAnalysisPage() {
               CareerShift routes every task in your role into{" "}
               <span className="font-semibold text-primary">BUILD</span>,{" "}
               <span className="font-semibold text-brand">BLEND</span>, or{" "}
-              <span className="font-semibold text-teal">BOT</span> — with reasoning and three
+              <span className="font-semibold text-teal">BOT</span> with reasoning and three
               concrete next actions per task.
             </>
           }
@@ -72,7 +72,7 @@ export default function ThreeBAnalysisPage() {
           </div>
           <h3 className="type-section-title text-white">Your personalized 3B intelligence map</h3>
           <p className="type-body-sm mx-auto mt-4 max-w-2xl text-white/90">
-            This is the heart of your assessment — where daily work becomes a clear AI strategy:
+            This is the heart of your assessment where daily work becomes a clear AI strategy:
             what to deepen, what to automate, and what to augment.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">

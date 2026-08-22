@@ -394,7 +394,7 @@ function StepTools({
     <div>
       <StepHeader
         title="Which AI tools do you already use?"
-        description="Pick any that apply — we use this to gauge your baseline fluency."
+        description="Pick any that apply we use this to gauge your baseline fluency."
       />
       <div className="flex flex-wrap gap-2">
         {TOOL_OPTIONS.map((t) => {
@@ -550,6 +550,9 @@ function StepTasks({
                                 "Weekly",
                                 "Monthly",
                                 "Occasionally",
+                                "Quarterly",
+                                "Half Yearly",
+                                "Yearly",
                               ]}
                               onChange={(v) => updateTask(t.id, { frequency: v as any })}
                             />
@@ -697,7 +700,7 @@ function StepTasks({
             )}
             {tasksReviewed === selectedTasks.length && selectedTasks.length > 0 && (
               <div className="rounded-2xl border border-teal/20 bg-teal/5 p-4 text-xs text-teal-900 dark:text-teal-100">
-                All tasks reviewed — use the button below to view your 3B Analysis.
+                All tasks reviewed use the button below to view your 3B Analysis.
               </div>
             )}
           </div>
@@ -842,7 +845,7 @@ function StepReview({
           <div>
             <p className="text-sm font-semibold text-foreground">AI competency mapping in progress</p>
             <p className="text-xs text-muted-foreground">
-              Status: {pipelineStatus ?? "STARTING"} — this usually takes 1–3 minutes. You can
+              Status: {pipelineStatus ?? "STARTING"} this usually takes 1–3 minutes. You can
               continue to the next step once mapping completes.
             </p>
           </div>
@@ -1011,7 +1014,7 @@ function StepCompetencies({
         </h3>
         <p className="mt-2 max-w-md mx-auto text-sm text-muted-foreground">
           {profileStale
-            ? "Your career profile changed — we're regenerating competencies from your latest profile."
+            ? "Your career profile changed we're regenerating competencies from your latest profile."
             : "Running AI analysis on your role profile. This typically takes 1-2 minutes across 5 stages."}
         </p>
 
@@ -1134,7 +1137,7 @@ function StepCompetencies({
           })}
         </div>
 
-        <div className="w-full shrink-0 lg:w-72">
+        {/* <div className="w-full shrink-0 lg:w-72">
           <div className="rounded-2xl border border-border bg-background p-6 shadow-soft lg:sticky lg:top-4">
             <h3 className="mb-4 font-display text-lg font-bold">Summary</h3>
             <div className="space-y-3">
@@ -1154,7 +1157,7 @@ function StepCompetencies({
               Review these competencies before continuing to task analysis.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

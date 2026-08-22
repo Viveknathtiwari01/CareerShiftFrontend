@@ -1,5 +1,5 @@
 /**
- * Application enums — fixed UX vocabulary shared with backend string fields.
+ * Application enums fixed UX vocabulary shared with backend string fields.
  * These are NOT master/business data (job titles, industries, taxonomy).
  * Keep in sync with profile/assessment schema allowed values.
  */

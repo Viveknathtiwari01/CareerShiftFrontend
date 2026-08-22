@@ -156,7 +156,7 @@ function Hero() {
             Know exactly how <span className="text-brand">AI will change</span> your career.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Understand which parts of your work should be automated, augmented, or mastered — and
+            Understand which parts of your work should be automated, augmented, or mastered and
             receive a personalized AI Career Readiness Report with practical next steps.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -257,7 +257,7 @@ function Problem() {
     {
       icon: <ShieldCheck className="h-5 w-5 text-teal" />,
       title: "You can't tell hype from risk",
-      body: "Which tasks are actually at risk of automation — and which give you leverage?",
+      body: "Which tasks are actually at risk of automation and which give you leverage?",
     },
     {
       icon: <Rocket className="h-5 w-5 text-warm" />,
@@ -305,7 +305,7 @@ function HowItWorks() {
       n: "02",
       icon: <BrainCircuit className="h-5 w-5" />,
       title: "AI analyzes every task",
-      body: "Each task is routed to Build, Bot, or Blend — with risk, leverage, and hours saved.",
+      body: "Each task is routed to Build, Bot, or Blend with risk, leverage, and hours saved.",
     },
     {
       n: "03",
@@ -353,7 +353,7 @@ function ReportPreview() {
         <div>
           <SectionEyebrow>Sample report</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            A consulting-grade report — not another quiz result.
+            A consulting-grade report not another quiz result.
           </h2>
           <p className="mt-5 text-muted-foreground">
             Every report is packed with visual insights: an AI Readiness Score, task-by-task
@@ -422,7 +422,7 @@ function ReportMockup() {
           <Zap className="h-3.5 w-3.5 text-warm" /> Top recommendation
         </div>
         <p className="mt-2 text-sm text-foreground">
-          Automate briefing docs with an AI writing workflow — saves ~4.2h/week and lifts throughput
+          Automate briefing docs with an AI writing workflow saves ~4.2h/week and lifts throughput
           28%.
         </p>
       </div>
@@ -508,7 +508,7 @@ function Features() {
     {
       icon: <BarChart3 className="h-5 w-5" />,
       title: "AI Readiness Score",
-      body: "A single, defensible number that captures your position — with the signals behind it.",
+      body: "A single, defensible number that captures your position with the signals behind it.",
     },
     {
       icon: <Bot className="h-5 w-5" />,
@@ -518,7 +518,7 @@ function Features() {
     {
       icon: <Sparkles className="h-5 w-5" />,
       title: "AI Toolkit",
-      body: "Curated tools matched to your workflow — with pricing, ratings, and setup time.",
+      body: "Curated tools matched to your workflow with pricing, ratings, and setup time.",
     },
     {
       icon: <Rocket className="h-5 w-5" />,
@@ -578,7 +578,7 @@ function Testimonials() {
     },
     {
       quote:
-        "Reads like a consulting brief. Confident, specific, and finally actionable — worth every minute.",
+        "Reads like a consulting brief. Confident, specific, and finally actionable worth every minute.",
       name: "Elena Rossi",
       role: "Senior Consultant",
     },
@@ -751,7 +751,7 @@ function FAQ() {
   const qs = [
     {
       q: "How is CareerShift different from a generic AI chatbot?",
-      a: "CareerShift is an assessment platform. It analyzes your specific tasks and role, then returns a structured report — not a conversation. You get a score, a task-routing breakdown, and a 12-month roadmap.",
+      a: "CareerShift is an assessment platform. It analyzes your specific tasks and role, then returns a structured report not a conversation. You get a score, a task-routing breakdown, and a 12-month roadmap.",
     },
     {
       q: "How long does the assessment take?",
@@ -759,7 +759,7 @@ function FAQ() {
     },
     {
       q: "Who is it built for?",
-      a: "Mid-level and senior professionals with 5–20 years of experience — marketers, consultants, HR, finance, ops, and executives.",
+      a: "Mid-level and senior professionals with 5–20 years of experience marketers, consultants, HR, finance, ops, and executives.",
     },
     {
       q: "Is my data private?",
@@ -1035,7 +1035,7 @@ function Footer() {
               <span className="font-display text-lg font-bold">CareerShift</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              Bridge your career to the AI future — with clarity, confidence, and a plan.
+              Bridge your career to the AI future with clarity, confidence, and a plan.
             </p>
             <div className="mt-5 flex gap-2">
               {[Twitter, Linkedin, Github].map((Icon, i) => (
