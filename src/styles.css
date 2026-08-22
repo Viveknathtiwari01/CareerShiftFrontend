@@ -99,14 +99,17 @@
   --brand-foreground: #0a121f;
   --teal: #0d9488;
   /*
-   * 3B Framework ink · gold · teal (premium, theme-aligned)
-   * BUILD  = human mastery (ink depth)
+   * 3B Framework — distinct, theme-aligned accents
+   * BUILD  = human mastery (rich violet)
    * BLEND  = human + AI co-pilot (brand gold)
    * BOT    = automation & efficiency (teal)
    */
-  --build: #1a273d;
+  --build: #5b21b6;
+  --build-soft: #ede9fe;
   --blend: #c9a84c;
+  --blend-soft: #faf6eb;
   --bot-accent: #0d9488;
+  --bot-soft: #ecfdf5;
   --warm: #d97706;
 
   --surface: #ffffff;

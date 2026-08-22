@@ -51,9 +51,6 @@ import { getProfile } from "@/api/profile";
 import {
   saveAssessmentTasks,
   mapBackendTaskToFrontend,
-  isTaskReviewComplete,
-  getEffectiveTimeAllocation,
-  getEffectiveConfidenceScore,
 } from "@/api/tasks";
 import { runTaskAnalysis } from "@/api/analysis";
 import {
@@ -64,6 +61,7 @@ import {
 } from "@/api/assessment";
 import { useCompetencyAssessment } from "@/hooks/use-competency-assessment";
 import StepTaskGenerator from "@/components/assessment/StepTaskGenerator";
+import TaskIntelligenceReview from "@/components/assessment/TaskIntelligenceReview";
 import { Loader2, RefreshCw } from "lucide-react";
 
 const TOOL_OPTIONS = [
@@ -152,7 +150,7 @@ function AssessmentWizard({
     try {
       await persistTasks();
       if (pipeline.assessmentId) {
-        await runTaskAnalysis(pipeline.assessmentId, true);
+        await runTaskAnalysis(pipeline.assessmentId, false);
         queryClient.invalidateQueries({
           queryKey: ["assessment-analysis", pipeline.assessmentId],
         });
@@ -240,10 +238,9 @@ function AssessmentWizard({
           />
         )}
         {STEPS[step].key === "tasks" && (
-          <StepTasks
-            draft={draft}
+          <TaskIntelligenceReview
+            tasks={draft.tasks}
             updateTask={updateTask}
-            removeTask={removeTask}
             onReviewComplete={setTasksReviewComplete}
           />
         )}
@@ -435,305 +432,6 @@ function StepTools({
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function StepTasks({
-  draft,
-  updateTask,
-  removeTask,
-  onReviewComplete,
-}: {
-  draft: ReturnType<typeof useAssessment>["draft"];
-  updateTask: ReturnType<typeof useAssessment>["updateTask"];
-  removeTask: ReturnType<typeof useAssessment>["removeTask"];
-  onReviewComplete?: (complete: boolean) => void;
-}) {
-  const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
-  const [expandedId, setExpandedId] = useState<string | null>(selectedTasks[0]?.id || null);
-
-  const tasksReviewed = selectedTasks.filter(isTaskReviewComplete).length;
-
-  const avgConfidence = selectedTasks.length
-    ? (
-        selectedTasks.reduce((acc, t) => acc + getEffectiveConfidenceScore(t), 0) /
-        selectedTasks.length
-      ).toFixed(1)
-    : "0.0";
-
-  const totalHours = selectedTasks.reduce(
-    (acc, t) => acc + getEffectiveTimeAllocation(t),
-    0,
-  );
-
-  const aiScores = { Never: 0, Sometimes: 1, Frequently: 2, Always: 3 };
-  const validAiTasks = selectedTasks.filter((t) => t.aiAssistance);
-  const avgAiScore = validAiTasks.length
-    ? validAiTasks.reduce((acc, t) => acc + aiScores[t.aiAssistance as keyof typeof aiScores], 0) /
-      validAiTasks.length
-    : 0;
-
-  let avgAiText = "None";
-  if (avgAiScore > 0 && avgAiScore <= 1) avgAiText = "Low";
-  else if (avgAiScore > 1 && avgAiScore <= 2) avgAiText = "Medium";
-  else if (avgAiScore > 2) avgAiText = "High";
-
-  useEffect(() => {
-    const allReviewed =
-      selectedTasks.length > 0 && tasksReviewed === selectedTasks.length;
-    onReviewComplete?.(allReviewed);
-  }, [selectedTasks.length, tasksReviewed, onReviewComplete]);
-
-  return (
-    <div>
-      <StepHeader
-        title="Task Intelligence Review"
-        description="Help CareerShift understand how these tasks fit into your daily work so we can generate more accurate AI recommendations."
-      />
-
-      <div className="flex flex-col gap-8 lg:flex-row mt-6">
-        <div className="flex-1 space-y-4">
-          {selectedTasks.length === 0 && (
-            <div className="rounded-xl border border-border bg-background p-6 text-center text-sm text-muted-foreground">
-              No tasks selected. Go back to the Task Generator to add tasks.
-            </div>
-          )}
-          {selectedTasks.map((t) => {
-            const isExpanded = expandedId === t.id;
-            const isReviewed = isTaskReviewComplete(t);
-
-            return (
-              <div
-                key={t.id}
-                className={`overflow-hidden rounded-2xl border transition-colors ${isExpanded ? "border-primary/50 bg-background shadow-soft" : "border-border bg-muted/20"}`}
-              >
-                <button
-                  onClick={() => setExpandedId(isExpanded ? null : t.id)}
-                  className="flex w-full items-center justify-between p-5 text-left"
-                >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${isReviewed ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30 text-muted-foreground"}`}
-                    >
-                      {isReviewed ? <CheckCircle2 className="h-4 w-4" /> : "!"}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">{t.title}</h3>
-                      <p className="text-xs text-muted-foreground">{t.category}</p>
-                    </div>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="border-t border-border"
-                    >
-                      <div className="p-5 space-y-8">
-                        <div className="grid gap-6 lg:grid-cols-2">
-                          <div>
-                            <h4 className="mb-3 text-sm font-semibold">
-                              How often do you perform this task?
-                            </h4>
-                            <TaskSelectOptions
-                              value={t.frequency || ""}
-                              options={[
-                                "Multiple times daily",
-                                "Daily",
-                                "Weekly",
-                                "Monthly",
-                                "Occasionally",
-                                "Quarterly",
-                                "Half Yearly",
-                                "Yearly",
-                              ]}
-                              onChange={(v) => updateTask(t.id, { frequency: v as any })}
-                            />
-                          </div>
-                          <div>
-                            <h4 className="mb-3 text-sm font-semibold">
-                              How important is this task to your role?
-                            </h4>
-                            <TaskSelectOptions
-                              value={t.businessCriticality || ""}
-                              options={["Mission Critical", "High", "Medium", "Low"]}
-                              onChange={(v) => updateTask(t.id, { businessCriticality: v as any })}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid gap-6 lg:grid-cols-2">
-                          <div>
-                            <div className="flex items-center justify-between mb-3">
-                              <h4 className="text-sm font-semibold">
-                                Approximately how much of your work week is spent on this task?
-                              </h4>
-                              <span className="text-sm font-bold text-primary">
-                                {getEffectiveTimeAllocation(t) < 0.5 
-                                  ? "<15 min" 
-                                  : getEffectiveTimeAllocation(t) === 0.5 
-                                    ? "30 min" 
-                                    : getEffectiveTimeAllocation(t) === 1 
-                                      ? "1 hr" 
-                                      : `${getEffectiveTimeAllocation(t)} hrs`}
-                              </span>
-                            </div>
-                            <div className="flex flex-wrap gap-2 text-xs">
-                              {[
-                                { label: "<15 min", val: 0.25 },
-                                { label: "15-30 min", val: 0.5 },
-                                { label: "30-60 min", val: 1 },
-                                { label: "1-2 hrs", val: 2 },
-                                { label: "2-4 hrs", val: 4 },
-                                { label: "4+ hrs", val: 8 },
-                              ].map((opt) => (
-                                <button
-                                  key={opt.label}
-                                  onClick={() => updateTask(t.id, { timeAllocation: opt.val })}
-                                  className={`rounded-md px-3 py-2 font-medium transition-colors border ${
-                                    getEffectiveTimeAllocation(t) === opt.val
-                                      ? "bg-primary border-primary text-primary-foreground shadow-soft"
-                                      : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                                  }`}
-                                >
-                                  {opt.label}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="flex items-center justify-between mb-3">
-                              <h4 className="text-sm font-semibold">
-                                How confident are you performing this task without assistance?
-                              </h4>
-                              <span className="text-sm font-bold text-primary">
-                                {getEffectiveConfidenceScore(t)} / 10
-                              </span>
-                            </div>
-                            <input
-                              type="range"
-                              min="1"
-                              max="10"
-                              value={getEffectiveConfidenceScore(t)}
-                              onChange={(e) =>
-                                updateTask(t.id, { confidenceScore: Number(e.target.value) })
-                              }
-                              className="w-full accent-primary"
-                            />
-                            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                              <span>1</span>
-                              <span>10</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div>
-                          <h4 className="mb-3 text-sm font-semibold">
-                            Do you currently use AI for this task?
-                          </h4>
-                          <TaskSelectOptions
-                            value={t.aiAssistance || ""}
-                            options={["Never", "Sometimes", "Frequently", "Always"]}
-                            onChange={(v) => updateTask(t.id, { aiAssistance: v as any })}
-                          />
-                        </div>
-
-                        <div>
-                          <h4 className="mb-2 text-sm font-semibold">Manual Notes (Optional)</h4>
-                          <textarea
-                            placeholder="Anything else you want CareerShift to know?"
-                            value={t.manualNotes || ""}
-                            onChange={(e) => updateTask(t.id, { manualNotes: e.target.value })}
-                            className="w-full rounded-lg border border-input bg-background p-3 text-sm outline-none focus:border-primary resize-y min-h-[80px]"
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="w-full shrink-0 lg:w-72">
-          <div className="sticky top-6 space-y-4">
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-soft">
-              <h3 className="mb-4 font-display text-lg font-bold">Progress Summary</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Tasks Reviewed</span>
-                  <span
-                    className={`font-semibold ${tasksReviewed === selectedTasks.length ? "text-teal" : "text-foreground"}`}
-                  >
-                    {tasksReviewed} / {selectedTasks.length}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Average AI Usage</span>
-                  <span className="font-semibold text-foreground">{avgAiText}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Average Confidence</span>
-                  <span className="font-semibold text-foreground">{avgConfidence}</span>
-                </div>
-                <div className="my-4 h-px w-full bg-border" />
-                <div className="flex items-center justify-between text-base font-bold">
-                  <span className="text-foreground">Weekly Hours</span>
-                  <span className="text-brand">{totalHours}</span>
-                </div>
-              </div>
-            </div>
-
-            {tasksReviewed < selectedTasks.length && (
-              <div className="rounded-2xl border border-amber/20 bg-amber/5 p-4 text-xs text-amber-900 dark:text-amber-200">
-                Complete the review for all tasks to unlock your 3B Analysis.
-              </div>
-            )}
-            {tasksReviewed === selectedTasks.length && selectedTasks.length > 0 && (
-              <div className="rounded-2xl border border-teal/20 bg-teal/5 p-4 text-xs text-teal-900 dark:text-teal-100">
-                All tasks reviewed use the button below to view your 3B Analysis.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TaskSelectOptions({
-  value,
-  options,
-  onChange,
-}: {
-  value: string;
-  options: readonly string[];
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2 text-xs">
-      {options.map((v) => (
-        <button
-          key={v}
-          onClick={() => onChange(v)}
-          className={`rounded-md px-3 py-2 font-medium transition-colors border ${
-            value === v
-              ? "bg-primary border-primary text-primary-foreground shadow-soft"
-              : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
-          }`}
-        >
-          {v}
-        </button>
-      ))}
     </div>
   );
 }

@@ -1,400 +1,65 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { AlertTriangle, ArrowRight, Download, Loader2, RefreshCw } from "lucide-react";
 import {
-  AlertTriangle,
-  ArrowRight,
-  Bot,
-  Hammer,
-  ChevronDown,
-  ChevronUp,
-  Loader2,
-  RefreshCw,
-  Sparkles,
-  Target,
-  TrendingUp,
-  Wrench,
-  Zap,
-} from "lucide-react";
-import {
+  downloadCategoryAnalysis,
   getTaskAnalysis,
   mapAnalysisToDisplay,
   runTaskAnalysis,
-  type AnalyzedTask,
   type ThreeBCategory,
 } from "@/api/analysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
+import {
+  CollapsibleTaskCard,
+  CategoryHoursNav,
+  THREE_B_FRAMEWORK,
+} from "@/components/assessment/ThreeBAnalysisParts";
 import { getAssessmentTasks, mapBackendTaskToFrontend, isTaskReviewComplete } from "@/api/tasks";
 
 const CATEGORIES: ThreeBCategory[] = ["BUILD", "BLEND", "BOT"];
 
 const FRAMEWORK = {
   BUILD: {
-    label: "BUILD",
-    title: "Build It",
+    ...THREE_B_FRAMEWORK.BUILD,
+    title: "Build",
     tagline: "Deepen human mastery",
-    description: "Judgment, relationships, ethics, and expertise AI cannot replace.",
+    description: "Judgment, relationships, and expertise AI cannot replace.",
     action: "Invest in skills & experience",
-    importance: "Highest your irreplaceable edge",
-    icon: Hammer,
-    accent: "text-build",
-    bg: "bg-build/[0.06]",
-    bgStrong: "bg-build/[0.09]",
-    border: "border-build/20",
-    bar: "bg-build",
-    badge: "bg-build/10 text-build border-build/20",
-    tabActive: "bg-build/10 text-build border-build/30 shadow-soft",
-    header: "bg-build/[0.07] border-build/15",
-    ring: "ring-build/25",
   },
   BLEND: {
-    label: "BLEND",
-    title: "Blend It",
+    ...THREE_B_FRAMEWORK.BLEND,
+    title: "Blend",
     tagline: "Human + AI co-pilot",
-    description: "AI drafts and analyzes you decide, refine, and own the outcome.",
+    description: "AI drafts and analyzes — you decide and own the outcome.",
     action: "Learn tools & prompt skills",
-    importance: "High your biggest leverage zone",
-    icon: Sparkles,
-    accent: "text-blend",
-    bg: "bg-blend/10",
-    bgStrong: "bg-blend/[0.14]",
-    border: "border-blend/25",
-    bar: "bg-blend",
-    badge: "bg-blend/12 text-brand-foreground border-blend/30",
-    tabActive: "bg-blend/15 text-brand-foreground border-blend/40 shadow-soft",
-    header: "bg-blend/10 border-blend/20",
-    ring: "ring-blend/30",
   },
   BOT: {
-    label: "BOT",
-    title: "Bot It",
+    ...THREE_B_FRAMEWORK.BOT,
+    title: "Bot",
     tagline: "Automate within 30 days",
-    description: "Repetitive, templated work delegate to AI and reclaim hours.",
+    description: "Repetitive work — delegate to AI and reclaim hours.",
     action: "Set up automation this month",
-    importance: "Quick wins reclaim time fast",
-    icon: Bot,
-    accent: "text-bot-accent",
-    bg: "bg-bot-accent/[0.07]",
-    bgStrong: "bg-bot-accent/10",
-    border: "border-bot-accent/22",
-    bar: "bg-bot-accent",
-    badge: "bg-bot-accent/10 text-bot-accent border-bot-accent/22",
-    tabActive: "bg-bot-accent/12 text-bot-accent border-bot-accent/35 shadow-soft",
-    header: "bg-bot-accent/[0.08] border-bot-accent/18",
-    ring: "ring-bot-accent/25",
   },
 } as const;
 
-function SectionLabel({ step, title }: { step: string; title: string }) {
-  return (
-    <div className="mb-4 flex items-center gap-3">
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary">
-        {step}
-      </span>
-      <h3 className="font-display text-lg font-semibold tracking-tight">{title}</h3>
-    </div>
-  );
-}
-
-function FrameworkGuide() {
-  return (
-    <div className="grid gap-3 sm:grid-cols-3">
-      {CATEGORIES.map((key) => {
-        const meta = FRAMEWORK[key];
-        const Icon = meta.icon;
-        return (
-          <div
-            key={key}
-            className={`rounded-xl border-l-[3px] ${meta.border} border border-border bg-card ${meta.bgStrong} p-4 shadow-soft`}
-          >
-            <div className="mb-3 flex items-center gap-2">
-              <div className={`grid h-10 w-10 place-items-center rounded-xl border ${meta.border} bg-background/80`}>
-                <Icon className={`h-5 w-5 ${meta.accent}`} />
-              </div>
-              <div>
-                <p className={`text-sm font-bold ${meta.accent}`}>{meta.title}</p>
-                <p className="text-[11px] text-muted-foreground">{meta.tagline}</p>
-              </div>
-            </div>
-            <p className="text-xs leading-relaxed text-muted-foreground">{meta.description}</p>
-            <p className={`mt-2 text-[11px] font-semibold ${meta.accent}`}>→ {meta.action}</p>
-            <p className="mt-1 text-[10px] font-medium text-muted-foreground/80">{meta.importance}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function MetricCell({
-  label,
-  value,
-  tone = "neutral",
-}: {
-  label: string;
-  value: string;
-  tone?: "neutral" | "build" | "blend" | "bot" | "warn" | "danger";
-}) {
-  const tones = {
-    neutral: {
-      box: "border-border bg-muted/40",
-      label: "text-muted-foreground",
-      value: "text-foreground",
-    },
-    build: {
-      box: "border-build/20 bg-build/[0.06]",
-      label: "text-muted-foreground",
-      value: "text-build",
-    },
-    blend: {
-      box: "border-blend/25 bg-blend/10",
-      label: "text-muted-foreground",
-      value: "text-blend",
-    },
-    bot: {
-      box: "border-bot-accent/22 bg-bot-accent/[0.07]",
-      label: "text-muted-foreground",
-      value: "text-bot-accent",
-    },
-    warn: {
-      box: "border-warm/25 bg-warm/10",
-      label: "text-warm/90",
-      value: "text-warm",
-    },
-    danger: {
-      box: "border-destructive/25 bg-destructive/8",
-      label: "text-destructive/80",
-      value: "text-destructive",
-    },
-  } as const;
-  const style = tones[tone];
-
-  return (
-    <div className={`rounded-xl border px-3 py-3 text-center shadow-sm ${style.box}`}>
-      <p className={`text-[10px] font-semibold uppercase tracking-wide ${style.label}`}>{label}</p>
-      <p className={`mt-1 text-base font-bold ${style.value}`}>{value}</p>
-    </div>
-  );
-}
-
-function automationTone(value: number): "build" | "blend" | "bot" {
-  if (value >= 65) return "bot";
-  if (value >= 35) return "blend";
-  return "build";
-}
-
-function riskTone(level: string): "build" | "warn" | "danger" {
-  const normalized = level.toLowerCase();
-  if (normalized === "high") return "danger";
-  if (normalized === "medium") return "warn";
-  return "build";
-}
-
-function impactTone(level: string): "build" | "blend" | "warn" {
-  const normalized = level.toLowerCase();
-  if (normalized === "high") return "warn";
-  if (normalized === "medium") return "blend";
-  return "build";
-}
-
-function TaskCard({ task, category }: { task: AnalyzedTask; category: ThreeBCategory }) {
-  const meta = FRAMEWORK[category];
-  const Icon = meta.icon;
-
-  return (
-    <article className={`overflow-hidden rounded-2xl border bg-card shadow-soft ${meta.border}`}>
-      {/* Task header */}
-      <div className={`border-b px-5 py-4 ${meta.header}`}>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex min-w-0 items-start gap-3">
-            <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border ${meta.border} bg-background shadow-sm`}>
-              <Icon className={`h-5 w-5 ${meta.accent}`} />
-            </div>
-            <div className="min-w-0">
-              <h4 className="font-display text-base font-semibold leading-snug text-foreground">
-                {task.title}
-              </h4>
-              {task.rationale && (
-                <p className="mt-1 text-xs font-medium text-muted-foreground">{task.rationale}</p>
-              )}
-            </div>
-          </div>
-          <span className={`shrink-0 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${meta.badge}`}>
-            {meta.label}
-          </span>
-        </div>
-      </div>
-
-      <div className="space-y-4 p-5">
-        {/* Why */}
-        <div className={`rounded-xl border ${meta.border} ${meta.bgStrong} p-4`}>
-          <p className={`mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
-            <span className={`grid h-6 w-6 place-items-center rounded-lg border ${meta.border} bg-background`}>
-              <Target className="h-3.5 w-3.5" />
-            </span>
-            Why this routing
-          </p>
-          <p className="text-sm leading-relaxed text-foreground">{task.reason}</p>
-        </div>
-
-        {/* Components Accordion */}
-        {task.category3B !== "BUILD" && task.components && task.components.length > 0 && (
-          <div className="rounded-xl border border-border bg-card overflow-hidden">
-            <p className={`px-4 py-3 border-b border-border text-[11px] font-bold uppercase tracking-wide ${meta.accent} bg-muted/20 flex items-center gap-2`}>
-              <Wrench className="h-3.5 w-3.5" /> Work Components & Tool Options
-            </p>
-            <div className="divide-y divide-border">
-              {task.components.map((comp, i) => (
-                <div key={i} className="p-4">
-                  <p className="font-semibold text-sm text-foreground mb-1">{comp.name}</p>
-                  <p className="text-xs text-muted-foreground mb-4">{comp.description}</p>
-                  
-                  {comp.tool_options && comp.tool_options.length > 0 ? (
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {comp.tool_options.map((tool, j) => (
-                        <div key={j} className="flex flex-col rounded-xl border border-border bg-muted/10 p-3 shadow-sm hover:border-primary/30 transition-colors">
-                          <div className="flex justify-between items-start mb-2">
-                            <span className="font-semibold text-sm">{tool.name}</span>
-                            <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{tool.cost_tier}</span>
-                          </div>
-                          <span className={`text-[10px] font-semibold w-fit px-2 py-0.5 rounded-full mb-3 ${
-                            tool.feasibility === "Self-serve" ? "bg-green-500/10 text-green-600 border border-green-500/20" :
-                            tool.feasibility === "Company tech" ? "bg-blue-500/10 text-blue-600 border border-blue-500/20" :
-                            "bg-orange-500/10 text-orange-600 border border-orange-500/20"
-                          }`}>
-                            {tool.feasibility}
-                          </span>
-                          <div className="text-[11px] text-muted-foreground mt-auto space-y-1">
-                            <p><span className="text-green-600 font-semibold">+</span> {tool.pros}</p>
-                            <p><span className="text-red-500 font-semibold">-</span> {tool.cons}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-muted-foreground italic">No tools resolved for {comp.capability_id}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Fallback old tools view if no components (e.g. older analyses) or BUILD */}
-        {task.category3B === "BUILD" && (
-          <div className={`flex flex-col rounded-xl border ${meta.border} bg-card p-4`}>
-            <p className={`mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
-              <span className={`grid h-6 w-6 place-items-center rounded-lg border ${meta.border} ${meta.bg}`}>
-                <Wrench className="h-3.5 w-3.5" />
-              </span>
-              Guidance
-            </p>
-            <p className="text-sm text-muted-foreground">
-              This task relies on human judgment. Focus on deepening mastery and relationships rather than finding automation tools.
-            </p>
-          </div>
-        )}
-        
-        {task.category3B !== "BUILD" && (!task.components || task.components.length === 0) && (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-muted/20 p-4">
-              <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-                <span className="grid h-6 w-6 place-items-center rounded-lg border border-border bg-background">
-                  <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
-                </span>
-                Task signals
-              </p>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <MetricCell
-                  label="Automation"
-                  value={`${task.autoPotential}%`}
-                  tone={automationTone(task.autoPotential)}
-                />
-                <MetricCell label="Risk" value={task.riskLevel} tone={riskTone(task.riskLevel)} />
-                <MetricCell label="Future impact" value={task.futureImp} tone={impactTone(task.futureImp)} />
-              </div>
-            </div>
-
-            <div className={`flex flex-col rounded-xl border ${meta.border} bg-card p-4`}>
-              <p className={`mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
-                <span className={`grid h-6 w-6 place-items-center rounded-lg border ${meta.border} ${meta.bg}`}>
-                  <Wrench className="h-3.5 w-3.5" />
-                </span>
-                Recommended tools
-              </p>
-              {task.tools.length > 0 ? (
-                <div className="flex flex-1 flex-wrap content-start gap-2">
-                  {task.tools.map((tool) => (
-                    <span
-                      key={tool}
-                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ${meta.badge}`}
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="flex flex-1 items-center text-sm text-muted-foreground">
-                  No specific tools suggested for this task.
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Next actions */}
-        {task.next_actions.length > 0 && (
-          <div className={`rounded-xl border ${meta.border} ${meta.bgStrong} p-4`}>
-            <p className="mb-3 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-foreground">
-              <Zap className={`h-3.5 w-3.5 ${meta.accent}`} /> Your next 3 actions
-            </p>
-            <ol className="space-y-2.5">
-              {task.next_actions.map((action, idx) => (
-                <li key={action} className="flex gap-3 text-sm leading-relaxed">
-                  <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-background text-[11px] font-bold ${meta.accent}`}
-                  >
-                    {idx + 1}
-                  </span>
-                  <span className="pt-0.5">{action}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function buildStrategicSummary(
-  build: number,
-  blend: number,
-  bot: number,
-  total: number,
-): string {
-  if (total === 0) return "Complete your task review to generate personalized 3B routing.";
-  const pct = (n: number) => Math.round((n / total) * 100);
-  const dominant =
-    build >= blend && build >= bot
-      ? "BUILD"
-      : bot >= blend && bot >= build
-        ? "BOT"
-        : "BLEND";
-  if (dominant === "BUILD") {
-    return `${pct(build)}% of your work is human-first (BUILD). Your career edge is deepening expertise and judgment use AI lightly here and invest in mastery.`;
-  }
-  if (dominant === "BOT") {
-    return `${pct(bot)}% of your tasks are strong automation candidates (BOT). Prioritize quick wins set up AI workflows in the next 30 days to reclaim significant weekly hours.`;
-  }
-  return `${pct(blend)}% of your role sits in the BLEND zone. Your biggest leverage is learning AI co-pilot workflows let AI draft while you refine and decide.`;
+function dominantCategory(hours?: {
+  BUILD: { weekly_hours: number };
+  BLEND: { weekly_hours: number };
+  BOT: { weekly_hours: number };
+}): ThreeBCategory {
+  if (!hours) return "BLEND";
+  const { BUILD: b, BLEND: bl, BOT: bo } = hours;
+  if (b.weekly_hours >= bl.weekly_hours && b.weekly_hours >= bo.weekly_hours) return "BUILD";
+  if (bo.weekly_hours >= bl.weekly_hours) return "BOT";
+  return "BLEND";
 }
 
 type Props = {
   assessmentId: string | null;
   onReadyChange?: (ready: boolean) => void;
   showFooterLinks?: boolean;
-  /** Hide inner page title when wrapped by PageShell */
   embedded?: boolean;
 };
 
@@ -406,7 +71,8 @@ export default function Step3BAnalysis({
 }: Props) {
   const queryClient = useQueryClient();
   const analyzeRequestedRef = useRef(false);
-  const [activeTab, setActiveTab] = useState<ThreeBCategory>("BUILD");
+  const [activeTab, setActiveTab] = useState<ThreeBCategory>("BLEND");
+  const hasSetInitialTab = useRef(false);
 
   const analysisQuery = useQuery({
     queryKey: ["assessment-analysis", assessmentId],
@@ -416,7 +82,7 @@ export default function Step3BAnalysis({
   });
 
   const analyzeMutation = useMutation({
-    mutationFn: (regenerate: boolean) => runTaskAnalysis(assessmentId!, regenerate),
+    mutationFn: () => runTaskAnalysis(assessmentId!, false),
     onSuccess: (data) => {
       queryClient.setQueryData(["assessment-analysis", assessmentId], data);
     },
@@ -424,6 +90,7 @@ export default function Step3BAnalysis({
 
   useEffect(() => {
     analyzeRequestedRef.current = false;
+    hasSetInitialTab.current = false;
   }, [assessmentId]);
 
   const tasksQuery = useQuery({
@@ -446,7 +113,7 @@ export default function Step3BAnalysis({
     if ((analysisQuery.data?.analyses?.length ?? 0) > 0) return;
     if (!analyzeRequestedRef.current && !analyzeMutation.isPending) {
       analyzeRequestedRef.current = true;
-      analyzeMutation.mutate(false);
+      analyzeMutation.mutate();
     }
   }, [
     assessmentId,
@@ -461,6 +128,14 @@ export default function Step3BAnalysis({
     () => (analysisQuery.data?.analyses ?? []).map(mapAnalysisToDisplay),
     [analysisQuery.data?.analyses],
   );
+
+  const hoursSummary = analysisQuery.data?.hours_summary;
+
+  useEffect(() => {
+    if (hasSetInitialTab.current || !hoursSummary) return;
+    setActiveTab(dominantCategory(hoursSummary));
+    hasSetInitialTab.current = true;
+  }, [hoursSummary]);
 
   const isLoading =
     analysisQuery.isLoading || (analyzeMutation.isPending && analyzedTasks.length === 0);
@@ -479,24 +154,14 @@ export default function Step3BAnalysis({
     [analyzedTasks],
   );
 
-  const totalTasks = analyzedTasks.length || 1;
-  const autoOpp = Math.round(
-    analyzedTasks.reduce((acc, t) => acc + t.autoPotential, 0) / totalTasks,
-  );
-  const summaryConfidence = analysisQuery.data?.summary_confidence ?? autoOpp;
-  const strategicSummary = buildStrategicSummary(
-    tasksByCategory.BUILD.length,
-    tasksByCategory.BLEND.length,
-    tasksByCategory.BOT.length,
-    analyzedTasks.length,
-  );
-
   const activeTasks = tasksByCategory[activeTab];
   const activeMeta = FRAMEWORK[activeTab];
+  const ActiveIcon = activeMeta.icon;
+  const activeFrame = THREE_B_FRAMEWORK[activeTab];
 
   if (!assessmentId) {
     return (
-      <div className="rounded-xl border border-border bg-muted/30 px-6 py-14 text-center">
+      <div className="rounded-2xl border border-border bg-muted/30 px-6 py-14 text-center">
         <p className="text-muted-foreground">Complete your assessment to unlock 3B analysis.</p>
         <Link
           to="/assessment"
@@ -510,9 +175,9 @@ export default function Step3BAnalysis({
 
   if (!tasksQuery.isLoading && !areTasksReviewed) {
     return (
-      <div className="rounded-xl border border-border bg-muted/30 px-6 py-14 text-center">
+      <div className="rounded-2xl border border-border bg-muted/30 px-6 py-14 text-center">
         <p className="text-muted-foreground">
-          You must complete the Task Intelligence Review before viewing your 3B analysis.
+          Complete the Task Intelligence Review before viewing your 3B analysis.
         </p>
         <Link
           to="/assessment"
@@ -526,11 +191,14 @@ export default function Step3BAnalysis({
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center px-4 py-16 text-center">
-        <Loader2 className="h-10 w-10 animate-spin text-brand" />
-        <h3 className="mt-6 font-display text-xl font-bold">Analyzing your tasks</h3>
-        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          Routing each task into BUILD, BLEND, or BOT with personalized actions…
+      <div className="flex flex-col items-center px-4 py-20 text-center">
+        <div className="relative">
+          <div className="absolute inset-0 animate-ping rounded-full bg-brand/20" />
+          <Loader2 className="relative h-12 w-12 animate-spin text-brand" />
+        </div>
+        <h3 className="mt-8 font-display text-2xl font-bold">Analyzing your tasks</h3>
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
+          Routing each task into Build, Blend, or Bot with personalized actions and tool suggestions…
         </p>
       </div>
     );
@@ -539,13 +207,13 @@ export default function Step3BAnalysis({
   if (analyzeMutation.isError || analysisQuery.isError) {
     const err = (analyzeMutation.error ?? analysisQuery.error) as Error;
     return (
-      <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-6 py-14 text-center">
+      <div className="rounded-2xl border border-destructive/20 bg-destructive/5 px-6 py-14 text-center">
         <AlertTriangle className="mx-auto h-9 w-9 text-destructive" />
         <h3 className="mt-4 font-semibold">Analysis unavailable</h3>
         <p className="mt-2 text-sm text-muted-foreground">{err.message}</p>
         <button
           type="button"
-          onClick={() => analyzeMutation.mutate(true)}
+          onClick={() => analyzeMutation.mutate()}
           className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
         >
           <RefreshCw className="h-4 w-4" /> Try again
@@ -556,228 +224,106 @@ export default function Step3BAnalysis({
 
   return (
     <div className="space-y-10">
-      {/* Status bar */}
       {!embedded && (
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-bold tracking-tight">
-              3B Career Intelligence
-            </h2>
-            <p className="mt-1 max-w-lg text-sm text-muted-foreground">
-              Every task in your role, classified with clear reasoning and next steps.
-            </p>
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-1"
+        >
+          <h2 className="font-display text-2xl font-bold tracking-tight">Your 3B work map</h2>
+          <p className="text-sm text-muted-foreground">
+            How your reviewed tasks split across human mastery, AI co-piloting, and automation.
+          </p>
+        </motion.div>
+      )}
+
+      <CategoryHoursNav
+        hoursSummary={hoursSummary}
+        totalHours={analysisQuery.data?.total_hours}
+        activeTab={activeTab}
+        onSelect={setActiveTab}
+        framework={FRAMEWORK}
+      />
+
+      <motion.section
+        key={activeTab}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="space-y-5"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div
+              className={`grid h-12 w-12 place-items-center rounded-2xl border bg-gradient-to-br ${activeFrame.gradient} ${activeFrame.border}`}
+            >
+              <ActiveIcon className={`h-6 w-6 ${activeMeta.accent}`} />
+            </div>
+            <div>
+              <h3 className="font-display text-xl font-semibold">
+                {activeMeta.title}{" "}
+                <span className="font-normal text-muted-foreground">· {activeMeta.tagline}</span>
+              </h3>
+              <p className="text-sm text-muted-foreground">{activeMeta.description}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-brand px-4 py-2.5 text-sm shadow-sm">
-            <span className="font-semibold text-primary-foreground">Complete</span>
-            <span className="text-primary-foreground/40">·</span>
-            <span className="text-primary-foreground/90">{summaryConfidence}% confidence</span>
+          {assessmentId && activeTasks.length > 0 && (
             <button
               type="button"
-              onClick={() => analyzeMutation.mutate(true)}
-              disabled={analyzeMutation.isPending}
-              className="ml-1 flex items-center gap-1 text-xs font-medium text-primary-foreground/80 hover:text-primary-foreground disabled:opacity-50"
+              onClick={() => downloadCategoryAnalysis(assessmentId, activeTab, "pdf")}
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold shadow-sm transition-colors hover:bg-muted/50"
             >
-              <RefreshCw className={`h-3 w-3 ${analyzeMutation.isPending ? "animate-spin" : ""}`} />
-              Re-run
+              <Download className="h-4 w-4" /> Export {activeMeta.title} PDF
             </button>
-          </div>
-        </div>
-      )}
-
-      {embedded && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
-          <div className="flex items-center gap-2 text-sm">
-            <span className="font-semibold text-foreground">{analyzedTasks.length} tasks analyzed</span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-muted-foreground">{summaryConfidence}% confidence</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => analyzeMutation.mutate(true)}
-            disabled={analyzeMutation.isPending}
-            className="flex items-center gap-1.5 text-xs font-medium text-brand hover:underline disabled:opacity-50"
-          >
-            <RefreshCw className={`h-3 w-3 ${analyzeMutation.isPending ? "animate-spin" : ""}`} />
-            Re-run analysis
-          </button>
-        </div>
-      )}
-
-      {/* Step 1 Framework */}
-      <section>
-        <SectionLabel step="1" title="Understand the 3B Framework" />
-        <FrameworkGuide />
-      </section>
-
-      {/* Step 2 Portfolio snapshot */}
-      <section>
-        <SectionLabel step="2" title="Your weekly hours at a glance" />
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {CATEGORIES.map((key) => {
-              const meta = FRAMEWORK[key];
-              const count = tasksByCategory[key].length;
-              const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setActiveTab(key)}
-                  className={`rounded-xl border p-4 text-left transition-all hover:shadow-sm ${
-                    activeTab === key
-                      ? `${meta.tabActive} ring-2 ${meta.ring}`
-                      : `${meta.bg} ${meta.border}`
-                  }`}
-                >
-                  <p className={`text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}>
-                    {meta.label}
-                  </p>
-                  <p className={`mt-1 font-display text-3xl font-bold ${meta.accent}`}>{hours}h</p>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">across {count} tasks</p>
-                </button>
-              );
-            })}
-            <div className="rounded-xl border border-border bg-muted/30 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Total Tracked
-              </p>
-              <p className="mt-1 font-display text-3xl font-bold text-primary">{analysisQuery.data?.total_hours || 0}h</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">per week</p>
-            </div>
-          </div>
-
-          <div className="border-t border-border pt-5">
-            <div className="flex h-4 w-full overflow-hidden rounded-full border border-border/60 bg-muted">
-              {CATEGORIES.map((key) => {
-                const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
-                const totalH = analysisQuery.data?.total_hours || 1;
-                const width = (hours / totalH) * 100;
-                if (width === 0) return null;
-                return (
-                  <div
-                    key={key}
-                    style={{ width: `${width}%` }}
-                    className={`${FRAMEWORK[key].bar} transition-all duration-700`}
-                  />
-                );
-              })}
-            </div>
-            <div className="mt-3 flex w-full">
-              {CATEGORIES.map((key) => {
-                const meta = FRAMEWORK[key];
-                const hours = analysisQuery.data?.hours_by_category?.[key] || 0;
-                const totalH = analysisQuery.data?.total_hours || 1;
-                const width = (hours / totalH) * 100;
-                if (width === 0) return null;
-                return (
-                  <div
-                    key={key}
-                    style={{ width: `${width}%` }}
-                    className="min-w-0 px-1 first:pl-0 last:pr-0"
-                  >
-                    <span className={`flex items-center gap-1.5 text-[11px] font-medium sm:text-xs ${meta.accent}`}>
-                      <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${meta.bar}`} />
-                      <span className="truncate">
-                        {meta.label} · {hours}h
-                      </span>
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Step 3 Task details */}
-      <section>
-        <SectionLabel step="3" title="Explore your tasks by category" />
-
-        {/* Tabs */}
-        <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-4">
-          {CATEGORIES.map((key) => {
-            const meta = FRAMEWORK[key];
-            const Icon = meta.icon;
-            const count = tasksByCategory[key].length;
-            const isActive = activeTab === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setActiveTab(key)}
-                className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all ${
-                  isActive ? meta.tabActive : `border-transparent opacity-65 hover:opacity-100 ${meta.bg} ${meta.accent}`
-                }`}
-              >
-                <Icon className="h-4 w-4" />
-                {meta.title}
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                    isActive ? "bg-background/80" : "bg-muted"
-                  }`}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+          )}
         </div>
 
-        {/* Category context */}
-        <div className={`mb-5 rounded-xl border-l-4 ${activeMeta.border} border ${activeMeta.border} ${activeMeta.bgStrong} px-4 py-3`}>
-          <p className={`text-sm font-bold ${activeMeta.accent}`}>
-            {activeMeta.title} {activeMeta.tagline}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">{activeMeta.description}</p>
-          <p className={`mt-2 text-xs font-semibold ${activeMeta.accent}`}>{activeMeta.importance}</p>
-        </div>
-
-        {/* Task list */}
         {activeTasks.length === 0 ? (
-          <div className={`rounded-xl border border-dashed ${activeMeta.border} ${activeMeta.bg} py-12 text-center text-sm ${activeMeta.accent}`}>
-            No tasks routed to {activeMeta.title} in this assessment.
+          <div
+            className={`rounded-2xl border border-dashed px-6 py-14 text-center ${activeFrame.border} ${activeFrame.soft}`}
+          >
+            <ActiveIcon className={`mx-auto h-8 w-8 ${activeMeta.accent} opacity-60`} />
+            <p className="mt-3 text-sm font-medium text-foreground">
+              No {activeMeta.title} tasks for this assessment
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {activeTab === "BOT"
+                ? "Your reviewed tasks lean toward human judgment or co-pilot workflows. Check Blend or Build."
+                : `Explore other categories to see where your time is allocated.`}
+            </p>
+            <div className="mt-4 flex justify-center gap-2">
+              {CATEGORIES.filter((c) => c !== activeTab).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setActiveTab(c)}
+                  className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted/50"
+                >
+                  View {FRAMEWORK[c].title}
+                </button>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="space-y-4">
-            {activeTasks.map((task) => (
-              <TaskCard key={task.id} task={task} category={activeTab} />
+            {activeTasks.map((task, idx) => (
+              <CollapsibleTaskCard
+                key={task.id}
+                task={task}
+                category={activeTab}
+                defaultOpen={idx === 0}
+                hideCategoryBadge
+              />
             ))}
           </div>
         )}
-      </section>
+      </motion.section>
 
-      {/* Step 4 Strategic takeaway */}
-      <section>
-        <SectionLabel step="4" title="What this means for you" />
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-primary/20 bg-brand p-5 shadow-sm">
-            <p className="mb-2 flex items-center gap-2 text-sm font-bold text-primary-foreground">
-              <TrendingUp className="h-4 w-4" /> Strategic insight
-            </p>
-            <p className="text-sm leading-relaxed text-primary-foreground/90">{strategicSummary}</p>
-          </div>
-
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <p className="mb-2 text-sm font-bold text-foreground">Recommended focus</p>
-            <ul className="space-y-2.5 text-sm">
-              {CATEGORIES.map((key) => {
-                const meta = FRAMEWORK[key];
-                return (
-                  <li key={key} className="flex gap-2">
-                    <span className={`min-w-[4.5rem] font-bold ${meta.accent}`}>{meta.label}</span>
-                    <span className="text-muted-foreground">— {meta.action.toLowerCase()}</span>
-                  </li>
-                );
-              })}
-            </ul>
-            {showFooterLinks && (
-              <div className="mt-4">
-                <SubmitAssessmentButton assessmentId={assessmentId} />
-              </div>
-            )}
-          </div>
+      {showFooterLinks && (
+        <div className="border-t border-border pt-6">
+          <SubmitAssessmentButton assessmentId={assessmentId} />
         </div>
-      </section>
+      )}
     </div>
   );
 }

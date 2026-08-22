@@ -1,20 +1,53 @@
-import { fetchApi } from "@/lib/api";
+import { fetchApi, fetchBlob } from "@/lib/api";
 
 export type ThreeBCategory = "BUILD" | "BOT" | "BLEND";
 
+export type CostBand =
+  | "free"
+  | "freemium"
+  | "paid_individual"
+  | "paid_team"
+  | "enterprise";
+
+export type FeasibilityTier =
+  | "self_serve"
+  | "company_tech"
+  | "org_must_enable"
+  | "stays_human_led";
+
 export interface ToolOption {
   name: string;
-  cost_tier: string;
-  feasibility: string;
-  pros: string;
-  cons: string;
+  cost_band: CostBand | string;
+  pros: string[];
+  cons: string[];
+  credibility_note?: string;
+  feasibility: FeasibilityTier | string;
+  verification_status?: "UNVERIFIED" | "VERIFIED" | "REJECTED";
 }
 
 export interface TaskComponent {
   name: string;
   description: string;
-  capability_id: string;
-  tool_options: ToolOption[];
+  is_automatable?: boolean;
+  capability: string;
+  solution_pattern: string;
+  tools: ToolOption[];
+  /** Legacy catalog shape */
+  capability_id?: string;
+  tool_options?: ToolOption[];
+}
+
+export interface HoursBucket {
+  weekly_hours: number;
+  annual_hours: number;
+  task_count: number;
+}
+
+export interface HoursSummary {
+  BUILD: HoursBucket;
+  BLEND: HoursBucket;
+  BOT: HoursBucket;
+  total: HoursBucket;
 }
 
 export interface TaskAnalysisItem {
@@ -31,6 +64,8 @@ export interface TaskAnalysisItem {
   future_impact?: string | null;
   recommended_tools: string[];
   components?: TaskComponent[];
+  weekly_hours?: number;
+  annual_hours?: number;
 }
 
 export interface TaskAnalysisResult {
@@ -38,7 +73,9 @@ export interface TaskAnalysisResult {
   summary_confidence?: number | null;
   regenerated: boolean;
   hours_by_category?: { BUILD: number; BLEND: number; BOT: number };
+  hours_summary?: HoursSummary;
   total_hours?: number;
+  generated_at?: string | null;
 }
 
 export async function getTaskAnalysis(assessmentId: string): Promise<TaskAnalysisResult> {
@@ -57,6 +94,34 @@ export async function runTaskAnalysis(
   return response.data;
 }
 
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+export async function downloadCategoryAnalysis(
+  assessmentId: string,
+  category: ThreeBCategory,
+  format: "pdf" | "html" | "json" = "pdf",
+) {
+  const blob = await fetchBlob(
+    `/assessment/${assessmentId}/analysis/export?category=${category}&format=${format}`,
+  );
+  const ext = format === "json" ? "json" : format === "html" ? "html" : "pdf";
+  downloadBlob(blob, `CareerShift-3B-${category}.${ext}`);
+}
+
+/** Normalize component tools from API (tools or legacy tool_options). */
+export function getComponentTools(comp: TaskComponent): ToolOption[] {
+  if (comp.tools?.length) return comp.tools;
+  if (comp.tool_options?.length) return comp.tool_options;
+  return [];
+}
+
 /** UI-ready task with 3B fields attached. */
 export interface AnalyzedTask extends TaskAnalysisItem {
   id: string;
@@ -67,6 +132,8 @@ export interface AnalyzedTask extends TaskAnalysisItem {
   riskLevel: string;
   futureImp: string;
   category3B: ThreeBCategory;
+  weeklyHours: number;
+  annualHours: number;
 }
 
 export function mapAnalysisToDisplay(item: TaskAnalysisItem): AnalyzedTask {
@@ -80,5 +147,24 @@ export function mapAnalysisToDisplay(item: TaskAnalysisItem): AnalyzedTask {
     riskLevel: item.risk_level ?? "Medium",
     futureImp: item.future_impact ?? "Medium",
     category3B: item.category,
+    weeklyHours: item.weekly_hours ?? 0,
+    annualHours: item.annual_hours ?? 0,
   };
+}
+
+export function formatFeasibilityLabel(tier: string): string {
+  const map: Record<string, string> = {
+    self_serve: "Self-serve",
+    company_tech: "Company tech",
+    org_must_enable: "Org must enable",
+    stays_human_led: "Stays human-led",
+    "Self-serve": "Self-serve",
+    "Company tech": "Company tech",
+    "Org must enable": "Org must enable",
+  };
+  return map[tier] ?? tier.replace(/_/g, " ");
+}
+
+export function formatCostBand(band: string): string {
+  return band.replace(/_/g, " ");
 }

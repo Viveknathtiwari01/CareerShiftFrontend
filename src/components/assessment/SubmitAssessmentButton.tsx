@@ -31,7 +31,7 @@ export function SubmitAssessmentButton({
       await submitAssessmentFlow(
         {
           assessmentId,
-          regenerateAnalysis: true,
+          regenerateAnalysis: false,
           regenerateReport: true,
         },
         setStep,
