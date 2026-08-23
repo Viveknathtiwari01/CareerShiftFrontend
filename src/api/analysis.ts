@@ -1,4 +1,5 @@
 import { fetchApi, fetchBlob } from "@/lib/api";
+import { saveBlobAs } from "@/lib/save-file";
 
 export type ThreeBCategory = "BUILD" | "BOT" | "BLEND";
 
@@ -94,25 +95,17 @@ export async function runTaskAnalysis(
   return response.data;
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.click();
-  URL.revokeObjectURL(url);
-}
-
 export async function downloadCategoryAnalysis(
   assessmentId: string,
   category: ThreeBCategory,
   format: "pdf" | "html" | "json" = "pdf",
-) {
+): Promise<boolean> {
   const blob = await fetchBlob(
     `/assessment/${assessmentId}/analysis/export?category=${category}&format=${format}`,
   );
   const ext = format === "json" ? "json" : format === "html" ? "html" : "pdf";
-  downloadBlob(blob, `CareerShift-3B-${category}.${ext}`);
+  const filename = `CareerShift-3B-${category}.${ext}`;
+  return saveBlobAs(blob, filename);
 }
 
 /** Normalize component tools from API (tools or legacy tool_options). */

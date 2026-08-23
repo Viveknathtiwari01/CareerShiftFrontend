@@ -72,6 +72,7 @@ export default function Step3BAnalysis({
   const queryClient = useQueryClient();
   const analyzeRequestedRef = useRef(false);
   const [activeTab, setActiveTab] = useState<ThreeBCategory>("BLEND");
+  const [exportingPdf, setExportingPdf] = useState(false);
   const hasSetInitialTab = useRef(false);
 
   const analysisQuery = useQuery({
@@ -158,6 +159,18 @@ export default function Step3BAnalysis({
   const activeMeta = FRAMEWORK[activeTab];
   const ActiveIcon = activeMeta.icon;
   const activeFrame = THREE_B_FRAMEWORK[activeTab];
+
+  async function handleExportPdf() {
+    if (!assessmentId || exportingPdf) return;
+    setExportingPdf(true);
+    try {
+      await downloadCategoryAnalysis(assessmentId, activeTab, "pdf");
+    } catch (err) {
+      console.error("PDF export failed", err);
+    } finally {
+      setExportingPdf(false);
+    }
+  }
 
   if (!assessmentId) {
     return (
@@ -270,10 +283,16 @@ export default function Step3BAnalysis({
           {assessmentId && activeTasks.length > 0 && (
             <button
               type="button"
-              onClick={() => downloadCategoryAnalysis(assessmentId, activeTab, "pdf")}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold shadow-sm transition-colors hover:bg-muted/50"
+              onClick={handleExportPdf}
+              disabled={exportingPdf}
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold shadow-sm transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Download className="h-4 w-4" /> Export {activeMeta.title} PDF
+              {exportingPdf ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+              {exportingPdf ? "Preparing PDF…" : `Export ${activeMeta.title} PDF`}
             </button>
           )}
         </div>
