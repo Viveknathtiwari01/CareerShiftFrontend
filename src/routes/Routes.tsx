@@ -13,7 +13,7 @@ import Profile from "../pages/profile";
 import Report from "../pages/report";
 import Toolkit from "../pages/toolkit";
 import MyProfile from "../pages/my-career/profile";
-import AIReadiness from "../pages/ai-readiness";
+import AIFitness from "../pages/ai-fitness";
 import Workshops from "../pages/workshops";
 import ThreeBAnalysisPage from "../pages/three-b-analysis";
 
@@ -37,7 +37,7 @@ export default function AppRoutes() {
 
         <Route path="/toolkit" element={<Toolkit />} />
         <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/ai-readiness" element={<AIReadiness />} />
+        <Route path="/ai-fitness" element={<AIFitness />} />
         <Route path="/workshops" element={<Workshops />} />
       </Route>
     </Routes>

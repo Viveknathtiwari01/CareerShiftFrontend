@@ -30,7 +30,7 @@ export function PersonalizedGuidance() {
               Your Career Shift is Underway
             </h2>
             <p className="text-sm text-muted-foreground mt-0.5">
-              Based on your profile and 3B analysis you can see your <strong>AI readiness report</strong>, <strong>Career Identity</strong>, <strong>Suggested AI tools</strong> and <strong>Assessment history</strong> from the sidebar.
+              Based on your profile and 3B analysis you can see your <strong>AI fitness report</strong>, <strong>Career Identity</strong>, <strong>Suggested AI tools</strong> and <strong>Assessment history</strong> from the sidebar.
             </p>
           </div>
         </div>

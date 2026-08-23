@@ -5,7 +5,7 @@ export interface ReadinessDimension {
   score: number;
 }
 
-export interface AIReadinessSection {
+export interface AIFitnessSection {
   overall_score: number;
   tier_label: string;
   tier_description: string;
@@ -91,7 +91,7 @@ export interface CareerIntelligenceReport {
   generated_at: string;
   strategic_note?: string | null;
   overview: ReportOverview;
-  ai_readiness: AIReadinessSection;
+  ai_readiness: AIFitnessSection;
   competencies: CompetencyGroup[];
   daily_work: {
     tasks: Array<Record<string, unknown>>;
@@ -385,7 +385,7 @@ export async function generateReport(
   return normalizeReport(response.data as Record<string, unknown>);
 }
 
-export async function getReadiness(assessmentId: string): Promise<AIReadinessSection> {
+export async function getReadiness(assessmentId: string): Promise<AIFitnessSection> {
   const response = await fetchApi(`/assessment/${assessmentId}/readiness`);
   return response.data;
 }

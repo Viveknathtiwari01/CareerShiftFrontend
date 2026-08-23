@@ -31,7 +31,7 @@ export interface ReadinessToolRecommendation {
   use_case: string;
 }
 
-export interface AIReadinessResult {
+export interface AIFitnessResult {
   overall_score: number;
   tier: string;
   tier_label: string;
@@ -50,7 +50,7 @@ export interface AIReadinessResult {
   portfolio_mix: Record<string, number>;
 }
 
-export async function getAIReadiness(assessmentId: string): Promise<AIReadinessResult> {
+export async function getAIFitness(assessmentId: string): Promise<AIFitnessResult> {
   const response = await fetchApi(`/assessment/${assessmentId}/readiness`);
   return response.data;
 }

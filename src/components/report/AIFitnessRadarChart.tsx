@@ -25,7 +25,7 @@ type Props = {
   showHeader?: boolean;
 };
 
-export function AIReadinessRadarChart({ data, height = 380, showHeader = true }: Props) {
+export function AIFitnessRadarChart({ data, height = 380, showHeader = true }: Props) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-slate-900/5 via-card to-brand/10 p-6 shadow-soft lg:p-8">
       <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
@@ -35,7 +35,7 @@ export function AIReadinessRadarChart({ data, height = 380, showHeader = true }:
         <div className="relative mb-6">
           <h3 className="type-card-title">Dimension profile</h3>
           <p className="type-body-sm mt-1 text-muted-foreground">
-            Your scores across each AI readiness dimension (0–100)
+            Your scores across each AI fitness dimension (0–100)
           </p>
         </div>
       ) : null}

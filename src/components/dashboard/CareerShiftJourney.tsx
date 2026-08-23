@@ -17,7 +17,7 @@ const steps = [
     name: "Task Routing (BUILD, BOT, BLEND)",
     icon: Briefcase,
   },
-  { step: 4, title: "Measure Readiness", name: "AI Readiness Score", icon: Sparkles },
+  { step: 4, title: "Measure Readiness", name: "AI Fitness Score", icon: Sparkles },
   {
     step: 5,
     title: "Create Your Career Identity",

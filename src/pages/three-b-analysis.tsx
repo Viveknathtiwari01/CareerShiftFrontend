@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { AppLoader } from "@/components/ui/app-loader";
 import Step3BAnalysis from "@/components/assessment/Step3BAnalysis";
 import { ThreeBAnalysisHero } from "@/components/assessment/ThreeBAnalysisHero";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
@@ -29,7 +30,7 @@ export default function ThreeBAnalysisPage() {
       <section className="panel p-5 md:p-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-            <Loader2 className="h-10 w-10 animate-spin text-brand" />
+            <AppLoader size="lg" />
             <p className="mt-4 text-sm">Loading your assessment…</p>
           </div>
         ) : (
@@ -49,10 +50,10 @@ export default function ThreeBAnalysisPage() {
             />
           ) : null}
           <Link
-            to="/ai-readiness"
+            to="/ai-fitness"
             className="type-body inline-flex items-center gap-2 rounded-xl border border-border bg-background px-6 py-3 font-semibold transition-colors hover:bg-muted"
           >
-            AI Readiness Score <ArrowRight className="h-4 w-4" />
+            AI Fitness Score <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

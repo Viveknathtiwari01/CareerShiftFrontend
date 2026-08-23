@@ -12,10 +12,10 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import type { AIReadinessResult } from "@/api/readiness";
+import type { AIFitnessResult } from "@/api/readiness";
 import { PortfolioMixChart, ReadinessFactorChart } from "@/components/readiness/ReadinessCharts";
 
-function FactorGrid({ factors }: { factors: AIReadinessResult["factors"] }) {
+function FactorGrid({ factors }: { factors: AIFitnessResult["factors"] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {factors.map((factor) => (
@@ -33,11 +33,11 @@ function FactorGrid({ factors }: { factors: AIReadinessResult["factors"] }) {
   );
 }
 
-export function AIReadinessView({
+export function AIFitnessView({
   data,
   showFooterLink = true,
 }: {
-  data: AIReadinessResult;
+  data: AIFitnessResult;
   showFooterLink?: boolean;
 }) {
   const radarData = data.dimensions.map((d) => ({
@@ -50,7 +50,7 @@ export function AIReadinessView({
     <div className="space-y-10">
       <div className="hero-ink p-8 text-center md:p-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-4">
-          Overall AI Readiness
+          Overall AI Fitness
         </p>
         <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border-4 border-primary/30 bg-sidebar-foreground/5 mb-5">
           <div className="font-display text-4xl font-bold text-primary">
@@ -251,16 +251,16 @@ export function AIReadinessView({
   );
 }
 
-export function AIReadinessLoading() {
+export function AIFitnessLoading() {
   return (
     <div className="flex flex-col items-center py-20 text-muted-foreground">
       <Loader2 className="h-10 w-10 animate-spin text-brand" />
-      <p className="mt-4 text-sm">Calculating your AI readiness score…</p>
+      <p className="mt-4 text-sm">Calculating your AI fitness score…</p>
     </div>
   );
 }
 
-export function AIReadinessEmpty({ message, action }: { message: string; action?: ReactNode }) {
+export function AIFitnessEmpty({ message, action }: { message: string; action?: ReactNode }) {
   return (
     <div className="rounded-2xl border border-border bg-muted/30 px-6 py-14 text-center">
       <p className="text-muted-foreground">{message}</p>

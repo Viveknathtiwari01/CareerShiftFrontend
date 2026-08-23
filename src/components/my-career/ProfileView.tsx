@@ -125,11 +125,11 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
         </CardContent>
       </Card>
 
-      {/* Card 4: AI Readiness */}
+      {/* Card 4: AI Fitness */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
-            AI Readiness
+            AI Fitness
           </div>
           <Button variant="outline" size="sm" onClick={() => onEdit(4)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
             <Pencil className="h-4 w-4 mr-2" />

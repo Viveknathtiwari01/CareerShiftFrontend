@@ -19,6 +19,7 @@ import {
   Sparkles,
   Loader2,
 } from "lucide-react";
+import { AppLoader } from "@/components/ui/app-loader";
 import AssessmentWizard from "@/components/AssessmentWizard";
 import { PageHeader, PageShell } from "@/components/layout/PageShell";
 import { useAssessment } from "@/store/mock-store";
@@ -128,7 +129,7 @@ export default function AssessmentPage() {
   if (profileLoading || wizardLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-brand" />
+        <AppLoader size="lg" />
       </div>
     );
   }
@@ -232,7 +233,7 @@ export default function AssessmentPage() {
                   "Career Intelligence",
                   "Competency Mapping",
                   "Task Analysis",
-                  "AI Readiness Score",
+                  "AI Fitness Score",
                   "Career Identity",
                   "Personalized Learning Roadmap",
                 ].map((feature) => (
@@ -362,7 +363,7 @@ export default function AssessmentPage() {
             },
             {
               icon: BarChart,
-              title: "AI Readiness Score",
+              title: "AI Fitness Score",
               description: "Measure your readiness using CareerShift's proprietary framework.",
             },
             {
@@ -432,7 +433,7 @@ export default function AssessmentPage() {
                 icon: Cpu,
               },
               {
-                title: "AI Readiness Score",
+                title: "AI Fitness Score",
                 desc: "Calculate your current standing in the AI era.",
                 icon: BarChart,
               },
@@ -488,7 +489,7 @@ export default function AssessmentPage() {
           </h2>
           <p className="mt-4 text-base text-sidebar-foreground/75">
             Complete your first AI Career Assessment and receive personalized insights into your
-            strengths, automation opportunities, AI readiness, and future career strategy.
+            strengths, automation opportunities, AI fitness, and future career strategy.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <button

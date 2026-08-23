@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { AIReadinessResult } from "@/api/readiness";
+import type { AIFitnessResult } from "@/api/readiness";
 
 const MIX_COLORS = {
   BUILD: "var(--color-build)",
@@ -16,7 +16,7 @@ const MIX_COLORS = {
   BOT: "var(--color-bot-accent)",
 };
 
-export function ReadinessFactorChart({ factors }: { factors: AIReadinessResult["factors"] }) {
+export function ReadinessFactorChart({ factors }: { factors: AIFitnessResult["factors"] }) {
   const data = factors.map((f) => ({
     name: f.label.split(" ")[0],
     fullName: f.label,

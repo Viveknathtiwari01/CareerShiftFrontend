@@ -193,7 +193,7 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
             </div>
           </div>
 
-          {/* AI Readiness */}
+          {/* AI Fitness */}
           <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-5 space-y-4 relative group">
             <div className="flex justify-between items-center border-b pb-3">
               <h3 className="font-semibold text-lg text-primary">Technology & AI</h3>

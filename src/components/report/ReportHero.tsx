@@ -21,7 +21,7 @@ export function ReportHero({ report }: Props) {
       <div className="grid lg:grid-cols-3 gap-10 relative z-10">
         <div className="lg:col-span-2">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary mb-6 shadow-sm">
-            <Target className="h-4 w-4" /> {ai_readiness.tier_label} AI Readiness
+            <Target className="h-4 w-4" /> {ai_readiness.tier_label} AI Fitness
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 mb-4">
             {career_identity.identity_title}
@@ -40,7 +40,7 @@ export function ReportHero({ report }: Props) {
         <div className="grid grid-cols-2 gap-4">
           <div className="rounded-2xl border border-border bg-background/50 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-center">
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
-              <Activity className="h-3.5 w-3.5" /> AI Readiness
+              <Activity className="h-3.5 w-3.5" /> AI Fitness
             </div>
             <div className="text-3xl font-display font-black text-brand">
               {ai_readiness.overall_score}

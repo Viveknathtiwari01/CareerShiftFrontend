@@ -413,13 +413,13 @@ function ReportPreview() {
             A consulting-grade report not another quiz result.
           </h2>
           <p className="mt-5 text-white/70">
-            Every report is packed with visual insights: an AI Readiness Score, task-by-task
+            Every report is packed with visual insights: an AI Fitness Score, task-by-task
             routing, hours saved, recommended tools, salary premium data, and a 12-month learning
             roadmap.
           </p>
           <ul className="mt-8 space-y-3">
             {[
-              "Personalized AI Readiness Score with confidence band",
+              "Personalized AI Fitness Score with confidence band",
               "Task routing across Build · Bot · Blend",
               "Curated AI toolkit with pricing and ROI",
               "12-month learning roadmap and skill priorities",
@@ -601,7 +601,7 @@ function Features() {
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow>Features</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-            Your AI readiness, mapped end to end.
+            Your AI fitness, mapped end to end.
           </h2>
         </div>
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3 ">
@@ -978,7 +978,7 @@ function Pricing() {
       per: "/ one-time",
       sub: "Your complete 12-month plan. One-time purchase.",
       features: [
-        "Full AI Readiness Report",
+        "Full AI Fitness Report",
         "Complete breakdown across all task categories in your role",
         "Task Routing & Hours-Saved Analysis",
         "Every task mapped: Automate / Augment / Master + hours saved per week",
@@ -1001,7 +1001,7 @@ function Pricing() {
        "Everything in Professional",
        "Per-employee reports and roadmaps",
        "Team Dashboard & Analytics",
-       "Org-wide AI readiness heatmap, risk clusters, upskill gaps",
+       "Org-wide AI fitness heatmap, risk clusters, upskill gaps",
        "Role Benchmarking",
        "Compare roles against industry AI adoption standards",
        "Admin & SSO",
@@ -1133,7 +1133,7 @@ In short: Chatbots give opinions. CareerShift gives an assessment, direction, an
   },
   {
     q: "What is CareerShift?",
-    a: `CareerShift is an AI readiness assessment platform. It analyzes your specific role and tasks, then delivers a structured report with your automation risk score, a task-routing breakdown, and a 12-month upskill roadmap grounded in real competency frameworks, not generic advice.
+    a: `CareerShift is an AI fitness assessment platform. It analyzes your specific role and tasks, then delivers a structured report with your automation risk score, a task-routing breakdown, and a 12-month upskill roadmap grounded in real competency frameworks, not generic advice.
 <br/><br/>
 You can auto-generate tasks based on your role title, or manually enter your own and you have full control to edit, refine, or rewrite the final description of each task. That way, the tools and suggestions you get back are mapped to what you actually do, not what a database thinks you do.`,
   },
@@ -1375,7 +1375,7 @@ function HeroGraphic() {
         >
           <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              AI Readiness
+              AI Fitness
             </div>
             <div className="text-brand text-2xl font-display font-bold my-1 leading-none">82</div>
             <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
@@ -1466,7 +1466,7 @@ function ContactUs() {
             Let's talk about your next move.
           </h2>
           <p className="mt-4 text-white/60">
-            Whether you're mapping your own AI readiness or building a workforce plan for your team, we're here to help you get clarity fast.
+            Whether you're mapping your own AI fitness or building a workforce plan for your team, we're here to help you get clarity fast.
           </p>
         </div>
 
