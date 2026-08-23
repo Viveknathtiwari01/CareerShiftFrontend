@@ -5,7 +5,7 @@ export default function Privacy() {
     <LegalPageLayout title="Privacy Policy" lastUpdated="August 9, 2026">
       <LegalSection title="1. Introduction">
         <p>
-          CareerShift ("we," "our," or "us") provides career intelligence and AI readiness assessment
+          CareerShift ("we," "our," or "us") provides career intelligence and AI fitness assessment
           services for professionals and organizations. This Privacy Policy explains how we collect,
           use, disclose, and safeguard your information when you use our website, applications, and
           related services (collectively, the "Services").

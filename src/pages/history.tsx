@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, AlertCircle } from "lucide-react";
+import { AppLoader } from "@/components/ui/app-loader";
 import { listAssessments } from "@/api/assessment";
 
 function History() {
@@ -12,7 +13,7 @@ function History() {
   if (isLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-brand" />
+        <AppLoader size="lg" />
       </div>
     );
   }

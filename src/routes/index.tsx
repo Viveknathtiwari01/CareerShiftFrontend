@@ -356,13 +356,13 @@ function ReportPreview() {
             A consulting-grade report not another quiz result.
           </h2>
           <p className="mt-5 text-muted-foreground">
-            Every report is packed with visual insights: an AI Readiness Score, task-by-task
+            Every report is packed with visual insights: an AI Fitness Score, task-by-task
             routing, hours saved, recommended tools, salary premium data, and a 12-month learning
             roadmap.
           </p>
           <ul className="mt-8 space-y-3">
             {[
-              "Personalized AI Readiness Score with confidence band",
+              "Personalized AI Fitness Score with confidence band",
               "Task routing across Build · Bot · Blend",
               "Curated AI toolkit with pricing and ROI",
               "12-month learning roadmap and skill priorities",
@@ -507,7 +507,7 @@ function Features() {
   const feats = [
     {
       icon: <BarChart3 className="h-5 w-5" />,
-      title: "AI Readiness Score",
+      title: "AI Fitness Score",
       body: "A single, defensible number that captures your position with the signals behind it.",
     },
     {
@@ -643,7 +643,7 @@ function Pricing() {
       per: "/ one-time",
       sub: "Full report + 12-month roadmap",
       features: [
-        "Complete AI Readiness Report",
+        "Complete AI Fitness Report",
         "Task routing & hours-saved analysis",
         "Full AI Toolkit with ROI",
         "Learning roadmap (30/60/90-day)",

@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 import { Loader2, AlertCircle } from "lucide-react";
-import { AIReadinessRadarChart } from "@/components/report/AIReadinessRadarChart";
+import { AppLoader } from "@/components/ui/app-loader";
+import { AIFitnessRadarChart } from "@/components/report/AIFitnessRadarChart";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useReportData } from "@/hooks/use-report-data";
 
-export default function AIReadiness() {
+export default function AIFitness() {
   const { report, isLoading, isError, error } = useReportData();
 
   if (isLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-brand" />
+        <AppLoader size="lg" />
       </div>
     );
   }
@@ -20,9 +21,9 @@ export default function AIReadiness() {
       <div className="flex min-h-[400px] items-center justify-center px-4">
         <div className="max-w-md w-full rounded-2xl border border-border bg-background p-8 text-center shadow-soft">
           <AlertCircle className="mx-auto h-10 w-10 text-muted-foreground" />
-          <h1 className="mt-4 font-display text-xl font-bold">No AI readiness data</h1>
+          <h1 className="mt-4 font-display text-xl font-bold">No AI fitness data</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {error instanceof Error ? error.message : "Submit your assessment to see AI readiness."}
+            {error instanceof Error ? error.message : "Submit your assessment to see AI fitness."}
           </p>
           <Link
             to="/assessment"
@@ -41,12 +42,12 @@ export default function AIReadiness() {
   return (
     <div className="w-full space-y-12">
       <PageHeader
-        title="AI Readiness Assessment"
+        title="AI Fitness Assessment"
         description={`Based on your profile, tasks, and 3B analysis for ${report.overview.job_title}.`}
       />
 
       <div className="w-full rounded-2xl border border-primary/20 bg-brand p-8 text-center shadow-soft lg:p-10">
-        <div className="type-label mb-4 text-white">Overall AI Readiness</div>
+        <div className="type-label mb-4 text-white">Overall AI Fitness</div>
         <div className="mx-auto mb-6 flex h-36 w-36 items-center justify-center rounded-full border-8 border-primary/20 bg-background">
           <div className="font-display text-5xl font-bold text-brand">
             {r.overall_score}
@@ -57,7 +58,7 @@ export default function AIReadiness() {
         <p className="type-body mx-auto max-w-2xl text-white/95">{r.tier_description}</p>
       </div>
 
-      <AIReadinessRadarChart data={radarData} height={400} />
+      <AIFitnessRadarChart data={radarData} height={400} />
 
       <div className="grid md:grid-cols-2 gap-8">
         <div className="rounded-2xl border border-border p-6 lg:p-8">

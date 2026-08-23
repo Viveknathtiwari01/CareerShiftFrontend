@@ -6,7 +6,7 @@ import { AIAssistedProfileReview } from "@/components/my-career/AIAssistedProfil
 import { Step1CareerIdentity } from "@/components/my-career/Step1CareerIdentity";
 import { Step2Background } from "@/components/my-career/Step2Background";
 import { Step3Skills } from "@/components/my-career/Step3Skills";
-import { Step5AIReadiness } from "@/components/my-career/Step5AIReadiness";
+import { Step5AIFitness } from "@/components/my-career/Step5AIFitness";
 import { Step6Review } from "@/components/my-career/Step6Review";
 import { ProfileView } from "@/components/my-career/ProfileView";
 import {
@@ -320,7 +320,7 @@ export default function MyCareerProfile() {
       case 1: return <Step1CareerIdentity key="step1" data={data} updateData={updateData} />;
       case 2: return <Step2Background key="step2" data={data} updateData={updateData} />;
       case 3: return <Step3Skills key="step3" data={data} updateData={updateData} />;
-      case 4: return <Step5AIReadiness key="step4" data={data} updateData={updateData} />;
+      case 4: return <Step5AIFitness key="step4" data={data} updateData={updateData} />;
       case 5: return <Step6Review key="step5" data={data} goToStep={setCurrentStep} onSubmit={handleSubmit} />;
       default: return null;
     }

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Wrench, ArrowRight, Filter } from "lucide-react";
+import { AppLoader } from "@/components/ui/app-loader";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ToolkitToolCard } from "@/components/report/ToolkitToolCard";
 import { useReportData } from "@/hooks/use-report-data";
@@ -66,7 +67,7 @@ export default function Toolkit() {
   if (isLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-brand" />
+        <AppLoader size="lg" />
       </div>
     );
   }

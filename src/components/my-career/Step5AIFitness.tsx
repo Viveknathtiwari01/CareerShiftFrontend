@@ -18,7 +18,7 @@ interface Props {
   updateData: (fields: Partial<WizardData>) => void;
 }
 
-export function Step5AIReadiness({ data, updateData }: Props) {
+export function Step5AIFitness({ data, updateData }: Props) {
   const [showOtherFreq, setShowOtherFreq] = useState(false);
   const [showOtherTool, setShowOtherTool] = useState(false);
   const [customToolInput, setCustomToolInput] = useState("");
@@ -88,7 +88,7 @@ export function Step5AIReadiness({ data, updateData }: Props) {
     >
       <Card className={wizardStepCardClass}>
         <CardHeader className="px-4 pt-5 sm:px-6">
-          <CardTitle className="text-xl sm:text-2xl">AI Readiness</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">AI Fitness</CardTitle>
           <CardDescription className="text-foreground/70">
             How are you leveraging AI in your career?
           </CardDescription>

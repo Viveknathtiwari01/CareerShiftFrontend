@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, AlertCircle } from "lucide-react";
+import { AppLoader } from "@/components/ui/app-loader";
 
 import { ReportHeader } from "@/components/report/ReportHeader";
 import { ReportHero } from "@/components/report/ReportHero";
@@ -9,7 +10,7 @@ import { OverviewTab } from "@/components/report/OverviewTab";
 import { CompetencyTab } from "@/components/report/CompetencyTab";
 import { DailyWorkTab } from "@/components/report/DailyWorkTab";
 import { ThreeBAnalysisTab } from "@/components/report/ThreeBAnalysisTab";
-import { AIReadinessTab } from "@/components/report/AIReadinessTab";
+import { AIFitnessTab } from "@/components/report/AIFitnessTab";
 import { LearningRoadmapTab } from "@/components/report/LearningRoadmapTab";
 import { AIToolsTab } from "@/components/report/AIToolsTab";
 import { HealthIndicators } from "@/components/report/HealthIndicators";
@@ -21,7 +22,7 @@ const TABS = [
   { id: "competencies", label: "Competencies" },
   { id: "work", label: "Daily Work" },
   { id: "3b", label: "3B Analysis" },
-  { id: "readiness", label: "AI Readiness" },
+  { id: "readiness", label: "AI Fitness" },
   { id: "tools", label: "AI Tools" },
   { id: "roadmap", label: "Learning Roadmap" },
 ];
@@ -33,7 +34,7 @@ export default function ReportPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-brand" />
+        <AppLoader size="lg" />
       </div>
     );
   }
@@ -124,7 +125,7 @@ export default function ReportPage() {
             {activeTab === "competencies" && <CompetencyTab report={report} />}
             {activeTab === "work" && <DailyWorkTab report={report} />}
             {activeTab === "3b" && <ThreeBAnalysisTab report={report} />}
-            {activeTab === "readiness" && <AIReadinessTab report={report} />}
+            {activeTab === "readiness" && <AIFitnessTab report={report} />}
             {activeTab === "tools" && <AIToolsTab report={report} />}
             {activeTab === "roadmap" && <LearningRoadmapTab report={report} />}
           </motion.div>
