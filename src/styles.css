@@ -50,6 +50,9 @@
   --color-blend: var(--blend);
   --color-build: var(--build);
   --color-bot-accent: var(--bot-accent);
+  --color-blend-soft: var(--blend-soft);
+  --color-build-soft: var(--build-soft);
+  --color-bot-soft: var(--bot-soft);
   --color-warm: var(--warm);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -100,12 +103,12 @@
   --teal: #0d9488;
   /*
    * 3B Framework — distinct, theme-aligned accents
-   * BUILD  = human mastery (rich violet)
+   * BUILD  = human mastery (navy blue)
    * BLEND  = human + AI co-pilot (brand gold)
    * BOT    = automation & efficiency (teal)
    */
-  --build: #5b21b6;
-  --build-soft: #ede9fe;
+  --build: #1e3a5f;
+  --build-soft: #eef3fa;
   --blend: #c9a84c;
   --blend-soft: #faf6eb;
   --bot-accent: #0d9488;

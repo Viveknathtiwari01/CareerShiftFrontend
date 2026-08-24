@@ -25,14 +25,17 @@ export const FRAMEWORK = {
     accent: "text-build",
     accentBg: "bg-build",
     soft: "bg-build-soft",
-    bg: "bg-build/[0.08]",
-    bgStrong: "bg-build/[0.12]",
-    border: "border-build/25",
-    badge: "bg-build/10 text-build border-build/25",
-    header: "bg-build/[0.06] border-build/20",
+    bg: "bg-build-soft/80",
+    bgStrong: "bg-blue-100/90",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-900 border-blue-300",
+    header: "bg-build-soft border-blue-200",
     bar: "bg-build",
-    ring: "ring-build/30",
-    gradient: "from-build/20 via-build/10 to-transparent",
+    ring: "ring-build/40",
+    gradient: "from-blue-100 via-build-soft to-white",
+    statCell: "border-blue-200 bg-build-soft/70",
+    step: "border-blue-300 bg-white text-build",
+    emptyNote: "border-blue-200 bg-build-soft/50",
   },
   BLEND: {
     label: "BLEND",
@@ -48,6 +51,9 @@ export const FRAMEWORK = {
     bar: "bg-blend",
     ring: "ring-blend/35",
     gradient: "from-blend/25 via-blend/10 to-transparent",
+    statCell: "border-border/80 bg-muted/25",
+    step: "border-blend/35 bg-background text-amber-900",
+    emptyNote: "border-border bg-muted/15",
   },
   BOT: {
     label: "BOT",
@@ -63,6 +69,9 @@ export const FRAMEWORK = {
     bar: "bg-bot-accent",
     ring: "ring-bot-accent/30",
     gradient: "from-bot-accent/20 via-bot-accent/8 to-transparent",
+    statCell: "border-border/80 bg-muted/25",
+    step: "border-bot-accent/30 bg-background text-bot-accent",
+    emptyNote: "border-border bg-muted/15",
   },
 } as const;
 
@@ -220,7 +229,7 @@ export function CollapsibleTaskCard({
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-xl border border-border/80 bg-muted/25 px-3 py-2.5 text-center"
+                    className={`rounded-xl border px-3 py-2.5 text-center ${meta.statCell}`}
                   >
                     <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
                       {stat.label}
@@ -273,21 +282,21 @@ export function CollapsibleTaskCard({
                   </div>
                 </div>
               ) : (
-                <p className="rounded-xl border border-dashed border-border bg-muted/15 px-4 py-3 text-sm text-muted-foreground">
+                <p className={`rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground ${meta.emptyNote}`}>
                   This task works best as a single unit for your role — no sub-step breakdown needed.
                 </p>
               )}
 
               {task.next_actions.length > 0 && (
                 <div className={`rounded-xl border ${meta.border} ${meta.bg} p-4`}>
-                  <p className="mb-3 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide">
+                  <p className={`mb-3 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide ${meta.accent}`}>
                     <Zap className={`h-3.5 w-3.5 ${meta.accent}`} /> Your next 3 actions
                   </p>
                   <ol className="space-y-2.5">
                     {task.next_actions.map((action, idx) => (
                       <li key={action} className="flex gap-3 text-sm leading-relaxed">
                         <span
-                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-background text-[11px] font-bold ${meta.accent}`}
+                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-bold ${meta.step}`}
                         >
                           {idx + 1}
                         </span>
@@ -374,7 +383,7 @@ export function CategoryHoursNav({
                 <div className="flex items-center gap-3">
                   <div
                     className={`grid h-10 w-10 place-items-center rounded-xl border transition-colors duration-300 ${
-                      isActive ? `${frame.border} bg-white/90` : "border-border bg-muted/30"
+                      isActive ? `${frame.border} ${key === "BUILD" ? "bg-build-soft" : "bg-white/90"}` : "border-border bg-muted/30"
                     }`}
                   >
                     <Icon className={`h-5 w-5 ${frame.accent}`} />

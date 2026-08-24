@@ -38,7 +38,7 @@ const FRAMEWORK = {
   BOT: {
     ...THREE_B_FRAMEWORK.BOT,
     title: "Bot",
-    tagline: "Automate within 30 days",
+    tagline: "Automate within 90 days",
     description: "Repetitive work — delegate to AI and reclaim hours.",
     action: "Set up automation this month",
   },

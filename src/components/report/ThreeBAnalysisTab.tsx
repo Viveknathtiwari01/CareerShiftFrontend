@@ -2,7 +2,7 @@ import { Hammer, Sparkles, Bot } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
 
 const META = {
-  BUILD: { icon: Hammer, label: "BUILD IT", className: "border-primary/20 bg-primary/5" },
+  BUILD: { icon: Hammer, label: "BUILD IT", className: "border-blue-200 bg-build-soft text-blue-900" },
   BLEND: { icon: Sparkles, label: "BLEND IT", className: "border-brand/20 bg-brand/5" },
   BOT: { icon: Bot, label: "BOT IT", className: "border-teal/30 bg-teal/5" },
 } as const;
