@@ -35,7 +35,7 @@ export function AIFitnessRadarChart({ data, height = 380, showHeader = true }: P
         <div className="relative mb-6">
           <h3 className="type-card-title">Dimension profile</h3>
           <p className="type-body-sm mt-1 text-muted-foreground">
-            Your scores across each AI fitness dimension (0–100)
+            Your scores across each readiness dimension (0–100)
           </p>
         </div>
       ) : null}

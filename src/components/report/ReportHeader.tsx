@@ -53,9 +53,7 @@ export function ReportHeader({ report }: Props) {
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
               <span className="text-muted-foreground">Version:</span> {versionLabel}
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 text-brand border border-brand/20">
-              <span className="text-brand/70">Score:</span> {report.overview.overall_score}/100
-            </div>
+
           </div>
           {error ? <p className="mt-3 text-sm text-destructive">{error}</p> : null}
         </div>

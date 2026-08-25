@@ -8,7 +8,7 @@ export function HealthIndicators({ report }: Props) {
   const { overview, ai_readiness, before_after, career_identity } = report;
 
   const kpis = [
-    { label: "AI Fitness", value: `${ai_readiness.overall_score}/100`, icon: Zap, color: "text-brand" },
+
     { label: "Tier", value: ai_readiness.tier_label, icon: Brain, color: "text-primary" },
     { label: "Career Risk", value: overview.career_risk, icon: ShieldCheck, color: "text-primary" },
     { label: "Automation", value: `${overview.automation_pct}%`, icon: Activity, color: "text-primary" },

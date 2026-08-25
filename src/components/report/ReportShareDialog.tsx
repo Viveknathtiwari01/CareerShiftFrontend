@@ -46,7 +46,7 @@ export function ReportShareDialog({ assessmentId, open, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="w-full max-w-lg rounded-2xl border border-border bg-background p-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-display text-xl font-bold">Share Your Score</h2>
+          <h2 className="font-display text-xl font-bold">Share Your Report</h2>
           <button type="button" onClick={onClose} className="text-muted-foreground hover:text-foreground">
             ✕
           </button>

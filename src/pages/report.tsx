@@ -10,7 +10,7 @@ import { OverviewTab } from "@/components/report/OverviewTab";
 import { CompetencyTab } from "@/components/report/CompetencyTab";
 import { DailyWorkTab } from "@/components/report/DailyWorkTab";
 import { ThreeBAnalysisTab } from "@/components/report/ThreeBAnalysisTab";
-import { AIFitnessTab } from "@/components/report/AIFitnessTab";
+
 import { LearningRoadmapTab } from "@/components/report/LearningRoadmapTab";
 import { AIToolsTab } from "@/components/report/AIToolsTab";
 import { HealthIndicators } from "@/components/report/HealthIndicators";
@@ -22,7 +22,7 @@ const TABS = [
   { id: "competencies", label: "Competencies" },
   { id: "work", label: "Daily Work" },
   { id: "3b", label: "3B Analysis" },
-  { id: "readiness", label: "AI Fitness" },
+
   { id: "tools", label: "AI Tools" },
   { id: "roadmap", label: "Learning Roadmap" },
 ];
@@ -125,7 +125,7 @@ export default function ReportPage() {
             {activeTab === "competencies" && <CompetencyTab report={report} />}
             {activeTab === "work" && <DailyWorkTab report={report} />}
             {activeTab === "3b" && <ThreeBAnalysisTab report={report} />}
-            {activeTab === "readiness" && <AIFitnessTab report={report} />}
+
             {activeTab === "tools" && <AIToolsTab report={report} />}
             {activeTab === "roadmap" && <LearningRoadmapTab report={report} />}
           </motion.div>
