@@ -17,15 +17,14 @@ const steps = [
     name: "Task Routing (BUILD, BOT, BLEND)",
     icon: Briefcase,
   },
-  { step: 4, title: "Measure Readiness", name: "AI Fitness Score", icon: Sparkles },
   {
-    step: 5,
+    step: 4,
     title: "Create Your Career Identity",
     name: "Career Intelligence Report",
     icon: FileText,
   },
-  { step: 6, title: "Learn", name: "Workshops & Upskill Roadmap", icon: BookOpen },
-  { step: 7, title: "Grow", name: "Continuous Improvement", icon: TrendingUp },
+  { step: 5, title: "Learn", name: "Workshops & Upskill Roadmap", icon: BookOpen },
+  { step: 6, title: "Grow", name: "Continuous Improvement", icon: TrendingUp },
 ];
 
 export function CareerShiftJourney() {

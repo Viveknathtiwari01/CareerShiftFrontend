@@ -255,7 +255,7 @@ export function AIFitnessLoading() {
   return (
     <div className="flex flex-col items-center py-20 text-muted-foreground">
       <Loader2 className="h-10 w-10 animate-spin text-brand" />
-      <p className="mt-4 text-sm">Calculating your AI fitness score…</p>
+      <p className="mt-4 text-sm">Calculating your readiness score…</p>
     </div>
   );
 }

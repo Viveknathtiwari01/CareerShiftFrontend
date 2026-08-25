@@ -233,7 +233,6 @@ export default function AssessmentPage() {
                   "Career Intelligence",
                   "Competency Mapping",
                   "Task Analysis",
-                  "AI Fitness Score",
                   "Career Identity",
                   "Personalized Learning Roadmap",
                 ].map((feature) => (
@@ -362,11 +361,6 @@ export default function AssessmentPage() {
               description: "Classify every task into Build, Bot, or Blend.",
             },
             {
-              icon: BarChart,
-              title: "AI Fitness Score",
-              description: "Measure your readiness using CareerShift's proprietary framework.",
-            },
-            {
               icon: Map,
               title: "Career Roadmap",
               description: "Receive actionable recommendations to future-proof your career.",
@@ -431,11 +425,6 @@ export default function AssessmentPage() {
                 title: "3B Analysis",
                 desc: "Determine which tasks to Build, Bot, or Blend.",
                 icon: Cpu,
-              },
-              {
-                title: "AI Fitness Score",
-                desc: "Calculate your current standing in the AI era.",
-                icon: BarChart,
               },
               {
                 title: "Career Identity",

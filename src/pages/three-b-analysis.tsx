@@ -50,10 +50,10 @@ export default function ThreeBAnalysisPage() {
             />
           ) : null}
           <Link
-            to="/ai-fitness"
+            to="/report"
             className="type-body inline-flex items-center gap-2 rounded-xl border border-border bg-background px-6 py-3 font-semibold transition-colors hover:bg-muted"
           >
-            AI Fitness Score <ArrowRight className="h-4 w-4" />
+            Career Intelligence Report <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

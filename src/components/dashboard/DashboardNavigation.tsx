@@ -46,14 +46,7 @@ const navCards = [
     icon: FileText,
     to: "/report",
   },
-  {
-    title: "AI Fitness Score",
-    purpose: "Check your score.",
-    why: "See how prepared you are for the AI era.",
-    cta: "View Score",
-    icon: Target,
-    to: "/ai-fitness",
-  },
+
   {
     title: "Workshops",
     purpose: "Master practical skills.",
