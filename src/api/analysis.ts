@@ -51,6 +51,12 @@ export interface HoursSummary {
   total: HoursBucket;
 }
 
+export interface CostOfStayingAsIs {
+  type: string;
+  narrative: string;
+  annual_hours: number;
+}
+
 export interface TaskAnalysisItem {
   task_id: string;
   task_title: string;
@@ -79,6 +85,8 @@ export interface TaskAnalysisItem {
   learn_dont?: string | null;
   where_to_learn?: string | null;
   status?: string | null;
+  cost_of_staying_as_is?: CostOfStayingAsIs | null;
+  action_updated_at?: string | null;
 }
 
 export interface PivotRole {
@@ -102,6 +110,7 @@ export interface TaskAnalysisResult {
   total_hours?: number;
   generated_at?: string | null;
   market_reality?: MarketReality | null;
+  recommended_build_task_id?: string | null;
 }
 
 export async function getTaskAnalysis(assessmentId: string): Promise<TaskAnalysisResult> {
@@ -145,6 +154,16 @@ export async function downloadCategoryAnalysis(
   return saveBlobAs(blob, filename);
 }
 
+export async function downloadTaskAnalysis(
+  assessmentId: string,
+  taskId: string,
+): Promise<boolean> {
+  const blob = await fetchBlob(
+    `/assessment/${assessmentId}/analysis/${taskId}/export?format=pdf`,
+  );
+  return saveBlobAs(blob, `CareerShift-3B-task.pdf`);
+}
+
 /** Normalize component tools from API (tools or legacy tool_options). */
 export function getComponentTools(comp: TaskComponent): ToolOption[] {
   if (comp.tools?.length) return comp.tools;
@@ -183,8 +202,8 @@ export function mapAnalysisToDisplay(item: TaskAnalysisItem): AnalyzedTask {
     weeklyHours: item.weekly_hours ?? 0,
     annualHours: item.annual_hours ?? 0,
     importanceVal: item.importance ?? "Medium",
-    feasibilityTierVal: item.feasibility_tier ?? "Unknown",
-    velocityVal: item.velocity ?? "Unknown",
+    feasibilityTierVal: item.feasibility_tier ?? "",
+    velocityVal: item.velocity ?? "",
   };
 }
 
@@ -202,5 +221,32 @@ export function formatFeasibilityLabel(tier: string): string {
 }
 
 export function formatCostBand(band: string): string {
-  return band.replace(/_/g, " ");
+  const map: Record<string, string> = {
+    free: "Free",
+    freemium: "Freemium",
+    paid_individual: "Paid (individual)",
+    paid_team: "Paid (team)",
+    enterprise: "Enterprise",
+  };
+  return map[band] ?? band.replace(/_/g, " ");
+}
+
+export function formatGeneratedAt(iso: string | null | undefined): string {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString(undefined, {
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
+
+export function hasLearningContent(task: TaskAnalysisItem): boolean {
+  return Boolean(task.learn_gap || task.learn_do || task.learn_dont || task.where_to_learn);
+}
+
+export function automatableComponents(components: TaskComponent[]): TaskComponent[] {
+  return components.filter((c) => c.is_automatable && getComponentTools(c).length > 0);
 }

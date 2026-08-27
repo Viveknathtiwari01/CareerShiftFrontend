@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle, ArrowRight, Download, Loader2, RefreshCw } from "lucide-react";
 import {
   downloadCategoryAnalysis,
+  formatGeneratedAt,
   getTaskAnalysis,
   mapAnalysisToDisplay,
   runTaskAnalysis,
@@ -12,37 +13,8 @@ import {
 } from "@/api/analysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
 import { MarketRealityCheck } from "@/components/assessment/MarketRealityCheck";
-import {
-  CollapsibleTaskCard,
-  THREE_B_FRAMEWORK,
-} from "@/components/assessment/ThreeBAnalysisParts";
+import { CollapsibleTaskCard, CategoryTabButton } from "@/components/assessment/ThreeBAnalysisParts";
 import { getAssessmentTasks, mapBackendTaskToFrontend, isTaskReviewComplete } from "@/api/tasks";
-
-const CATEGORIES: ThreeBCategory[] = ["BUILD", "BLEND", "BOT"];
-
-const FRAMEWORK = {
-  BUILD: {
-    ...THREE_B_FRAMEWORK.BUILD,
-    title: "Build",
-    tagline: "Deepen human mastery",
-    description: "Judgment, relationships, and expertise AI cannot replace.",
-    action: "Invest in skills & experience",
-  },
-  BLEND: {
-    ...THREE_B_FRAMEWORK.BLEND,
-    title: "Blend",
-    tagline: "Human + AI co-pilot",
-    description: "AI drafts and analyzes — you decide and own the outcome.",
-    action: "Learn tools & prompt skills",
-  },
-  BOT: {
-    ...THREE_B_FRAMEWORK.BOT,
-    title: "Bot",
-    tagline: "Automate within 90 days",
-    description: "Repetitive work — delegate to AI and reclaim hours.",
-    action: "Set up automation this month",
-  },
-} as const;
 
 function dominantCategory(hours?: {
   BUILD: { weekly_hours: number };
@@ -73,7 +45,9 @@ export default function Step3BAnalysis({
   const analyzeRequestedRef = useRef(false);
   const [activeTab, setActiveTab] = useState<ThreeBCategory | "ALL">("BLEND");
   const [exportingPdf, setExportingPdf] = useState(false);
+  const [confirmRegenerate, setConfirmRegenerate] = useState(false);
   const hasSetInitialTab = useRef(false);
+  const taskCardRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const analysisQuery = useQuery({
     queryKey: ["assessment-analysis", assessmentId],
@@ -83,9 +57,10 @@ export default function Step3BAnalysis({
   });
 
   const analyzeMutation = useMutation({
-    mutationFn: () => runTaskAnalysis(assessmentId!, false),
+    mutationFn: (regenerate: boolean) => runTaskAnalysis(assessmentId!, regenerate),
     onSuccess: (data) => {
       queryClient.setQueryData(["assessment-analysis", assessmentId], data);
+      setConfirmRegenerate(false);
     },
   });
 
@@ -114,7 +89,7 @@ export default function Step3BAnalysis({
     if ((analysisQuery.data?.analyses?.length ?? 0) > 0) return;
     if (!analyzeRequestedRef.current && !analyzeMutation.isPending) {
       analyzeRequestedRef.current = true;
-      analyzeMutation.mutate();
+      analyzeMutation.mutate(false);
     }
   }, [
     assessmentId,
@@ -126,11 +101,20 @@ export default function Step3BAnalysis({
   ]);
 
   const analyzedTasks = useMemo(
-    () => (analysisQuery.data?.analyses ?? []).map(mapAnalysisToDisplay),
+    () =>
+      (analysisQuery.data?.analyses ?? [])
+        .map(mapAnalysisToDisplay)
+        .sort((a, b) => b.weeklyHours - a.weeklyHours),
     [analysisQuery.data?.analyses],
   );
 
   const hoursSummary = analysisQuery.data?.hours_summary;
+  const recommendedBuildId = analysisQuery.data?.recommended_build_task_id ?? null;
+  const generatedAtLabel = formatGeneratedAt(analysisQuery.data?.generated_at);
+
+  const actionsStarted = analyzedTasks.filter(
+    (t) => t.status === "PLANNED" || t.status === "DONE",
+  ).length;
 
   useEffect(() => {
     if (hasSetInitialTab.current || !hoursSummary) return;
@@ -146,17 +130,14 @@ export default function Step3BAnalysis({
     onReadyChange?.(isReady);
   }, [isReady, onReadyChange]);
 
-  const tasksByCategory = useMemo(
-    () => ({
-      BUILD: analyzedTasks.filter((t) => t.category3B === "BUILD"),
-      BLEND: analyzedTasks.filter((t) => t.category3B === "BLEND"),
-      BOT: analyzedTasks.filter((t) => t.category3B === "BOT"),
-    }),
-    [analyzedTasks],
+  const filteredTasks = useMemo(
+    () =>
+      analyzedTasks.filter((t) => activeTab === "ALL" || t.category3B === activeTab),
+    [analyzedTasks, activeTab],
   );
 
   async function handleExportPdf() {
-    if (!assessmentId || exportingPdf) return;
+    if (!assessmentId || exportingPdf || activeTab === "ALL") return;
     setExportingPdf(true);
     try {
       await downloadCategoryAnalysis(assessmentId, activeTab, "pdf");
@@ -206,7 +187,8 @@ export default function Step3BAnalysis({
         </div>
         <h3 className="mt-8 font-display text-2xl font-bold">Analyzing your tasks</h3>
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          Routing each task into Build, Blend, or Bot with personalized actions and tool suggestions…
+          Routing each task into Build, Blend, or Bot with personalized actions and tool
+          suggestions…
         </p>
       </div>
     );
@@ -221,7 +203,7 @@ export default function Step3BAnalysis({
         <p className="mt-2 text-sm text-muted-foreground">{err.message}</p>
         <button
           type="button"
-          onClick={() => analyzeMutation.mutate()}
+          onClick={() => analyzeMutation.mutate(false)}
           className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
         >
           <RefreshCw className="h-4 w-4" /> Try again
@@ -233,43 +215,81 @@ export default function Step3BAnalysis({
   return (
     <div className="space-y-10">
       {!embedded && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-4"
-        >
-          <div className="mb-2">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 font-serif">3B Analysis</h2>
-            <p className="text-sm text-muted-foreground mt-2 max-w-3xl">
-              CareerShift routes every task into <span className="font-bold text-amber-700">BUILD</span>, <span className="font-bold text-amber-700">BLEND</span>, or <span className="font-bold text-teal-700">BOT</span> — with the work components, required capability, solution pattern, tool, and organizational feasibility behind every call.
-            </p>
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <div className="mb-2 flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 font-serif">
+                3B Analysis
+              </h2>
+              <p className="text-sm text-muted-foreground mt-2 max-w-3xl">
+                CareerShift routes every task into BUILD, BLEND, or BOT — with structured guidance
+                on capabilities, solutions, tools, and what stays human.
+              </p>
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              {analyzedTasks.length > 0 && (
+                <span className="text-sm font-medium text-muted-foreground">
+                  {actionsStarted} of {analyzedTasks.length} next actions started
+                </span>
+              )}
+              {!confirmRegenerate ? (
+                <button
+                  type="button"
+                  onClick={() => setConfirmRegenerate(true)}
+                  disabled={analyzeMutation.isPending}
+                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2 text-xs font-semibold shadow-sm hover:bg-muted/50 disabled:opacity-50"
+                >
+                  <RefreshCw className="h-3.5 w-3.5" />
+                  Re-analyze my tasks
+                </button>
+              ) : (
+                <div className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2">
+                  <span className="text-xs text-amber-900">Replace current analysis?</span>
+                  <button
+                    type="button"
+                    onClick={() => analyzeMutation.mutate(true)}
+                    disabled={analyzeMutation.isPending}
+                    className="rounded-lg bg-amber-700 px-3 py-1 text-xs font-semibold text-white disabled:opacity-50"
+                  >
+                    {analyzeMutation.isPending ? "Running…" : "Confirm"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmRegenerate(false)}
+                    className="text-xs font-medium text-amber-800 hover:underline"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </motion.div>
       )}
 
-      {analysisQuery.data?.market_reality && (
-        <MarketRealityCheck data={analysisQuery.data.market_reality} />
-      )}
+      <MarketRealityCheck data={analysisQuery.data?.market_reality} />
 
-      <div className="flex flex-wrap items-center justify-between gap-4 mt-8 mb-4">
-        <h3 className="font-display text-2xl font-bold font-serif text-slate-900">
-          Your tasks
-        </h3>
-        <div className="flex items-center gap-2">
-          {["ALL", "BOT", "BLEND", "BUILD"].map((cat) => {
-            const count = cat === "ALL" ? analyzedTasks.length : analyzedTasks.filter(t => t.category3B === cat).length;
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h3 className="font-display text-2xl font-bold font-serif text-slate-900">Your tasks</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Expand each task to follow the guided path — classification, options, action, and learning.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {(["ALL", "BOT", "BLEND", "BUILD"] as const).map((cat) => {
+            const count =
+              cat === "ALL"
+                ? analyzedTasks.length
+                : analyzedTasks.filter((t) => t.category3B === cat).length;
             return (
-              <button
+              <CategoryTabButton
                 key={cat}
-                onClick={() => setActiveTab(cat as ThreeBCategory | "ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-colors ${
-                  activeTab === cat 
-                    ? "bg-slate-900 text-white border-slate-900" 
-                    : "bg-white text-foreground border-border hover:bg-muted/50"
-                }`}
-              >
-                {cat === "ALL" ? "All" : `${cat} · ${count}`}
-              </button>
+                category={cat}
+                active={activeTab === cat}
+                count={count}
+                onClick={() => setActiveTab(cat)}
+              />
             );
           })}
         </div>
@@ -281,8 +301,8 @@ export default function Step3BAnalysis({
         transition={{ duration: 0.35, ease: "easeOut" }}
         className="space-y-5"
       >
-        <div className="flex flex-wrap items-center justify-end gap-4 mb-2">
-          {assessmentId && analyzedTasks.length > 0 && activeTab !== "ALL" && (
+        {assessmentId && analyzedTasks.length > 0 && activeTab !== "ALL" && (
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={handleExportPdf}
@@ -296,32 +316,40 @@ export default function Step3BAnalysis({
               )}
               {exportingPdf ? "Preparing PDF…" : `Export ${activeTab} PDF`}
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
-        {analyzedTasks.length === 0 ? (
+        {filteredTasks.length === 0 ? (
           <div className="rounded-2xl border border-dashed px-6 py-14 text-center border-border">
-            <p className="mt-3 text-sm font-medium text-foreground">
-              No tasks found for this assessment
-            </p>
+            <p className="mt-3 text-sm font-medium text-foreground">No tasks in this category</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {analyzedTasks
-              .filter(t => activeTab === "ALL" || t.category3B === activeTab)
-              .map((task, idx) => (
-                <CollapsibleTaskCard
-                  key={task.id}
-                  task={task}
-                  category={task.category3B}
-                  assessmentId={assessmentId}
-                  defaultOpen={idx === 0}
-                  hideCategoryBadge={false}
-                />
+          <div className="space-y-5">
+            {filteredTasks.map((task, idx) => (
+              <CollapsibleTaskCard
+                key={task.id}
+                ref={(el) => {
+                  taskCardRefs.current[task.id] = el;
+                }}
+                task={task}
+                category={task.category3B}
+                assessmentId={assessmentId}
+                defaultOpen={idx === 0 || task.id === recommendedBuildId}
+                isRecommendedFocus={task.id === recommendedBuildId}
+                generatedAtLabel={generatedAtLabel}
+              />
             ))}
           </div>
         )}
       </motion.section>
+
+      {analysisQuery.data?.generated_at && (
+        <p className="text-center text-xs text-muted-foreground">
+          Analysis generated {generatedAtLabel}
+          {analysisQuery.data.summary_confidence != null &&
+            ` · confidence ${analysisQuery.data.summary_confidence}%`}
+        </p>
+      )}
 
       {showFooterLinks && (
         <div className="border-t border-border pt-6">

@@ -1,54 +1,51 @@
-import { Hammer, Sparkles, Bot } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getTaskAnalysis, mapAnalysisToDisplay } from "@/api/analysis";
 import type { CareerIntelligenceReport } from "@/api/report";
-
-const META = {
-  BUILD: { icon: Hammer, label: "BUILD IT", className: "border-blue-200 bg-build-soft text-blue-900" },
-  BLEND: { icon: Sparkles, label: "BLEND IT", className: "border-brand/20 bg-brand/5" },
-  BOT: { icon: Bot, label: "BOT IT", className: "border-teal/30 bg-teal/5" },
-} as const;
+import { CollapsibleTaskCard } from "@/components/assessment/ThreeBAnalysisParts";
 
 type Props = { report: CareerIntelligenceReport };
 
 export function ThreeBAnalysisTab({ report }: Props) {
-  const items = report.task_routing;
+  const assessmentId = report.assessment_id;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["assessment-analysis", assessmentId],
+    queryFn: () => getTaskAnalysis(assessmentId),
+    staleTime: 60_000,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-16">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  const tasks = (data?.analyses ?? [])
+    .map(mapAnalysisToDisplay)
+    .sort((a, b) => b.weeklyHours - a.weeklyHours);
+
+  if (tasks.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground py-8 text-center">
+        No 3B analysis available. Complete your assessment and run analysis first.
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-4">
-      {items.map((item) => {
-        const meta = META[item.category as keyof typeof META] ?? META.BLEND;
-        const Icon = meta.icon;
-        return (
-          <div
-            key={item.task_id}
-            className={`rounded-2xl border p-5 shadow-sm ${meta.className}`}
-          >
-            <div className="flex items-start gap-3">
-              <Icon className="h-5 w-5 mt-0.5 shrink-0" />
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-semibold">{item.task_title}</span>
-                  <span className="text-xs font-bold uppercase tracking-wide opacity-80">
-                    {meta.label}
-                  </span>
-                </div>
-                {item.rationale ? (
-                  <p className="text-sm mt-2 font-medium">{item.rationale}</p>
-                ) : null}
-                {item.reason ? (
-                  <p className="text-sm text-muted-foreground mt-1">{item.reason}</p>
-                ) : null}
-                {item.next_actions?.length ? (
-                  <ul className="mt-3 space-y-1 text-sm list-disc pl-5">
-                    {item.next_actions.map((action) => (
-                      <li key={action}>{action}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+      {tasks.map((task, idx) => (
+        <CollapsibleTaskCard
+          key={task.id}
+          task={task}
+          category={task.category3B}
+          defaultOpen={idx === 0}
+          readOnly
+        />
+      ))}
     </div>
   );
 }
