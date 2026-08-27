@@ -25,7 +25,7 @@ export default function ThreeBAnalysisPage() {
         />
       </div>
 
-      <ThreeBAnalysisHero />
+      <ThreeBAnalysisHero assessmentId={assessmentId} />
 
       <section className="panel p-5 md:p-8">
         {isLoading ? (

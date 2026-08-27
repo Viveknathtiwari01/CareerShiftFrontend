@@ -13,10 +13,12 @@ import {
   formatCostBand,
   formatFeasibilityLabel,
   getComponentTools,
+  updateTaskStatus,
   type AnalyzedTask,
   type ThreeBCategory,
   type ToolOption,
 } from "@/api/analysis";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const FRAMEWORK = {
   BUILD: {
@@ -91,51 +93,59 @@ function isFreeBand(band: string) {
 function ToolCard({ tool }: { tool: ToolOption }) {
   const free = isFreeBand(String(tool.cost_band));
   return (
-    <div className="group rounded-xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md">
-      <div className="mb-2.5 flex flex-wrap items-start justify-between gap-2">
-        <span className="font-semibold text-sm text-foreground">{tool.name}</span>
-        <span
-          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
-            free
-              ? "bg-emerald-500/10 text-emerald-700"
-              : "bg-amber-500/10 text-amber-800"
-          }`}
-        >
-          {formatCostBand(String(tool.cost_band))}
-        </span>
+    <div className="group relative rounded-lg border border-transparent hover:border-slate-200 hover:bg-slate-50/50 p-2 -mx-2 transition-all duration-300">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
+        <div className="shrink-0 pt-0.5 w-28">
+          <span
+            className={`inline-flex w-full justify-center rounded-full px-2.5 py-1 text-[10px] font-bold shadow-sm ${feasibilityClass(
+              tool.feasibility,
+            )}`}
+          >
+            {formatFeasibilityLabel(tool.feasibility)}
+          </span>
+        </div>
+        <div className="flex-1">
+          <div className="mb-1 flex items-center flex-wrap gap-2">
+            <span className="font-bold text-[15px] text-slate-800">{tool.name}</span>
+            {tool.cost_band && (
+              <span className="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                {tool.cost_band}
+              </span>
+            )}
+          </div>
+          {tool.credibility_note && (
+            <p className="mb-3 text-[13px] text-slate-600 leading-relaxed">{tool.credibility_note}</p>
+          )}
+          
+          {(tool.pros?.length > 0 || tool.cons?.length > 0) && (
+            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
+              <div>
+                {tool.pros?.map((pro, idx) => (
+                  <p key={idx} className="text-teal-700 flex items-start mt-1">
+                    <span className="mr-1.5 font-bold">+</span> <span className="leading-tight">{pro}</span>
+                  </p>
+                ))}
+              </div>
+              <div>
+                {tool.cons?.map((con, idx) => (
+                  <p key={idx} className="text-orange-700 flex items-start mt-1">
+                    <span className="mr-1.5 font-bold">−</span> <span className="leading-tight">{con}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tool.feasibility?.toLowerCase().includes("org") && (
+            <p className="mt-3 text-[11px] font-semibold text-amber-700 bg-amber-50 px-3 py-1.5 rounded border border-amber-200 inline-block">
+              Discuss with IT or your manager before adopting.
+            </p>
+          )}
+          <div className="mt-4 text-[11px] italic text-slate-400 font-medium pb-2">
+            {tool.name} is a typical tool used for this capability.
+          </div>
+        </div>
       </div>
-      <div className="mb-2 flex flex-wrap gap-2">
-        <span
-          className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${feasibilityClass(
-            tool.feasibility,
-          )}`}
-        >
-          {formatFeasibilityLabel(tool.feasibility)}
-        </span>
-        <span className="rounded-full border border-border bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-          Unverified
-        </span>
-      </div>
-      {tool.credibility_note && (
-        <p className="mb-2 text-xs leading-relaxed text-muted-foreground">{tool.credibility_note}</p>
-      )}
-      {tool.pros?.length > 0 && (
-        <p className="text-[11px] text-muted-foreground">
-          <span className="font-semibold text-emerald-600">+ </span>
-          {tool.pros.join(" · ")}
-        </p>
-      )}
-      {tool.cons?.length > 0 && (
-        <p className="mt-1 text-[11px] text-muted-foreground">
-          <span className="font-semibold text-red-500">− </span>
-          {tool.cons.join(" · ")}
-        </p>
-      )}
-      {tool.feasibility?.includes("org") && (
-        <p className="mt-2 text-[10px] font-medium text-amber-800">
-          Discuss with IT or your manager before adopting.
-        </p>
-      )}
     </div>
   );
 }
@@ -143,18 +153,36 @@ function ToolCard({ tool }: { tool: ToolOption }) {
 export function CollapsibleTaskCard({
   task,
   category,
+  assessmentId,
   defaultOpen = false,
   hideCategoryBadge = false,
 }: {
   task: AnalyzedTask;
   category: ThreeBCategory;
+  assessmentId?: string | null;
   defaultOpen?: boolean;
   hideCategoryBadge?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const meta = FRAMEWORK[category];
-  const Icon = meta.icon;
   const components = task.components ?? [];
+  const feasibilityClassStr = feasibilityClass(task.feasibilityTierVal || "");
+  const velocityStr = task.velocityVal || "Unknown";
+  const queryClient = useQueryClient();
+
+  const statusMutation = useMutation({
+    mutationFn: (status: "PLANNED" | "DONE") => updateTaskStatus(assessmentId!, task.id, status),
+    onSuccess: () => {
+      if (assessmentId) {
+        queryClient.invalidateQueries({ queryKey: ["assessment-analysis", assessmentId] });
+      }
+    },
+  });
+
+  const handleStatusUpdate = (status: "PLANNED" | "DONE") => {
+    if (!assessmentId) return;
+    statusMutation.mutate(status);
+  };
 
   return (
     <motion.article
@@ -162,43 +190,43 @@ export function CollapsibleTaskCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
-      className={`overflow-hidden rounded-2xl border bg-card shadow-soft transition-shadow duration-300 hover:shadow-elevated ${meta.border}`}
+      className={`overflow-hidden rounded-2xl border bg-white shadow-soft transition-shadow duration-300 hover:shadow-elevated border-border`}
     >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`flex w-full items-start gap-4 border-b px-5 py-4 text-left transition-colors duration-200 ${meta.header}`}
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-200 bg-white hover:bg-muted/30"
       >
-        <div
-          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border bg-gradient-to-br ${meta.gradient} ${meta.border} shadow-sm`}
-        >
-          <Icon className={`h-5 w-5 ${meta.accent}`} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <h4 className="font-display text-base font-semibold leading-snug text-foreground">
-              {task.title}
-            </h4>
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-3">
             {!hideCategoryBadge && (
-              <span
-                className={`shrink-0 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${meta.badge}`}
-              >
+              <span className={`shrink-0 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${meta.badge}`}>
                 {meta.label}
               </span>
             )}
+            <h4 className="font-display text-lg font-bold leading-snug text-foreground truncate">
+              {task.title}
+            </h4>
           </div>
-          {task.rationale && (
-            <p className="mt-1 text-xs font-medium text-muted-foreground">{task.rationale}</p>
-          )}
-          <p className="mt-2 text-xs tabular-nums text-muted-foreground">
-            {task.weeklyHours}h/week · {task.annualHours.toLocaleString()}h/year
-          </p>
         </div>
-        <ChevronDown
-          className={`mt-1 h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        <div className="flex items-center gap-4 shrink-0">
+          <div className="text-right">
+            <p className="text-sm text-muted-foreground">
+              {task.weeklyHours} hrs/wk · {task.importanceVal}
+            </p>
+          </div>
+          <div className={`hidden md:inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${feasibilityClassStr}`}>
+            {formatFeasibilityLabel(task.feasibilityTierVal)}
+          </div>
+          <div className="hidden md:inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium bg-muted text-muted-foreground border-border/80">
+            {velocityStr}
+          </div>
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </div>
       </button>
 
       <AnimatePresence initial={false}>
@@ -211,250 +239,138 @@ export function CollapsibleTaskCard({
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             className="overflow-hidden"
           >
-            <div className="space-y-4 p-5">
-              <div className={`rounded-xl border ${meta.border} ${meta.bgStrong} p-4`}>
-                <p
-                  className={`mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide ${meta.accent}`}
-                >
-                  <Target className="h-3.5 w-3.5" /> Why this routing
-                </p>
-                <p className="text-sm leading-relaxed text-foreground">{task.reason}</p>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { label: "Automation", value: `${task.autoPotential}%` },
-                  { label: "Risk", value: task.riskLevel },
-                  { label: "Future", value: task.futureImp },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className={`rounded-xl border px-3 py-2.5 text-center ${meta.statCell}`}
-                  >
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      {stat.label}
-                    </p>
-                    <p className="font-bold text-sm">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
-
-              {components.length > 0 ? (
-                <div className="overflow-hidden rounded-xl border border-border">
-                  <p
-                    className={`flex items-center gap-2 border-b border-border px-4 py-3 text-[11px] font-bold uppercase tracking-wide ${meta.accent} ${meta.soft}`}
-                  >
-                    <Wrench className="h-3.5 w-3.5" /> Work components & tools
-                  </p>
-                  <div className="divide-y divide-border">
-                    {components.map((comp, i) => {
-                      const tools = getComponentTools(comp);
-                      return (
-                        <div key={i} className="p-4">
-                          <p className="font-semibold text-sm">{comp.name}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{comp.description}</p>
-                          {comp.capability && (
-                            <p className="mt-2 text-[11px] text-muted-foreground">
-                              <span className="font-semibold text-foreground">Capability:</span>{" "}
-                              {comp.capability}
-                            </p>
-                          )}
-                          {comp.solution_pattern && (
-                            <p className="mt-1 text-[11px] text-muted-foreground">
-                              <span className="font-semibold text-foreground">Solution:</span>{" "}
-                              {comp.solution_pattern}
-                            </p>
-                          )}
-                          {tools.length > 0 ? (
-                            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                              {tools.map((tool, j) => (
-                                <ToolCard key={j} tool={tool} />
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="mt-2 text-xs italic text-muted-foreground">
-                              Human-led — no tool substitution recommended.
-                            </p>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <p className={`rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground ${meta.emptyNote}`}>
-                  This task works best as a single unit for your role — no sub-step breakdown needed.
-                </p>
-              )}
-
-              {task.next_actions.length > 0 && (
-                <div className={`rounded-xl border ${meta.border} ${meta.bg} p-4`}>
-                  <p className={`mb-3 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide ${meta.accent}`}>
-                    <Zap className={`h-3.5 w-3.5 ${meta.accent}`} /> Your next 3 actions
-                  </p>
-                  <ol className="space-y-2.5">
-                    {task.next_actions.map((action, idx) => (
-                      <li key={action} className="flex gap-3 text-sm leading-relaxed">
-                        <span
-                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-bold ${meta.step}`}
-                        >
-                          {idx + 1}
+            <div className="space-y-6 p-5">
+              
+              {/* Components & Capabilities Pills */}
+              {components.length > 0 && (
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">Work Components</h5>
+                    <div className="flex flex-wrap gap-2.5">
+                      {components.map((c, i) => (
+                        <span key={i} className="rounded-full bg-[#faf9f6] border border-[#e5e0d8] px-4 py-1.5 text-[13px] font-medium text-slate-700 shadow-sm transition-colors hover:bg-[#f3f0e9]">
+                          {c.name}
                         </span>
-                        <span className="pt-0.5">{action}</span>
-                      </li>
-                    ))}
-                  </ol>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">Capability Required</h5>
+                    <div className="flex flex-wrap gap-2.5">
+                      {Array.from(new Set(components.map(c => c.capability).filter(Boolean))).map((cap, i) => (
+                        <span key={i} className="rounded-full bg-[#f8fafc] border border-slate-200 px-4 py-1.5 text-[13px] font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-100">
+                          {cap as string}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
+
+              {/* Solution Options */}
+              {components.some(c => getComponentTools(c).length > 0) && (
+                <div className="space-y-6 mt-10">
+                  <div className="flex items-center justify-between border-b border-border/80 pb-3">
+                    <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Solution Options — By Component</h5>
+                    <span className="text-[11px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Verified Jul 2026</span>
+                  </div>
+                  {components.map((comp, i) => {
+                    const tools = getComponentTools(comp);
+                    if (tools.length === 0) return null;
+                    return (
+                      <div key={i} className="rounded-xl border border-border/60 bg-white shadow-sm overflow-hidden">
+                        <div className="bg-slate-50/80 px-5 py-4 border-b border-border/40">
+                          <h6 className="font-bold text-base text-slate-800">{comp.name}</h6>
+                          {comp.capability && <p className="text-xs font-medium text-slate-500 mt-0.5">Capability: {comp.capability}</p>}
+                        </div>
+                        <div className="flex flex-col space-y-5 p-5">
+                          {tools.map((tool, j) => (
+                            <ToolCard key={j} tool={tool} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Text Blocks Grid */}
+              <div className="space-y-6 pt-6 mt-4">
+                <div>
+                  <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Can this person do it?</h5>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-amber-800">{formatFeasibilityLabel(task.feasibilityTierVal)}.</span> {task.feasibility_note}
+                  </p>
+                </div>
+                <div>
+                  <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Human Capability to Strengthen</h5>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{task.human_capability}</p>
+                </div>
+                <div>
+                  <h5 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Pace of Change</h5>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-foreground">{velocityStr}.</span> {task.velocity_note}
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Block */}
+              {task.next_action && (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-amber-200/60 bg-[#fdfaf5] p-5">
+                  <div className="flex-1">
+                    <p className="text-sm text-foreground">
+                      <span className="font-bold">Next best action:</span> {task.next_action}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 gap-3">
+                    <button 
+                      onClick={() => handleStatusUpdate("PLANNED")}
+                      disabled={statusMutation.isPending || task.status === "PLANNED"}
+                      className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 ${task.status === "PLANNED" ? "border-amber-600 text-amber-700 bg-amber-50" : "border-amber-400 text-amber-700 hover:bg-amber-50"}`}
+                    >
+                      Mark as planned
+                    </button>
+                    <button 
+                      onClick={() => handleStatusUpdate("DONE")}
+                      disabled={statusMutation.isPending || task.status === "DONE"}
+                      className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 ${task.status === "DONE" ? "border-teal-600 text-teal-700 bg-teal-50" : "border-teal-400 text-teal-700 hover:bg-teal-50"}`}
+                    >
+                      Mark as done
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Learning Implication */}
+              <div className="rounded-xl bg-[#1A202C] text-white p-5 space-y-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#63B3ED]">Learning Implication</h5>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+                  <div>
+                    <span className="text-white/60 font-semibold block mb-0.5">Gap:</span>
+                    <span className="text-white/90">{task.learn_gap}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#F56565] font-semibold block mb-0.5">Don't learn:</span>
+                    <span className="text-white/90">{task.learn_dont}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#48BB78] font-semibold block mb-0.5">Learn:</span>
+                    <span className="text-white/90">{task.learn_do}</span>
+                  </div>
+                  <div>
+                    <span className="text-white/60 font-semibold block mb-0.5">Where:</span>
+                    <span className="text-white/90">{task.where_to_learn}</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.article>
-  );
-}
-
-export function CategoryHoursNav({
-  hoursSummary,
-  totalHours,
-  activeTab,
-  onSelect,
-  framework,
-}: {
-  hoursSummary?: {
-    BUILD: { weekly_hours: number; annual_hours: number; task_count: number };
-    BLEND: { weekly_hours: number; annual_hours: number; task_count: number };
-    BOT: { weekly_hours: number; annual_hours: number; task_count: number };
-    total: { weekly_hours: number; annual_hours: number; task_count: number };
-  };
-  totalHours?: number;
-  activeTab: ThreeBCategory;
-  onSelect: (c: ThreeBCategory) => void;
-  framework: Record<
-    ThreeBCategory,
-    {
-      label: string;
-      title: string;
-      tagline: string;
-      icon: typeof Hammer;
-      accent: string;
-      border: string;
-      bg: string;
-      bar: string;
-      ring: string;
-      gradient: string;
-    }
-  >;
-}) {
-  const cats: ThreeBCategory[] = ["BUILD", "BLEND", "BOT"];
-  const totalWeekly = hoursSummary?.total?.weekly_hours ?? totalHours ?? 1;
-
-  return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {cats.map((key) => {
-          const meta = framework[key];
-          const frame = FRAMEWORK[key];
-          const Icon = meta.icon;
-          const bucket = hoursSummary?.[key];
-          const weekly = bucket?.weekly_hours ?? 0;
-          const annual = bucket?.annual_hours ?? 0;
-          const count = bucket?.task_count ?? 0;
-          const isActive = activeTab === key;
-          const pct = totalWeekly > 0 ? Math.round((weekly / totalWeekly) * 100) : 0;
-
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => onSelect(key)}
-              className={`group relative overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 ease-out ${
-                isActive
-                  ? `${frame.border} ${frame.soft} shadow-elevated ring-2 ${frame.ring} ring-offset-2 ring-offset-background`
-                  : "border-border/80 bg-card hover:border-border hover:shadow-soft"
-              }`}
-            >
-              <div
-                className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 ${frame.gradient} ${
-                  isActive ? "opacity-100" : "group-hover:opacity-60"
-                }`}
-              />
-              <div className="relative flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`grid h-10 w-10 place-items-center rounded-xl border transition-colors duration-300 ${
-                      isActive ? `${frame.border} ${key === "BUILD" ? "bg-build-soft" : "bg-white/90"}` : "border-border bg-muted/30"
-                    }`}
-                  >
-                    <Icon className={`h-5 w-5 ${frame.accent}`} />
-                  </div>
-                  <div>
-                    <p className={`text-sm font-bold tracking-tight ${isActive ? frame.accent : "text-foreground"}`}>
-                      {meta.title}
-                    </p>
-                    <p className="text-[11px] text-muted-foreground">{meta.tagline}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className={`font-display text-2xl font-bold tabular-nums ${frame.accent}`}>
-                    {count}
-                  </p>
-                  <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                    tasks
-                  </p>
-                </div>
-              </div>
-              <div className="relative mt-4 flex items-end justify-between gap-2 border-t border-border/50 pt-3">
-                <div>
-                  <p className="text-lg font-bold tabular-nums text-foreground">
-                    {weekly}
-                    <span className="ml-0.5 text-xs font-medium text-muted-foreground">h/wk</span>
-                  </p>
-                  <p className="text-[11px] tabular-nums text-muted-foreground">
-                    {annual.toLocaleString()}h / year
-                  </p>
-                </div>
-                {totalWeekly > 0 && (
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tabular-nums ${
-                      isActive ? `${frame.badge}` : "bg-muted/60 text-muted-foreground"
-                    }`}
-                  >
-                    {pct}%
-                  </span>
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="rounded-2xl border border-border/80 bg-gradient-to-r from-muted/30 to-transparent px-5 py-4">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-sm">
-          <span className="font-medium text-muted-foreground">Weekly time distribution</span>
-          <span className="font-semibold tabular-nums text-foreground">
-            {hoursSummary?.total?.weekly_hours ?? totalHours ?? 0}h / week
-            <span className="mx-2 text-muted-foreground">·</span>
-            {(hoursSummary?.total?.annual_hours ?? 0).toLocaleString()}h / year
-          </span>
-        </div>
-        <div className="flex h-3 w-full overflow-hidden rounded-full bg-muted/80">
-          {cats.map((key) => {
-            const weekly = hoursSummary?.[key]?.weekly_hours ?? 0;
-            const width = totalWeekly > 0 ? (weekly / totalWeekly) * 100 : 0;
-            if (width <= 0) return null;
-            return (
-              <div
-                key={key}
-                className={`h-full transition-all duration-700 ease-out ${FRAMEWORK[key].bar}`}
-                style={{ width: `${width}%` }}
-                title={`${framework[key].label}: ${weekly}h`}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
   );
 }
 

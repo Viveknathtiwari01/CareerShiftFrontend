@@ -67,6 +67,30 @@ export interface TaskAnalysisItem {
   components?: TaskComponent[];
   weekly_hours?: number;
   annual_hours?: number;
+  importance?: string | null;
+  feasibility_tier?: string | null;
+  feasibility_note?: string | null;
+  human_capability?: string | null;
+  velocity?: string | null;
+  velocity_note?: string | null;
+  next_action?: string | null;
+  learn_gap?: string | null;
+  learn_do?: string | null;
+  learn_dont?: string | null;
+  where_to_learn?: string | null;
+  status?: string | null;
+}
+
+export interface PivotRole {
+  name: string;
+  transfer_strength: string;
+  reuses: string;
+  note: string;
+}
+
+export interface MarketReality {
+  trend_text: string;
+  pivot_roles: PivotRole[];
 }
 
 export interface TaskAnalysisResult {
@@ -77,6 +101,7 @@ export interface TaskAnalysisResult {
   hours_summary?: HoursSummary;
   total_hours?: number;
   generated_at?: string | null;
+  market_reality?: MarketReality | null;
 }
 
 export async function getTaskAnalysis(assessmentId: string): Promise<TaskAnalysisResult> {
@@ -91,6 +116,18 @@ export async function runTaskAnalysis(
   const query = regenerate ? "?regenerate=true" : "";
   const response = await fetchApi(`/assessment/${assessmentId}/analyze${query}`, {
     method: "POST",
+  });
+  return response.data;
+}
+
+export async function updateTaskStatus(
+  assessmentId: string,
+  taskId: string,
+  status: string | null,
+): Promise<TaskAnalysisItem> {
+  const response = await fetchApi(`/assessment/${assessmentId}/analysis/${taskId}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
   });
   return response.data;
 }
@@ -127,6 +164,9 @@ export interface AnalyzedTask extends TaskAnalysisItem {
   category3B: ThreeBCategory;
   weeklyHours: number;
   annualHours: number;
+  importanceVal: string;
+  feasibilityTierVal: string;
+  velocityVal: string;
 }
 
 export function mapAnalysisToDisplay(item: TaskAnalysisItem): AnalyzedTask {
@@ -142,6 +182,9 @@ export function mapAnalysisToDisplay(item: TaskAnalysisItem): AnalyzedTask {
     category3B: item.category,
     weeklyHours: item.weekly_hours ?? 0,
     annualHours: item.annual_hours ?? 0,
+    importanceVal: item.importance ?? "Medium",
+    feasibilityTierVal: item.feasibility_tier ?? "Unknown",
+    velocityVal: item.velocity ?? "Unknown",
   };
 }
 

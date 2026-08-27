@@ -11,9 +11,9 @@ import {
   type ThreeBCategory,
 } from "@/api/analysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
+import { MarketRealityCheck } from "@/components/assessment/MarketRealityCheck";
 import {
   CollapsibleTaskCard,
-  CategoryHoursNav,
   THREE_B_FRAMEWORK,
 } from "@/components/assessment/ThreeBAnalysisParts";
 import { getAssessmentTasks, mapBackendTaskToFrontend, isTaskReviewComplete } from "@/api/tasks";
@@ -71,7 +71,7 @@ export default function Step3BAnalysis({
 }: Props) {
   const queryClient = useQueryClient();
   const analyzeRequestedRef = useRef(false);
-  const [activeTab, setActiveTab] = useState<ThreeBCategory>("BLEND");
+  const [activeTab, setActiveTab] = useState<ThreeBCategory | "ALL">("BLEND");
   const [exportingPdf, setExportingPdf] = useState(false);
   const hasSetInitialTab = useRef(false);
 
@@ -155,11 +155,6 @@ export default function Step3BAnalysis({
     [analyzedTasks],
   );
 
-  const activeTasks = tasksByCategory[activeTab];
-  const activeMeta = FRAMEWORK[activeTab];
-  const ActiveIcon = activeMeta.icon;
-  const activeFrame = THREE_B_FRAMEWORK[activeTab];
-
   async function handleExportPdf() {
     if (!assessmentId || exportingPdf) return;
     setExportingPdf(true);
@@ -241,46 +236,53 @@ export default function Step3BAnalysis({
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-1"
+          className="space-y-4"
         >
-          <h2 className="font-display text-2xl font-bold tracking-tight">Your 3B work map</h2>
-          <p className="text-sm text-muted-foreground">
-            How your reviewed tasks split across human mastery, AI co-piloting, and automation.
-          </p>
+          <div className="mb-2">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 font-serif">3B Analysis</h2>
+            <p className="text-sm text-muted-foreground mt-2 max-w-3xl">
+              CareerShift routes every task into <span className="font-bold text-amber-700">BUILD</span>, <span className="font-bold text-amber-700">BLEND</span>, or <span className="font-bold text-teal-700">BOT</span> — with the work components, required capability, solution pattern, tool, and organizational feasibility behind every call.
+            </p>
+          </div>
         </motion.div>
       )}
 
-      <CategoryHoursNav
-        hoursSummary={hoursSummary}
-        totalHours={analysisQuery.data?.total_hours}
-        activeTab={activeTab}
-        onSelect={setActiveTab}
-        framework={FRAMEWORK}
-      />
+      {analysisQuery.data?.market_reality && (
+        <MarketRealityCheck data={analysisQuery.data.market_reality} />
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-4 mt-8 mb-4">
+        <h3 className="font-display text-2xl font-bold font-serif text-slate-900">
+          Your tasks
+        </h3>
+        <div className="flex items-center gap-2">
+          {["ALL", "BOT", "BLEND", "BUILD"].map((cat) => {
+            const count = cat === "ALL" ? analyzedTasks.length : analyzedTasks.filter(t => t.category3B === cat).length;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat as ThreeBCategory | "ALL")}
+                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-colors ${
+                  activeTab === cat 
+                    ? "bg-slate-900 text-white border-slate-900" 
+                    : "bg-white text-foreground border-border hover:bg-muted/50"
+                }`}
+              >
+                {cat === "ALL" ? "All" : `${cat} · ${count}`}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <motion.section
-        key={activeTab}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
         className="space-y-5"
       >
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div
-              className={`grid h-12 w-12 place-items-center rounded-2xl border bg-gradient-to-br ${activeFrame.gradient} ${activeFrame.border}`}
-            >
-              <ActiveIcon className={`h-6 w-6 ${activeMeta.accent}`} />
-            </div>
-            <div>
-              <h3 className="font-display text-xl font-semibold">
-                {activeMeta.title}{" "}
-                <span className="font-normal text-muted-foreground">· {activeMeta.tagline}</span>
-              </h3>
-              <p className="text-sm text-muted-foreground">{activeMeta.description}</p>
-            </div>
-          </div>
-          {assessmentId && activeTasks.length > 0 && (
+        <div className="flex flex-wrap items-center justify-end gap-4 mb-2">
+          {assessmentId && analyzedTasks.length > 0 && activeTab !== "ALL" && (
             <button
               type="button"
               onClick={handleExportPdf}
@@ -292,47 +294,30 @@ export default function Step3BAnalysis({
               ) : (
                 <Download className="h-4 w-4" />
               )}
-              {exportingPdf ? "Preparing PDF…" : `Export ${activeMeta.title} PDF`}
+              {exportingPdf ? "Preparing PDF…" : `Export ${activeTab} PDF`}
             </button>
           )}
         </div>
 
-        {activeTasks.length === 0 ? (
-          <div
-            className={`rounded-2xl border border-dashed px-6 py-14 text-center ${activeFrame.border} ${activeFrame.soft}`}
-          >
-            <ActiveIcon className={`mx-auto h-8 w-8 ${activeMeta.accent} opacity-60`} />
+        {analyzedTasks.length === 0 ? (
+          <div className="rounded-2xl border border-dashed px-6 py-14 text-center border-border">
             <p className="mt-3 text-sm font-medium text-foreground">
-              No {activeMeta.title} tasks for this assessment
+              No tasks found for this assessment
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {activeTab === "BOT"
-                ? "Your reviewed tasks lean toward human judgment or co-pilot workflows. Check Blend or Build."
-                : `Explore other categories to see where your time is allocated.`}
-            </p>
-            <div className="mt-4 flex justify-center gap-2">
-              {CATEGORIES.filter((c) => c !== activeTab).map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setActiveTab(c)}
-                  className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted/50"
-                >
-                  View {FRAMEWORK[c].title}
-                </button>
-              ))}
-            </div>
           </div>
         ) : (
           <div className="space-y-4">
-            {activeTasks.map((task, idx) => (
-              <CollapsibleTaskCard
-                key={task.id}
-                task={task}
-                category={activeTab}
-                defaultOpen={idx === 0}
-                hideCategoryBadge
-              />
+            {analyzedTasks
+              .filter(t => activeTab === "ALL" || t.category3B === activeTab)
+              .map((task, idx) => (
+                <CollapsibleTaskCard
+                  key={task.id}
+                  task={task}
+                  category={task.category3B}
+                  assessmentId={assessmentId}
+                  defaultOpen={idx === 0}
+                  hideCategoryBadge={false}
+                />
             ))}
           </div>
         )}
