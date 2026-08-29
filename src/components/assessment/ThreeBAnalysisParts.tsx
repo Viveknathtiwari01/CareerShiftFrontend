@@ -10,9 +10,15 @@ import {
   TrendingUp,
 } from "lucide-react";
 import {
-  formatCostBand,
+  deriveAccessPathTag,
   formatFeasibilityLabel,
+  formatVelocityLabel,
+  getCategoryWhyCopy,
   getComponentTools,
+  getToolFitDescription,
+  getToolMarketNote,
+  getToolPricingLine,
+  getUniqueCapabilities,
   hasLearningContent,
   type AnalyzedTask,
   type TaskComponent,
@@ -132,31 +138,31 @@ function SectionBlock({
 }
 
 function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
+  const pricingLine = getToolPricingLine(tool);
+  const fitDescription = getToolFitDescription(tool);
+  const marketNote = getToolMarketNote(tool);
+
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-            Option {index + 1}
-          </span>
-          <span
-            className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${feasibilityClass(tool.feasibility)}`}
-          >
-            {formatFeasibilityLabel(tool.feasibility)}
-          </span>
-        </div>
-        {tool.cost_band && (
-          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
-            {formatCostBand(String(tool.cost_band))}
-          </span>
-        )}
+      <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+        <span
+          className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${feasibilityClass(tool.feasibility)}`}
+        >
+          {formatFeasibilityLabel(tool.feasibility)}
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+          Option {String.fromCharCode(65 + index)}
+        </span>
       </div>
-      <p className="mb-2 text-base font-bold text-slate-900">{tool.name}</p>
-      {tool.credibility_note && (
-        <p className="mb-3 text-[13px] leading-relaxed text-slate-600">{tool.credibility_note}</p>
+      <p className="mb-1 text-base font-bold text-slate-900">{tool.name}</p>
+      {pricingLine && (
+        <p className="mb-2 text-[13px] font-medium text-slate-600">{pricingLine}</p>
+      )}
+      {fitDescription && (
+        <p className="mb-3 text-[13px] leading-relaxed text-slate-700">{fitDescription}</p>
       )}
       {(tool.pros?.length > 0 || tool.cons?.length > 0) && (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-[13px]">
+        <div className="grid grid-cols-1 gap-3 text-[13px] sm:grid-cols-2">
           <div className="space-y-1">
             {tool.pros?.map((pro, idx) => (
               <p key={idx} className="flex items-start text-teal-700">
@@ -175,9 +181,41 @@ function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
           </div>
         </div>
       )}
+      {marketNote && (
+        <p className="mt-3 text-[12px] italic leading-relaxed text-slate-500">{marketNote}</p>
+      )}
       {tool.feasibility?.toLowerCase().includes("org") && (
         <p className="mt-3 inline-block rounded-md border border-amber-200 bg-amber-50 px-3 py-1.5 text-[11px] font-semibold text-amber-800">
           Discuss with IT or your manager before adopting.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function CategoryWhySection({
+  category,
+  reason,
+  rationale,
+}: {
+  category: ThreeBCategory;
+  reason?: string | null;
+  rationale?: string | null;
+}) {
+  const copy = getCategoryWhyCopy(category);
+  const headline = rationale?.trim();
+  const detail = reason?.trim();
+  const showHeadline = Boolean(headline && headline !== detail);
+
+  return (
+    <div className="space-y-3">
+      <p className="text-[13px] leading-relaxed text-slate-600">{copy.lead}</p>
+      {showHeadline && (
+        <p className="text-[15px] font-semibold leading-snug text-slate-900">{headline}</p>
+      )}
+      {detail && (
+        <p className={`text-[14px] leading-relaxed text-slate-800 ${showHeadline ? "" : "mt-1"}`}>
+          {detail}
         </p>
       )}
     </div>
@@ -191,19 +229,12 @@ function ComponentSolutionBlock({ comp }: { comp: TaskComponent }) {
   return (
     <div className={`overflow-hidden rounded-xl border shadow-sm ${COMPONENT_BOX_BG}`}>
       <div className="border-b border-[#e8d5a8]/60 px-4 py-3 md:px-5">
-        <h6 className="font-bold text-[15px] text-[#3d3225]">{comp.name}</h6>
-        <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-[#6b5a45]">
-          {comp.capability && (
-            <span>
-              <span className="font-semibold">Capability:</span> {comp.capability}
-            </span>
-          )}
-          {comp.solution_pattern && (
-            <span>
-              <span className="font-semibold">Solution:</span> {comp.solution_pattern}
-            </span>
-          )}
-        </div>
+        <h6 className="font-bold text-[15px] text-[#1e3a5f]">{comp.name}</h6>
+        {comp.capability && (
+          <p className="mt-1 text-xs text-[#6b5a45]">
+            <span className="font-semibold">Capability:</span> {comp.capability}
+          </p>
+        )}
         {comp.description && (
           <p className="mt-2 text-[13px] leading-relaxed text-[#5c4a32]">{comp.description}</p>
         )}
@@ -244,10 +275,12 @@ export const CollapsibleTaskCard = forwardRef<
   {
     task,
     category,
+    assessmentId,
     defaultOpen = false,
     hideCategoryBadge = false,
     isRecommendedFocus = false,
     generatedAtLabel,
+    readOnly = false,
   },
   ref,
 ) {
@@ -255,18 +288,19 @@ export const CollapsibleTaskCard = forwardRef<
   const theme = CATEGORY_THEME[category];
   const Icon = theme.icon;
   const isBuild = category === "BUILD";
+  const whyCopy = getCategoryWhyCopy(category);
   const components = task.components ?? [];
+  const capabilities = getUniqueCapabilities(components);
+  const accessPathTag = deriveAccessPathTag(task);
   const showFeasibility = Boolean(task.feasibility_tier);
   const showVelocity = Boolean(task.velocity);
-
-  const statusLabel =
-    task.status === "DONE" ? "Done" : task.status === "PLANNED" ? "Planned" : "Not started";
 
   const sections = {
     reason: Boolean(task.reason),
     humanBuild: isBuild && Boolean(task.human_capability),
-    components: !isBuild && components.length > 0,
-    solutions: !isBuild && components.length > 0,
+    components: components.length > 0,
+    capabilities: capabilities.length > 0,
+    solutions: components.length > 0,
     humanBlend: !isBuild && Boolean(task.human_capability),
     feasibility: showFeasibility && Boolean(task.feasibility_note),
     velocity: showVelocity && Boolean(task.velocity_note),
@@ -280,6 +314,7 @@ export const CollapsibleTaskCard = forwardRef<
   const reasonStep = stepFor("reason");
   const humanBuildStep = stepFor("humanBuild");
   const componentsStep = stepFor("components");
+  const capabilitiesStep = stepFor("capabilities");
   const solutionsStep = stepFor("solutions");
   const humanBlendStep = stepFor("humanBlend");
   stepFor("feasibility");
@@ -325,17 +360,6 @@ export const CollapsibleTaskCard = forwardRef<
                     {theme.label}
                   </span>
                 )}
-                {(task.status === "PLANNED" || task.status === "DONE") && (
-                  <MetaPill
-                    className={
-                      task.status === "DONE"
-                        ? "bg-teal-50 text-teal-800 border-teal-200"
-                        : "bg-amber-50 text-amber-800 border-amber-200"
-                    }
-                  >
-                    {statusLabel}
-                  </MetaPill>
-                )}
               </div>
               <h4 className="font-display text-lg font-bold leading-snug text-slate-900">
                 {task.title}
@@ -357,7 +381,12 @@ export const CollapsibleTaskCard = forwardRef<
                 {showVelocity && (
                   <MetaPill className="bg-slate-100 text-slate-700 border-slate-200 capitalize">
                     <TrendingUp className="h-3 w-3" />
-                    {task.velocityVal}
+                    {formatVelocityLabel(task.velocityVal)}
+                  </MetaPill>
+                )}
+                {accessPathTag && (
+                  <MetaPill className="bg-[#faf6eb] text-[#92400e] border-[#e8d5a8]">
+                    {accessPathTag}
                   </MetaPill>
                 )}
               </div>
@@ -383,11 +412,12 @@ export const CollapsibleTaskCard = forwardRef<
           >
             <div className="space-y-5 border-t border-border/60 bg-[#faf9f7] p-4 md:space-y-6 md:p-5">
               {sections.reason && (
-                <SectionBlock step={reasonStep} title={`Why ${category}`}>
-                  <p>{task.reason}</p>
-                  {task.rationale && (
-                    <p className="mt-2 text-xs italic text-slate-500">{task.rationale}</p>
-                  )}
+                <SectionBlock step={reasonStep} title={whyCopy.title}>
+                  <CategoryWhySection
+                    category={category}
+                    reason={task.reason}
+                    rationale={task.rationale}
+                  />
                 </SectionBlock>
               )}
 
@@ -406,6 +436,21 @@ export const CollapsibleTaskCard = forwardRef<
                         className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium text-[#5c4a32] ${COMPONENT_BOX_BG}`}
                       >
                         {c.name}
+                      </span>
+                    ))}
+                  </div>
+                </SectionBlock>
+              )}
+
+              {sections.capabilities && (
+                <SectionBlock step={capabilitiesStep} title="Capability Required" variant="plain">
+                  <div className="flex flex-wrap gap-2">
+                    {capabilities.map((cap, i) => (
+                      <span
+                        key={i}
+                        className="rounded-full border border-[#c5d9f0] bg-[#eef3fa] px-3.5 py-1.5 text-[13px] font-medium capitalize text-[#1e3a5f]"
+                      >
+                        {cap}
                       </span>
                     ))}
                   </div>
@@ -442,20 +487,15 @@ export const CollapsibleTaskCard = forwardRef<
               {(sections.feasibility || sections.velocity || sections.cost) && (
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   {sections.feasibility && (
-                    <SectionBlock title="Can You Do This?">
-                      <p>
-                        <span className="font-bold text-amber-800">
-                          {formatFeasibilityLabel(task.feasibilityTierVal)}.
-                        </span>{" "}
-                        {task.feasibility_note}
-                      </p>
+                    <SectionBlock title="Can This Person Do It?">
+                      <p>{task.feasibility_note}</p>
                     </SectionBlock>
                   )}
                   {sections.velocity && (
                     <SectionBlock title="Pace of Change">
-                      <p className="capitalize">
-                        <span className="font-bold normal-case text-slate-900">
-                          {task.velocityVal}.
+                      <p>
+                        <span className="font-bold text-slate-900">
+                          {formatVelocityLabel(task.velocityVal)}.
                         </span>{" "}
                         {task.velocity_note}
                       </p>
@@ -485,6 +525,22 @@ export const CollapsibleTaskCard = forwardRef<
               {sections.learning && (
                 <SectionBlock step={learningStep} title="Learning Implication" variant="dark">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {task.learn_future && (
+                      <div>
+                        <span className="mb-1 block text-xs font-semibold text-white/50">
+                          Future need
+                        </span>
+                        <span className="text-sm">{task.learn_future}</span>
+                      </div>
+                    )}
+                    {task.learn_current && (
+                      <div>
+                        <span className="mb-1 block text-xs font-semibold text-white/50">
+                          Current strength
+                        </span>
+                        <span className="text-sm">{task.learn_current}</span>
+                      </div>
+                    )}
                     {task.learn_gap && (
                       <div>
                         <span className="mb-1 block text-xs font-semibold text-[#63B3ED]">Gap</span>

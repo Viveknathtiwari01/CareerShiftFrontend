@@ -19,6 +19,9 @@ export type FeasibilityTier =
 export interface ToolOption {
   name: string;
   cost_band: CostBand | string;
+  pricing_note?: string;
+  fit_description?: string;
+  market_note?: string;
   pros: string[];
   cons: string[];
   credibility_note?: string;
@@ -80,6 +83,8 @@ export interface TaskAnalysisItem {
   velocity?: string | null;
   velocity_note?: string | null;
   next_action?: string | null;
+  learn_future?: string | null;
+  learn_current?: string | null;
   learn_gap?: string | null;
   learn_do?: string | null;
   learn_dont?: string | null;
@@ -231,6 +236,85 @@ export function formatCostBand(band: string): string {
   return map[band] ?? band.replace(/_/g, " ");
 }
 
+/** Human-readable pricing line — prefers LLM pricing_note, falls back to cost band. */
+export function getToolPricingLine(tool: ToolOption): string {
+  if (tool.pricing_note?.trim()) return tool.pricing_note.trim();
+  if (tool.cost_band) return formatCostBand(String(tool.cost_band));
+  return "";
+}
+
+/** Why this tool fits — prefers fit_description, falls back to credibility_note. */
+export function getToolFitDescription(tool: ToolOption): string {
+  return (tool.fit_description || tool.credibility_note || "").trim();
+}
+
+/** Contextual proof footnote — prefers market_note. */
+export function getToolMarketNote(tool: ToolOption): string {
+  return (tool.market_note || "").trim();
+}
+
+export function getUniqueCapabilities(components: TaskComponent[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const comp of components) {
+    const cap = comp.capability?.trim();
+    if (!cap) continue;
+    const key = cap.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(cap);
+  }
+  return result;
+}
+
+/** Dominant tool access path for header tag. */
+export function deriveAccessPathTag(task: TaskAnalysisItem): string | null {
+  if (task.category === "BUILD") return null;
+  const counts: Record<string, number> = {};
+  for (const comp of task.components ?? []) {
+    for (const tool of getComponentTools(comp)) {
+      const tier = String(tool.feasibility || "").toLowerCase();
+      counts[tier] = (counts[tier] || 0) + 1;
+    }
+  }
+  const entries = Object.entries(counts);
+  if (!entries.length) return null;
+  entries.sort((a, b) => b[1] - a[1]);
+  const [top] = entries[0];
+  if (top.includes("company")) return "Mostly company tech";
+  if (top.includes("self")) return "Mostly self-serve";
+  if (top.includes("org")) return "Needs org enablement";
+  return null;
+}
+
+export function formatVelocityLabel(velocity: string): string {
+  const map: Record<string, string> = {
+    "fast-moving": "Fast-moving",
+    "slow-moving": "Slow-moving",
+    stable: "Stable",
+  };
+  return map[velocity] ?? velocity.replace(/_/g, " ");
+}
+
+/** User-facing copy for the classification explanation block. */
+export function getCategoryWhyCopy(category: ThreeBCategory): { title: string; lead: string } {
+  const copy: Record<ThreeBCategory, { title: string; lead: string }> = {
+    BUILD: {
+      title: "Why your judgment matters most",
+      lead: "This is work where your experience, decisions, and relationships carry the real value. Technology can support you — it shouldn't replace you.",
+    },
+    BLEND: {
+      title: "Where AI helps — and where you stay essential",
+      lead: "Parts of this task can be sped up with tools, but you still review, interpret, and own the outcome.",
+    },
+    BOT: {
+      title: "What you can automate or delegate",
+      lead: "Much of this work repeats in a predictable way. Handing the mechanical steps to tools can free time for higher-value work.",
+    },
+  };
+  return copy[category];
+}
+
 export function formatGeneratedAt(iso: string | null | undefined): string {
   if (!iso) return "";
   try {
@@ -244,7 +328,14 @@ export function formatGeneratedAt(iso: string | null | undefined): string {
 }
 
 export function hasLearningContent(task: TaskAnalysisItem): boolean {
-  return Boolean(task.learn_gap || task.learn_do || task.learn_dont || task.where_to_learn);
+  return Boolean(
+    task.learn_future ||
+      task.learn_current ||
+      task.learn_gap ||
+      task.learn_do ||
+      task.learn_dont ||
+      task.where_to_learn,
+  );
 }
 
 export function automatableComponents(components: TaskComponent[]): TaskComponent[] {
