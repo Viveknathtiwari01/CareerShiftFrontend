@@ -28,6 +28,7 @@ import {
   Target,
   TrendingUp,
   Twitter,
+  ThumbsUp,
   User,
   Users,
   Video,
@@ -51,6 +52,7 @@ function Landing() {
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <Nav />
       <Hero />
+      <MockStats />
       <Problem />
       <Framework3B />
       <HowItWorks />
@@ -162,7 +164,7 @@ function Logo() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#0A1525]">
-      <div className="container-page animate-fade-in-up relative grid gap-10 py-10 md:gap-14 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-20 items-center">
+      <div className="container-page animate-fade-in-up relative grid gap-10 pt-10 pb-4 md:gap-14 md:pt-16 md:pb-6 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pt-20 lg:pb-8 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
             AI Career Readiness Report · Built for professionals
@@ -189,23 +191,86 @@ function Hero() {
               View sample report
             </SectionLink>
           </div>
-          <dl className="mt-10 grid w-full max-w-lg grid-cols-3 gap-4 sm:gap-6">
-            {[
-              { k: "12 min", v: "Avg assessment" },
-              { k: "40+", v: "Data signals" },
-              { k: "97%", v: "Would recommend" },
-            ].map((s) => (
-              <div key={s.v}>
-                <dt className="font-display text-2xl font-bold text-white">{s.k}</dt>
-                <dd className="mt-1 text-xs text-white/60">{s.v}</dd>
+          <div className="mt-12 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                <Clock className="h-5 w-5" />
               </div>
-            ))}
-          </dl>
+              <div>
+                <div className="font-display text-2xl font-bold text-white">12 min</div>
+                <div className="text-xs text-white/60 mt-0.5">Avg assessment</div>
+              </div>
+            </div>
+
+            <div className="hidden h-10 w-px bg-white/10 sm:block"></div>
+
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+                <Signal className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="font-display text-2xl font-bold text-white">40+</div>
+                <div className="text-xs text-white/60 mt-0.5">Data signals</div>
+              </div>
+            </div>
+
+            <div className="hidden h-10 w-px bg-white/10 sm:block"></div>
+
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-400">
+                <ThumbsUp className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="font-display text-2xl font-bold text-white">97%</div>
+                <div className="text-xs text-white/60 mt-0.5">Would recommend</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="relative mx-auto w-full max-w-[500px] overflow-hidden lg:mx-0">
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
           <HeroGraphic />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MockStats() {
+  return (
+    <section className="bg-[#0A1525] pb-16">
+      <div className="container-page">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="font-display text-2xl font-bold tracking-tight text-white">40+</div>
+              <div className="text-sm font-medium text-white/60">Industries mapped</div>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
+              <BarChart3 className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="font-display text-2xl font-bold tracking-tight text-white">2,500+</div>
+              <div className="text-sm font-medium text-white/60">Competencies structured</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
+              <Target className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="font-display text-2xl font-bold tracking-tight text-white">125K+</div>
+              <div className="text-sm font-medium text-white/60">Tasks & skills mapped</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -273,11 +338,11 @@ function Problem() {
         </div>
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {items.map((it) => (
-            <div key={it.title} className="surface-card p-6 hover-lift">
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft">
+            <div key={it.title} className="surface-card p-6 hover-lift  ">
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-foreground shadow-soft">
                 {it.icon}
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-background">
+              <h3 className="mt-5 font-display text-lg font-semibold text-foreground">
                 {it.title}
               </h3>
               <p className="mt-2 text-sm text-muted-foreground">{it.body}</p>
@@ -392,7 +457,7 @@ function HowItWorks() {
                   {s.n}
                 </span>
               </div>
-              <h3 className="mt-6 font-display text-xl font-semibold text-background">{s.title}</h3>
+              <h3 className="mt-6 font-display text-xl font-semibold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
             </div>
           ))}
@@ -609,10 +674,10 @@ function Features() {
               key={f.title}
               className="surface-card p-6 hover-lift group"
             >
-              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform group-hover:scale-105">
+              <div className="inline-grid h-12 w-12 place-items-center rounded-full bg-primary text-foreground shadow-soft transition-transform group-hover:scale-105">
                 {f.icon}
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-background">{f.title}</h3>
+              <h3 className="mt-5 font-display text-lg font-semibold text-foreground">{f.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: f.body }} />
             </div>
           ))}
@@ -717,15 +782,11 @@ function Workshop() {
   ];
 
   const visionPoints = [
-    "Empower every professional to thrive in the AI era not fear it.",
-    "Make essential AI tool literacy accessible to everyday workers.",
-    "Replace uncertainty with clarity on which skills and tools matter most.",
+    "To create a world where people have the clarity, confidence and agency to navigate change, create value, and shape what comes next in their professional lives.",
   ];
 
   const missionPoints = [
-    "Teach the AI tools every professional should know for real work.",
-    "Help people collaborate with AI as a partner, not compete against it.",
-    "Turn career anxiety into practical confidence and daily productivity.",
+    "To turn professional uncertainty into informed action by combining career intelligence, practical tools, learning and human guidance - helping people understand change, strengthen what matters and confidently choose what comes next.",
   ];
 
   const outcomeTrend = [
@@ -830,10 +891,9 @@ function Workshop() {
             </div>
             <ul className="space-y-3">
               {visionPoints.map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                <p key={point} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
                   {point}
-                </li>
+                </p>
               ))}
             </ul>
           </div>
@@ -844,10 +904,9 @@ function Workshop() {
             </div>
             <ul className="space-y-3">
               {missionPoints.map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm leading-relaxed text-white/75">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                <p key={point} className="flex items-start gap-3 text-sm leading-relaxed text-white/75">
                   {point}
-                </li>
+                </p>
               ))}
             </ul>
           </div>
@@ -1245,7 +1304,7 @@ function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center">
+    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center bg-[#0A1525]">
       {/* Concentric rings */}
       <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>
@@ -1314,7 +1373,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "15.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Bot Potential
             </div>
@@ -1328,7 +1387,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "4%", top: "88.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Human Mastery
             </div>
@@ -1342,7 +1401,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "109%", top: "60.5%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               AI Acceleration
             </div>
@@ -1356,7 +1415,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "70.5%", top: "106.5%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Time Reclaimed
             </div>
@@ -1372,7 +1431,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "84.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               AI Fitness
             </div>
@@ -1386,9 +1445,9 @@ function HeroGraphic() {
 
       {/* Center Node and Ripples */}
       <div className="absolute w-[35%] h-[35%] flex items-center justify-center pointer-events-none z-10">
-        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-brand/[0.02] animate-valRadarWave"></div>
+        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0A1525] animate-valRadarWave"></div>
         <div
-          className="absolute w-full h-full rounded-full border border-brand/20 bg-brand/[0.02] animate-valRadarWave"
+          className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0A1525] animate-valRadarWave"
           style={{ animationDelay: "2s" }}
         ></div>
         <div className="w-[110px] h-[110px] rounded-full border border-white/10 bg-[#0A1525] flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto relative z-20">
@@ -1412,15 +1471,15 @@ function OurStory() {
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-4xl text-center">
           <SectionEyebrow dark>Our Story</SectionEyebrow>
-          <div className="mx-auto w-32 h-32 my-10 relative">
+          {/* <div className="mx-auto w-32 h-32 my-10 relative">
             <div className="absolute -inset-2 -z-10 rounded-full bg-gradient-to-tr from-brand/20 to-primary/20 blur-xl opacity-60"></div>
             <img
               src="/nc.jpeg"
               alt="Owner of CareerShift"
               className="w-full h-full rounded-[2.5rem] shadow-elevated object-cover border-2 border-white/10"
             />
-          </div>
-          <div className="font-display font-semibold text-xl text-white mb-10">
+          </div> */}
+          <div className="font-display font-semibold text-xl text-white mb-10 mt-15">
             CareerShift Founder - Nurren Chaudhry
           </div>
 

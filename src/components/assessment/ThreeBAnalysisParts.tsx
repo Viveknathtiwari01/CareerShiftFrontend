@@ -8,6 +8,8 @@ import {
   Sparkles,
   Target,
   TrendingUp,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import {
   deriveAccessPathTag,
@@ -138,9 +140,34 @@ function SectionBlock({
 }
 
 function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
-  const pricingLine = getToolPricingLine(tool);
+  const rawPricingLine = getToolPricingLine(tool) || "";
   const fitDescription = getToolFitDescription(tool);
   const marketNote = getToolMarketNote(tool);
+
+  let simplifiedPricing = "Paid";
+  const pLow = rawPricingLine.toLowerCase();
+  const cBand = (tool as any).cost_band?.toLowerCase() || "";
+  
+  if (cBand === "free" || (pLow.includes("free") && !pLow.includes("$") && !pLow.includes("paid") && !pLow.includes("freemium"))) {
+    simplifiedPricing = "Free";
+  } else if (cBand === "freemium" || pLow.includes("freemium") || pLow.includes("free tier") || (pLow.includes("free") && (pLow.includes("paid") || pLow.includes("$")))) {
+    simplifiedPricing = "Freemium";
+  } else if (cBand.includes("enterprise")) {
+    simplifiedPricing = "Enterprise";
+  } else {
+    simplifiedPricing = "Paid";
+  }
+
+  let pricingStyle = "";
+  if (simplifiedPricing === "Free") {
+    pricingStyle = "bg-emerald-50 text-emerald-800 border-emerald-200";
+  } else if (simplifiedPricing === "Freemium") {
+    pricingStyle = "bg-blue-50 text-blue-800 border-blue-200";
+  } else if (simplifiedPricing === "Enterprise") {
+    pricingStyle = "bg-purple-50 text-purple-800 border-purple-200";
+  } else {
+    pricingStyle = "bg-amber-50 text-amber-900 border-amber-200";
+  }
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -150,35 +177,53 @@ function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
         >
           {formatFeasibilityLabel(tool.feasibility)}
         </span>
-        <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-          Option {String.fromCharCode(65 + index)}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${pricingStyle}`}>
+            {simplifiedPricing}
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+            Option {String.fromCharCode(65 + index)}
+          </span>
+        </div>
       </div>
       <p className="mb-1 text-base font-bold text-slate-900">{tool.name}</p>
-      {pricingLine && (
-        <p className="mb-2 text-[13px] font-medium text-slate-600">{pricingLine}</p>
-      )}
       {fitDescription && (
-        <p className="mb-3 text-[13px] leading-relaxed text-slate-700">{fitDescription}</p>
+        <p className="mb-3 mt-2 text-[13px] leading-relaxed text-slate-700">{fitDescription}</p>
       )}
       {(tool.pros?.length > 0 || tool.cons?.length > 0) && (
-        <div className="grid grid-cols-1 gap-3 text-[13px] sm:grid-cols-2">
-          <div className="space-y-1">
-            {tool.pros?.map((pro, idx) => (
-              <p key={idx} className="flex items-start text-teal-700">
-                <span className="mr-1.5 font-bold">+</span>
-                <span>{pro}</span>
-              </p>
-            ))}
-          </div>
-          <div className="space-y-1">
-            {tool.cons?.map((con, idx) => (
-              <p key={idx} className="flex items-start text-orange-700">
-                <span className="mr-1.5 font-bold">−</span>
-                <span>{con}</span>
-              </p>
-            ))}
-          </div>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {tool.pros?.length > 0 && (
+            <div className="rounded-md border border-emerald-100 bg-emerald-50/50 p-3">
+              <h4 className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                Pros
+              </h4>
+              <ul className="space-y-1.5">
+                {tool.pros.map((pro, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-[12px] leading-relaxed text-emerald-900">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-emerald-400" />
+                    <span>{pro}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {tool.cons?.length > 0 && (
+            <div className="rounded-md border border-orange-100 bg-orange-50/50 p-3">
+              <h4 className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-orange-800">
+                <XCircle className="h-3.5 w-3.5" />
+                Cons
+              </h4>
+              <ul className="space-y-1.5">
+                {tool.cons.map((con, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-[12px] leading-relaxed text-orange-900">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-orange-400" />
+                    <span>{con}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
       {marketNote && (
@@ -349,9 +394,9 @@ export const CollapsibleTaskCard = forwardRef<
       >
         <div className="flex">
           <div className={`w-1.5 shrink-0 ${theme.stripe}`} />
-          <div className="flex flex-1 items-start justify-between gap-3 px-4 py-3 md:px-5 md:py-3.5">
-            <div className="min-w-0 flex-1 space-y-1.5">
-              <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-1 flex-col gap-2 px-4 py-3 md:px-5 md:py-3.5">
+            <div className="flex w-full items-start justify-between gap-3">
+              <div className="flex shrink-0 items-center gap-2">
                 {!hideCategoryBadge && (
                   <span
                     className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${theme.badge}`}
@@ -361,10 +406,7 @@ export const CollapsibleTaskCard = forwardRef<
                   </span>
                 )}
               </div>
-              <h4 className="font-display text-lg font-bold leading-snug text-slate-900">
-                {task.title}
-              </h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-1 flex-wrap items-center justify-end gap-2">
                 <MetaPill className={theme.pill}>
                   <Clock className="h-3 w-3" />
                   {task.weeklyHours} hrs/wk
@@ -390,12 +432,15 @@ export const CollapsibleTaskCard = forwardRef<
                   </MetaPill>
                 )}
               </div>
+              <ChevronDown
+                className={`mt-0.5 h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300 ${
+                  open ? "rotate-180" : ""
+                }`}
+              />
             </div>
-            <ChevronDown
-              className={`mt-1 h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300 ${
-                open ? "rotate-180" : ""
-              }`}
-            />
+            <h4 className="font-display text-lg font-bold leading-snug text-slate-900 text-left">
+              {task.title}
+            </h4>
           </div>
         </div>
       </button>
