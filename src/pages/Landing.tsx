@@ -800,7 +800,8 @@ function Workshop() {
   ];
 
   return (
-    <section id="workshop" className="bg-background py-24">
+    <>
+      <section id="workshop" className="bg-background py-24">
       <div className="container-page space-y-20 animate-fade-in-up">
         {/* Hero matches in-app WorkshopHero messaging */}
         <div className="relative overflow-hidden rounded-3xl bg-[#0A1525] px-6 py-16 sm:px-10 lg:px-16 text-center shadow-2xl">
@@ -937,20 +938,25 @@ function Workshop() {
           </div>
         </div>
 
-        {/* Workshop outcomes line graph */}
-        <div id="workshop-outcomes" className="surface-card p-8">
+      </div>
+    </section>
+      {/* Workshop outcomes line graph */}
+      <section id="workshop-outcomes" className="bg-[#0A1525] text-white py-24">
+        <div className="container-page animate-fade-in-up">
           <div className="mx-auto max-w-2xl text-center">
-            <SectionEyebrow>Workshop outcomes</SectionEyebrow>
-            <h3 className="mt-3 font-display text-3xl font-bold">Your growth through the workshop</h3>
-            <p className="mt-3 text-muted-foreground">
+            <SectionEyebrow dark>Workshop outcomes</SectionEyebrow>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
+              Your growth through the workshop
+            </h2>
+            <p className="mt-4 text-white/60">
               A practical path from AI uncertainty to confident, everyday use measured by skill
               and career readiness.
             </p>
           </div>
-          <div className="mt-10 overflow-x-auto">
+          <div className="mt-14 overflow-x-auto">
             <WorkshopOutcomesChart data={outcomeTrend} />
           </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
             {[
               "Confident with AI tools",
               "Save hours weekly",
@@ -961,15 +967,15 @@ function Workshop() {
             ].map((label) => (
               <span
                 key={label}
-                className="rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground"
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/70 shadow-sm"
               >
                 {label}
               </span>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -1006,8 +1012,8 @@ function WorkshopOutcomesChart({
         const y = padY + chartH - (tick / maxY) * chartH;
         return (
           <g key={tick}>
-            <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="currentColor" className="text-border" strokeDasharray="4 4" />
-            <text x={padX - 10} y={y + 4} textAnchor="end" className="fill-muted-foreground text-[10px]">
+            <line x1={padX} y1={y} x2={width - padX} y2={y} stroke="currentColor" className="text-white/10" strokeDasharray="4 4" />
+            <text x={padX - 10} y={y + 4} textAnchor="end" className="fill-white/50 text-[10px]">
               {tick}
             </text>
           </g>
@@ -1017,8 +1023,8 @@ function WorkshopOutcomesChart({
       <path d={linePath} fill="none" stroke="currentColor" className="text-brand" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       {points.map((p) => (
         <g key={p.label}>
-          <circle cx={p.x} cy={p.y} r="5" className="fill-brand stroke-background" strokeWidth="2" />
-          <text x={p.x} y={height - 8} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+          <circle cx={p.x} cy={p.y} r="5" className="fill-brand stroke-[#0A1525]" strokeWidth="2" />
+          <text x={p.x} y={height - 8} textAnchor="middle" className="fill-white/50 text-[10px]">
             {p.label}
           </text>
         </g>
@@ -1306,7 +1312,6 @@ function HeroGraphic() {
   return (
     <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center bg-[#0A1525]">
       {/* Concentric rings */}
-      <div className="absolute w-[100%] h-[100%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[50%] h-[50%] rounded-full border border-white/[0.04] pointer-events-none"></div>
 
@@ -1316,51 +1321,45 @@ function HeroGraphic() {
           className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
           viewBox="0 0 400 400"
         >
+          {/* Top-Left Line (Automation Match) */}
           <line
             x1="200"
             y1="200"
-            x2="62"
-            y2="3"
+            x2="60"
+            y2="60"
             stroke="currentColor"
             className="text-white/30"
             strokeWidth="1"
             strokeDasharray="4 4"
           />
+          {/* Bottom-Right Line (Human Core) */}
           <line
             x1="200"
             y1="200"
-            x2="338"
-            y2="3"
+            x2="340"
+            y2="340"
             stroke="currentColor"
             className="text-white/30"
             strokeWidth="1"
             strokeDasharray="4 4"
           />
+          {/* Top-Right Line (AI Leverage) */}
           <line
             x1="200"
             y1="200"
-            x2="436"
-            y2="242"
+            x2="340"
+            y2="60"
             stroke="currentColor"
             className="text-white/30"
             strokeWidth="1"
             strokeDasharray="4 4"
           />
+          {/* Bottom-Left Line (Time Reclaimed) */}
           <line
             x1="200"
             y1="200"
-            x2="282"
-            y2="426"
-            stroke="currentColor"
-            className="text-white/30"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          <line
-            x1="200"
-            y1="200"
-            x2="16"
-            y2="355"
+            x2="60"
+            y2="340"
             stroke="currentColor"
             className="text-white/30"
             strokeWidth="1"
@@ -1369,51 +1368,55 @@ function HeroGraphic() {
         </svg>
 
         {/* Cards */}
+        {/* Top-Left */}
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "15.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "15%", top: "15%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              Bot Potential
+              Automation Match
             </div>
             <div className="text-brand text-2xl font-display font-bold my-1 leading-none">42%</div>
             <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              TASKS TO AUTOMATE
+              TASKS TO BOT
             </div>
           </div>
         </div>
+        {/* Bottom-Right */}
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "4%", top: "88.75%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "85%", top: "85%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              Human Mastery
+              Human Core
             </div>
             <div className="text-brand text-2xl font-display font-bold my-1 leading-none">35%</div>
             <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              TASKS TO BUILD
+              SKILLS TO BUILD
             </div>
           </div>
         </div>
+        {/* Top-Right */}
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "109%", top: "60.5%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "85%", top: "15%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              AI Acceleration
+              AI Leverage
             </div>
             <div className="text-brand text-2xl font-display font-bold my-1 leading-none">23%</div>
             <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              TASKS TO BLEND
+              WORKFLOWS TO BLEND
             </div>
           </div>
         </div>
+        {/* Bottom-Left */}
         <div
           className="absolute pointer-events-auto"
-          style={{ left: "70.5%", top: "106.5%", transform: "translate(-50%, -50%)" }}
+          style={{ left: "15%", top: "85%", transform: "translate(-50%, -50%)" }}
         >
           <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
@@ -1423,21 +1426,7 @@ function HeroGraphic() {
               11.5h
             </div>
             <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              SAVED PER WEEK
-            </div>
-          </div>
-        </div>
-        <div
-          className="absolute pointer-events-auto"
-          style={{ left: "84.5%", top: "0.75%", transform: "translate(-50%, -50%)" }}
-        >
-          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
-            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              AI Fitness
-            </div>
-            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">82</div>
-            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              TOP 15% SCORE
+              SAVED WEEKLY
             </div>
           </div>
         </div>
@@ -1455,7 +1444,7 @@ function HeroGraphic() {
           <span className="text-white/90 text-[10px] font-bold tracking-[0.2em] leading-none mb-1 mt-1">
             CAREER
           </span>
-          <span className="text-white/40 text-[7px] font-bold tracking-[0.1em] leading-none">
+          <span className="text-brand text-[7px] font-bold tracking-[0.1em] leading-none">
             AI ENGINE
           </span>
         </div>
