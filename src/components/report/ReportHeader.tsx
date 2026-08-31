@@ -36,26 +36,25 @@ export function ReportHeader({ report }: Props) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-border/40">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
         <div>
-          <h1 className="mb-3 font-display text-4xl font-bold tracking-tight">
+          <h1 className="mb-4 font-display text-4xl sm:text-5xl font-medium text-[#0A121F]">
             Career Intelligence Report
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl font-medium leading-relaxed">
-            Personalized AI-powered career intelligence for {report.overview.job_title} in{" "}
-            {report.overview.industry}.
+          <p className="text-[17px] text-[#4A5568] font-light max-w-2xl leading-relaxed">
+            Personalized AI-powered career intelligence for <span className="font-medium text-[#0A121F]">{report.overview.job_title}</span> in{" "}
+            <span className="font-medium text-[#0A121F]">{report.overview.industry}</span>.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 mt-6 text-sm font-semibold">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
-              <span className="text-muted-foreground">Date:</span> {generated}
+          <div className="flex flex-wrap items-center gap-4 mt-6 text-[13px] font-medium">
+            <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FDFBF2] text-[#C9A84C] border border-[#E8C96A]/30">
+              <span className="text-[#718096]">Date:</span> {generated}
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-border">
-              <span className="text-muted-foreground">Version:</span> {versionLabel}
+            <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FDFBF2] text-[#C9A84C] border border-[#E8C96A]/30">
+              <span className="text-[#718096]">Version:</span> {versionLabel}
             </div>
-
           </div>
-          {error ? <p className="mt-3 text-sm text-destructive">{error}</p> : null}
+          {error ? <p className="mt-3 text-sm text-[#E53E3E]">{error}</p> : null}
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -63,7 +62,7 @@ export function ReportHeader({ report }: Props) {
             type="button"
             disabled={!!busy}
             onClick={() => runExport("pdf")}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-full bg-[#0A121F] hover:bg-[#1A2533] px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy === "pdf" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
             Download PDF
@@ -72,7 +71,7 @@ export function ReportHeader({ report }: Props) {
             type="button"
             disabled={!!busy}
             onClick={() => runExport("docx")}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0A121F] hover:bg-gray-50 transition-all disabled:opacity-60 shadow-sm"
           >
             {busy === "docx" ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
             Download DOC
@@ -80,7 +79,7 @@ export function ReportHeader({ report }: Props) {
           <button
             type="button"
             onClick={() => setShareOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0A121F] hover:bg-gray-50 transition-all shadow-sm"
           >
             <Share2 className="h-4 w-4" /> Share
           </button>

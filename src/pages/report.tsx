@@ -11,7 +11,6 @@ import { CompetencyTab } from "@/components/report/CompetencyTab";
 import { DailyWorkTab } from "@/components/report/DailyWorkTab";
 import { ThreeBAnalysisTab } from "@/components/report/ThreeBAnalysisTab";
 
-import { LearningRoadmapTab } from "@/components/report/LearningRoadmapTab";
 import { AIToolsTab } from "@/components/report/AIToolsTab";
 import { HealthIndicators } from "@/components/report/HealthIndicators";
 import { ReportFooter } from "@/components/report/ReportFooter";
@@ -24,7 +23,6 @@ const TABS = [
   { id: "3b", label: "3B Analysis" },
 
   { id: "tools", label: "AI Tools" },
-  { id: "roadmap", label: "Learning Roadmap" },
 ];
 
 export default function ReportPage() {
@@ -86,27 +84,27 @@ export default function ReportPage() {
       <ReportHeader report={report} />
       <ReportHero report={report} />
 
-      <div className="sticky top-0 z-20 mb-10 rounded-2xl border border-border bg-background/95 p-2 shadow-sm backdrop-blur-xl md:p-3">
-        <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">
+      <div className="sticky top-6 z-30 mb-12 flex justify-center">
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-[#E2E8F0] bg-white/90 p-2 shadow-sm backdrop-blur-xl">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`relative rounded-xl px-4 py-2 text-xs font-medium transition-all duration-200 md:px-5 md:py-2.5 md:text-sm ${
+              className={`relative rounded-full px-5 py-2.5 text-[14px] transition-all duration-300 ${
                 activeTab === tab.id
-                  ? "text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                  ? "text-[#C9A84C] font-semibold"
+                  : "text-[#718096] font-medium hover:text-[#0A121F] hover:bg-gray-50"
               }`}
             >
               {activeTab === tab.id && (
                 <motion.div
                   layoutId="active-tab"
-                  className="absolute inset-0 -z-10 rounded-xl bg-primary"
+                  className="absolute inset-0 -z-10 rounded-full bg-[#FDFBF2] border border-[#E8C96A]/30"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              {tab.label}
+              <span className="relative z-10">{tab.label}</span>
             </button>
           ))}
         </div>
@@ -127,7 +125,6 @@ export default function ReportPage() {
             {activeTab === "3b" && <ThreeBAnalysisTab report={report} />}
 
             {activeTab === "tools" && <AIToolsTab report={report} />}
-            {activeTab === "roadmap" && <LearningRoadmapTab report={report} />}
           </motion.div>
         </AnimatePresence>
       </div>

@@ -232,8 +232,6 @@ export default function AssessmentPage() {
                 "Career Intelligence",
                 "Competency Mapping",
                 "Task Analysis",
-                "Career Identity",
-                "Personalized Learning Roadmap",
               ].map((feature) => (
                 <span
                   key={feature}
