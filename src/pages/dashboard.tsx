@@ -8,7 +8,6 @@ import { PersonalizedGuidance } from "@/components/dashboard/PersonalizedGuidanc
 import { FeaturedWorkshop } from "@/components/dashboard/FeaturedWorkshop";
 import { Principles } from "@/components/dashboard/Principles";
 import { MotivationBanner } from "@/components/dashboard/MotivationBanner";
-import { DashboardNavigation } from "@/components/dashboard/DashboardNavigation";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -99,15 +98,6 @@ export default function Dashboard() {
         viewport={{ once: true, margin: "-50px" }}
       >
         <AISuccessStories />
-      </motion.div>
-
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <DashboardNavigation />
       </motion.div>
 
       <motion.div 

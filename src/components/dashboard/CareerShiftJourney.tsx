@@ -7,6 +7,7 @@ import {
   BookOpen,
   TrendingUp,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const steps = [
   { step: 1, title: "Understand Yourself", name: "Career Profile", icon: User },
@@ -27,45 +28,64 @@ const steps = [
   { step: 6, title: "Grow", name: "Continuous Improvement", icon: TrendingUp },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 export function CareerShiftJourney() {
   return (
-    <div className="py-6">
-      <div className="mb-8 text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+    <div className="py-10">
+      <div className="mb-12 text-center max-w-2xl mx-auto">
+        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
           How CareerShift Helps You
         </h2>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-[17px] text-[#4A5568] font-light">
           Your step-by-step roadmap to achieving AI fluency and career resilience.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
         {steps.map((item, index) => (
-          <div 
+          <motion.div 
             key={index} 
-            className="bg-card border border-border p-6 rounded-2xl relative overflow-hidden group hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
+            variants={itemVariants}
+            className="flex items-center gap-5 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
           >
-            {/* Big background number */}
-            <div className="absolute -right-2 -bottom-6 text-[120px] font-black text-muted/10 pointer-events-none group-hover:text-primary/5 transition-colors select-none leading-none">
-              {item.step}
+            <div className="w-14 h-14 rounded-full bg-[#F1F5F9] flex items-center justify-center shrink-0 text-[#475569] group-hover:bg-[#E2E8F0] group-hover:text-[#0A121F] transition-colors duration-300">
+              <item.icon className="w-6 h-6" strokeWidth={1.5} />
             </div>
             
-            <div className="flex items-center gap-3 mb-4 relative z-10">
-              <div className="bg-primary/10 p-2.5 rounded-xl text-primary">
-                <item.icon className="w-5 h-5" />
+            <div className="flex flex-col">
+              <div className="text-[11px] font-bold uppercase tracking-widest text-[#C9A84C] mb-1.5">
+                STEP {item.step}
               </div>
-              <div className="text-sm font-bold uppercase tracking-wider text-primary">
-                Step {item.step}
-              </div>
+              <h3 className="font-display text-[20px] font-medium text-[#0A121F] leading-tight mb-1">
+                {item.title}
+              </h3>
+              <p className="text-[14px] text-[#718096] font-light">
+                {item.name}
+              </p>
             </div>
-            
-            <div className="relative z-10">
-              <h3 className="text-lg font-bold text-foreground mb-1">{item.title}</h3>
-              <p className="text-sm text-muted-foreground font-medium">{item.name}</p>
-            </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

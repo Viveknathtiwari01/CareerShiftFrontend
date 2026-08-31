@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, Map, ClipboardList, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Sparkles, Map, ClipboardList, CheckCircle2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useJourneyStatus } from "@/hooks/use-journey-status";
@@ -21,17 +21,15 @@ export function PersonalizedGuidance() {
   if (status === "COMPLETED") {
     return (
       <div className="py-2">
-        <div className="bg-card border border-border rounded-xl px-5 py-4 shadow-sm flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold tracking-tight text-foreground">
+        <div className="bg-[#FDFBF2] border border-[#E8C96A]/40 rounded-2xl px-6 py-4 flex items-start gap-3">
+          <Info className="w-5 h-5 text-[#C9A84C] shrink-0 mt-0.5" />
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[15px] font-bold text-[#0A121F]">
               Your Career Shift is Underway
-            </h2>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Based on your profile and 3B analysis you can see your <strong>AI fitness report</strong>, <strong>Career Identity</strong>, <strong>Suggested AI tools</strong> and <strong>Assessment history</strong> from the sidebar.
-            </p>
+            </span>
+            <span className="text-[14px] text-muted-foreground">
+              Based on your profile and 3B analysis you can see your <strong className="text-foreground font-semibold">AI fitness report</strong>, <strong className="text-foreground font-semibold">Career Identity</strong>, <strong className="text-foreground font-semibold">Suggested AI tools</strong> and <strong className="text-foreground font-semibold">Assessment history</strong> from the sidebar.
+            </span>
           </div>
         </div>
       </div>
@@ -40,58 +38,46 @@ export function PersonalizedGuidance() {
 
   return (
     <div className="py-2">
-      <div className="bg-card border border-border rounded-xl p-5 sm:p-6 shadow-sm">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold tracking-tight text-foreground">
-            Recommended Next Action
-          </h2>
-        </div>
+      <div className="space-y-4">
+        {status === "NEEDS_PROFILE" && (
+          <ActionCard
+            title="Recommended Next Step: Complete Your Career Profile"
+            description="Your next step is to complete your Career Profile. This gives us the baseline to understand your professional background."
+            ctaText="Go to My Profile"
+            ctaLink="/my-profile"
+            icon={Map}
+          />
+        )}
 
-        <div className="space-y-4">
-          {status === "NEEDS_PROFILE" && (
-            <ActionCard
-              title="Complete Your Career Profile"
-              description="Your next step is to complete your Career Profile. This gives us the baseline to understand your professional background."
-              ctaText="Go to My Profile"
-              ctaLink="/my-profile"
-              icon={Map}
-              isPrimary
-            />
-          )}
+        {status === "NEEDS_ASSESSMENT" && (
+          <ActionCard
+            title="Recommended Next Step: Complete Career Assessment"
+            description="Your next step is to complete your Career Assessment to evaluate your current daily tasks and AI usage."
+            ctaText="Start Assessment"
+            ctaLink="/assessment"
+            icon={ClipboardList}
+          />
+        )}
 
-          {status === "NEEDS_ASSESSMENT" && (
-            <ActionCard
-              title="Complete Career Assessment"
-              description="Your next step is to complete your Career Assessment to evaluate your current daily tasks and AI usage."
-              ctaText="Start Assessment"
-              ctaLink="/assessment"
-              icon={ClipboardList}
-              isPrimary
-            />
-          )}
+        {status === "NEEDS_3B" && (
+          <ActionCard
+            title="Recommended Next Step: Generate 3B Analysis"
+            description="Your next step is to go to the 3B page to generate your personalized 3B analysis (Build, Bot, Blend)."
+            ctaText="Go to 3B Analysis"
+            ctaLink="/3b-analysis"
+            icon={CheckCircle2}
+          />
+        )}
 
-          {status === "NEEDS_3B" && (
-            <ActionCard
-              title="Generate 3B Analysis"
-              description="Your next step is to go to the 3B page to generate your personalized 3B analysis (Build, Bot, Blend)."
-              ctaText="Go to 3B Analysis"
-              ctaLink="/3b-analysis"
-              icon={CheckCircle2}
-              isPrimary
-            />
-          )}
-
-          {status === "NEEDS_REPORT" && (
-            <ActionCard
-              title="Generate Intelligence Report"
-              description="Based on your 3B analysis you can generate your Intelligence report to get actionable career insights."
-              ctaText="Generate Report"
-              ctaLink="/report"
-              icon={Sparkles}
-              isPrimary
-            />
-          )}
-        </div>
+        {status === "NEEDS_REPORT" && (
+          <ActionCard
+            title="Recommended Next Step: Generate Intelligence Report"
+            description="Based on your 3B analysis you can generate your Intelligence report to get actionable career insights."
+            ctaText="Generate Report"
+            ctaLink="/report"
+            icon={Sparkles}
+          />
+        )}
       </div>
     </div>
   );
@@ -103,35 +89,31 @@ function ActionCard({
   ctaText,
   ctaLink,
   icon: Icon,
-  isPrimary,
 }: {
   title: string;
   description: string;
   ctaText: string;
   ctaLink: string;
   icon: React.ElementType;
-  isPrimary?: boolean;
 }) {
   return (
-    <div className="bg-card border border-border p-5 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div className="flex-1">
-        <div className="flex items-center gap-3 mb-2">
-          <div className={`p-2 rounded-lg ${isPrimary ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
-            <Icon className="w-5 h-5" />
-          </div>
-          <h3 className="font-semibold text-foreground text-lg">{title}</h3>
+    <div className="bg-[#FDFBF2] border border-[#E8C96A]/40 rounded-2xl px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex items-start gap-3 flex-1">
+        <Icon className="w-5 h-5 text-[#C9A84C] shrink-0 mt-0.5" />
+        <div className="flex flex-col gap-1.5">
+          <span className="text-[15px] font-bold text-[#0A121F]">
+            {title}
+          </span>
+          <span className="text-[14px] text-muted-foreground">
+            {description}
+          </span>
         </div>
-        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
       <div className="shrink-0 mt-2 md:mt-0">
         <Button
           asChild
           size="sm"
-          className={`w-full md:w-auto h-10 px-6 font-semibold ${
-            isPrimary 
-              ? "bg-primary text-primary-foreground shadow-soft hover:opacity-90" 
-              : "bg-background border border-border hover:bg-muted"
-          }`}
+          className="w-full md:w-auto bg-[#E8C96A] hover:bg-[#F3D782] text-[#0a121f] rounded-full h-10 px-5 font-semibold text-[14px] border-none shadow-none"
         >
           <Link to={ctaLink}>
             {ctaText} <ArrowRight className="ml-2 w-4 h-4" />

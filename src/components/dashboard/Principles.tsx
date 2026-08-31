@@ -25,24 +25,24 @@ const principles = [
 
 export function Principles() {
   return (
-    <div className="py-6 border-y border-border my-6">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+    <div className="py-10">
+      <div className="mb-10 text-center max-w-2xl mx-auto">
+        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
           CareerShift Principles
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {principles.map((p, idx) => (
           <div
             key={idx}
-            className="bg-card border border-border p-4 rounded-xl shadow-sm text-center flex flex-col items-center"
+            className="bg-white p-8 rounded-3xl shadow-sm text-center flex flex-col items-center justify-center min-h-[220px] hover:-translate-y-1 hover:shadow-md transition-all duration-300 group"
           >
-            <div className="bg-muted p-3 rounded-full mb-3 text-primary">
-              <p.icon className="w-5 h-5" />
+            <div className="bg-[#FDFBF2] border border-[#E8C96A]/20 p-3.5 rounded-full mb-6 text-[#C9A84C] group-hover:scale-110 transition-transform duration-300">
+              <p.icon className="w-5 h-5" strokeWidth={1.5} />
             </div>
-            <h3 className="text-sm font-semibold text-foreground mb-1">{p.title}</h3>
-            <p className="text-xs text-muted-foreground">{p.description}</p>
+            <h3 className="font-display text-[19px] font-medium text-[#0A121F] mb-2">{p.title}</h3>
+            <p className="text-[14px] text-[#4A5568] font-light leading-relaxed">{p.description}</p>
           </div>
         ))}
       </div>

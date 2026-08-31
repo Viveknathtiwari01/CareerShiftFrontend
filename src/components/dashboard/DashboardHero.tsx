@@ -1,42 +1,41 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles, Play } from "lucide-react";
 
 export function DashboardHero() {
   return (
-    <section className="hero-ink p-8 sm:p-12">
-      <div className="pointer-events-none absolute -left-12 -top-12 h-40 w-40 rounded-full bg-primary/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
-
+    <section className="bg-[#1B2533] p-8 sm:p-12 md:p-14 lg:p-16 rounded-[2rem] overflow-hidden relative shadow-lg">
       <div className="relative z-10 grid lg:grid-cols-[1fr_auto] gap-12 items-center w-full">
         <div className="flex flex-col items-start text-left">
           {/* Badge */}
-          <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-[#C9A84C]/20 px-3 py-1 text-sm font-medium text-[#C9A84C] shadow-sm backdrop-blur-sm">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-sm font-medium text-[#E8C96A]">
+            <Sparkles className="w-4 h-4" />
             <span>Welcome to your new career advantage</span>
           </div>
 
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl leading-tight">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-[52px] leading-[1.1] text-white font-normal tracking-wide">
             AI Is Not Here to Replace You.
             <br className="hidden sm:block" />
             It's Here to Redefine How You Work.
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-6 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl">
+          <p className="mt-8 text-[16px] sm:text-[17px] text-white/70 leading-[1.7] max-w-[620px] font-light">
             Most professionals fear AI because they don't know how to use it effectively. CareerShift
             gives you a personalized diagnosis of your AI exposure, and pairs it with the exact tools,
             courses, and timelines to upskill.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-            <Button asChild size="lg" className="w-full sm:w-auto font-semibold">
-              <Link to="/my-profile">Start My AI Journey</Link>
+          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <Button asChild size="lg" className="w-full sm:w-auto bg-[#E8C96A] hover:bg-[#F3D782] text-[#0a121f] rounded-full h-12 px-7 font-semibold text-[15px] border-none">
+              <Link to="/my-profile">Start My AI Journey <ArrowRight className="ml-2 w-4 h-4" /></Link>
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="w-full sm:w-auto border-sidebar-foreground/20 bg-transparent text-sidebar-foreground hover:bg-white/8 hover:text-sidebar-foreground"
+              className="w-full sm:w-auto border-white/20 bg-transparent text-white rounded-full h-12 px-7 hover:bg-white/10 text-[15px] hover:text-white"
             >
-              Watch 2-Min Intro
+              <Play className="mr-2 w-4 h-4" fill="currentColor" /> Watch 2-Min Intro
             </Button>
           </div>
         </div>
