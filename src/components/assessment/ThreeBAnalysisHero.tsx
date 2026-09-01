@@ -35,58 +35,59 @@ export function ThreeBAnalysisHero({ assessmentId }: Props) {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
-      className="rounded-xl bg-gradient-to-br from-[#E2B75A] to-[#C99933] px-5 py-5 md:px-8 md:py-6 text-white shadow-lg relative overflow-hidden"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="rounded-2xl border border-border bg-card px-6 py-8 md:px-10 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow"
     >
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent opacity-75"></div>
+      
       <div className="relative z-10 mx-auto max-w-6xl">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-white/85 mb-2">
+        <p className="text-xs font-bold uppercase tracking-wider text-[#C9A84C] mb-2">
           CareerShift Core Engine
         </p>
 
-        <h2 className="font-display text-2xl font-bold leading-tight md:text-3xl text-white">
+        <h2 className="font-display text-2xl font-bold leading-tight md:text-3xl text-foreground">
           My Future Work Design
         </h2>
 
-        <p className="mt-1.5 text-sm text-white/90">
+        <p className="mt-2 text-[15px] text-muted-foreground">
           {totalHours} hours today, redistributed by what technology can now do.
         </p>
 
-        <div className="mt-5 mb-4 flex h-2.5 w-full overflow-hidden rounded-full bg-black/20">
-          <div className="bg-[#0F3460]" style={{ width: `${botPct}%` }} />
-          <div style={{ width: `${blendPct}%`, backgroundColor: BLEND_BAR }} />
-          <div className="bg-white" style={{ width: `${buildPct}%` }} />
+        <div className="mt-8 mb-6 flex h-3 w-full overflow-hidden rounded-full bg-secondary">
+          <motion.div initial={{ width: 0 }} animate={{ width: `${botPct}%` }} transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }} className="bg-blue-600" />
+          <motion.div initial={{ width: 0 }} animate={{ width: `${blendPct}%` }} transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }} className="bg-amber-500" />
+          <motion.div initial={{ width: 0 }} animate={{ width: `${buildPct}%` }} transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }} className="bg-emerald-500" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="rounded-lg bg-[#1A365D]/90 px-4 py-3 border border-white/10 text-left">
-            <div className="text-xl font-bold text-white leading-tight">
-              {botH} hrs <span className="text-base font-bold">BOT</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <motion.div whileHover={{ y: -2 }} className="rounded-xl bg-blue-50 border border-blue-200 px-5 py-4 text-left shadow-sm transition-transform">
+            <div className="text-2xl font-bold text-blue-900 leading-tight">
+              {botH} hrs <span className="text-[15px] font-semibold text-blue-700">BOT</span>
             </div>
-            <div className="text-xs font-medium text-white/75 mt-0.5">
+            <div className="text-xs font-medium text-blue-600/80 mt-1.5">
               {botAnnual} hrs/yr · automate within 30 days
             </div>
-          </div>
-          <div
-            className="rounded-lg px-4 py-3 border border-white/20 text-left"
-            style={{ backgroundColor: BLEND_CARD }}
-          >
-            <div className="text-xl font-bold text-white leading-tight">
-              {blendH} hrs <span className="text-base font-bold">BLEND</span>
+          </motion.div>
+          
+          <motion.div whileHover={{ y: -2 }} className="rounded-xl bg-amber-50 border border-amber-200 px-5 py-4 text-left shadow-sm transition-transform">
+            <div className="text-2xl font-bold text-amber-900 leading-tight">
+              {blendH} hrs <span className="text-[15px] font-semibold text-amber-700">BLEND</span>
             </div>
-            <div className="text-xs font-medium text-white/85 mt-0.5">
+            <div className="text-xs font-medium text-amber-700/80 mt-1.5">
               {blendAnnual} hrs/yr · augmentable with AI
             </div>
-          </div>
-          <div className="rounded-lg bg-white/95 px-4 py-3 shadow-sm text-left">
-            <div className="text-xl font-bold text-[#C99933] leading-tight">
-              {buildH} hrs <span className="text-base font-bold">BUILD</span>
+          </motion.div>
+          
+          <motion.div whileHover={{ y: -2 }} className="rounded-xl bg-emerald-50 border border-emerald-200 px-5 py-4 text-left shadow-sm transition-transform">
+            <div className="text-2xl font-bold text-emerald-900 leading-tight">
+              {buildH} hrs <span className="text-[15px] font-semibold text-emerald-700">BUILD</span>
             </div>
-            <div className="text-xs font-semibold text-black/65 mt-0.5">
+            <div className="text-xs font-medium text-emerald-700/80 mt-1.5">
               {buildAnnual} hrs/yr · human capability central
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.section>

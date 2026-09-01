@@ -568,52 +568,54 @@ export const CollapsibleTaskCard = forwardRef<
               )}
 
               {sections.learning && (
-                <SectionBlock step={learningStep} title="Learning Implication" variant="dark">
+                <SectionBlock step={learningStep} title="Learning Implication" variant="default">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {task.learn_future && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-white/50">
+                      <div className="rounded-xl bg-slate-50 p-4 border border-slate-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-500">
                           Future need
                         </span>
-                        <span className="text-sm">{task.learn_future}</span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.learn_future}</span>
                       </div>
                     )}
                     {task.learn_current && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-white/50">
+                      <div className="rounded-xl bg-slate-50 p-4 border border-slate-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-500">
                           Current strength
                         </span>
-                        <span className="text-sm">{task.learn_current}</span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.learn_current}</span>
                       </div>
                     )}
                     {task.learn_gap && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-[#63B3ED]">Gap</span>
-                        <span className="text-sm">{task.learn_gap}</span>
+                      <div className="rounded-xl bg-sky-50/50 p-4 border border-sky-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-sky-600">
+                          Gap
+                        </span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.learn_gap}</span>
                       </div>
                     )}
                     {task.learn_do && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-[#48BB78]">
+                      <div className="rounded-xl bg-emerald-50/50 p-4 border border-emerald-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-emerald-600">
                           Learn
                         </span>
-                        <span className="text-sm">{task.learn_do}</span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.learn_do}</span>
                       </div>
                     )}
                     {task.learn_dont && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-[#F56565]">
+                      <div className="rounded-xl bg-red-50/50 p-4 border border-red-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-red-600">
                           Don't learn
                         </span>
-                        <span className="text-sm">{task.learn_dont}</span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.learn_dont}</span>
                       </div>
                     )}
                     {task.where_to_learn && (
-                      <div>
-                        <span className="mb-1 block text-xs font-semibold text-white/50">
+                      <div className="rounded-xl bg-slate-50 p-4 border border-slate-100">
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-500">
                           Where
                         </span>
-                        <span className="text-sm">{task.where_to_learn}</span>
+                        <span className="text-sm text-slate-700 leading-relaxed">{task.where_to_learn}</span>
                       </div>
                     )}
                   </div>

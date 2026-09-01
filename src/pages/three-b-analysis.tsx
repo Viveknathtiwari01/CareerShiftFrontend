@@ -6,9 +6,19 @@ import { ThreeBAnalysisHero } from "@/components/assessment/ThreeBAnalysisHero";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useActiveAssessmentId } from "@/hooks/use-active-assessment";
+import { MarketRealityCheck } from "@/components/assessment/MarketRealityCheck";
+import { useQuery } from "@tanstack/react-query";
+import { getTaskAnalysis } from "@/api/analysis";
 
 export default function ThreeBAnalysisPage() {
   const { data: assessmentId, isLoading } = useActiveAssessmentId();
+
+  const analysisQuery = useQuery({
+    queryKey: ["assessment-analysis", assessmentId],
+    queryFn: () => getTaskAnalysis(assessmentId!),
+    enabled: !!assessmentId,
+    staleTime: 60_000,
+  });
 
   return (
     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -27,6 +37,10 @@ export default function ThreeBAnalysisPage() {
 
       <ThreeBAnalysisHero assessmentId={assessmentId} />
 
+      {analysisQuery.data?.market_reality && (
+        <MarketRealityCheck data={analysisQuery.data.market_reality} />
+      )}
+
       <section className="panel p-5 md:p-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
@@ -38,7 +52,7 @@ export default function ThreeBAnalysisPage() {
         )}
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-muted/25 p-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 mt-4">
         <p className="type-body-sm text-muted-foreground">
           Submit to generate your Career Intelligence Report from this analysis.
         </p>
@@ -46,7 +60,7 @@ export default function ThreeBAnalysisPage() {
           {assessmentId ? (
             <SubmitAssessmentButton
               assessmentId={assessmentId}
-              className="type-body inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-soft disabled:opacity-60"
+              className="type-body inline-flex items-center gap-2 rounded-xl bg-[#c9a84c] px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-[#b08e33] disabled:opacity-60"
             />
           ) : null}
           <Link

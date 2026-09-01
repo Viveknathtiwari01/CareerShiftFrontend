@@ -12,7 +12,6 @@ import {
   type ThreeBCategory,
 } from "@/api/analysis";
 import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
-import { MarketRealityCheck } from "@/components/assessment/MarketRealityCheck";
 import { CollapsibleTaskCard, CategoryTabButton } from "@/components/assessment/ThreeBAnalysisParts";
 import { getAssessmentTasks, mapBackendTaskToFrontend, isTaskReviewComplete } from "@/api/tasks";
 
@@ -267,7 +266,6 @@ export default function Step3BAnalysis({
         </motion.div>
       )}
 
-      <MarketRealityCheck data={analysisQuery.data?.market_reality} />
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
