@@ -49,7 +49,7 @@ function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <Hero />
       <MockStats />
@@ -91,7 +91,7 @@ function Nav() {
         <Link to="/" className="flex items-center gap-2">
           <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-14 object-contain" />
         </Link>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 xl:gap-8 xl:flex">
           {NAV_LINKS.map((l) => (
             <SectionLink
               key={l.label}
@@ -102,7 +102,7 @@ function Nav() {
             </SectionLink>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <Link to="/auth" className="text-sm font-medium text-black/90 hover:text-black">
             Log in
           </Link>
@@ -116,14 +116,14 @@ function Nav() {
         </div>
         <button
           aria-label="Toggle menu"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-black/10 text-black md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg border border-black/10 text-black xl:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
       {open && (
-        <div className="border-t border-black/10 bg-[#f6f5ec] md:hidden">
+        <div className="border-t border-black/10 bg-[#f6f5ec] xl:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {NAV_LINKS.map((l) => (
               <SectionLink
@@ -172,26 +172,27 @@ function Hero() {
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
             Will AI take <span className="text-brand">your job?</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
             Find out exactly what to build, what to automate, and how to become the person companies
             fight to keep. Receive your personalized AI Career Readiness Report in minutes.
           </p>
-          <div className="mt-8 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row lg:items-start">
-            <Link
-              to="/auth"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02] sm:w-auto"
-            >
-              Start free assessment
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <SectionLink
-              sectionId="report"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
-            >
-              View sample report
-            </SectionLink>
-          </div>
-          <div className="mt-12 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <div className="mt-8 flex w-full flex-col gap-6 sm:w-fit lg:mr-auto">
+            <div className="flex w-full flex-col items-center gap-4 sm:flex-row">
+              <Link
+                to="/auth"
+                className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
+              >
+                Start free assessment
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <SectionLink
+                sectionId="report"
+                className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                View sample report
+              </SectionLink>
+            </div>
+            <div className="flex w-full flex-col items-center justify-between gap-6 sm:flex-row sm:items-center sm:gap-8">
             <div className="flex items-center gap-4">
               <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400">
                 <Clock className="h-5 w-5" />
@@ -225,10 +226,11 @@ function Hero() {
                 <div className="text-xs text-white/60 mt-0.5">Would recommend</div>
               </div>
             </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[500px] overflow-hidden lg:mx-0">
+        <div className="relative w-full max-w-[500px] justify-self-center lg:justify-self-end">
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
           <HeroGraphic />
         </div>
@@ -241,7 +243,7 @@ function MockStats() {
   return (
     <section className="bg-[#0A1525] pb-16">
       <div className="container-page">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
           <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
             <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
               <ShieldCheck className="h-6 w-6" />
@@ -1004,7 +1006,7 @@ function WorkshopOutcomesChart({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className="mx-auto w-full max-w-3xl"
+      className="mx-auto w-full max-w-5xl"
       role="img"
       aria-label="Workshop outcomes growth line chart"
     >
@@ -1310,7 +1312,7 @@ function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative overflow-hidden w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center bg-[#0A1525]">
+    <div className="flex justify-center items-center relative overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center">
       {/* Concentric rings */}
       <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>
       <div className="absolute w-[50%] h-[50%] rounded-full border border-white/[0.04] pointer-events-none"></div>
@@ -1458,7 +1460,7 @@ function OurStory() {
   return (
     <section id="our-story" className="bg-[#0A1525] py-24 text-white">
       <div className="container-page animate-fade-in-up">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-6xl text-center">
           <SectionEyebrow dark>Our Story</SectionEyebrow>
           {/* <div className="mx-auto w-32 h-32 my-10 relative">
             <div className="absolute -inset-2 -z-10 rounded-full bg-gradient-to-tr from-brand/20 to-primary/20 blur-xl opacity-60"></div>
@@ -1690,8 +1692,8 @@ function Footer() {
   return (
     <footer className="border-t border-border bg-[#0A1525]">
       <div className="container-page py-14">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(4,1fr)]">
-          <div>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2">
               <img src="/Logo_text_.png" alt="CareerShift Logo" className="h-32 object-contain" />
             </Link>
