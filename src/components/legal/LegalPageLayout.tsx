@@ -39,7 +39,9 @@ export function LegalPageLayout({ title, lastUpdated, children }: LegalPageLayou
       <footer className="border-t border-border bg-[#0A1525]">
         <div className="container-page flex flex-col items-start justify-between gap-3 py-8 text-sm text-white/60 sm:flex-row sm:items-center md:text-base">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-          <span>Built for professionals navigating the AI shift.</span>
+          {/* <a href="https://careershift3b.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
+            https://careershift3b.com/
+          </a> */}
         </div>
       </footer>
     </div>

@@ -62,7 +62,7 @@ export function ReportHeader({ report }: Props) {
             type="button"
             disabled={!!busy}
             onClick={() => runExport("pdf")}
-            className="inline-flex items-center gap-2 rounded-full bg-[#0A121F] hover:bg-[#1A2533] px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-full bg-[#D9A928] hover:bg-[#C2941E] px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy === "pdf" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
             Download PDF

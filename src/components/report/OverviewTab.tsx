@@ -9,7 +9,6 @@ import {
   Wrench,
   Zap,
   ShieldAlert,
-  type LucideIcon,
 } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
 
@@ -19,12 +18,12 @@ export function OverviewTab({ report }: Props) {
   const o = report.overview;
 
   const kpis = [
-    { label: "Overall Score", value: String(o.overall_score), icon: Activity, color: "text-brand" },
-    { label: "Tasks Analyzed", value: String(o.tasks_analyzed), icon: CheckSquare, color: "text-primary" },
-    { label: "Competencies", value: String(o.competency_count), icon: Award, color: "text-primary" },
-    { label: "AI Tools Used", value: String(o.ai_tools_count), icon: Wrench, color: "text-primary" },
-    { label: "Automation %", value: `${o.automation_pct}%`, icon: Zap, color: "text-brand" },
-    { label: "Career Risk", value: o.career_risk, icon: ShieldAlert, color: "text-primary" },
+    { label: "Overall Score", value: String(o.overall_score), icon: Activity, color: "text-[#C9A84C]" },
+    { label: "Tasks Analyzed", value: String(o.tasks_analyzed), icon: CheckSquare, color: "text-[#D6AD42]" },
+    { label: "Competencies", value: String(o.competency_count), icon: Award, color: "text-[#C9A84C]" },
+    { label: "AI Tools Used", value: String(o.ai_tools_count), icon: Wrench, color: "text-[#D6AD42]" },
+    { label: "Automation %", value: `${o.automation_pct}%`, icon: Zap, color: "text-[#C9A84C]" },
+    { label: "Career Risk", value: o.career_risk, icon: ShieldAlert, color: "text-[#D6AD42]" },
   ];
 
   const snapshot = [
@@ -34,49 +33,65 @@ export function OverviewTab({ report }: Props) {
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {kpis.map((kpi, idx) => (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05 }}
-            key={kpi.label}
-            className="rounded-2xl border border-border bg-background p-4 shadow-sm"
-          >
-            <kpi.icon className={`h-5 w-5 mb-3 ${kpi.color}`} />
-            <div className="text-2xl font-bold truncate">{kpi.value}</div>
-            <div className="text-xs font-medium text-muted-foreground mt-1">{kpi.label}</div>
-          </motion.div>
-        ))}
+    <div className="space-y-16 animate-in fade-in duration-500">
+      <div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {kpis.map((kpi, idx) => (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              key={kpi.label}
+              className="rounded-[1.5rem] border border-[#EDF2F7] bg-white p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:-translate-y-1 transition-transform duration-300 flex flex-col items-center text-center"
+            >
+              <div className="h-10 w-10 rounded-full bg-[#FDFBF2] flex items-center justify-center mb-3">
+                <kpi.icon className={`h-5 w-5 ${kpi.color}`} />
+              </div>
+              <div className="text-2xl font-display font-medium text-[#0A121F] truncate w-full">{kpi.value}</div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#718096] mt-1">{kpi.label}</div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <div>
-        <h3 className="mb-6 font-display text-2xl font-bold">Career Snapshot</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {snapshot.map((item) => (
-            <div key={item.label} className="rounded-2xl border border-border bg-background p-6 shadow-sm">
-              <item.icon className="h-5 w-5 text-brand mb-3" />
-              <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                {item.label}
+        <div className="text-center mb-10">
+          <h3 className="font-display text-3xl font-medium text-[#0A121F]">Career Snapshot</h3>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {snapshot.map((item, idx) => (
+            <motion.div 
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              key={item.label} 
+              className="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-transform duration-300 flex flex-col items-center text-center border border-[#EDF2F7]"
+            >
+              <div className="h-12 w-12 rounded-full bg-[#FDFBF2] text-[#C9A84C] flex items-center justify-center mb-6">
+                <item.icon className="h-6 w-6" />
               </div>
-              <div className="font-semibold text-lg">{item.value}</div>
-            </div>
+              <h4 className="font-display text-xl font-medium text-[#0A121F] mb-2">{item.label}</h4>
+              <p className="text-[16px] text-[#718096] font-light">
+                {item.value}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {o.profession_summary ? (
-        <div className="rounded-2xl border border-border bg-muted/30 p-6">
-          <h3 className="font-display text-xl font-bold mb-3">Profession Summary</h3>
-          <p className="text-muted-foreground leading-relaxed">{o.profession_summary}</p>
+        <div className="rounded-[2rem] border border-[#EDF2F7] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden text-center flex flex-col items-center">
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#FDFBF2] rounded-full blur-[60px] pointer-events-none" />
+          <h3 className="font-display text-2xl font-medium text-[#0A121F] mb-4 relative z-10">Profession Summary</h3>
+          <p className="text-[#4A5568] leading-relaxed text-[16px] font-light relative z-10 max-w-4xl mx-auto">{o.profession_summary}</p>
         </div>
       ) : null}
 
       {report.strategic_note ? (
-        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
-          <h3 className="font-display text-xl font-bold mb-3">Strategic Note</h3>
-          <p className="text-muted-foreground leading-relaxed">{report.strategic_note}</p>
+        <div className="rounded-[2rem] border border-[#EDF2F7] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center flex flex-col items-center">
+          <h3 className="font-display text-2xl font-medium text-[#0A121F] mb-4">Strategic Note</h3>
+          <p className="text-[#4A5568] leading-relaxed text-[16px] font-light max-w-4xl mx-auto">{report.strategic_note}</p>
         </div>
       ) : null}
     </div>

@@ -464,16 +464,16 @@ export default function AssessmentPage() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="bg-[#1B2533] rounded-[2rem] p-10 md:p-14 lg:p-16 relative overflow-hidden shadow-2xl"
+        className="bg-[#1B2533] rounded-[2rem] p-8 md:p-10 lg:p-12 relative overflow-hidden shadow-2xl"
       >
         <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none">
           
         </div>
-        <div className="relative z-10 max-w-3xl">
-          <h2 className="font-display text-4xl sm:text-5xl font-medium text-white leading-tight mb-6">
+        <div className="relative z-10 w-full">
+          <h2 className="font-display text-4xl sm:text-5xl font-medium text-white leading-tight mb-4">
             Ready to Discover Your AI Career Potential?
           </h2>
-          <p className="text-[17px] text-white/70 font-light mb-10 max-w-2xl leading-relaxed">
+          <p className="text-[17px] text-white/70 font-light mb-8 w-full leading-relaxed">
             Complete your first AI Career Assessment and receive personalized insights into your
             strengths, automation opportunities, AI fitness, and future career strategy.
           </p>

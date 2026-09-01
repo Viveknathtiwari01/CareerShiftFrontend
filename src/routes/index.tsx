@@ -1064,7 +1064,9 @@ function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-          <span>Built for professionals navigating the AI shift.</span>
+          {/* <a href="https://careershift3b.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
+            https://careershift3b.com/
+          </a> */}
         </div>
       </div>
     </footer>

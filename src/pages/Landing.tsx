@@ -1742,17 +1742,11 @@ function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-8 text-sm font-medium text-white/70 sm:flex-row sm:items-center md:text-base">
           <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-          <div className="flex flex-wrap items-center gap-4">
-            <span>Built for professionals navigating the AI shift.</span>
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="inline-flex items-center gap-1.5 text-[#C9A84C] transition-colors hover:text-[#e8c96a]"
-            >
-              Back to top
-              <ArrowUp className="h-4 w-4" />
-            </button>
-          </div>
+          {/* <div className="flex flex-wrap items-center gap-4">
+            <a href="https://careershift3b.com/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#C9A84C]">
+              https://careershift3b.com/
+            </a>
+          </div> */}
         </div>
       </div>
     </footer>
