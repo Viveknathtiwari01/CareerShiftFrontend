@@ -35,7 +35,7 @@ export function CompetencyTab({ report }: Props) {
             className="mb-16"
           >
             <div className="flex flex-col items-center justify-center gap-4 mb-10 text-center">
-              <h3 className="font-display text-3xl font-medium text-[#0A121F] flex items-center gap-3">
+              <h3 className="font-display text-3xl font-medium text-[#0B1D3A] flex items-center gap-3">
                 <Icon className="h-7 w-7 text-[#C9A84C]" /> {group.category} Competencies
               </h3>
             </div>
@@ -50,18 +50,18 @@ export function CompetencyTab({ report }: Props) {
                   className="rounded-[2rem] border border-[#EDF2F7] bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full"
                 >
                   <div className="flex-grow">
-                    <div className="font-display font-medium text-[#0A121F] text-xl mb-4">{item.name}</div>
+                    <div className="font-display font-medium text-[#0B1D3A] text-xl mb-4">{item.name}</div>
                     <div className="flex items-center justify-between">
                       {item.importance ? (
                         <div className="flex flex-col">
                           <span className="font-bold text-[10px] uppercase tracking-widest text-[#C9A84C] mb-1">Importance</span>
-                          <span className="text-[#0A121F] font-medium text-[14px]">{item.importance}</span>
+                          <span className="text-[#0B1D3A] font-medium text-[14px]">{item.importance}</span>
                         </div>
                       ) : null}
                       {item.expected_level ? (
                         <div className="flex flex-col text-right">
                           <span className="font-bold text-[10px] uppercase tracking-widest text-[#C9A84C] mb-1">Expected</span>
-                          <span className="text-[#0A121F] font-medium text-[14px]">{item.expected_level}</span>
+                          <span className="text-[#0B1D3A] font-medium text-[14px]">{item.expected_level}</span>
                         </div>
                       ) : null}
                     </div>

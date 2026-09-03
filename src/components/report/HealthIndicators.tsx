@@ -20,7 +20,7 @@ export function HealthIndicators({ report }: Props) {
   return (
     <div className="mt-16 space-y-16">
       <div className="border-t border-[#EDF2F7] pt-12">
-        <h3 className="mb-8 font-display text-2xl font-medium text-[#0A121F] text-center">
+        <h3 className="mb-8 font-display text-2xl font-medium text-[#0B1D3A] text-center">
           Career Health Indicators
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -33,7 +33,7 @@ export function HealthIndicators({ report }: Props) {
               className="rounded-2xl border border-[#EDF2F7] bg-white p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-center flex flex-col items-center justify-center hover:-translate-y-1 transition-transform duration-300"
             >
               <kpi.icon className={`h-6 w-6 mb-3 ${kpi.color}`} />
-              <div className="text-xl font-display font-medium text-[#0A121F] mb-1">{kpi.value}</div>
+              <div className="text-xl font-display font-medium text-[#0B1D3A] mb-1">{kpi.value}</div>
               <div className="text-[11px] font-bold uppercase tracking-widest text-[#718096]">
                 {kpi.label}
               </div>

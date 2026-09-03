@@ -38,12 +38,12 @@ export function ReportHeader({ report }: Props) {
     <>
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
         <div>
-          <h1 className="mb-4 font-display text-4xl sm:text-5xl font-medium text-[#0A121F]">
+          <h1 className="mb-4 font-display text-4xl sm:text-5xl font-medium text-[#0B1D3A]">
             Career Intelligence Report
           </h1>
           <p className="text-[17px] text-[#4A5568] font-light max-w-2xl leading-relaxed">
-            Personalized AI-powered career intelligence for <span className="font-medium text-[#0A121F]">{report.overview.job_title}</span> in{" "}
-            <span className="font-medium text-[#0A121F]">{report.overview.industry}</span>.
+            Personalized AI-powered career intelligence for <span className="font-medium text-[#0B1D3A]">{report.overview.job_title}</span> in{" "}
+            <span className="font-medium text-[#0B1D3A]">{report.overview.industry}</span>.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 mt-6 text-[13px] font-medium">
@@ -71,7 +71,7 @@ export function ReportHeader({ report }: Props) {
             type="button"
             disabled={!!busy}
             onClick={() => runExport("docx")}
-            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0A121F] hover:bg-gray-50 transition-all disabled:opacity-60 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0B1D3A] hover:bg-gray-50 transition-all disabled:opacity-60 shadow-sm"
           >
             {busy === "docx" ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
             Download DOC
@@ -79,7 +79,7 @@ export function ReportHeader({ report }: Props) {
           <button
             type="button"
             onClick={() => setShareOpen(true)}
-            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0A121F] hover:bg-gray-50 transition-all shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0B1D3A] hover:bg-gray-50 transition-all shadow-sm"
           >
             <Share2 className="h-4 w-4" /> Share
           </button>

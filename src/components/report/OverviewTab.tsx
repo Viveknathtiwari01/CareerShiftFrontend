@@ -47,7 +47,7 @@ export function OverviewTab({ report }: Props) {
               <div className="h-10 w-10 rounded-full bg-[#FDFBF2] flex items-center justify-center mb-3">
                 <kpi.icon className={`h-5 w-5 ${kpi.color}`} />
               </div>
-              <div className="text-2xl font-display font-medium text-[#0A121F] truncate w-full">{kpi.value}</div>
+              <div className="text-2xl font-display font-medium text-[#0B1D3A] truncate w-full">{kpi.value}</div>
               <div className="text-[10px] font-bold uppercase tracking-widest text-[#718096] mt-1">{kpi.label}</div>
             </motion.div>
           ))}
@@ -56,7 +56,7 @@ export function OverviewTab({ report }: Props) {
 
       <div>
         <div className="text-center mb-10">
-          <h3 className="font-display text-3xl font-medium text-[#0A121F]">Career Snapshot</h3>
+          <h3 className="font-display text-3xl font-medium text-[#0B1D3A]">Career Snapshot</h3>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {snapshot.map((item, idx) => (
@@ -71,7 +71,7 @@ export function OverviewTab({ report }: Props) {
               <div className="h-12 w-12 rounded-full bg-[#FDFBF2] text-[#C9A84C] flex items-center justify-center mb-6">
                 <item.icon className="h-6 w-6" />
               </div>
-              <h4 className="font-display text-xl font-medium text-[#0A121F] mb-2">{item.label}</h4>
+              <h4 className="font-display text-xl font-medium text-[#0B1D3A] mb-2">{item.label}</h4>
               <p className="text-[16px] text-[#718096] font-light">
                 {item.value}
               </p>
@@ -83,14 +83,14 @@ export function OverviewTab({ report }: Props) {
       {o.profession_summary ? (
         <div className="rounded-[2rem] border border-[#EDF2F7] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden text-center flex flex-col items-center">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#FDFBF2] rounded-full blur-[60px] pointer-events-none" />
-          <h3 className="font-display text-2xl font-medium text-[#0A121F] mb-4 relative z-10">Profession Summary</h3>
+          <h3 className="font-display text-2xl font-medium text-[#0B1D3A] mb-4 relative z-10">Profession Summary</h3>
           <p className="text-[#4A5568] leading-relaxed text-[16px] font-light relative z-10 max-w-4xl mx-auto">{o.profession_summary}</p>
         </div>
       ) : null}
 
       {report.strategic_note ? (
         <div className="rounded-[2rem] border border-[#EDF2F7] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center flex flex-col items-center">
-          <h3 className="font-display text-2xl font-medium text-[#0A121F] mb-4">Strategic Note</h3>
+          <h3 className="font-display text-2xl font-medium text-[#0B1D3A] mb-4">Strategic Note</h3>
           <p className="text-[#4A5568] leading-relaxed text-[16px] font-light max-w-4xl mx-auto">{report.strategic_note}</p>
         </div>
       ) : null}

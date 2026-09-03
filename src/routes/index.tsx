@@ -883,7 +883,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "21.25%", top: "9%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
+          <div className="bg-[#0B1D3A]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
               Loyalists
             </div>
@@ -897,7 +897,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "11.75%", top: "82.25%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
+          <div className="bg-[#0B1D3A]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
               Researchers
             </div>
@@ -911,7 +911,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "99.25%", top: "58.75%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
+          <div className="bg-[#0B1D3A]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
               Impulse
             </div>
@@ -925,7 +925,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "67%", top: "97%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
+          <div className="bg-[#0B1D3A]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
               Churners
             </div>
@@ -939,7 +939,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "78.75%", top: "9%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0b0f19]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
+          <div className="bg-[#0B1D3A]/90 backdrop-blur-md rounded-lg p-3 w-[110px] border border-transparent transition-all duration-300 hover:border-primary hover:-translate-y-1.5 cursor-pointer shadow-soft">
             <div className="text-white/60 text-[10px] font-semibold tracking-wider truncate">
               Deal Hunters
             </div>
@@ -958,7 +958,7 @@ function HeroGraphic() {
           className="absolute w-full h-full rounded-full border border-primary/45 bg-primary/[0.01] animate-valRadarWave"
           style={{ animationDelay: "2s" }}
         ></div>
-        <div className="w-[100px] h-[100px] rounded-full border border-primary/45 bg-[#080d16] flex flex-col items-center justify-center p-3 shadow-[0_0_25px_var(--color-primary)] pointer-events-auto">
+        <div className="w-[100px] h-[100px] rounded-full border border-primary/45 bg-[#0B1D3A] flex flex-col items-center justify-center p-3 shadow-[0_0_25px_var(--color-primary)] pointer-events-auto">
           <BrainCircuit className="h-6 w-6 text-primary mb-1" strokeWidth={2.5} />
           <span className="text-white text-[8px] font-bold tracking-[0.2em] leading-none mb-0.5 mt-1">
             CAREER

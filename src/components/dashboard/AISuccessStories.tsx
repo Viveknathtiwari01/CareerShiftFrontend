@@ -19,7 +19,7 @@ export function AISuccessStories() {
   return (
     <div className="py-10">
       <div className="mb-10 text-center max-w-2xl mx-auto">
-        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
+        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
           AI Success Stories
         </h2>
         <p className="text-[17px] text-[#4A5568] font-light">
@@ -37,7 +37,7 @@ export function AISuccessStories() {
               <div className="bg-[#E6FFFA] p-2.5 rounded-full text-[#38B2AC] shrink-0 border border-[#38B2AC]/10 group-hover:bg-[#B2F5EA] transition-colors duration-300">
                 <User className="w-5 h-5" strokeWidth={1.5} />
               </div>
-              <h3 className="font-display text-[20px] font-medium text-[#0A121F]">{story.role}</h3>
+              <h3 className="font-display text-[20px] font-medium text-[#0B1D3A]">{story.role}</h3>
             </div>
             <p className="text-[15px] text-[#4A5568] font-light leading-relaxed">{story.impact}</p>
           </div>

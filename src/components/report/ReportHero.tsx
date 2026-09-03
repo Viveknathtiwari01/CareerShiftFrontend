@@ -21,7 +21,7 @@ export function ReportHero({ report }: Props) {
       <div className="relative z-10 flex flex-col">
         {/* Top Section: Title & Readiness Tag */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <h2 className="font-display text-4xl sm:text-5xl font-medium text-[#0A121F]">
+          <h2 className="font-display text-4xl sm:text-5xl font-medium text-[#0B1D3A]">
             {career_identity.identity_title}
           </h2>
           <div className="shrink-0">
@@ -36,7 +36,7 @@ export function ReportHero({ report }: Props) {
           <div className="rounded-2xl border border-[#EDF2F7] bg-[#F8FAFC] p-5 shadow-sm flex items-center justify-between group hover:border-[#E2E8F0] hover:bg-white transition-all">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-widest text-[#718096] mb-1">Readiness Tier</div>
-              <div className="text-2xl font-display font-medium text-[#0A121F]">{ai_readiness.tier_label}</div>
+              <div className="text-2xl font-display font-medium text-[#0B1D3A]">{ai_readiness.tier_label}</div>
             </div>
             <div className="h-10 w-10 rounded-full bg-white border border-[#EDF2F7] text-[#D69E2E] flex items-center justify-center shadow-sm">
               <TrendingUp className="h-5 w-5" />
@@ -46,7 +46,7 @@ export function ReportHero({ report }: Props) {
           <div className="rounded-2xl border border-[#EDF2F7] bg-[#F8FAFC] p-5 shadow-sm flex items-center justify-between group hover:border-[#E2E8F0] hover:bg-white transition-all">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-widest text-[#718096] mb-1">Career Risk</div>
-              <div className="text-2xl font-display font-medium text-[#0A121F]">{overview.career_risk}</div>
+              <div className="text-2xl font-display font-medium text-[#0B1D3A]">{overview.career_risk}</div>
             </div>
             <div className="h-10 w-10 rounded-full bg-white border border-[#EDF2F7] text-[#319795] flex items-center justify-center shadow-sm">
               <ShieldAlert className="h-5 w-5" />
@@ -56,7 +56,7 @@ export function ReportHero({ report }: Props) {
           <div className="rounded-2xl border border-[#EDF2F7] bg-[#F8FAFC] p-5 shadow-sm flex items-center justify-between group hover:border-[#E2E8F0] hover:bg-white transition-all">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-widest text-[#718096] mb-1">Automation</div>
-              <div className="text-2xl font-display font-medium text-[#0A121F]">{overview.automation_pct}%</div>
+              <div className="text-2xl font-display font-medium text-[#0B1D3A]">{overview.automation_pct}%</div>
             </div>
             <div className="h-10 w-10 rounded-full bg-white border border-[#EDF2F7] text-[#C9A84C] flex items-center justify-center shadow-sm">
               <Zap className="h-5 w-5" />
@@ -66,7 +66,7 @@ export function ReportHero({ report }: Props) {
 
         {/* Bottom Section: Executive Summary Full Width */}
         <div className="rounded-2xl border border-[#EDF2F7] bg-[#F8FAFC] p-6 shadow-sm">
-          <h3 className="font-display text-lg font-medium text-[#0A121F] mb-2 flex items-center gap-2">
+          <h3 className="font-display text-lg font-medium text-[#0B1D3A] mb-2 flex items-center gap-2">
             Executive Summary
           </h3>
           <p className="text-[15px] text-[#4A5568] leading-relaxed font-light">

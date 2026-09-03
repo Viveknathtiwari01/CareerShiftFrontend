@@ -3,7 +3,7 @@ import { Quote } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Jenkins",
+    name: "Eram Fatima",
     profession: "Senior Marketing Manager",
     feedback:
       "This workshop completely changed how I approach campaigns. I'm doing in 2 hours what used to take me a full day.",
@@ -11,7 +11,7 @@ const testimonials = [
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
   },
   {
-    name: "Marcus Chen",
+    name: "Salman Ali",
     profession: "Financial Analyst",
     feedback:
       "I was skeptical about AI in finance, but the workflows taught here are incredibly practical. It's like having an assistant.",

@@ -24,7 +24,7 @@ export function PersonalizedGuidance() {
         <div className="bg-[#FDFBF2] border border-[#E8C96A]/40 rounded-2xl px-6 py-4 flex items-start gap-3">
           <Info className="w-5 h-5 text-[#C9A84C] shrink-0 mt-0.5" />
           <div className="flex flex-col gap-1.5">
-            <span className="text-[15px] font-bold text-[#0A121F]">
+            <span className="text-[15px] font-bold text-[#0B1D3A]">
               Your Career Shift is Underway
             </span>
             <span className="text-[14px] text-muted-foreground">
@@ -101,7 +101,7 @@ function ActionCard({
       <div className="flex items-start gap-3 flex-1">
         <Icon className="w-5 h-5 text-[#C9A84C] shrink-0 mt-0.5" />
         <div className="flex flex-col gap-1.5">
-          <span className="text-[15px] font-bold text-[#0A121F]">
+          <span className="text-[15px] font-bold text-[#0B1D3A]">
             {title}
           </span>
           <span className="text-[14px] text-muted-foreground">
@@ -113,7 +113,7 @@ function ActionCard({
         <Button
           asChild
           size="sm"
-          className="w-full md:w-auto bg-[#E8C96A] hover:bg-[#F3D782] text-[#0a121f] rounded-full h-10 px-5 font-semibold text-[14px] border-none shadow-none"
+          className="w-full md:w-auto bg-[#E8C96A] hover:bg-[#F3D782] text-[#0B1D3A] rounded-full h-10 px-5 font-semibold text-[14px] border-none shadow-none"
         >
           <Link to={ctaLink}>
             {ctaText} <ArrowRight className="ml-2 w-4 h-4" />

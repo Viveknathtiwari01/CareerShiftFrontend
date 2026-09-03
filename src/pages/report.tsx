@@ -94,7 +94,7 @@ export default function ReportPage() {
               className={`relative rounded-full px-5 py-2.5 text-[14px] transition-all duration-300 ${
                 activeTab === tab.id
                   ? "text-[#C9A84C] font-semibold"
-                  : "text-[#718096] font-medium hover:text-[#0A121F] hover:bg-gray-50"
+                  : "text-[#718096] font-medium hover:text-[#0B1D3A] hover:bg-gray-50"
               }`}
             >
               {activeTab === tab.id && (

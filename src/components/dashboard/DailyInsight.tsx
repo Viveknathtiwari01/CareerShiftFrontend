@@ -22,7 +22,7 @@ export function DailyInsight() {
         </span>
         <Button
           variant="ghost"
-          className="px-3 h-8 bg-[#0A121F] text-[#F9F7F3] text-xs font-semibold hover:bg-[#141F32] hover:text-white rounded rounded-lg"
+          className="px-3 h-8 bg-[#0B1D3A] text-[#F9F7F3] text-xs font-semibold hover:bg-[#0B1D3A] hover:text-white rounded rounded-lg"
         >
           Learn More <ArrowRight className="ml-2 w-3 h-3" />
         </Button>

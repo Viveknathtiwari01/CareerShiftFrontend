@@ -22,7 +22,7 @@ export function MarketRealityCheck({ data }: Props) {
       transition={{ duration: 0.5, delay: 0.1 }}
       className="bg-card rounded-2xl p-6 shadow-sm border border-border relative overflow-hidden group hover:shadow-md transition-all"
     >
-      <div className="absolute top-0 left-0 h-full w-1.5 bg-[#0A121F]"></div>
+      <div className="absolute top-0 left-0 h-full w-1.5 bg-[#0B1D3A]"></div>
       
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pl-3">
         <h3 className="text-xl font-display font-bold text-foreground">

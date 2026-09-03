@@ -103,7 +103,7 @@ export function DashboardNavigation() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full text-xs font-semibold justify-between h-9 px-3 bg-[#C9A84C] text-[#0A121F] hover:bg-[#FAD673] hover:text-[#0A121F] mt-auto"
+                  className="w-full text-xs font-semibold justify-between h-9 px-3 bg-[#C9A84C] text-[#0B1D3A] hover:bg-[#FAD673] hover:text-[#0B1D3A] mt-auto"
                 >
                   {card.cta} <ArrowRight className="w-4 h-4" />
                 </Button>

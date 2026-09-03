@@ -163,7 +163,7 @@ function Logo() {
 /* ---------- HERO ---------- */
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0A1525]">
+    <section className="relative overflow-hidden bg-[#0B1D3A]">
       <div className="container-page animate-fade-in-up relative grid gap-10 pt-10 pb-4 md:gap-14 md:pt-16 md:pb-6 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pt-20 lg:pb-8 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
@@ -241,7 +241,7 @@ function Hero() {
 
 function MockStats() {
   return (
-    <section className="bg-[#0A1525] pb-16">
+    <section className="bg-[#0B1D3A] pb-16">
       <div className="container-page">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
           <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
@@ -382,7 +382,7 @@ function Framework3B() {
     },
   ];
   return (
-    <section className="bg-[#0A1525] text-white py-24">
+    <section className="bg-[#0B1D3A] text-white py-24">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow dark>The Engine</SectionEyebrow>
@@ -472,7 +472,7 @@ function HowItWorks() {
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <section id="report" className="bg-[#0A1525] text-white py-24">
+    <section id="report" className="bg-[#0B1D3A] text-white py-24">
       <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
         <div>
           <SectionEyebrow dark>Sample report</SectionEyebrow>
@@ -712,7 +712,7 @@ function Testimonials() {
     },
   ];
   return (
-    <section className="bg-[#0A1525] py-24 text-white">
+    <section className="bg-[#0B1D3A] py-24 text-white">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow dark>Testimonials</SectionEyebrow>
@@ -806,7 +806,7 @@ function Workshop() {
       <section id="workshop" className="bg-background py-24">
       <div className="container-page space-y-20 animate-fade-in-up">
         {/* Hero matches in-app WorkshopHero messaging */}
-        <div className="relative overflow-hidden rounded-3xl bg-[#0A1525] px-6 py-16 sm:px-10 lg:px-16 text-center shadow-2xl">
+        <div className="relative overflow-hidden rounded-3xl bg-[#0B1D3A] px-6 py-16 sm:px-10 lg:px-16 text-center shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-brand/15 via-transparent to-teal/10" />
           <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand/20 blur-3xl" />
           <div className="relative z-10 mx-auto max-w-3xl">
@@ -873,7 +873,7 @@ function Workshop() {
         </div>
 
         {/* Motivation quote */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0A1525] p-10 text-center shadow-2xl md:p-16">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0B1D3A] p-10 text-center shadow-2xl md:p-16">
           <div className="absolute inset-0 bg-gradient-to-br from-brand/15 via-transparent to-teal/10" />
           <blockquote className="relative z-10 mx-auto max-w-4xl font-display text-2xl font-extrabold leading-tight text-white md:text-3xl">
             <span className="text-brand/60">&ldquo;</span>
@@ -900,7 +900,7 @@ function Workshop() {
               ))}
             </ul>
           </div>
-          <div className="rounded-3xl border border-border bg-[#0A1525] p-8 shadow-elevated">
+          <div className="rounded-3xl border border-border bg-[#0B1D3A] p-8 shadow-elevated">
             <div className="mb-5 flex items-center gap-2">
               <Target className="h-5 w-5 text-brand" />
               <h3 className="font-display text-2xl font-bold text-white">Mission</h3>
@@ -943,7 +943,7 @@ function Workshop() {
       </div>
     </section>
       {/* Workshop outcomes line graph */}
-      <section id="workshop-outcomes" className="bg-[#0A1525] text-white py-24">
+      <section id="workshop-outcomes" className="bg-[#0B1D3A] text-white py-24">
         <div className="container-page animate-fade-in-up">
           <div className="mx-auto max-w-2xl text-center">
             <SectionEyebrow dark>Workshop outcomes</SectionEyebrow>
@@ -1025,7 +1025,7 @@ function WorkshopOutcomesChart({
       <path d={linePath} fill="none" stroke="currentColor" className="text-brand" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       {points.map((p) => (
         <g key={p.label}>
-          <circle cx={p.x} cy={p.y} r="5" className="fill-brand stroke-[#0A1525]" strokeWidth="2" />
+          <circle cx={p.x} cy={p.y} r="5" className="fill-brand stroke-[#0B1D3A]" strokeWidth="2" />
           <text x={p.x} y={height - 8} textAnchor="middle" className="fill-white/50 text-[10px]">
             {p.label}
           </text>
@@ -1093,7 +1093,7 @@ function Pricing() {
             Start free. Upgrade only when you want the full report and roadmap.
           </p>
         </div>
-        <div className="mx-auto mt-14 grid w-full max-w-5xl gap-14 md:grid-cols-2">
+        <div className="mx-auto mt-14 grid w-full max-w-6xl gap-24 md:grid-cols-2">
           {tiers.map((t) => (
             <div
               key={t.name}
@@ -1375,7 +1375,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "15%", top: "15%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Automation Match
             </div>
@@ -1390,7 +1390,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "85%", top: "85%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Human Core
             </div>
@@ -1405,7 +1405,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "85%", top: "15%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               AI Leverage
             </div>
@@ -1420,7 +1420,7 @@ function HeroGraphic() {
           className="absolute pointer-events-auto"
           style={{ left: "15%", top: "85%", transform: "translate(-50%, -50%)" }}
         >
-          <div className="bg-[#0A1525] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
+          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
             <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
               Time Reclaimed
             </div>
@@ -1436,12 +1436,12 @@ function HeroGraphic() {
 
       {/* Center Node and Ripples */}
       <div className="absolute w-[35%] h-[35%] flex items-center justify-center pointer-events-none z-10">
-        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0A1525] animate-valRadarWave"></div>
+        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0B1D3A] animate-valRadarWave"></div>
         <div
-          className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0A1525] animate-valRadarWave"
+          className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0B1D3A] animate-valRadarWave"
           style={{ animationDelay: "2s" }}
         ></div>
-        <div className="w-[110px] h-[110px] rounded-full border border-white/10 bg-[#0A1525] flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto relative z-20">
+        <div className="w-[110px] h-[110px] rounded-full border border-white/10 bg-[#0B1D3A] flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto relative z-20">
           {/* <BrainCircuit className="h-7 w-7 text-brand mb-1" strokeWidth={2} /> */}
           <span className="text-white/90 text-[10px] font-bold tracking-[0.2em] leading-none mb-1 mt-1">
             CAREER
@@ -1458,7 +1458,7 @@ function HeroGraphic() {
 /* ---------- OUR STORY ---------- */
 function OurStory() {
   return (
-    <section id="our-story" className="bg-[#0A1525] py-24 text-white">
+    <section id="our-story" className="bg-[#0B1D3A] py-24 text-white">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-6xl text-center">
           <SectionEyebrow dark>Our Story</SectionEyebrow>
@@ -1507,7 +1507,7 @@ function OurStory() {
 /* ---------- CONTACT US ---------- */
 function ContactUs() {
   return (
-    <section id="contact" className="bg-[#0A1525] text-white py-24 border-y border-white/10">
+    <section id="contact" className="bg-[#0B1D3A] text-white py-24 border-y border-white/10">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
           <SectionEyebrow dark>Contact Us</SectionEyebrow>
@@ -1690,7 +1690,7 @@ function Footer() {
     },
   ];
   return (
-    <footer className="border-t border-border bg-[#0A1525]">
+    <footer className="border-t border-border bg-[#0B1D3A]">
       <div className="container-page py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="sm:col-span-2 lg:col-span-1">

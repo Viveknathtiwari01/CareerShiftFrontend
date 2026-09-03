@@ -22,7 +22,7 @@ export function MythVsReality() {
   return (
     <div className="py-10">
       <div className="mb-10 text-center max-w-2xl mx-auto">
-        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
+        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
           The AI Myth vs Reality
         </h2>
         <p className="text-[17px] text-[#4A5568] font-light">

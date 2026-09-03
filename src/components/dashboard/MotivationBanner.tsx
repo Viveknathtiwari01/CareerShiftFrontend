@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export function MotivationBanner() {
   return (
-    <div className="bg-[#0A1525] py-12 md:py-16 rounded-3xl text-center px-6 shadow-2xl relative overflow-hidden border border-white/5">
+    <div className="bg-[#0B1D3A] py-12 md:py-16 rounded-3xl text-center px-6 shadow-2xl relative overflow-hidden border border-white/5">
       {/* Subtle glow effects matching the hero */}
       <div className="pointer-events-none absolute -left-12 -top-12 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />

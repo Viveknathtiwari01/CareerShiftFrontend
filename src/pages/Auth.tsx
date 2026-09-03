@@ -138,7 +138,7 @@ export default function AuthPage() {
   return (
     <div className="grid min-h-screen overflow-x-hidden lg:grid-cols-2">
       {/* Left: brand panel */}
-      <aside className="bg-[#0A1525] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <aside className="bg-[#0B1D3A] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
           <img src="/Logo_text_.png" alt="logo" className="object-cover w-50" />
         </Link>

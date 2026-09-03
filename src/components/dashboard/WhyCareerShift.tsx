@@ -30,13 +30,13 @@ export function WhyCareerShift() {
       <div className="grid lg:grid-cols-[1fr_1fr] gap-6 lg:gap-10">
         {/* Left Side: Text Content */}
         <div className="bg-white rounded-[2rem] p-8 sm:p-10 md:p-12 shadow-sm flex flex-col justify-center">
-          <h2 className="font-display text-3xl sm:text-4xl font-normal tracking-wide text-[#0A121F] mb-6">
+          <h2 className="font-display text-3xl sm:text-4xl font-normal tracking-wide text-[#0B1D3A] mb-6">
             Why We Built CareerShift
           </h2>
           <div className="space-y-6 text-base sm:text-[17px] text-[#4A5568] leading-relaxed font-light">
             <p>
               We built CareerShift to solve a massive problem:{" "}
-              <strong className="text-[#0A121F] font-semibold">The "AI Fog."</strong>
+              <strong className="text-[#0B1D3A] font-semibold">The "AI Fog."</strong>
             </p>
             <p>
               Professionals feel AI anxiety but lack specificity. You read headlines about AI

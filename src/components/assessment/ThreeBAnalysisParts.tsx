@@ -32,12 +32,12 @@ const CATEGORY_THEME = {
   BUILD: {
     label: "BUILD",
     icon: Hammer,
-    badge: "bg-[#eef3fa] text-[#1e3a5f] border-[#b8cce8]",
-    stripe: "bg-[#1e3a5f]",
+    badge: "bg-[#eef3fa] text-[#0B1D3A] border-[#b8cce8]",
+    stripe: "bg-[#0B1D3A]",
     headerBg: "bg-[#f8fafc]",
-    accentBorder: "border-[#1e3a5f]/20",
-    pill: "bg-[#eef3fa] text-[#1e3a5f] border-[#c5d9f0]",
-    tabActive: "bg-[#1e3a5f] text-white border-[#1e3a5f]",
+    accentBorder: "border-[#0B1D3A]/20",
+    pill: "bg-[#eef3fa] text-[#0B1D3A] border-[#c5d9f0]",
+    tabActive: "bg-[#0B1D3A] text-white border-[#0B1D3A]",
   },
   BLEND: {
     label: "BLEND",
@@ -92,7 +92,7 @@ function MetaPill({
 /** Fixed-width step badge so all numbers align in one column */
 function StepBadge({ step }: { step: number }) {
   return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[10px] font-bold leading-none text-white">
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0B1D3A] text-[10px] font-bold leading-none text-white">
       {step}
     </span>
   );
@@ -115,7 +115,7 @@ function SectionBlock({
   const boxStyles = {
     default: "rounded-xl border border-border/70 bg-white p-4 md:p-5",
     highlight: "rounded-xl border border-amber-200/70 bg-[#fdfaf5] p-4 md:p-5",
-    dark: "rounded-xl border border-[#2d3748] bg-[#1A202C] p-4 md:p-5 text-white",
+    dark: "rounded-xl border border-[#2d3748] bg-[#0B1D3A] p-4 md:p-5 text-white",
     plain: "",
   };
 
@@ -274,7 +274,7 @@ function ComponentSolutionBlock({ comp }: { comp: TaskComponent }) {
   return (
     <div className={`overflow-hidden rounded-xl border shadow-sm ${COMPONENT_BOX_BG}`}>
       <div className="border-b border-[#e8d5a8]/60 px-4 py-3 md:px-5">
-        <h6 className="font-bold text-[15px] text-[#1e3a5f]">{comp.name}</h6>
+        <h6 className="font-bold text-[15px] text-[#0B1D3A]">{comp.name}</h6>
         {comp.capability && (
           <p className="mt-1 text-xs text-[#6b5a45]">
             <span className="font-semibold">Capability:</span> {comp.capability}
@@ -493,7 +493,7 @@ export const CollapsibleTaskCard = forwardRef<
                     {capabilities.map((cap, i) => (
                       <span
                         key={i}
-                        className="rounded-full border border-[#c5d9f0] bg-[#eef3fa] px-3.5 py-1.5 text-[13px] font-medium capitalize text-[#1e3a5f]"
+                        className="rounded-full border border-[#c5d9f0] bg-[#eef3fa] px-3.5 py-1.5 text-[13px] font-medium capitalize text-[#0B1D3A]"
                       >
                         {cap}
                       </span>
@@ -650,7 +650,7 @@ export function CategoryTabButton({
       className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition-all ${
         active
           ? category === "ALL"
-            ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+            ? "border-slate-900 bg-[#0B1D3A] text-white shadow-sm"
             : theme!.tabActive
           : "border-border bg-white text-slate-600 hover:bg-slate-50"
       }`}

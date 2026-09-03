@@ -152,7 +152,7 @@ export default function AssessmentPage() {
         className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-start"
       >
         <div className="max-w-2xl">
-          <h1 className="font-display text-4xl sm:text-5xl font-medium text-[#0A121F] mb-4">
+          <h1 className="font-display text-4xl sm:text-5xl font-medium text-[#0B1D3A] mb-4">
             AI Based Career Assessment
           </h1>
           <p className="text-[17px] text-[#4A5568] font-light leading-relaxed">
@@ -176,7 +176,7 @@ export default function AssessmentPage() {
                 <button
                   type="button"
                   disabled={!profileComplete || wizardLoading}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-5 py-2.5 text-[14px] font-medium text-[#0A121F] shadow-sm transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-5 py-2.5 text-[14px] font-medium text-[#0B1D3A] shadow-sm transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <RotateCcw className="h-4 w-4" />
                   Regenerate from scratch
@@ -210,7 +210,7 @@ export default function AssessmentPage() {
       >
         {/* Left Card - What's Analyzed */}
         <div className="lg:col-span-7 bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-[#EDF2F7]">
-          <h2 className="font-display text-[26px] font-medium text-[#0A121F] mb-4">
+          <h2 className="font-display text-[26px] font-medium text-[#0B1D3A] mb-4">
             Your Career. Your Tasks. Your AI Strategy.
           </h2>
           <p className="text-[16px] text-[#4A5568] font-light mb-6 leading-relaxed">
@@ -235,7 +235,7 @@ export default function AssessmentPage() {
               ].map((feature) => (
                 <span
                   key={feature}
-                  className="flex items-center gap-2 text-[14px] text-[#0A121F] font-medium"
+                  className="flex items-center gap-2 text-[14px] text-[#0B1D3A] font-medium"
                 >
                   <CheckCircle2 className="h-4 w-4 text-[#C9A84C]" /> {feature}
                 </span>
@@ -251,7 +251,7 @@ export default function AssessmentPage() {
               <ClipboardList className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="font-display text-xl font-medium text-[#0A121F]">Assessment Status</h3>
+              <h3 className="font-display text-xl font-medium text-[#0B1D3A]">Assessment Status</h3>
               <p className="mt-1 text-[13px] text-[#718096] font-light">
                 Track where you are in the journey
               </p>
@@ -289,7 +289,7 @@ export default function AssessmentPage() {
 
             <div className="flex items-center justify-between rounded-xl border border-[#EDF2F7] bg-[#F8FAFC] px-4 py-3">
               <span className="text-[13px] font-medium text-[#4A5568]">Estimated duration</span>
-              <span className="text-[13px] font-semibold text-[#0A121F]">7–10 minutes</span>
+              <span className="text-[13px] font-semibold text-[#0B1D3A]">7–10 minutes</span>
             </div>
           </div>
 
@@ -310,7 +310,7 @@ export default function AssessmentPage() {
             type="button"
             onClick={() => openWizard(false)}
             disabled={!profileComplete || wizardLoading}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#D6AD42] hover:bg-[#C9A84C] px-6 py-3.5 text-[14px] font-medium text-[#0A121F] transition-all disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#D6AD42] hover:bg-[#C9A84C] px-6 py-3.5 text-[14px] font-medium text-[#0B1D3A] transition-all disabled:cursor-not-allowed disabled:opacity-50"
           >
             {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
             <ArrowRight className="h-4 w-4" />
@@ -333,7 +333,7 @@ export default function AssessmentPage() {
         className="mb-20"
       >
         <div className="text-center mb-10 max-w-2xl mx-auto">
-          <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
+          <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
             What You Will Gain
           </h2>
         </div>
@@ -378,7 +378,7 @@ export default function AssessmentPage() {
                 <div className="bg-[#FDFBF2] border border-[#E8C96A]/20 p-3.5 rounded-full mb-6 text-[#C9A84C] group-hover:scale-110 transition-transform duration-300">
                   <Icon className="h-6 w-6" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-display text-[20px] font-medium text-[#0A121F] mb-2">{benefit.title}</h3>
+                <h3 className="font-display text-[20px] font-medium text-[#0B1D3A] mb-2">{benefit.title}</h3>
                 <p className="text-[14px] text-[#4A5568] font-light leading-relaxed">{benefit.description}</p>
               </motion.div>
             );
@@ -395,7 +395,7 @@ export default function AssessmentPage() {
         className="mb-24 bg-[#FDFBF2] py-16 px-4 md:px-8 rounded-[3rem]"
       >
         <div className="text-center mb-14 max-w-2xl mx-auto">
-          <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0A121F] mb-3">
+          <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
             What's Included
           </h2>
           <p className="text-[17px] text-[#4A5568] font-light">
@@ -450,7 +450,7 @@ export default function AssessmentPage() {
                 <p className="text-[11px] font-bold uppercase tracking-widest text-[#D6AD42] mb-1.5">
                   Step {idx + 1}
                 </p>
-                <h3 className="font-display text-[20px] font-medium text-[#0A121F] mb-1">{step.title}</h3>
+                <h3 className="font-display text-[20px] font-medium text-[#0B1D3A] mb-1">{step.title}</h3>
                 <p className="text-[14px] text-[#718096] font-light">{step.desc}</p>
               </div>
             </motion.div>
@@ -464,10 +464,10 @@ export default function AssessmentPage() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="bg-[#1B2533] rounded-[2rem] p-8 md:p-10 lg:p-12 relative overflow-hidden shadow-2xl"
+        className="bg-[#0B1D3A] rounded-[2rem] p-8 md:p-10 lg:p-12 relative overflow-hidden shadow-2xl"
       >
         <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none">
-          
+
         </div>
         <div className="relative z-10 w-full">
           <h2 className="font-display text-4xl sm:text-5xl font-medium text-white leading-tight mb-4">
@@ -481,7 +481,7 @@ export default function AssessmentPage() {
             <button
               type="button"
               onClick={() => openWizard(false)}
-              className="inline-flex items-center gap-2 rounded-full bg-[#C9A84C] hover:bg-[#F3D782] text-[#0A121F] px-8 py-4 text-[15px] font-semibold shadow-md transition-all hover:-translate-y-0.5 group"
+              className="inline-flex items-center gap-2 rounded-full bg-[#C9A84C] hover:bg-[#F3D782] text-[#0B1D3A] px-8 py-4 text-[15px] font-semibold shadow-md transition-all hover:-translate-y-0.5 group"
             >
               {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
