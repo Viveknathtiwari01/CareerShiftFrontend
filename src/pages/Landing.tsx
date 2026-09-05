@@ -13,6 +13,7 @@ import {
   Compass,
   Cpu,
   FileText,
+  Flame,
   Github,
   Globe,
   Linkedin,
@@ -21,6 +22,7 @@ import {
   MessageSquare,
   Phone,
   Rocket,
+  Settings,
   ShieldCheck,
   Signal,
   Sparkles,
@@ -55,7 +57,7 @@ function Landing() {
       <Hero />
       <MockStats />
       <Problem />
-      <Framework3B />
+      <TheCareerShiftWay />
       <HowItWorks />
       <ReportPreview />
       <Features />
@@ -178,7 +180,7 @@ function Hero() {
             <span className="text-[#D39933]">Know what to do next.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
-            CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend — and gives you practical tools and opportunities for what comes next.
+            CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend - and gives you practical tools and opportunities for what comes next.
           </p>
           <div className="mt-8 flex w-full flex-col gap-4 sm:flex-row lg:mr-auto max-w-2xl">
             <Link
@@ -296,14 +298,14 @@ function Problem() {
       icon: <Compass className="h-6 w-6 text-[#0f172a]" />,
       iconBg: "bg-[#FEF3C7]",
       title: "You don't know where to start.",
-      body: "There's too much information, too many tools and opinions — and no clear way to understand what actually applies to your role and industry.",
+      body: "There's too much information, too many tools and opinions - and no clear way to understand what actually applies to your role and industry.",
     },
     {
       num: "02",
       icon: <ShieldCheck className="h-6 w-6 text-[#0f172a]" />,
       iconBg: "bg-[#CCFBF1]",
       title: "You can't tell hype from impact.",
-      body: "It's hard to know which tasks can be automated, where AI can genuinely help, and where human capability still matters — so you can focus on what really deserves your attention.",
+      body: "It's hard to know which tasks can be automated, where AI can genuinely help, and where human capability still matters - so you can focus on what really deserves your attention.",
     },
     {
       num: "03",
@@ -363,60 +365,202 @@ function Problem() {
   );
 }
 
-/* ---------- 3B FRAMEWORK ---------- */
-function Framework3B() {
-  const items = [
-    {
-      icon: <Sprout className="h-6 w-6" />,
-      title: "BUILD IT",
-      subtitle: "Human Mastery",
-      body: "Tasks requiring human judgment, emotional intelligence, leadership, and relationships. AI cannot replace these you must develop and own them as human capabilities.",
-      color: "border-brand/20",
-    },
-    {
-      icon: <Bot className="h-6 w-6" />,
-      title: "BOT IT",
-      subtitle: "Full Automation",
-      body: "Tasks that are repetitive, templated, or high-volume. AI handles these fully. Stop spending your energy here and deploy an AI tool to take over.",
-      color: "border-primary/20",
-    },
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: "BLEND IT",
-      subtitle: "Human + AI",
-      body: "Tasks where you stay in the driver's seat, but AI accelerates your output. The crucial skill here is knowing how to direct AI, not working against it.",
-      color: "border-foreground/20",
-    },
-  ];
+/* ---------- THE CAREERSHIFT WAY ---------- */
+function TheCareerShiftWay() {
   return (
-    <section className="bg-[#0B1D3A] text-white py-24">
-      <div className="container-page animate-fade-in-up">
-        <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow dark>The Engine</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            The 3B Framework
+    <section id="framework" className="bg-[#0B1D3A] text-white py-24 overflow-hidden font-sans">
+      <div className="container-page">
+        {/* Header */}
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <SectionEyebrow dark>The Careershift way</SectionEyebrow>
+          <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl lg:text-5xl tracking-tight leading-tight">
+            Your job title doesn't tell the whole story. <span className="text-[#FDCF58]">Your work does.</span>
           </h2>
-          <p className="mt-4 text-white/60">
-            CareerShift analyzes every task in your role and routes it into one of three action
-            categories, giving you a clear strategy for the age of AI.
+          <p className="mt-6 text-white/70 text-lg leading-relaxed max-w-3xl mx-auto">
+            We analyse your role, tasks and skills, understand how you actually work, and show you what to <span className="text-[#FDCF58]">Build, Bot and Blend</span> - so you can make informed decisions about your future.
           </p>
         </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {items.map((it) => (
-            <div
-              key={it.title}
-              className="flex flex-col p-8 rounded-3xl bg-white/5 border border-white/10 hover:-translate-y-1 transition-transform"
-            >
-              <div className="inline-grid h-14 w-14 place-items-center rounded-full bg-brand text-brand-foreground shadow-soft mb-2">
-                {it.icon}
+
+        {/* Graphic Area */}
+        <div className="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-0 mb-24">
+          
+          {/* Left Side Group */}
+          <div className="flex flex-col xl:flex-row items-center justify-end flex-1 gap-8 xl:gap-4 xl:pr-6">
+            {/* 1. Your Role Box */}
+            <div className="w-[200px] shrink-0 bg-white rounded-3xl p-6 text-center shadow-lg relative z-10 flex flex-col items-center justify-center min-h-[220px]">
+              <div className="w-14 h-14 rounded-full bg-[#E0E7FF] text-[#4338CA] flex items-center justify-center mb-4">
+                <Briefcase className="w-7 h-7" />
               </div>
-              <h3 className="mt-6 font-display text-2xl font-bold text-white">{it.title}</h3>
-              <div className="mt-1 text-sm font-semibold uppercase tracking-wider text-brand">
-                {it.subtitle}
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-white/60 flex-1">{it.body}</p>
+              <div className="text-[#0B1D3A] font-bold text-[17px] mb-2">Your Role</div>
+              <div className="text-[#0B1D3A]/60 text-sm">e.g. Marketing Manager</div>
             </div>
-          ))}
+
+            <ArrowRight className="hidden xl:block w-5 h-5 text-white/30 shrink-0" />
+            <div className="xl:hidden w-px h-8 bg-white/20" />
+
+            {/* 2. Your Work Box */}
+            <div className="w-[220px] shrink-0 bg-white/5 rounded-3xl p-6 border border-white/10 relative z-10 flex flex-col min-h-[220px]">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
+                <div className="text-white font-bold text-[16px]">Your Work</div>
+              </div>
+              <div className="flex flex-col gap-4">
+                {[
+                  { icon: <FileText className="w-4 h-4" />, label: "Tasks" },
+                  { icon: <Settings className="w-4 h-4" />, label: "Skills" },
+                  { icon: <Clock className="w-4 h-4" />, label: "Time" },
+                  { icon: <BarChart3 className="w-4 h-4" />, label: "Frequency" },
+                  { icon: <Flame className="w-4 h-4" />, label: "Criticality" },
+                ].map(item => (
+                  <div key={item.label} className="flex items-center gap-4 text-white/80 text-[15px]">
+                    <div className="text-white/50">{item.icon}</div> <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <ArrowRight className="hidden xl:block w-5 h-5 text-white/30 shrink-0" />
+            <div className="xl:hidden w-px h-8 bg-white/20" />
+          </div>
+
+          {/* 3. Center Engine */}
+          <div className="w-[280px] h-[280px] shrink-0 relative flex items-center justify-center">
+            {/* Glowing rings */}
+            <div className="absolute inset-0 rounded-full border border-white/5" />
+            <div className="absolute inset-4 rounded-full border border-white/10 shadow-[0_0_30px_rgba(253,207,88,0.1)]" />
+            <div className="absolute inset-8 rounded-full border border-[#00E5FF]/30 border-r-[#FDCF58]/40 border-b-[#A855F7]/30 border-l-[#3B82F6]/30 animate-[spin_20s_linear_infinite]" />
+            <div className="absolute inset-12 rounded-full border border-white/5" />
+            
+            <div className="text-center z-10 relative">
+              <div className="text-white font-bold text-[22px] tracking-wide mb-1">
+                <span className="text-[#FDCF58]">Career</span>Shift3B
+              </div>
+              <div className="text-white/50 text-[11px] uppercase tracking-[0.15em] leading-relaxed">
+                Work Intelligence<br />Engine
+              </div>
+            </div>
+
+            {/* Curving paths to the 3Bs (Desktop only) */}
+            <svg className="hidden xl:block absolute left-[98%] top-1/2 -translate-y-1/2 w-[60px] h-[180px] pointer-events-none" style={{ zIndex: 0 }}>
+              <path d="M0,90 C30,90 30,20 60,20" fill="none" stroke="#FDCF58" strokeWidth="2" strokeDasharray="4 4" className="opacity-50" />
+              <path d="M0,90 L60,90" fill="none" stroke="#14B8A6" strokeWidth="2" strokeDasharray="4 4" className="opacity-50" />
+              <path d="M0,90 C30,90 30,160 60,160" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeDasharray="4 4" className="opacity-50" />
+              
+              {/* Solid Dots at ends */}
+              <circle cx="60" cy="20" r="3" fill="#FDCF58" />
+              <circle cx="60" cy="90" r="3" fill="#14B8A6" />
+              <circle cx="60" cy="160" r="3" fill="#8B5CF6" />
+            </svg>
+          </div>
+
+          {/* Right Side Group */}
+          <div className="flex flex-col xl:flex-row items-center justify-start flex-1 gap-8 xl:gap-4 xl:pl-8 mt-8 xl:mt-0">
+            <div className="xl:hidden w-px h-8 bg-white/20" />
+
+            {/* 4. The 3Bs Stack */}
+            <div className="flex flex-col gap-4 shrink-0 relative z-10 w-[260px]">
+              {/* Build It */}
+              <div className="bg-[#FEF3C7] rounded-2xl p-4 flex items-center gap-4 shadow-lg border border-[#F59E0B]/20">
+                <div className="w-12 h-12 rounded-full bg-[#F59E0B]/20 flex items-center justify-center shrink-0">
+                  <Brain className="w-6 h-6 text-[#D97706]" />
+                </div>
+                <div>
+                  <div className="text-[#D97706] font-bold text-[14px] uppercase tracking-wider mb-0.5">Build It</div>
+                  <div className="text-[#0B1D3A]/70 text-[12px] leading-tight">Strengthen what stays human</div>
+                </div>
+              </div>
+              {/* Bot It */}
+              <div className="bg-[#CCFBF1] rounded-2xl p-4 flex items-center gap-4 shadow-lg border border-[#14B8A6]/20">
+                <div className="w-12 h-12 rounded-full bg-[#14B8A6]/20 flex items-center justify-center shrink-0">
+                  <Bot className="w-6 h-6 text-[#0F766E]" />
+                </div>
+                <div>
+                  <div className="text-[#0F766E] font-bold text-[14px] uppercase tracking-wider mb-0.5">Bot It</div>
+                  <div className="text-[#0B1D3A]/70 text-[12px] leading-tight">Identify what can be automated</div>
+                </div>
+              </div>
+              {/* Blend It */}
+              <div className="bg-[#E0E7FF] rounded-2xl p-4 flex items-center gap-4 shadow-lg border border-[#6366F1]/20">
+                <div className="w-12 h-12 rounded-full bg-[#6366F1]/20 flex items-center justify-center shrink-0">
+                  <Users className="w-6 h-6 text-[#4338CA]" />
+                </div>
+                <div>
+                  <div className="text-[#4338CA] font-bold text-[14px] uppercase tracking-wider mb-0.5">Blend It</div>
+                  <div className="text-[#0B1D3A]/70 text-[12px] leading-tight">Find where human + AI work better together</div>
+                </div>
+              </div>
+            </div>
+
+            <ArrowRight className="hidden xl:block w-5 h-5 text-white/30 shrink-0" />
+            <div className="xl:hidden w-px h-8 bg-white/20" />
+
+            {/* 5. Result Box */}
+            <div className="w-[230px] shrink-0 bg-white rounded-3xl p-7 shadow-lg relative z-10 flex flex-col min-h-[220px]">
+              <div className="flex justify-center mb-6">
+                 <div className="w-14 h-14 rounded-full bg-[#E0E7FF] text-[#4338CA] flex items-center justify-center">
+                   <FileText className="w-7 h-7" />
+                 </div>
+              </div>
+              <div className="text-[#0B1D3A] font-bold text-[16px] text-center mb-6 leading-tight">
+                Your Career Intelligence Report
+              </div>
+              <div className="flex flex-col gap-3 mt-auto">
+                {[
+                  "Clarity on your work",
+                  "Opportunities to act",
+                  "Tools to explore"
+                ].map(item => (
+                  <div key={item} className="flex items-start gap-2.5 text-[#0B1D3A]/70 text-[13px]">
+                    <CheckCircle2 className="w-4 h-4 text-[#4338CA] shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Feature Strip */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto border-t border-white/10 pt-12">
+          <div className="flex items-start gap-4">
+             <div className="w-10 h-10 rounded-full border border-[#FDCF58]/30 flex items-center justify-center shrink-0 bg-white/5">
+               <Target className="w-5 h-5 text-[#FDCF58]" />
+             </div>
+             <div>
+                <div className="text-white font-bold text-[15px] mb-1">Role-specific</div>
+                <div className="text-white/50 text-[13px] leading-snug">Tailored to your industry and function</div>
+             </div>
+          </div>
+          
+          <div className="flex items-start gap-4">
+             <div className="w-10 h-10 rounded-full border border-[#14B8A6]/30 flex items-center justify-center shrink-0 bg-white/5">
+               <Zap className="w-5 h-5 text-[#14B8A6]" />
+             </div>
+             <div>
+                <div className="text-white font-bold text-[15px] mb-1">Practical</div>
+                <div className="text-white/50 text-[13px] leading-snug">Focused on real work, not generic advice</div>
+             </div>
+          </div>
+
+          <div className="flex items-start gap-4">
+             <div className="w-10 h-10 rounded-full border border-[#3B82F6]/30 flex items-center justify-center shrink-0 bg-white/5">
+               <ShieldCheck className="w-5 h-5 text-[#3B82F6]" />
+             </div>
+             <div>
+                <div className="text-white font-bold text-[15px] mb-1">Independent</div>
+                <div className="text-white/50 text-[13px] leading-snug">Objective insights you can trust</div>
+             </div>
+          </div>
+
+          <div className="flex items-start gap-4">
+             <div className="w-10 h-10 rounded-full border border-[#FCD34D]/30 flex items-center justify-center shrink-0 bg-white/5">
+               <Sparkles className="w-5 h-5 text-[#FCD34D]" />
+             </div>
+             <div>
+                <div className="text-white font-bold text-[15px] mb-1">Actionable</div>
+                <div className="text-white/50 text-[13px] leading-snug">Clear next steps, not just information</div>
+             </div>
+          </div>
         </div>
       </div>
     </section>
