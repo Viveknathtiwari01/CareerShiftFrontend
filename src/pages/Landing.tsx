@@ -199,14 +199,15 @@ function Hero() {
           <div className="inline-flex items-center text-xs font-semibold tracking-widest text-black/60 uppercase rounded-md border border-black/15 px-3 py-1.5 bg-white shadow-sm">
             CAREER INTELLIGENCE FOR THE FUTURE OF WORK
           </div>
-          <h1 className="mt-6 font-display text-[32px] font-bold leading-[1.1] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
-            <span className="block whitespace-nowrap">Your work is changing.</span>
-            <span className="block text-[#D39933] whitespace-nowrap">Know what to do next.</span>
+          <h1 className="mt-4 font-display text-[32px] font-bold leading-[1.1] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
+            <span className="whitespace-nowrap">Your work is changing.</span>
+            <br />
+            <span className="text-[#D68822] whitespace-nowrap">Know what to do next.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-black/70">
             CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend - and gives you practical tools and opportunities for what comes next.
           </p>
-          <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row lg:mr-auto max-w-2xl">
+          <div className="mt-4 flex w-full flex-col gap-3 sm:flex-row lg:mr-auto max-w-2xl">
             <Link
               to="/auth"
               className="inline-flex w-full sm:w-auto whitespace-nowrap items-center justify-center gap-2 rounded-full bg-[#FDCF58] px-8 py-3.5 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
@@ -226,7 +227,7 @@ function Hero() {
           </div>
         </div>
 
-        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-6 lg:mt-0">
+        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-4 lg:mt-0 lg:max-w-[540px]">
           <HeroGraphic />
         </div>
       </div>
