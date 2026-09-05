@@ -13,7 +13,7 @@ export function LegalPageLayout({ title, lastUpdated, children }: LegalPageLayou
       <header className="sticky top-0 z-50 border-b border-border bg-[#f6f5ec]/95 backdrop-blur">
         <div className="container-page flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-12 object-contain" />
+            <img src="/new_logo11.png" alt="CareerShift Logo" className="h-12 object-contain" />
           </Link>
           <Link
             to="/"
