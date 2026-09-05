@@ -102,7 +102,7 @@ export default function AuthenticatedLayout() {
               </div>
             ) : (
               <img
-                src="/Logo_text_.png"
+                src="/new_logo_white1.png"
                 alt="CareerShift"
                 className="h-14 w-auto max-w-[168px] object-contain shrink-0"
               />

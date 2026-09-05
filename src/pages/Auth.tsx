@@ -140,7 +140,7 @@ export default function AuthPage() {
       {/* Left: brand panel */}
       <aside className="bg-[#0B1D3A] relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/Logo_text_.png" alt="logo" className="object-cover w-50" />
+          <img src="/new_logo_white1.png" alt="logo" className="object-cover w-50" />
         </Link>
 
         <div className="relative">
@@ -148,16 +148,16 @@ export default function AuthPage() {
           <div className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-teal/30 blur-3xl opacity-30" />
           <div className="relative">
             <h1 className="font-display text-4xl font-bold leading-tight text-white">
-              Turn AI anxiety into AI clarity.
+              Turn uncertainty into career intelligence.
             </h1>
             <p className="mt-4 max-w-md text-white/70">
-              Answer a few questions about your work and get a personalized AI Career Readiness Report with tools, learning paths, and a clear plan.
+              Understand how work is changing - and what to do about it. CareerShift analyses the role, tasks and skills to reveal what to Build , Bot and Blend for the future of work.
             </p>
             <ul className="mt-8 space-y-3 text-sm text-white/80">
               {[
-                "Personalized readiness score",
-                "Task-by-task automate / augment / master routing",
-                "Curated AI toolkit and 12-week learning plan",
+                "Personalized Career Intelligence Report",
+                "Task-by-task Build It · Bot It · Blend It mapping",
+                "Curated AI tools and automation opportunities",
               ].map((s) => (
                 <li key={s} className="flex items-center gap-2">
                   <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10">✓</span>
@@ -219,7 +219,7 @@ export default function AuthPage() {
             {mode === "forgot-reset" && "Create New Password"}
           </h2>
           <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-sm">
-            {mode === "login" && "Sign in to continue your career readiness journey."}
+            {mode === "login" && "Sign in to continue building your Career Intelligence Report."}
             {mode === "register" && "Get started with your free AI Career Readiness assessment."}
             {mode === "register-verify" && `We sent a 6-digit code to ${email}.`}
             {mode === "forgot" && "Enter your email to receive a password reset code."}
