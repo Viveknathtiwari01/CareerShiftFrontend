@@ -42,6 +42,7 @@ import { useEffect, useState } from "react";
 import { restoreSectionFromHash, scrollToSection } from "@/lib/scroll-to-section";
 import heroImg from "@/assets/hero.jpg";
 import logoImg from "@/assets/Logo.png";
+import { Footer } from "@/components/layout/Footer";
 
 export default Landing;
 
@@ -51,7 +52,7 @@ function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen pt-16 overflow-x-hidden bg-background text-foreground">
       <Nav />
       <Hero />
       <MockStats />
@@ -83,14 +84,12 @@ const NAV_LINKS: NavLinkItem[] = [
   { label: "What's Inside", sectionId: "features" },
   { label: "Pricing", sectionId: "pricing" },
   { label: "About Us", to: "/about" },
-  { label: "FAQ", sectionId: "faq" },
-  { label: "Contact", sectionId: "contact" },
 ];
 
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 animate-fade-in-up bg-white">
+    <header className="fixed w-full top-0 left-0 z-50 border-b border-black/5 animate-fade-in-up bg-white">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="/new_logo11.png" alt="CareerShift Logo" className="h-14 object-contain" />
@@ -197,12 +196,12 @@ function Hero() {
       
       <div className="container-page animate-fade-in-up relative grid gap-10 pt-6 pb-6 md:gap-14 md:pt-10 md:pb-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-12 lg:pb-10 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
-          <div className="text-xs font-semibold tracking-widest text-black/50 uppercase">
+          <div className="inline-flex items-center text-xs font-semibold tracking-widest text-black/60 uppercase rounded-md border border-black/15 px-3 py-1.5 bg-white shadow-sm">
             CAREER INTELLIGENCE FOR THE FUTURE OF WORK
           </div>
-          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
-            Your work is changing.<br />
-            <span className="text-[#D39933]">Know what to do next.</span>
+          <h1 className="mt-6 font-display text-[32px] font-bold leading-[1.1] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
+            <span className="block whitespace-nowrap">Your work is changing.</span>
+            <span className="block text-[#D39933] whitespace-nowrap">Know what to do next.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
             CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend - and gives you practical tools and opportunities for what comes next.
@@ -690,7 +689,7 @@ function ReportPreview() {
 
         <div className="relative min-w-0">
           <ReportCardsPreview />
-          <div className="pointer-events-none absolute -right-10 bottom-8 hidden w-36 rotate-[10deg] xl:block 2xl:-right-16">
+          <div className="pointer-events-none absolute -right-32 bottom-8 hidden w-36 rotate-[10deg] xl:block 2xl:-right-40">
             <p
               className="text-[22px] leading-[1.15] text-[#0B1D3A]"
               style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
@@ -1469,7 +1468,7 @@ function HeroGraphic() {
       {/* Top Node */}
       <div
         className="absolute z-10 w-[260px] pointer-events-auto"
-        style={{ left: "50%", top: "58px", transform: "translateX(-50%)" }}
+        style={{ left: "50%", top: "calc(58 / 650 * 100%)", transform: "translateX(-50%)" }}
       >
         <div className="flex items-center gap-3.5 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)]">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-blue-100/50 text-blue-700">
@@ -1489,7 +1488,7 @@ function HeroGraphic() {
         <div
           key={card.key}
           className="absolute z-10 w-[138px] pointer-events-auto"
-          style={{ left: `${card.x}px`, top: "310px", transform: "translate(-50%, -50%)" }}
+          style={{ left: `calc(${card.x} / 650 * 100%)`, top: "calc(310 / 650 * 100%)", transform: "translate(-50%, -50%)" }}
         >
           <div
             className={`${card.bg} flex h-[124px] flex-col items-center justify-center rounded-xl p-3 text-center shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md`}
@@ -1510,7 +1509,7 @@ function HeroGraphic() {
       {/* Bottom Node */}
       <div
         className="absolute z-10 w-[290px] pointer-events-auto"
-        style={{ left: "50%", bottom: "78px", transform: "translateX(-50%)" }}
+        style={{ left: "50%", bottom: "calc(78 / 650 * 100%)", transform: "translateX(-50%)" }}
       >
         <div className="flex items-center gap-3.5 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)]">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-indigo-100/50 text-indigo-700">
@@ -1620,178 +1619,7 @@ function ContactUs() {
   );
 }
 
-/* ---------- FOOTER ---------- */
-type FooterLink =
-  | { label: string; to: string }
-  | { label: string; sectionId: string };
 
-function Footer() {
-  const cols: { title: string; links: FooterLink[] }[] = [
-    {
-      title: "Product",
-      links: [
-        { label: "CareerShift Way", sectionId: "framework" },
-        { label: "How It Works", sectionId: "how" },
-        { label: "Features", sectionId: "features" },
-        { label: "Pricing", sectionId: "pricing" },
-      ],
-    },
-    { title: "Resources", links: [{ label: "FAQ", sectionId: "faq" }] },
-    {
-      title: "Company",
-      links: [
-        { label: "About Us", to: "/about" },
-        { label: "Contact", sectionId: "contact" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { label: "Privacy", to: "/privacy" },
-        { label: "Terms", to: "/terms" },
-      ],
-    },
-  ];
-
-  const socials = [
-    {
-      Icon: Linkedin,
-      href: "https://www.linkedin.com/company/careershift3b/",
-      label: "CareerShift on LinkedIn",
-    },
-    {
-      Icon: Instagram,
-      href: "https://www.instagram.com/careershift3b/",
-      label: "CareerShift on Instagram",
-    },
-  ];
-
-  return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0B1D3A] text-white">
-      <div className="pointer-events-none absolute -left-40 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full border border-white/[0.06]" />
-      <div className="pointer-events-none absolute -left-24 top-1/2 h-[380px] w-[380px] -translate-y-1/2 rounded-full border border-white/[0.08]" />
-      <div className="pointer-events-none absolute -left-10 top-1/2 h-[240px] w-[240px] -translate-y-1/2 rounded-full border border-white/[0.05]" />
-
-      <div className="container-page relative py-14 md:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.35fr_0.9fr] lg:items-center lg:gap-12 xl:gap-16">
-          {/* Left - headline, logo, tagline, socials */}
-          <div className="max-w-sm">
-            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
-              Your next chapter starts with{" "}
-              <span className="text-[#FDCF58]">clarity.</span>
-            </h2>
-            <Link to="/" className="mt-5 inline-flex">
-              <img
-                src="/new_logo_white1.png"
-                alt="CareerShift Logo"
-                className="h-16 w-auto object-contain sm:h-20"
-              />
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/55 sm:text-[15px]">
-              Bridge your career to the AI future with clarity, confidence, and a plan.
-            </p>
-            <div className="mt-6 flex gap-2.5">
-              {socials.map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white/60 transition-colors hover:bg-white/10 hover:text-[#C9A84C]"
-                  aria-label={label}
-                >
-                  <Icon className="h-[18px] w-[18px]" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Middle - nav + CTA */}
-          <div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-8">
-              {cols.map((c) => (
-                <div key={c.title}>
-                  <h4 className="font-display text-base font-bold tracking-wide text-white">
-                    {c.title}
-                  </h4>
-                  <ul className="mt-4 space-y-3">
-                    {c.links.map((l) => (
-                      <li key={l.label}>
-                        {"to" in l ? (
-                          <Link
-                            to={l.to}
-                            className="text-[15px] font-medium text-white/70 transition-colors hover:text-[#C9A84C]"
-                          >
-                            {l.label}
-                          </Link>
-                        ) : (
-                          <SectionLink
-                            sectionId={l.sectionId}
-                            className="text-[15px] font-medium text-white/70 transition-colors hover:text-[#C9A84C]"
-                          >
-                            {l.label}
-                          </SectionLink>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 flex flex-col items-center gap-3.5 border-t border-white/10 pt-8 text-center">
-              <Link
-                to="/auth"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#FDCF58] px-8 py-3.5 text-base font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
-              >
-                Get My Report <ArrowRight className="h-5 w-5" />
-              </Link>
-              <div className="flex items-center justify-center gap-2.5 text-[15px] text-white/70">
-                <Clock className="h-4.5 w-4.5 shrink-0" />
-                <span>One-time report · Takes about 20 minutes</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right - handwritten accent */}
-          <div className="flex items-center justify-start lg:justify-center">
-            <div className="w-[220px] rotate-[7deg] sm:w-[240px]">
-              <p
-                className="text-[34px] leading-[1.12] text-white sm:text-[38px]"
-                style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
-              >
-                Same you.
-                <br />
-                A broader
-                <br />
-                tomorrow.
-              </p>
-              <svg
-                width="150"
-                height="16"
-                viewBox="0 0 150 16"
-                className="mt-1.5 text-[#FDCF58]"
-                aria-hidden
-              >
-                <path
-                  d="M2,11 Q75,1 148,10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 border-t border-white/10 pt-8 text-sm font-medium text-white/70 md:text-base">
-          <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 /* ---------- SCROLL TO TOP ---------- */
 function ScrollToTop() {

@@ -20,21 +20,21 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
+import { Footer } from "@/components/layout/Footer";
 export default function About() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-[#0B1D3A]">
+    <div className="min-h-screen pt-16 overflow-x-hidden bg-white text-[#0B1D3A]">
       <AboutNav />
       <AboutHero />
       <OurPurpose />
       <FounderStory />
       <OurValues />
       <RealShifts />
-      <AboutFooter />
+      <Footer />
       <ScrollToTop />
     </div>
   );
@@ -47,15 +47,13 @@ const NAV_LINKS = [
   { label: "What's Inside", to: "/#features" },
   { label: "Pricing", to: "/#pricing" },
   { label: "About Us", to: "/about" },
-  { label: "FAQ", to: "/#faq" },
-  { label: "Contact", to: "/#contact" },
 ] as const;
 
 function AboutNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white">
+    <header className="fixed w-full top-0 left-0 z-50 border-b border-black/5 bg-white">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="/new_logo11.png" alt="CareerShift Logo" className="h-14 object-contain" />
@@ -731,167 +729,7 @@ function RealShifts() {
   );
 }
 
-/* ---------- FOOTER (matches Landing) ---------- */
-type FooterLink = { label: string; to: string };
 
-function AboutFooter() {
-  const cols: { title: string; links: FooterLink[] }[] = [
-    {
-      title: "Product",
-      links: [
-        { label: "CareerShift Way", to: "/#framework" },
-        { label: "How It Works", to: "/#how" },
-        { label: "Features", to: "/#features" },
-        { label: "Pricing", to: "/#pricing" },
-      ],
-    },
-    { title: "Resources", links: [{ label: "FAQ", to: "/#faq" }] },
-    {
-      title: "Company",
-      links: [
-        { label: "About Us", to: "/about" },
-        { label: "Contact", to: "/#contact" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { label: "Privacy", to: "/privacy" },
-        { label: "Terms", to: "/terms" },
-      ],
-    },
-  ];
-
-  const socials = [
-    {
-      Icon: Linkedin,
-      href: "https://www.linkedin.com/company/careershift3b/",
-      label: "CareerShift on LinkedIn",
-    },
-    {
-      Icon: Instagram,
-      href: "https://www.instagram.com/careershift3b/",
-      label: "CareerShift on Instagram",
-    },
-  ];
-
-  return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0B1D3A] text-white">
-      <div className="pointer-events-none absolute -left-40 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full border border-white/[0.06]" />
-      <div className="pointer-events-none absolute -left-24 top-1/2 h-[380px] w-[380px] -translate-y-1/2 rounded-full border border-white/[0.08]" />
-      <div className="pointer-events-none absolute -left-10 top-1/2 h-[240px] w-[240px] -translate-y-1/2 rounded-full border border-white/[0.05]" />
-
-      <div className="container-page relative py-14 md:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.35fr_0.9fr] lg:items-center lg:gap-12 xl:gap-16">
-          {/* Left - headline, logo, tagline, socials */}
-          <div className="max-w-sm">
-            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
-              Your next chapter starts with{" "}
-              <span className="text-[#FDCF58]">clarity.</span>
-            </h2>
-            <Link to="/" className="mt-5 inline-flex">
-              <img
-                src="/new_logo_white1.png"
-                alt="CareerShift Logo"
-                className="h-16 w-auto object-contain sm:h-20"
-              />
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/55 sm:text-[15px]">
-              Bridge your career to the AI future with clarity, confidence, and a plan.
-            </p>
-            <div className="mt-6 flex gap-2.5">
-              {socials.map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white/60 transition-colors hover:bg-white/10 hover:text-[#C9A84C]"
-                  aria-label={label}
-                >
-                  <Icon className="h-[18px] w-[18px]" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Middle - nav + CTA */}
-          <div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-8">
-              {cols.map((c) => (
-                <div key={c.title}>
-                  <h4 className="font-display text-base font-bold tracking-wide text-white">
-                    {c.title}
-                  </h4>
-                  <ul className="mt-4 space-y-3">
-                    {c.links.map((l) => (
-                      <li key={l.label}>
-                        <Link
-                          to={l.to}
-                          className="text-[15px] font-medium text-white/70 transition-colors hover:text-[#C9A84C]"
-                        >
-                          {l.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 flex flex-col items-center gap-3.5 border-t border-white/10 pt-8 text-center">
-              <Link
-                to="/auth"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#FDCF58] px-8 py-3.5 text-base font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
-              >
-                Get My Report <ArrowRight className="h-5 w-5" />
-              </Link>
-              <div className="flex items-center justify-center gap-2.5 text-[15px] text-white/70">
-                <Clock className="h-4.5 w-4.5 shrink-0" />
-                <span>One-time report · Takes about 20 minutes</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right - handwritten accent */}
-          <div className="flex items-center justify-start lg:justify-center">
-            <div className="w-[220px] rotate-[7deg] sm:w-[240px]">
-              <p
-                className="text-[34px] leading-[1.12] text-white sm:text-[38px]"
-                style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
-              >
-                Same you.
-                <br />
-                A broader
-                <br />
-                tomorrow.
-              </p>
-              <svg
-                width="150"
-                height="16"
-                viewBox="0 0 150 16"
-                className="mt-1.5 text-[#FDCF58]"
-                aria-hidden
-              >
-                <path
-                  d="M2,11 Q75,1 148,10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 border-t border-white/10 pt-8 text-sm font-medium text-white/70 md:text-base">
-          <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
