@@ -27,7 +27,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-[#0B1D3A]">
+    <div className="min-h-screen overflow-x-hidden bg-white text-[#0B1D3A]">
       <AboutNav />
       <AboutHero />
       <OurPurpose />
@@ -136,43 +136,42 @@ function AboutNav() {
 */
 function AboutHero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#FFFAF0] via-white to-white">
-      <div className="container-page grid items-center gap-10 py-14 md:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12 lg:py-20">
-        <div className="max-w-[540px]">
+    <section className="relative overflow-x-clip bg-gradient-to-br from-[#FFFAF0] via-white to-white">
+      <div className="container-page grid items-center gap-8 py-14 md:gap-10 md:py-16 lg:grid-cols-2 lg:gap-12 lg:py-20">
+        <div>
           <span className="inline-flex items-center rounded-full bg-[#FDF0D3] px-[1.1rem] py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C9911A]">
             About CareerShift
           </span>
-          <h1 className="mt-6 font-display text-[2.35rem] font-bold leading-[1.12] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-[2.85rem] xl:text-[3rem]">
+          <h1 className="mt-6 font-display text-[2.35rem] font-bold leading-[1.12] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-[2.75rem] xl:text-[3rem]">
             A more relevant you
             <br />
             <span className="text-[#F2C94C]">for what&apos;s next.</span>
           </h1>
-          <p className="mt-6 text-[15px] leading-[1.75] text-[#3B4A72] sm:text-[15.5px]">
+          <p className="mt-6 max-w-lg text-[15px] leading-[1.75] text-[#3B4A72] sm:text-[15.5px]">
             CareerShift exists to help individuals understand how their work is evolving, make
             informed decisions, and take practical action — so they can stay relevant, confident and
             in control in a world shaped by AI.
           </p>
         </div>
 
-        <div className="relative min-h-[320px] overflow-hidden rounded-[120px_0_0_120px] sm:min-h-[360px] sm:rounded-[160px_0_0_160px] lg:min-h-[400px] lg:rounded-[200px_0_0_200px]">
+        <div className="relative min-h-[300px] overflow-hidden rounded-[100px_0_0_100px] sm:min-h-[360px] sm:rounded-[140px_0_0_140px] lg:min-h-[420px] lg:rounded-[180px_0_0_180px]">
           <img
             src="/about.jpeg"
             alt="Woman looking out over mountains at sunrise"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
-          {/* Soft cream blend on left/right like the HTML gradient */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, rgba(255,251,242,0.55) 0%, rgba(255,251,242,0) 26%, rgba(255,251,242,0) 52%, rgba(255,251,242,0.9) 84%, #fffbf2 100%)",
+                "linear-gradient(90deg, rgba(255,251,242,0.45) 0%, rgba(255,251,242,0) 28%, rgba(255,251,242,0) 55%, rgba(255,251,242,0.85) 86%, #fffbf2 100%)",
             }}
           />
 
-          <div className="relative ml-auto flex h-full min-h-[320px] flex-col items-end justify-between px-7 py-8 text-right sm:min-h-[360px] sm:px-8 sm:py-9 lg:min-h-[400px] lg:px-9 lg:py-10">
+          <div className="relative ml-auto flex h-full min-h-[300px] flex-col items-end justify-between px-6 py-7 text-right sm:min-h-[360px] sm:px-8 sm:py-9 lg:min-h-[420px] lg:px-9 lg:py-10">
             <div className="-rotate-[5deg]">
               <p
-                className="text-[28px] leading-[1.2] text-[#0B1D3A] sm:text-[30px]"
+                className="text-[26px] leading-[1.2] text-[#0B1D3A] sm:text-[28px]"
                 style={{ fontFamily: "'Caveat', cursive", fontWeight: 600 }}
               >
                 Same You.
@@ -203,20 +202,20 @@ function AboutHero() {
 function OurPurpose() {
   return (
     <section className="bg-white py-16 md:py-20">
-      <div className="container-page mx-auto max-w-[1080px] text-center">
+      <div className="container-page text-center">
         <span className="inline-flex items-center rounded-full bg-[#FDF0D3] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#A4761A]">
           Our Purpose
         </span>
         <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-[1.9rem]">
           Guiding people through change, with clarity.
         </h2>
-        <p className="mx-auto mt-4 max-w-[620px] text-sm leading-[1.9] text-[#59637F] sm:text-[14px]">
+        <p className="mx-auto mt-4 max-w-3xl text-sm leading-[1.9] text-[#59637F] sm:text-[15px]">
           We believe technology should create more opportunities for people — not{" "}
           <strong className="font-semibold text-[#0B1D3A]">more uncertainty</strong>. CareerShift
           helps you make sense of change, so you can navigate your career with confidence.
         </p>
 
-        <div className="mt-11 grid gap-8 text-left md:grid-cols-2">
+        <div className="mt-11 grid gap-6 text-left md:grid-cols-2 md:gap-8">
           <article className="flex gap-5 rounded-2xl border border-[#EEF1F7] bg-white p-7 shadow-[0_10px_30px_rgba(11,29,58,0.06)] sm:p-8">
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#FDF0D3]">
               <Target className="h-6 w-6 text-[#0B1D3A]" strokeWidth={1.6} />
@@ -299,9 +298,9 @@ const JOURNEY = [
 
 function FounderStory() {
   return (
-    <section className="relative overflow-hidden bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
-      <div className="container-page relative mx-auto max-w-7xl">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 xl:gap-20">
+    <section className="relative overflow-x-clip bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
+      <div className="container-page relative">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-14">
           {/* Left content */}
           <div>
             <span className="inline-flex items-center rounded-full border border-[#FDE68A] bg-[#FFFBEB] px-5 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#A4761A]">
@@ -362,23 +361,27 @@ function FounderStory() {
           </div>
 
           {/* Right journey — open on theme bg, no panel chrome */}
-          <div className="relative min-h-[600px] sm:min-h-[640px]">
+          <div className="relative min-h-[560px] overflow-hidden sm:min-h-[600px]">
             {/* Soft theme wash only */}
             <div
-              className="pointer-events-none absolute -right-10 top-0 h-56 w-56 rounded-full bg-[#FDE68A]/20 blur-2xl"
+              className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-full bg-[#FDE68A]/20 blur-2xl"
               aria-hidden
             />
             <div
-              className="pointer-events-none absolute -bottom-8 left-0 h-48 w-48 rounded-full bg-[#0B1D3A]/[0.03] blur-2xl"
+              className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 rounded-full bg-[#0B1D3A]/[0.03] blur-2xl"
               aria-hidden
             />
 
             {/* Mountains + sun — muted theme tones */}
             <div
-              className="pointer-events-none absolute right-[-12px] top-6 opacity-80 sm:top-8"
+              className="pointer-events-none absolute right-0 top-4 max-w-full opacity-80 sm:top-6"
               aria-hidden
             >
-              <svg width="400" height="210" viewBox="0 0 430 230" fill="none">
+              <svg
+                className="h-auto w-full max-w-[360px]"
+                viewBox="0 0 430 230"
+                fill="none"
+              >
                 <path d="M150 215L280 55L430 215H150Z" fill="#E2E8F0" />
                 <path d="M210 215L320 95L390 215H210Z" fill="#CBD5E1" opacity="0.9" />
                 <path
@@ -515,7 +518,7 @@ const VALUES = [
 function OurValues() {
   return (
     <section className="bg-white py-14 md:py-16">
-      <div className="container-page mx-auto max-w-[1100px] text-center">
+      <div className="container-page text-center">
         <span className="inline-flex items-center rounded-full bg-[#FDF0D3] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#A4761A]">
           Our Values
         </span>
@@ -523,7 +526,7 @@ function OurValues() {
           What drives us.
         </h2>
 
-        <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+        <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
           {VALUES.map((v, i) => {
             const Icon = v.Icon;
             return (
@@ -597,10 +600,10 @@ function RealShifts() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
-      <div className="container-page relative mx-auto max-w-6xl">
+    <section className="relative overflow-x-clip bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
+      <div className="container-page relative">
         {/* Header */}
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full bg-[#FEF3C7] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#B45309]">
             Real Shifts
           </span>
@@ -623,7 +626,7 @@ function RealShifts() {
             type="button"
             aria-label="Previous"
             onClick={() => goTo(active - 1)}
-            className="absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#0B1D3A]/6 bg-white text-[#0B1D3A] shadow-[0_8px_20px_rgba(11,29,58,0.08)] transition hover:border-[#FDCF58] hover:text-[#B45309] lg:grid"
+            className="absolute left-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#0B1D3A]/6 bg-white text-[#0B1D3A] shadow-[0_8px_20px_rgba(11,29,58,0.08)] transition hover:border-[#FDCF58] hover:text-[#B45309] lg:grid"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -631,7 +634,7 @@ function RealShifts() {
             type="button"
             aria-label="Next"
             onClick={() => goTo(active + 1)}
-            className="absolute right-0 top-1/2 z-10 hidden h-10 w-10 translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#0B1D3A]/6 bg-white text-[#0B1D3A] shadow-[0_8px_20px_rgba(11,29,58,0.08)] transition hover:border-[#FDCF58] hover:text-[#B45309] lg:grid"
+            className="absolute right-2 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#0B1D3A]/6 bg-white text-[#0B1D3A] shadow-[0_8px_20px_rgba(11,29,58,0.08)] transition hover:border-[#FDCF58] hover:text-[#B45309] lg:grid"
           >
             <ArrowRight className="h-4 w-4" />
           </button>
@@ -645,7 +648,7 @@ function RealShifts() {
               return (
                 <article
                   key={t.name}
-                  className="flex w-[min(88vw,320px)] shrink-0 snap-center flex-col rounded-2xl border border-[#0B1D3A]/[0.04] bg-white p-6 shadow-[0_12px_40px_rgba(11,29,58,0.06)] sm:p-7 md:w-auto"
+                  className="flex w-[min(85vw,300px)] max-w-full shrink-0 snap-center flex-col rounded-2xl border border-[#0B1D3A]/[0.04] bg-white p-6 shadow-[0_12px_40px_rgba(11,29,58,0.06)] sm:p-7 md:w-auto"
                 >
                   <span
                     className="select-none text-[28px] leading-none text-[#F2C94C]"

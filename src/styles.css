@@ -161,11 +161,11 @@
 /* Layout utilities shared horizontal rhythm */
 @utility container-page {
   width: 100%;
-  max-width: 90rem;
+  max-width: 80rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: 1.25rem;
   @media (min-width: 640px) {
-    padding-inline: 1.5rem;
+    padding-inline: 1.75rem;
   }
   @media (min-width: 1024px) {
     padding-inline: 2rem;
