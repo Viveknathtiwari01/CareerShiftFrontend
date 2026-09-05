@@ -10,7 +10,6 @@ export function Footer() {
     { label: "Privacy Policy", to: "/privacy" },
     { label: "Terms of Use", to: "/terms" },
     { label: "Refund Policy", to: "#" },
-    { label: "Cookie Policy", to: "#" },
   ];
 
   const socials = [
@@ -18,11 +17,13 @@ export function Footer() {
       Icon: Linkedin,
       href: "https://www.linkedin.com/company/careershift3b/",
       label: "CareerShift on LinkedIn",
+      colorClass: "bg-[#0A66C2] text-white hover:opacity-80",
     },
     {
       Icon: Instagram,
       href: "https://www.instagram.com/careershift3b/",
       label: "CareerShift on Instagram",
+      colorClass: "bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#C13584] text-white hover:opacity-80",
     },
   ];
 
@@ -108,21 +109,21 @@ export function Footer() {
             {/* Socials & Copyright */}
             <div className="flex flex-col items-start gap-4 lg:items-end">
               <div className="flex items-center gap-3">
-                {socials.map(({ Icon, href, label }) => (
+                {socials.map(({ Icon, href, label, colorClass }) => (
                   <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#11213D] hover:text-[#FDCF58] transition-colors"
+                    className={`flex h-8 w-8 items-center justify-center rounded-full ${colorClass} transition-all hover:-translate-y-0.5 shadow-sm`}
                     aria-label={label}
                   >
-                    <Icon className="h-[18px] w-[18px]" />
+                    <Icon className="h-4 w-4" />
                   </a>
                 ))}
               </div>
-              <p className="text-[11px] text-gray-500">
-                © {new Date().getFullYear()} CareerShift.<br/>All rights reserved.
+              <p className="whitespace-nowrap text-[12px] text-gray-500">
+                © {new Date().getFullYear()} CareerShift. All rights reserved.
               </p>
             </div>
           </div>

@@ -199,7 +199,7 @@ function AboutHero() {
 /* ---------- OUR PURPOSE ---------- */
 function OurPurpose() {
   return (
-    <section className="bg-white py-16 md:py-20">
+    <section className="bg-white py-10 md:py-14">
       <div className="container-page text-center">
         <span className="inline-flex items-center rounded-full bg-[#FDF0D3] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#A4761A]">
           Our Purpose
@@ -296,7 +296,7 @@ const JOURNEY = [
 
 function FounderStory() {
   return (
-    <section className="relative overflow-x-clip bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
+    <section className="relative overflow-x-clip bg-[#FFFDF8] py-12 md:py-16 lg:py-20">
       <div className="container-page relative">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-14">
           {/* Left content */}
@@ -515,7 +515,7 @@ const VALUES = [
 
 function OurValues() {
   return (
-    <section className="bg-white py-14 md:py-16">
+    <section className="bg-white py-10 md:py-12">
       <div className="container-page text-center">
         <span className="inline-flex items-center rounded-full bg-[#FDF0D3] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#A4761A]">
           Our Values
@@ -598,7 +598,7 @@ function RealShifts() {
   };
 
   return (
-    <section className="relative overflow-x-clip bg-[#FFFDF8] py-16 md:py-20 lg:py-24">
+    <section className="relative overflow-x-clip bg-[#FFFDF8] py-12 md:py-16 lg:py-20">
       <div className="container-page relative">
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">

@@ -340,7 +340,7 @@ function Problem() {
     },
   ];
   return (
-    <section className="bg-background py-24">
+    <section className="bg-background py-16">
       <div className="container-page animate-fade-in-up">
         <div className="relative mb-16">
           {/* Left Decorative - absolutely positioned so it doesn't affect centering */}
@@ -392,7 +392,7 @@ function Problem() {
 /* ---------- THE CAREERSHIFT WAY ---------- */
 function TheCareerShiftWay() {
   return (
-    <section id="framework" className="bg-[#0B1D3A] text-white py-24 overflow-hidden font-sans">
+    <section id="framework" className="bg-[#0B1D3A] text-white py-16 overflow-hidden font-sans">
       <div className="container-page">
         {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-20">
@@ -669,9 +669,9 @@ function ReportPreview() {
     <div id="report" className="bg-[#F3F7FC] py-20 md:py-24">
       <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[0.85fr_1.25fr] lg:items-center lg:gap-8 xl:gap-12">
         <div className="max-w-md">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99]">
+          <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
             Sample report
-          </p>
+          </div>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
             See what&apos;s inside.
           </h2>
@@ -1015,13 +1015,13 @@ function WorkIntelligence() {
   ];
 
   return (
-    <section className="bg-[#F8FAFC] py-14 md:py-16">
+    <section className="bg-[#F8FAFC] py-10 md:py-12">
       <div className="container-page animate-fade-in-up">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
           <div className="max-w-[340px] shrink-0 lg:max-w-[380px]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5B7C99]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Built on real work intelligence
-            </p>
+            </div>
             <h2 className="mt-2.5 font-display text-2xl font-bold tracking-tight text-[#0B1D3A] sm:text-[28px] sm:leading-tight">
               A deeper foundation. Better insights.
             </h2>
@@ -1092,7 +1092,7 @@ function Features() {
   ];
 
   return (
-    <section id="features" className="bg-[#F3F7FC] py-20 md:py-24">
+    <section id="features" className="bg-[#F3F7FC] py-12 md:py-16">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center rounded-full bg-[#CCFBF1] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0F766E]">
@@ -1134,13 +1134,13 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="bg-white py-20 md:py-24">
+    <section id="pricing" className="bg-white py-12 md:py-16">
       <div className="container-page animate-fade-in-up">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_minmax(420px,1.15fr)_0.85fr] lg:items-center lg:gap-10 xl:gap-14">
           <div className="max-w-sm">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Pricing
-            </p>
+            </div>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
               One report. Real value.
             </h2>
@@ -1297,12 +1297,12 @@ Workshops are available as part of our Enterprise tier. Contact sales to learn m
 
   return (
     <>
-      <section id="faq" className="bg-[#F3F7FC] py-16 md:py-20">
+      <section id="faq" className="bg-[#F3F7FC] py-10 md:py-14">
         <div className="container-page animate-fade-in-up flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Frequently asked questions
-            </p>
+            </div>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
               Have questions?
             </h2>
@@ -1549,21 +1549,22 @@ function HeroGraphic() {
 /* ---------- CONTACT US ---------- */
 function ContactUs() {
   return (
-    <section id="contact" className="bg-white py-24 text-[#0B1D3A]">
+    <section id="contact" className="bg-white py-16 text-[#0B1D3A]">
       <div className="container-page">
-        <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>Contact Us</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
-            Let&apos;s talk about your next move.
-          </h2>
-          <p className="mt-4 text-[#64748B]">
-            Whether you&apos;re mapping your own AI fitness or building a workforce plan for your team,
-            we&apos;re here to help you get clarity fast.
-          </p>
-        </div>
+        <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="flex flex-col items-start text-left">
+            <SectionEyebrow>Contact Us</SectionEyebrow>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl lg:text-[42px] lg:leading-[1.15]">
+              Let&apos;s talk about your next move.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-[#64748B]">
+              Whether you&apos;re mapping your own AI fitness or building a workforce plan for your team,
+              we&apos;re here to help you get clarity fast.
+            </p>
+          </div>
 
-        <div className="mx-auto mt-14 max-w-xl">
-          <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
+          <div className="mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none">
+            <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
             <h3 className="mb-6 font-display text-xl font-semibold text-[#0B1D3A]">Send a Message</h3>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-2 gap-4">
@@ -1613,6 +1614,7 @@ function ContactUs() {
               </button>
             </form>
           </div>
+        </div>
         </div>
       </div>
     </section>
