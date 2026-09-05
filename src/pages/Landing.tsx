@@ -194,7 +194,7 @@ function Hero() {
         <div className="absolute right-[5%] -top-[10%] h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[100px]" />
       </div>
       
-      <div className="container-page animate-fade-in-up relative grid gap-10 pt-6 pb-6 md:gap-14 md:pt-10 md:pb-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-12 lg:pb-10 items-center">
+      <div className="container-page animate-fade-in-up relative grid gap-8 pt-4 pb-4 md:gap-10 md:pt-8 md:pb-6 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:pt-8 lg:pb-6 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
           <div className="inline-flex items-center text-xs font-semibold tracking-widest text-black/60 uppercase rounded-md border border-black/15 px-3 py-1.5 bg-white shadow-sm">
             CAREER INTELLIGENCE FOR THE FUTURE OF WORK
@@ -206,7 +206,7 @@ function Hero() {
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
             CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend - and gives you practical tools and opportunities for what comes next.
           </p>
-          <div className="mt-8 flex w-full flex-col gap-4 sm:flex-row lg:mr-auto max-w-2xl">
+          <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row lg:mr-auto max-w-2xl">
             <Link
               to="/auth"
               className="inline-flex w-full sm:w-auto whitespace-nowrap items-center justify-center gap-2 rounded-full bg-[#FDCF58] px-8 py-3.5 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
@@ -226,7 +226,7 @@ function Hero() {
           </div>
         </div>
 
-        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-10 lg:mt-0">
+        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-6 lg:mt-0">
           <HeroGraphic />
         </div>
       </div>
@@ -236,7 +236,7 @@ function Hero() {
 
 function MockStats() {
   return (
-    <section className="relative z-0 -mt-2 bg-white pb-8 md:-mt-14 lg:-mt-8">
+    <section className="relative z-0 bg-white pb-8 md:-mt-10 lg:-mt-4">
       <div className="container-page">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 rounded-[2rem] border border-black/5 bg-white p-6 md:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)]">
           <div className="flex flex-1 flex-col sm:flex-row items-center justify-around gap-6 w-full">
@@ -340,7 +340,7 @@ function Problem() {
     },
   ];
   return (
-    <section className="bg-background py-16">
+    <section className="bg-background py-10 md:py-12">
       <div className="container-page animate-fade-in-up">
         <div className="relative mb-16">
           {/* Left Decorative - absolutely positioned so it doesn't affect centering */}
@@ -368,7 +368,7 @@ function Problem() {
           </div>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
           {items.map((it) => (
             <div key={it.title} className="surface-card p-6 hover-lift relative overflow-hidden">
               <div className="absolute top-6 right-6 text-4xl font-display font-bold text-muted-foreground/20 select-none">
@@ -392,10 +392,10 @@ function Problem() {
 /* ---------- THE CAREERSHIFT WAY ---------- */
 function TheCareerShiftWay() {
   return (
-    <section id="framework" className="bg-[#0B1D3A] text-white py-16 overflow-hidden font-sans">
+    <section id="framework" className="bg-[#0B1D3A] text-white py-12 overflow-hidden font-sans">
       <div className="container-page">
         {/* Header */}
-        <div className="text-center max-w-4xl mx-auto mb-20">
+        <div className="text-center max-w-4xl mx-auto mb-12">
           <SectionEyebrow dark>The Careershift way</SectionEyebrow>
           <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl lg:text-5xl tracking-tight leading-tight">
             Your job title doesn't tell the whole story. <span className="text-[#FDCF58]">Your work does.</span>
@@ -406,7 +406,7 @@ function TheCareerShiftWay() {
         </div>
 
         {/* Graphic Area */}
-        <div className="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-0 mb-24">
+        <div className="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-center gap-6 xl:gap-0 mb-12">
           
           {/* Left Side Group */}
           <div className="flex flex-col xl:flex-row items-center justify-end flex-1 gap-8 xl:gap-4 xl:pr-6">
@@ -621,7 +621,7 @@ function HowItWorks() {
   ];
 
   return (
-    <div className="relative overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
+    <div className="relative overflow-hidden bg-[#F8FAFC] py-12 md:py-16">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#DBEAFE]/50 blur-3xl" />
       <div className="container-page animate-fade-in-up relative">
         <div className="mx-auto max-w-2xl text-center">
@@ -633,7 +633,7 @@ function HowItWorks() {
           </h2>
         </div>
 
-        <div className="mt-14 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
+        <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
           {steps.map((s, i) => (
             <div key={s.n} className="contents">
               <div className="flex min-w-0 flex-1 items-center gap-3.5">
@@ -666,8 +666,8 @@ function HowItWorks() {
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <div id="report" className="bg-[#F3F7FC] py-20 md:py-24">
-      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[0.85fr_1.25fr] lg:items-center lg:gap-8 xl:gap-12">
+    <div id="report" className="bg-[#F3F7FC] py-12 md:py-16">
+      <div className="container-page animate-fade-in-up grid gap-8 lg:grid-cols-[0.85fr_1.25fr] lg:items-center xl:gap-12">
         <div className="max-w-md">
           <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
             Sample report
@@ -681,7 +681,7 @@ function ReportPreview() {
           </p>
           <a
             href="#"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#FDCF58] px-6 py-3.5 text-sm font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FDCF58] px-6 py-3.5 text-sm font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
           >
             View sample report <ArrowRight className="h-4 w-4" />
           </a>
@@ -1017,7 +1017,7 @@ function WorkIntelligence() {
   return (
     <section className="bg-[#F8FAFC] py-10 md:py-12">
       <div className="container-page animate-fade-in-up">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           <div className="max-w-[340px] shrink-0 lg:max-w-[380px]">
             <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Built on real work intelligence
@@ -1098,12 +1098,12 @@ function Features() {
           <span className="inline-flex items-center rounded-full bg-[#CCFBF1] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0F766E]">
             What you walk away with
           </span>
-          <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
             More clarity. Greater control.
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <div className="mt-8 grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4 lg:gap-6">
           {feats.map((f) => (
             <div key={f.title} className="flex flex-col items-start">
               <div
@@ -1136,7 +1136,7 @@ function Pricing() {
   return (
     <section id="pricing" className="bg-white py-12 md:py-16">
       <div className="container-page animate-fade-in-up">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_minmax(420px,1.15fr)_0.85fr] lg:items-center lg:gap-10 xl:gap-14">
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_minmax(420px,1.15fr)_0.85fr] lg:items-center lg:gap-8 xl:gap-10">
           <div className="max-w-sm">
             <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Pricing
@@ -1298,7 +1298,7 @@ Workshops are available as part of our Enterprise tier. Contact sales to learn m
   return (
     <>
       <section id="faq" className="bg-[#F3F7FC] py-10 md:py-14">
-        <div className="container-page animate-fade-in-up flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page animate-fade-in-up flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
             <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Frequently asked questions
