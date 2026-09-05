@@ -59,8 +59,10 @@ function Landing() {
       <MockStats />
       <Problem />
       <TheCareerShiftWay />
-      <HowItWorks />
-      <ReportPreview />
+      <section id="how">
+        <HowItWorks />
+        <ReportPreview />
+      </section>
       <WorkIntelligence />
       <Features />
       <Pricing />
@@ -74,10 +76,12 @@ function Landing() {
 
 /* ---------- NAV ---------- */
 const NAV_LINKS = [
+  { label: "CareerShift Way", sectionId: "framework" },
   { label: "How It Works", sectionId: "how" },
   { label: "What's Inside", sectionId: "features" },
-  { label: "Sample Report", sectionId: "report" },
   { label: "Pricing", sectionId: "pricing" },
+  { label: "FAQ", sectionId: "faq" },
+  { label: "Contact", sectionId: "contact" },
 ] as const;
 
 function Nav() {
@@ -88,7 +92,7 @@ function Nav() {
         <Link to="/" className="flex items-center gap-2">
           <img src="/new_logo11.png" alt="CareerShift Logo" className="h-14 object-contain" />
         </Link>
-        <nav className="hidden items-center gap-6 xl:gap-8 xl:flex">
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
           {NAV_LINKS.map((l) => (
             <SectionLink
               key={l.label}
@@ -99,7 +103,7 @@ function Nav() {
             </SectionLink>
           ))}
         </nav>
-        <div className="hidden items-center gap-4 xl:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <Link to="/auth" className="text-sm font-semibold text-black/80 hover:text-black">
             Log in
           </Link>
@@ -113,14 +117,14 @@ function Nav() {
         </div>
         <button
           aria-label="Toggle menu"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-black/10 text-black xl:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg border border-black/10 text-black lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
       {open && (
-        <div className="border-t border-black/5 bg-white xl:hidden">
+        <div className="border-t border-black/5 bg-white lg:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {NAV_LINKS.map((l) => (
               <SectionLink
@@ -594,7 +598,7 @@ function HowItWorks() {
   ];
 
   return (
-    <section id="how" className="relative overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
+    <div className="relative overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#DBEAFE]/50 blur-3xl" />
       <div className="container-page animate-fade-in-up relative">
         <div className="mx-auto max-w-2xl text-center">
@@ -632,14 +636,14 @@ function HowItWorks() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <section id="report" className="bg-[#F3F7FC] py-20 md:py-24">
+    <div id="report" className="bg-[#F3F7FC] py-20 md:py-24">
       <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[0.85fr_1.25fr] lg:items-center lg:gap-8 xl:gap-12">
         <div className="max-w-md">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99]">
@@ -716,7 +720,7 @@ function ReportPreview() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -1647,6 +1651,8 @@ function Footer() {
     {
       title: "Product",
       links: [
+        { label: "CareerShift Way", sectionId: "framework" },
+        { label: "How It Works", sectionId: "how" },
         { label: "Features", sectionId: "features" },
         { label: "Pricing", sectionId: "pricing" },
       ],
