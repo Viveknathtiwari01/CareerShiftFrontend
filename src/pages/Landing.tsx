@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUp,
   BarChart3,
   Bot,
   Brain,
-  BrainCircuit,
   Briefcase,
+  Building2,
   CheckCircle2,
   ChevronDown,
   Clock,
@@ -16,13 +17,16 @@ import {
   Flame,
   Github,
   Globe,
+  Layers,
   Linkedin,
   Mail,
   Menu,
   MessageSquare,
+  Network,
   Phone,
   Rocket,
   Settings,
+  UserSearch,
   ShieldCheck,
   Signal,
   Sparkles,
@@ -60,6 +64,7 @@ function Landing() {
       <TheCareerShiftWay />
       <HowItWorks />
       <ReportPreview />
+      <WorkIntelligence />
       <Features />
       <Testimonials />
       <Workshop />
@@ -572,46 +577,65 @@ function HowItWorks() {
   const steps = [
     {
       n: "01",
-      icon: <FileText className="h-5 w-5" />,
-      title: "Map your work",
-      body: "A 12-minute guided assessment captures your role, tasks, time allocation, and goals.",
+      icon: <FileText className="h-4 w-4" strokeWidth={2} />,
+      title: "Tell us about your work",
+      body: "Enter your job role or upload a JD / resume.",
     },
     {
       n: "02",
-      icon: <BrainCircuit className="h-5 w-5" />,
-      title: "AI analyzes every task",
-      body: "Each task is routed to Build, Bot, or Blend with risk, leverage, and hours saved.",
+      icon: <UserSearch className="h-4 w-4" strokeWidth={2} />,
+      title: "Review & refine",
+      body: "We map your tasks and you can edit and confirm.",
     },
     {
       n: "03",
-      icon: <Target className="h-5 w-5" />,
-      title: "Get your action plan",
-      body: "A personal roadmap: tools to adopt, skills to learn, and moves to make in the next 90 days.",
+      icon: <Layers className="h-4 w-4" strokeWidth={2} />,
+      title: "Add how you work",
+      body: "Tell us about time, frequency and criticality.",
+    },
+    {
+      n: "04",
+      icon: <BarChart3 className="h-4 w-4" strokeWidth={2} />,
+      title: "Get your report",
+      body: "Receive your personalised Career Intelligence Report.",
     },
   ];
+
   return (
-    <section id="how" className="bg-surface-2/60 py-24">
-      <div className="container-page">
+    <section id="how" className="relative overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#DBEAFE]/50 blur-3xl" />
+      <div className="container-page animate-fade-in-up relative">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>How it works</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            From curiosity to a career strategy in 12 minutes.
+          <span className="inline-flex items-center rounded-full bg-[#FDE68A] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0B1D3A]">
+            How it works
+          </span>
+          <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
+            Get your report in 4 simple steps.
           </h2>
         </div>
-        <div className="relative mt-14 grid gap-6 md:grid-cols-3">
-          <div className="pointer-events-none absolute left-8 right-8 top-16 hidden h-px bg-gradient-to-r from-transparent via-border to-transparent md:block" />
-          {steps.map((s) => (
-            <div key={s.n} className="surface-card relative p-7">
-              <div className="flex items-center justify-between">
-                <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft">
-                  {s.icon}
+
+        <div className="mt-14 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
+          {steps.map((s, i) => (
+            <div key={s.n} className="contents">
+              <div className="flex min-w-0 flex-1 items-center gap-3.5">
+                <div className="grid h-[58px] w-[58px] shrink-0 place-items-center rounded-full bg-[#E8F0FE]">
+                  <div className="grid h-9 w-9 place-items-center rounded-full bg-[#3B82F6] text-white shadow-sm">
+                    {s.icon}
+                  </div>
                 </div>
-                <span className="font-display text-3xl font-bold text-muted-foreground/40">
-                  {s.n}
-                </span>
+                <div className="min-w-0">
+                  <h3 className="font-display text-[15px] font-bold leading-snug text-[#0B1D3A]">
+                    {s.title}
+                  </h3>
+                  <p className="mt-1 text-[13px] leading-snug text-[#64748B]">{s.body}</p>
+                </div>
               </div>
-              <h3 className="mt-6 font-display text-xl font-semibold text-foreground">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              {i < steps.length - 1 && (
+                <ArrowRight
+                  className="mx-1 hidden h-4 w-4 shrink-0 text-[#0B1D3A]/40 lg:block"
+                  strokeWidth={2}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -623,158 +647,393 @@ function HowItWorks() {
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <section id="report" className="bg-[#0B1D3A] text-white py-24">
-      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
-        <div>
-          <SectionEyebrow dark>Sample report</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl text-white">
-            A consulting-grade report not another quiz result.
-          </h2>
-          <p className="mt-5 text-white/70">
-            Every report is packed with visual insights: task-by-task
-            routing, hours saved, recommended tools, salary premium data, and a 12-month learning
-            roadmap.
+    <section id="report" className="bg-[#F3F7FC] py-20 md:py-24">
+      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[0.85fr_1.25fr] lg:items-center lg:gap-8 xl:gap-12">
+        <div className="max-w-md">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99]">
+            Sample report
           </p>
-          <ul className="mt-8 space-y-3">
-            {[
-              "Task routing across Build · Bot · Blend",
-              "Curated AI toolkit with pricing and ROI",
-              "12-month learning roadmap and skill priorities",
-            ].map((t) => (
-              <li key={t} className="flex items-start gap-3 text-sm">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                <span className="text-white/90">{t}</span>
-              </li>
-            ))}
-          </ul>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
+            See what&apos;s inside.
+          </h2>
+          <p className="mt-4 text-[15px] leading-relaxed text-[#64748B]">
+            A practical, easy-to-read report with insights, opportunities and tools — tailored to
+            your work.
+          </p>
           <a
             href="#"
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:underline"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#FDCF58] px-6 py-3.5 text-sm font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
           >
-            View a full sample report <ArrowRight className="h-4 w-4" />
+            View sample report <ArrowRight className="h-4 w-4" />
           </a>
         </div>
 
-        <ReportMockup />
+        <div className="relative min-w-0">
+          <ReportCardsPreview />
+          <div className="pointer-events-none absolute -right-10 bottom-8 hidden w-36 rotate-[10deg] xl:block 2xl:-right-16">
+            <p
+              className="text-[22px] leading-[1.15] text-[#0B1D3A]"
+              style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
+            >
+              Insights today.
+              <br />
+              A more
+              <br />
+              relevant
+              <br />
+              tomorrow.
+            </p>
+            <svg
+              width="100"
+              height="14"
+              viewBox="0 0 100 14"
+              className="mt-0.5 text-[#FDCF58]"
+              aria-hidden
+            >
+              <path
+                d="M2,10 Q50,0 98,9"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+          <div className="mt-8 text-center xl:hidden">
+            <p
+              className="text-[20px] leading-tight text-[#0B1D3A]"
+              style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
+            >
+              Insights today. A more relevant tomorrow.
+            </p>
+            <svg
+              width="140"
+              height="12"
+              viewBox="0 0 140 12"
+              className="mx-auto mt-1 text-[#FDCF58]"
+              aria-hidden
+            >
+              <path
+                d="M2,8 Q70,0 138,7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function ReportMockup() {
+function ReportCardsPreview() {
+  const tasks = [
+    { label: "Strategic Planning", pct: 32, color: "bg-[#3B82F6]" },
+    { label: "Stakeholder Mgmt", pct: 24, color: "bg-[#F2C94C]" },
+    { label: "Data Analysis", pct: 18, color: "bg-[#8B5CF6]" },
+    { label: "Campaign Execution", pct: 14, color: "bg-[#EC4899]" },
+    { label: "Reporting", pct: 10, color: "bg-[#F59E0B]" },
+    { label: "Team Coaching", pct: 6, color: "bg-[#EF4444]" },
+  ];
+
+  const automations = [
+    {
+      label: "Report Generation",
+      tag: "High potential",
+      icon: <FileText className="h-3 w-3" />,
+      iconBg: "bg-[#DBEAFE] text-[#2563EB]",
+    },
+    {
+      label: "Data Processing",
+      tag: "High potential",
+      icon: <Settings className="h-3 w-3" />,
+      iconBg: "bg-[#D1FAE5] text-[#059669]",
+    },
+    {
+      label: "Meeting Notes",
+      tag: "Medium potential",
+      icon: <UserSearch className="h-3 w-3" />,
+      iconBg: "bg-[#FEF3C7] text-[#D97706]",
+    },
+    {
+      label: "Email Drafting",
+      tag: "Medium potential",
+      icon: <Mail className="h-3 w-3" />,
+      iconBg: "bg-[#EDE9FE] text-[#7C3AED]",
+    },
+  ];
+
+  const tools = [
+    { name: "Copilot", initials: "Co", color: "bg-[#0B1D3A]" },
+    { name: "Notion", initials: "No", color: "bg-[#111827]" },
+    { name: "Zapier", initials: "Za", color: "bg-[#FF4A00]" },
+    { name: "ChatGPT", initials: "CG", color: "bg-[#10A37F]" },
+    { name: "Canva", initials: "Ca", color: "bg-[#00C4CC]" },
+  ];
+
+  const framework = [
+    { label: "Build", value: "6", tone: "bg-[#FDCF58]/20 text-[#FDCF58]" },
+    { label: "Bot", value: "9", tone: "bg-teal-400/20 text-teal-300" },
+    { label: "Blend", value: "11", tone: "bg-white/10 text-white/80" },
+  ];
+
+  const cardBase =
+    "flex h-[300px] w-[168px] shrink-0 flex-col rounded-2xl p-4 sm:w-[176px] xl:w-[180px]";
+  const whiteCard = `${cardBase} relative border border-black/[0.04] bg-white shadow-[0_8px_28px_rgba(11,29,58,0.08)]`;
+
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 28, scale: 0.96 },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+    },
+  };
+
   return (
-    <div className="bg-white/5 border border-white/10 rounded-3xl relative overflow-hidden p-6 shadow-elevated">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs font-medium text-white/50">AI Career Readiness</p>
-          <h3 className="mt-1 font-display text-lg font-semibold text-white">
-            Senior Marketing Manager
-          </h3>
-        </div>
-        <span className="rounded-full bg-brand/20 px-2.5 py-1 text-xs font-medium text-brand">
-          Report ready
-        </span>
-      </div>
+    <div className="-mx-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:overflow-visible sm:px-0">
+      <motion.div
+        className="flex min-w-[700px] items-stretch gap-3 sm:min-w-0 lg:pr-28 xl:gap-3.5 xl:pr-36"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.35 }}
+      >
+        {/* Cover card */}
+        <motion.div
+          variants={cardVariants}
+          whileHover={{ y: -6, rotate: -1, transition: { duration: 0.25 } }}
+          className={`${cardBase} -rotate-2 justify-between bg-[#0B1D3A] shadow-[0_12px_32px_rgba(11,29,58,0.22)]`}
+        >
+          <div>
+            <img
+              src="/new_logo_white1.png"
+              alt="CareerShift"
+              className="h-9 w-full max-w-full object-contain object-left"
+            />
+            <span className="mt-3 inline-flex rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-white/70">
+              Personalized report
+            </span>
+          </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-[220px_1fr]">
-        <ScoreRing score={82} />
-        <div className="grid grid-cols-3 gap-3">
-          <MiniStat label="Build" value="6" tint="brand" />
-          <MiniStat label="Bot" value="9" tint="primary" />
-          <MiniStat label="Blend" value="11" tint="muted" />
-        </div>
-      </div>
+          <div>
+            <h3 className="font-display text-[17px] font-bold leading-[1.2] text-white sm:text-lg">
+              Career
+              <br />
+              Intelligence
+              <br />
+              Report
+            </h3>
+            <p className="mt-2 text-[9px] leading-relaxed text-white/50">
+              Task insights, automation opportunities &amp; recommended tools.
+            </p>
+          </div>
 
-      <div className="mt-6">
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs font-medium text-white/50">Hours saved / week</p>
-          <p className="text-xs font-semibold text-white">11.5h</p>
-        </div>
-        <BarRow />
-      </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {framework.map((f) => (
+              <div
+                key={f.label}
+                className={`rounded-lg px-1.5 py-1.5 text-center ${f.tone}`}
+              >
+                <div className="font-display text-sm font-bold leading-none">{f.value}</div>
+                <div className="mt-0.5 text-[7px] font-medium uppercase tracking-wide opacity-80">
+                  {f.label}
+                </div>
+              </div>
+            ))}
+          </div>
 
-      <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/50">
-          <Zap className="h-3.5 w-3.5 text-brand" /> Top recommendation
-        </div>
-        <p className="mt-2 text-sm text-white/90">
-          Automate briefing docs with an AI writing workflow saves ~4.2h/week and lifts throughput
-          28%.
-        </p>
-      </div>
+          <div>
+            <div className="mb-2 h-0.5 w-8 rounded-full bg-[#FDCF58]" />
+            <p className="text-[9px] font-medium leading-relaxed text-white/55">
+              Your Opportunities
+              <br />
+              Your Next Move
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Task Analysis */}
+        <motion.div
+          variants={cardVariants}
+          whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          className={whiteCard}
+        >
+          <div>
+            <p className="text-[12px] font-bold text-[#0B1D3A]">Task Analysis</p>
+            <p className="mt-0.5 text-[9px] text-[#94A3B8]">Your key work activities</p>
+          </div>
+          <div className="mt-3 flex flex-1 flex-col justify-between gap-1.5">
+            {tasks.map((t, i) => (
+              <div key={t.label} className="flex items-center gap-1.5">
+                <span className="w-[72px] shrink-0 truncate text-[8px] font-medium text-[#64748B]">
+                  {t.label}
+                </span>
+                <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-[#F1F5F9]">
+                  <motion.div
+                    className={`h-full rounded-full ${t.color}`}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${Math.min(t.pct * 2.8, 100)}%` }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.7,
+                      delay: 0.35 + i * 0.06,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  />
+                </div>
+                <span className="w-6 shrink-0 text-right text-[8px] font-semibold text-[#0B1D3A]">
+                  {t.pct}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Automation Opportunities */}
+        <motion.div
+          variants={cardVariants}
+          whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          className={whiteCard}
+        >
+          <div>
+            <p className="text-[12px] font-bold leading-snug text-[#0B1D3A]">
+              Automation Opportunities
+            </p>
+            <p className="mt-0.5 text-[9px] text-[#94A3B8]">Tasks with potential for automation</p>
+          </div>
+          <div className="mt-3 flex flex-1 flex-col justify-between gap-2">
+            {automations.map((a, i) => (
+              <motion.div
+                key={a.label}
+                className="flex items-center gap-2.5"
+                initial={{ opacity: 0, x: 8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
+              >
+                <div
+                  className={`grid h-7 w-7 shrink-0 place-items-center rounded-full ${a.iconBg}`}
+                >
+                  {a.icon}
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-[10px] font-semibold text-[#0B1D3A]">{a.label}</p>
+                  <p className="text-[8px] text-[#94A3B8]">{a.tag}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Recommended Tools */}
+        <motion.div
+          variants={cardVariants}
+          whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          className={whiteCard}
+        >
+          <div>
+            <p className="text-[12px] font-bold text-[#0B1D3A]">Recommended</p>
+            <p className="mt-0.5 text-[9px] text-[#94A3B8]">Tools for your work</p>
+          </div>
+          <div className="mt-3 flex flex-1 flex-col justify-between">
+            {tools.map((t, i) => (
+              <motion.div
+                key={t.name}
+                className="flex items-center gap-2.5"
+                initial={{ opacity: 0, x: 8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.45 + i * 0.07 }}
+              >
+                <div
+                  className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[9px] font-bold text-white ${t.color}`}
+                >
+                  {t.initials}
+                </div>
+                <span className="flex-1 text-[11px] font-medium text-[#0B1D3A]">{t.name}</span>
+                <ChevronDown className="h-3.5 w-3.5 -rotate-90 text-[#CBD5E1]" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
 
-function ScoreRing({ score }: { score: number }) {
-  const r = 52;
-  const c = 2 * Math.PI * r;
-  const off = c - (score / 100) * c;
+/* ---------- WORK INTELLIGENCE ---------- */
+function WorkIntelligence() {
+  const stats = [
+    {
+      icon: <Building2 className="h-5 w-5" strokeWidth={1.75} />,
+      iconBg: "bg-[#FEF3C7] text-[#B45309]",
+      value: "40+",
+      label: "Industries mapped",
+    },
+    {
+      icon: <Network className="h-5 w-5" strokeWidth={1.75} />,
+      iconBg: "bg-[#CCFBF1] text-[#0F766E]",
+      value: "2,500+",
+      label: "Competencies structured",
+    },
+    {
+      icon: <Users className="h-5 w-5" strokeWidth={1.75} />,
+      iconBg: "bg-[#E0E7FF] text-[#4338CA]",
+      value: "125K+",
+      label: "Tasks & skills mapped",
+    },
+  ];
+
   return (
-    <div className="relative mx-auto grid h-40 w-40 place-items-center">
-      <svg viewBox="0 0 120 120" className="h-40 w-40 -rotate-90">
-        <circle cx="60" cy="60" r={r} className="fill-none stroke-white/10" strokeWidth="10" />
-        <circle
-          cx="60"
-          cy="60"
-          r={r}
-          className="fill-none"
-          stroke="url(#g)"
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={off}
-        />
-        <defs>
-          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.58 0.20 262)" />
-            <stop offset="100%" stopColor="oklch(0.72 0.13 185)" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div className="absolute text-center">
-        <div className="font-display text-4xl font-bold text-white">{score}</div>
-        <div className="text-[10px] font-medium uppercase tracking-wider text-white/50">
-          Readiness
+    <section className="bg-white py-20 md:py-24">
+      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
+        <div className="max-w-md">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#0B1D3A]/55">
+            Built on real work intelligence
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
+            A deeper foundation. Better insights.
+          </h2>
+          <p className="mt-4 text-[15px] leading-relaxed text-[#64748B]">
+            CareerShift is powered by a comprehensive and structured taxonomy of the world of work.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between sm:gap-2">
+          {stats.map((s, i) => (
+            <div key={s.label} className="contents">
+              <div className="flex items-center gap-3 sm:flex-col sm:items-start">
+                <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-full ${s.iconBg}`}>
+                  {s.icon}
+                </div>
+                <div>
+                  <div className="font-display text-2xl font-bold tracking-tight text-[#0B1D3A] sm:mt-3 sm:text-3xl">
+                    {s.value}
+                  </div>
+                  <div className="mt-0.5 text-sm text-[#64748B]">{s.label}</div>
+                </div>
+              </div>
+              {i < stats.length - 1 && (
+                <div className="hidden items-center justify-center pt-4 sm:flex">
+                  <ArrowRight className="h-4 w-4 text-[#0B1D3A]/30" strokeWidth={2} />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function MiniStat({
-  label,
-  value,
-  tint,
-}: {
-  label: string;
-  value: string;
-  tint: "brand" | "primary" | "muted";
-}) {
-  const dot = tint === "brand" ? "bg-brand" : tint === "primary" ? "bg-primary" : "bg-white/30";
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-      <div className="flex items-center gap-1.5">
-        <span className={`h-2 w-2 rounded-full ${dot}`} />
-        <span className="text-xs text-white/50">{label}</span>
-      </div>
-      <div className="mt-1.5 font-display text-2xl font-bold text-white">{value}</div>
-    </div>
-  );
-}
-
-function BarRow() {
-  const bars = [40, 65, 30, 80, 55, 72, 48];
-  return (
-    <div className="flex h-24 items-end gap-2">
-      {bars.map((h, i) => (
-        <div
-          key={i}
-          className="flex-1 rounded-t-md bg-gradient-to-t from-brand/70 to-primary/70"
-          style={{ height: `${h}%` }}
-        />
-      ))}
-    </div>
+    </section>
   );
 }
 
