@@ -11,6 +11,7 @@ import {
   ChevronDown,
   Clock,
   Compass,
+  Cpu,
   FileText,
   Github,
   Globe,
@@ -73,19 +74,17 @@ function Landing() {
 
 /* ---------- NAV ---------- */
 const NAV_LINKS = [
-  { label: "Features", sectionId: "features" },
-  { label: "How it works", sectionId: "how" },
-  { label: "Sample report", sectionId: "report" },
+  { label: "How It Works", sectionId: "how" },
+  { label: "What's Inside", sectionId: "features" },
+  { label: "Sample Report", sectionId: "report" },
   { label: "Pricing", sectionId: "pricing" },
-  { label: "Our Story", sectionId: "our-story" },
-  { label: "FAQ", sectionId: "faq" },
-  { label: "Contact", sectionId: "contact" },
+  { label: "About", sectionId: "our-story" },
 ] as const;
 
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 animate-fade-in-up bg-[#f6f5ec]">
+    <header className="sticky top-0 z-50 border-b border-black/5 animate-fade-in-up bg-white">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="/log_text.jpeg" alt="CareerShift Logo" className="h-14 object-contain" />
@@ -95,21 +94,21 @@ function Nav() {
             <SectionLink
               key={l.label}
               sectionId={l.sectionId}
-              className="text-sm font-medium text-black/90 transition-colors hover:text-black"
+              className="text-sm font-medium text-black/80 transition-colors hover:text-black"
             >
               {l.label}
             </SectionLink>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 xl:flex">
-          <Link to="/auth" className="text-sm font-medium text-black/90 hover:text-black">
+        <div className="hidden items-center gap-4 xl:flex">
+          <Link to="/auth" className="text-sm font-semibold text-black/80 hover:text-black">
             Log in
           </Link>
           <Link
             to="/auth"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#FDCF58] px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-transform hover:scale-[1.02]"
           >
-            Start free
+            Get My Report
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -122,14 +121,14 @@ function Nav() {
         </button>
       </div>
       {open && (
-        <div className="border-t border-black/10 bg-[#f6f5ec] xl:hidden">
+        <div className="border-t border-black/5 bg-white xl:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {NAV_LINKS.map((l) => (
               <SectionLink
                 key={l.label}
                 sectionId={l.sectionId}
                 onNavigate={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/70 hover:bg-black/5 hover:text-black"
+                className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
               >
                 {l.label}
               </SectionLink>
@@ -143,9 +142,9 @@ function Nav() {
               </Link>
               <Link
                 to="/auth"
-                className="rounded-xl bg-primary/80 px-4 py-2 text-sm font-semibold text-black/90 shadow-soft transition-colors hover:bg-primary/20"
+                className="rounded-xl bg-[#FDCF58] px-4 py-2 text-center text-sm font-semibold text-black shadow-sm transition-colors hover:bg-[#ebd593]"
               >
-                Start free
+                Get My Report
               </Link>
             </div>
           </div>
@@ -162,74 +161,46 @@ function Logo() {
 /* ---------- HERO ---------- */
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0B1D3A]">
-      <div className="container-page animate-fade-in-up relative grid gap-10 pt-10 pb-4 md:gap-14 md:pt-16 md:pb-6 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pt-20 lg:pb-8 items-center">
+    <section className="relative overflow-hidden bg-white">
+      {/* Background soft gradients */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+        <div className="absolute -left-[20%] top-[20%] h-[600px] w-[600px] rounded-full bg-[#FDCF58]/10 blur-[100px]" />
+        <div className="absolute right-[5%] -top-[10%] h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[100px]" />
+      </div>
+      
+      <div className="container-page animate-fade-in-up relative grid gap-10 pt-6 pb-6 md:gap-14 md:pt-10 md:pb-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-12 lg:pb-10 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur">
+          <div className="text-xs font-semibold tracking-widest text-black/50 uppercase">
             CAREER INTELLIGENCE FOR THE FUTURE OF WORK
           </div>
-          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Your work is changing. <span className="text-brand">Know what to do next.</span>
+          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
+            Your work is changing.<br />
+            <span className="text-[#D39933]">Know what to do next.</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
-            CareerShift maps your role, tasks and skills to show what to strengthen, what can be automated, and where AI can amplify your work — with practical tools and actions for what comes next.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
+            CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend — and gives you practical tools and opportunities for what comes next.
           </p>
-          <div className="mt-8 flex w-full flex-col gap-6 sm:w-fit lg:mr-auto">
-            <div className="flex w-full flex-col items-center gap-4 sm:flex-row">
-              <Link
-                to="/auth"
-                className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-semibold text-brand-foreground shadow-elevated transition-transform hover:scale-[1.02]"
-              >
-                Start free assessment
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <SectionLink
-                sectionId="report"
-                className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                View sample report
-              </SectionLink>
-            </div>
-            <div className="flex w-full flex-col items-center justify-between gap-6 sm:flex-row sm:items-center sm:gap-8">
-            <div className="flex items-center gap-4">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400">
-                <Clock className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="font-display text-2xl font-bold text-white">12 min</div>
-                <div className="text-xs text-white/60 mt-0.5">Avg assessment</div>
-              </div>
-            </div>
-
-            <div className="hidden h-10 w-px bg-white/10 sm:block"></div>
-
-            <div className="flex items-center gap-4">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
-                <Signal className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="font-display text-2xl font-bold text-white">40+</div>
-                <div className="text-xs text-white/60 mt-0.5">Data signals</div>
-              </div>
-            </div>
-
-            <div className="hidden h-10 w-px bg-white/10 sm:block"></div>
-
-            <div className="flex items-center gap-4">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-400">
-                <ThumbsUp className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="font-display text-2xl font-bold text-white">97%</div>
-                <div className="text-xs text-white/60 mt-0.5">Would recommend</div>
-              </div>
-            </div>
-            </div>
+          <div className="mt-8 flex w-full flex-col gap-4 sm:flex-row lg:mr-auto max-w-2xl">
+            <Link
+              to="/auth"
+              className="inline-flex w-full sm:w-auto whitespace-nowrap items-center justify-center gap-2 rounded-full bg-[#FDCF58] px-8 py-3.5 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
+            >
+              Get my Career Intelligence Report
+            </Link>
+            <SectionLink
+              sectionId="report"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black/10 bg-transparent px-8 py-3.5 text-sm font-bold text-[#0B1D3A] transition-colors hover:bg-black/5"
+            >
+              View sample report
+            </SectionLink>
+          </div>
+          <div className="mt-4 flex items-center gap-2 text-sm text-black/60 font-medium">
+            <Clock className="h-4 w-4" />
+            <span>One-time report · Takes about 20 minutes</span>
           </div>
         </div>
 
-        <div className="relative w-full max-w-[500px] justify-self-center lg:justify-self-end">
-          <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand/20 via-primary/10 to-primary/10 blur-3xl opacity-30" />
+        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-10 lg:mt-0">
           <HeroGraphic />
         </div>
       </div>
@@ -239,36 +210,52 @@ function Hero() {
 
 function MockStats() {
   return (
-    <section className="bg-[#0B1D3A] pb-16">
+    <section className="bg-white pb-8">
       <div className="container-page">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
-              <ShieldCheck className="h-6 w-6" />
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 rounded-[2rem] border border-black/5 bg-white p-6 md:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)]">
+          <div className="flex flex-1 flex-col sm:flex-row items-center justify-around gap-6 w-full">
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-orange-100 text-orange-500">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="font-display text-2xl font-bold tracking-tight text-[#0B1D3A]">40+</div>
+                <div className="text-xs font-medium text-black/60">Industries mapped</div>
+              </div>
             </div>
-            <div>
-              <div className="font-display text-2xl font-bold tracking-tight text-white">40+</div>
-              <div className="text-sm font-medium text-white/60">Industries mapped</div>
+            
+            <div className="hidden sm:block h-12 w-px bg-black/5"></div>
+            
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-teal-100 text-teal-500">
+                <BarChart3 className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="font-display text-2xl font-bold tracking-tight text-[#0B1D3A]">2,500+</div>
+                <div className="text-xs font-medium text-black/60">Competencies structured</div>
+              </div>
             </div>
-          </div>
-          
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
-              <BarChart3 className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="font-display text-2xl font-bold tracking-tight text-white">2,500+</div>
-              <div className="text-sm font-medium text-white/60">Competencies structured</div>
+
+            <div className="hidden sm:block h-12 w-px bg-black/5"></div>
+
+            <div className="flex items-center gap-4">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-indigo-100 text-indigo-500">
+                <Target className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="font-display text-2xl font-bold tracking-tight text-[#0B1D3A]">125K+</div>
+                <div className="text-xs font-medium text-black/60">Tasks & skills mapped</div>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-elevated">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/20 text-brand">
-              <Target className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="font-display text-2xl font-bold tracking-tight text-white">125K+</div>
-              <div className="text-sm font-medium text-white/60">Tasks & skills mapped</div>
+          <div className="hidden md:block h-16 w-px bg-black/10 mx-4"></div>
+
+          <div className="w-full md:w-auto text-center md:text-left pt-4 md:pt-0 border-t md:border-none border-black/5">
+            <div className="text-[10px] font-bold tracking-[0.2em] text-black/50 leading-loose">
+              REAL INSIGHTS.<br />
+              PRACTICAL ACTIONS.<br />
+              A MORE RELEVANT YOU.
             </div>
           </div>
         </div>
@@ -302,50 +289,72 @@ function FloatingCard({
   );
 }
 
-/* ---------- PROBLEM ---------- */
 function Problem() {
   const items = [
     {
-      icon: <Compass className="h-5 w-5" />,
-      title: "You don't know where to start",
-      body: "Generic AI advice doesn't map to your actual role, industry, or daily workflow so you're guessing while others are adapting.",
+      num: "01",
+      icon: <Compass className="h-6 w-6 text-[#0f172a]" />,
+      iconBg: "bg-[#FEF3C7]",
+      title: "You don't know where to start.",
+      body: "There's too much information, too many tools and opinions — and no clear way to understand what actually applies to your role and industry.",
     },
     {
-      icon: <ShieldCheck className="h-5 w-5" />,
-      title: "You can't tell hype from risk",
-      body: "Which tasks are about to be automated and which ones, if you master AI first, make you irreplaceable?",
+      num: "02",
+      icon: <ShieldCheck className="h-6 w-6 text-[#0f172a]" />,
+      iconBg: "bg-[#CCFBF1]",
+      title: "You can't tell hype from impact.",
+      body: "It's hard to know which tasks can be automated, where AI can genuinely help, and where human capability still matters — so you can focus on what really deserves your attention.",
     },
     {
-      icon: <Rocket className="h-5 w-5" />,
-      title: "You're running without a roadmap.",
-      body: "No clear roadmap of tools, skills, and moves that compound over the next 12 months.",
+      num: "03",
+      icon: <Rocket className="h-6 w-6 text-[#0f172a]" />,
+      iconBg: "bg-[#E0E7FF]",
+      title: "You're running without a clear plan.",
+      body: "Without a structured view of your tasks, skills and opportunities, it's easy to feel uncertain about what to do next.",
     },
   ];
   return (
     <section className="bg-background py-24">
       <div className="container-page animate-fade-in-up">
-        <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>The problem</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            AI won't take your job. But someone who uses AI might.
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            The gap isn't knowledge. It's a plan. You need clarity on{" "}
-            <span className="text-brand font-bold">your</span> role,
-            <span className="text-brand font-bold"> your</span> tasks, and{" "}
-            <span className="text-brand font-bold">your</span> next move.
-          </p>
+        <div className="relative mb-16">
+          {/* Left Decorative - absolutely positioned so it doesn't affect centering */}
+          <div className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 w-max xl:left-0 z-0">
+            <div className="text-[32px] leading-[1.1] text-foreground -rotate-6" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+              Change<br />
+              is real.<br />
+              So are your<br />
+              opportunities.
+            </div>
+            <svg width="180" height="20" viewBox="0 0 180 20" className="absolute -bottom-4 left-2 text-[#FDCF58] -rotate-6 pointer-events-none">
+              <path d="M0,15 Q90,-5 180,10" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+            </svg>
+          </div>
+          
+          {/* Center Content */}
+          <div className="mx-auto max-w-2xl text-center relative z-10">
+            <SectionEyebrow>The problem</SectionEyebrow>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              AI won't take your job. But someone who uses AI might.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              The gap isn't knowledge. It's clarity. You need to understand what in your work can be automated, what still needs you, and how to stay ahead.
+            </p>
+          </div>
         </div>
+
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {items.map((it) => (
-            <div key={it.title} className="surface-card p-6 hover-lift  ">
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-foreground shadow-soft">
+            <div key={it.title} className="surface-card p-6 hover-lift relative overflow-hidden">
+              <div className="absolute top-6 right-6 text-4xl font-display font-bold text-muted-foreground/20 select-none">
+                {it.num}
+              </div>
+              <div className={`grid h-14 w-14 place-items-center rounded-full ${it.iconBg} shadow-soft`}>
                 {it.icon}
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-foreground">
+              <h3 className="mt-5 font-display text-lg font-semibold text-foreground relative z-10">
                 {it.title}
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">{it.body}</p>
+              <p className="mt-2 text-sm text-muted-foreground relative z-10">{it.body}</p>
             </div>
           ))}
         </div>
@@ -1089,144 +1098,134 @@ function FaqItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
 
 function HeroGraphic() {
   return (
-    <div className="flex justify-center items-center relative overflow-visible w-full aspect-square max-w-[500px] mx-auto scale-[0.78] sm:scale-[0.88] md:scale-100 origin-center">
-      {/* Concentric rings */}
-      <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.04] pointer-events-none"></div>
-      <div className="absolute w-[50%] h-[50%] rounded-full border border-white/[0.04] pointer-events-none"></div>
+    <div className="relative w-full aspect-square max-w-[650px] mx-auto scale-90 sm:scale-100 origin-center font-sans">
+      {/* Decorative large circle outline */}
+      <div className="absolute top-[5%] left-[0%] w-[100%] h-[100%] rounded-full border-5 border-[#FDCF58]/30 pointer-events-none" />
+      <div className="absolute top-[0%] left-[5%] w-[100%] h-[100%] rounded-full border border-[#FDCF58]/30 border-dashed pointer-events-none" />
 
-      {/* Connection Lines */}
-      <div className="absolute w-[75%] h-[75%] rounded-full border border-white/[0.06] pointer-events-none">
-        <svg
-          className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
-          viewBox="0 0 400 400"
-        >
-          {/* Top-Left Line (Automation Match) */}
-          <line
-            x1="200"
-            y1="200"
-            x2="60"
-            y2="60"
-            stroke="currentColor"
-            className="text-white/30"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          {/* Bottom-Right Line (Human Core) */}
-          <line
-            x1="200"
-            y1="200"
-            x2="340"
-            y2="340"
-            stroke="currentColor"
-            className="text-white/30"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          {/* Top-Right Line (AI Leverage) */}
-          <line
-            x1="200"
-            y1="200"
-            x2="340"
-            y2="60"
-            stroke="currentColor"
-            className="text-white/30"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-          {/* Bottom-Left Line (Time Reclaimed) */}
-          <line
-            x1="200"
-            y1="200"
-            x2="60"
-            y2="340"
-            stroke="currentColor"
-            className="text-white/30"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-        </svg>
+      {/* Connection Lines using SVG */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        viewBox="0 0 650 650"
+      >
+        {/* Lines from Top to Middle */}
+        <path d="M325 150 L325 210" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        <path d="M140 210 L510 210" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        
+        {/* Drops to boxes */}
+        <path d="M140 210 L140 240" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        <path d="M325 210 L325 240" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        <path d="M510 210 L510 240" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        
+        {/* Dots at splits and ends */}
+        <circle cx="325" cy="210" r="3" fill="#0B1D3A" />
+        <circle cx="140" cy="240" r="3" fill="#0B1D3A" />
+        <circle cx="325" cy="240" r="3" fill="#0B1D3A" />
+        <circle cx="510" cy="240" r="3" fill="#0B1D3A" />
 
-        {/* Cards */}
-        {/* Top-Left */}
-        <div
-          className="absolute pointer-events-auto"
-          style={{ left: "15%", top: "15%", transform: "translate(-50%, -50%)" }}
-        >
-          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
-            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              Automation Match
-            </div>
-            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">42%</div>
-            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              TASKS TO BOT
-            </div>
+        {/* Lines from Middle to Bottom */}
+        <path d="M140 380 L140 420" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        <path d="M325 380 L325 420" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        <path d="M510 380 L510 420" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        
+        {/* Horizontal merge */}
+        <path d="M140 420 L510 420" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        
+        {/* Final drop to bottom node */}
+        <path d="M325 420 L325 450" stroke="#0B1D3A" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+        
+        {/* Dots */}
+        <circle cx="325" cy="420" r="3" fill="#0B1D3A" />
+        <circle cx="325" cy="450" r="3" fill="#0B1D3A" />
+      </svg>
+
+      {/* Top Node */}
+      <div
+        className="absolute w-[280px] z-10 pointer-events-auto"
+        style={{ left: "50%", top: "60px", transform: "translateX(-50%)" }}
+      >
+        <div className="bg-white rounded-[2rem] p-5 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] border border-black/5 flex items-center gap-4">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-blue-100/50 text-blue-700">
+            <Briefcase className="h-6 w-6" />
           </div>
-        </div>
-        {/* Bottom-Right */}
-        <div
-          className="absolute pointer-events-auto"
-          style={{ left: "85%", top: "85%", transform: "translate(-50%, -50%)" }}
-        >
-          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
-            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              Human Core
-            </div>
-            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">35%</div>
-            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              SKILLS TO BUILD
-            </div>
-          </div>
-        </div>
-        {/* Top-Right */}
-        <div
-          className="absolute pointer-events-auto"
-          style={{ left: "85%", top: "15%", transform: "translate(-50%, -50%)" }}
-        >
-          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
-            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              AI Leverage
-            </div>
-            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">23%</div>
-            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              WORKFLOWS TO BLEND
-            </div>
-          </div>
-        </div>
-        {/* Bottom-Left */}
-        <div
-          className="absolute pointer-events-auto"
-          style={{ left: "15%", top: "85%", transform: "translate(-50%, -50%)" }}
-        >
-          <div className="bg-[#0B1D3A] rounded-2xl p-4 w-[140px] border border-white/5 transition-all duration-300 hover:border-brand/50 hover:-translate-y-1 cursor-pointer shadow-2xl">
-            <div className="text-white/80 text-[11px] font-bold tracking-wide truncate">
-              Time Reclaimed
-            </div>
-            <div className="text-brand text-2xl font-display font-bold my-1 leading-none">
-              11.5h
-            </div>
-            <div className="text-white/40 text-[9px] font-bold tracking-widest uppercase leading-none mt-1">
-              SAVED WEEKLY
+          <div>
+            <div className="text-[#0B1D3A] text-lg font-bold">Your Work</div>
+            <div className="text-black/50 text-[11px] font-medium tracking-wide mt-0.5">
+              Role &nbsp;|&nbsp; Tasks &nbsp;|&nbsp; Skills
             </div>
           </div>
         </div>
       </div>
 
-      {/* Center Node and Ripples */}
-      <div className="absolute w-[35%] h-[35%] flex items-center justify-center pointer-events-none z-10">
-        <div className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0B1D3A] animate-valRadarWave"></div>
-        <div
-          className="absolute w-full h-full rounded-full border border-brand/20 bg-[#0B1D3A] animate-valRadarWave"
-          style={{ animationDelay: "2s" }}
-        ></div>
-        <div className="w-[110px] h-[110px] rounded-full border border-white/10 bg-[#0B1D3A] flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto relative z-20">
-          {/* <BrainCircuit className="h-7 w-7 text-brand mb-1" strokeWidth={2} /> */}
-          <span className="text-white/90 text-[10px] font-bold tracking-[0.2em] leading-none mb-1 mt-1">
-            CAREER
-          </span>
-          <span className="text-brand text-[7px] font-bold tracking-[0.1em] leading-none">
-            AI ENGINE
-          </span>
+      {/* Middle Nodes */}
+      {/* Build It */}
+      <div
+        className="absolute w-[160px] z-10 pointer-events-auto"
+        style={{ left: "140px", top: "310px", transform: "translate(-50%, -50%)" }}
+      >
+        <div className="bg-[#FFF9EA] rounded-[1.5rem] p-5 shadow-sm text-center transition-transform hover:-translate-y-1 hover:shadow-md">
+          <div className="mx-auto grid h-12 w-12 place-items-center text-[#D68822] mb-2">
+            <Brain className="h-9 w-9" />
+          </div>
+          <div className="text-[#D68822] text-[13px] font-extrabold tracking-widest uppercase mb-1">BUILD IT</div>
+          <div className="text-[#0B1D3A]/80 text-[11px] font-medium leading-tight">Strengthen what stays human</div>
         </div>
+      </div>
+
+      {/* Bot It */}
+      <div
+        className="absolute w-[160px] z-10 pointer-events-auto"
+        style={{ left: "325px", top: "310px", transform: "translate(-50%, -50%)" }}
+      >
+        <div className="bg-[#EAFDF8] rounded-[1.5rem] p-5 shadow-sm text-center transition-transform hover:-translate-y-1 hover:shadow-md">
+          <div className="mx-auto grid h-12 w-12 place-items-center text-[#129A84] mb-2">
+            <Bot className="h-9 w-9" />
+          </div>
+          <div className="text-[#129A84] text-[13px] font-extrabold tracking-widest uppercase mb-1">BOT IT</div>
+          <div className="text-[#0B1D3A]/80 text-[11px] font-medium leading-tight">Identify what can be automated</div>
+        </div>
+      </div>
+
+      {/* Blend It */}
+      <div
+        className="absolute w-[160px] z-10 pointer-events-auto"
+        style={{ left: "510px", top: "310px", transform: "translate(-50%, -50%)" }}
+      >
+        <div className="bg-[#F3EEFF] rounded-[1.5rem] p-5 shadow-sm text-center transition-transform hover:-translate-y-1 hover:shadow-md">
+          <div className="mx-auto grid h-12 w-12 place-items-center text-[#6B46C1] mb-2">
+            <Cpu className="h-9 w-9" />
+          </div>
+          <div className="text-[#6B46C1] text-[13px] font-extrabold tracking-widest uppercase mb-1">BLEND IT</div>
+          <div className="text-[#0B1D3A]/80 text-[11px] font-medium leading-tight">Discover where AI can amplify your work</div>
+        </div>
+      </div>
+
+      {/* Bottom Node */}
+      <div
+        className="absolute w-[320px] z-10 pointer-events-auto"
+        style={{ left: "50%", bottom: "80px", transform: "translateX(-50%)" }}
+      >
+        <div className="bg-white rounded-[2rem] p-5 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] border border-black/5 flex items-center gap-4">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-indigo-100/50 text-indigo-700">
+            <BarChart3 className="h-6 w-6" />
+          </div>
+          <div>
+            <div className="text-[#0B1D3A] text-lg font-bold">Your Career Intelligence</div>
+            <div className="text-black/50 text-[11px] font-medium tracking-wide mt-0.5">
+              Tools &nbsp;|&nbsp; Opportunities &nbsp;|&nbsp; Actions
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hand-drawn text annotation */}
+      <div className="absolute -right-[15%] top-[5%] rotate-[18deg] w-[250px] pointer-events-none z-20">
+        <div className="text-[28px] leading-tight text-[#222]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+          Navigate what's changing. Design your future work.
+        </div>
+        <svg width="60" height="20" viewBox="0 0 60 20" className="mt-1 ml-8 text-[#FDCF58]">
+          <path d="M0,10 Q30,20 60,0" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        </svg>
       </div>
     </div>
   );
