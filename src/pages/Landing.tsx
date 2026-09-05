@@ -24,7 +24,6 @@ import {
   Menu,
   MessageSquare,
   Network,
-  Phone,
   Rocket,
   Settings,
   SlidersHorizontal,
@@ -36,7 +35,6 @@ import {
   Twitter,
   User,
   Users,
-  Video,
   X,
   Zap,
 } from "lucide-react";
@@ -75,14 +73,19 @@ function Landing() {
 }
 
 /* ---------- NAV ---------- */
-const NAV_LINKS = [
+type NavLinkItem =
+  | { label: string; sectionId: string }
+  | { label: string; to: string };
+
+const NAV_LINKS: NavLinkItem[] = [
   { label: "CareerShift Way", sectionId: "framework" },
   { label: "How It Works", sectionId: "how" },
   { label: "What's Inside", sectionId: "features" },
   { label: "Pricing", sectionId: "pricing" },
+  { label: "About Us", to: "/about" },
   { label: "FAQ", sectionId: "faq" },
   { label: "Contact", sectionId: "contact" },
-] as const;
+];
 
 function Nav() {
   const [open, setOpen] = useState(false);
@@ -93,15 +96,25 @@ function Nav() {
           <img src="/new_logo11.png" alt="CareerShift Logo" className="h-14 object-contain" />
         </Link>
         <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
-          {NAV_LINKS.map((l) => (
-            <SectionLink
-              key={l.label}
-              sectionId={l.sectionId}
-              className="text-sm font-medium text-black/80 transition-colors hover:text-black"
-            >
-              {l.label}
-            </SectionLink>
-          ))}
+          {NAV_LINKS.map((l) =>
+            "to" in l ? (
+              <Link
+                key={l.label}
+                to={l.to}
+                className="text-sm font-medium text-black/80 transition-colors hover:text-black"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <SectionLink
+                key={l.label}
+                sectionId={l.sectionId}
+                className="text-sm font-medium text-black/80 transition-colors hover:text-black"
+              >
+                {l.label}
+              </SectionLink>
+            )
+          )}
         </nav>
         <div className="hidden items-center gap-4 lg:flex">
           <Link to="/auth" className="text-sm font-semibold text-black/80 hover:text-black">
@@ -126,16 +139,27 @@ function Nav() {
       {open && (
         <div className="border-t border-black/5 bg-white lg:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
-            {NAV_LINKS.map((l) => (
-              <SectionLink
-                key={l.label}
-                sectionId={l.sectionId}
-                onNavigate={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
-              >
-                {l.label}
-              </SectionLink>
-            ))}
+            {NAV_LINKS.map((l) =>
+              "to" in l ? (
+                <Link
+                  key={l.label}
+                  to={l.to}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <SectionLink
+                  key={l.label}
+                  sectionId={l.sectionId}
+                  onNavigate={() => setOpen(false)}
+                  className="rounded-md px-3 py-2 text-left text-sm font-medium text-black/80 hover:bg-black/5 hover:text-black"
+                >
+                  {l.label}
+                </SectionLink>
+              )
+            )}
             <div className="mt-2 flex gap-2 px-1">
               <Link
                 to="/auth"
@@ -1539,7 +1563,7 @@ function ContactUs() {
           </p>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-5xl gap-10 md:grid-cols-2">
+        <div className="mx-auto mt-14 max-w-xl">
           <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
             <h3 className="mb-6 font-display text-xl font-semibold text-[#0B1D3A]">Send a Message</h3>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
@@ -1590,51 +1614,6 @@ function ContactUs() {
               </button>
             </form>
           </div>
-
-          <div className="flex flex-col gap-6">
-            <div className="flex-1 rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
-              <h3 className="mb-2 font-display text-xl font-semibold text-[#0B1D3A]">
-                Book an Appointment
-              </h3>
-              <p className="mb-8 text-sm text-[#64748B]">
-                Choose a time that works best for you. We offer video and phone consultations.
-              </p>
-
-              <div className="space-y-4">
-                <a
-                  href="#"
-                  className="group flex items-center gap-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-colors hover:border-[#FDCF58] hover:bg-[#FFFBEB]"
-                >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#FEF3C7] text-[#B45309]">
-                    <Video className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#0B1D3A] transition-colors group-hover:text-[#B45309]">
-                      Google / Zoom Meeting
-                    </h4>
-                    <p className="mt-0.5 text-xs text-[#94A3B8]">30 min video consultation</p>
-                  </div>
-                  <ArrowRight className="ml-auto h-5 w-5 text-[#CBD5E1] transition-all group-hover:translate-x-1 group-hover:text-[#B45309]" />
-                </a>
-
-                <a
-                  href="#"
-                  className="group flex items-center gap-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 transition-colors hover:border-[#FDCF58] hover:bg-[#FFFBEB]"
-                >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#E0E7FF] text-[#4338CA]">
-                    <Phone className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[#0B1D3A] transition-colors group-hover:text-[#4338CA]">
-                      Phone Call
-                    </h4>
-                    <p className="mt-0.5 text-xs text-[#94A3B8]">15 min quick chat</p>
-                  </div>
-                  <ArrowRight className="ml-auto h-5 w-5 text-[#CBD5E1] transition-all group-hover:translate-x-1 group-hover:text-[#4338CA]" />
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1660,7 +1639,10 @@ function Footer() {
     { title: "Resources", links: [{ label: "FAQ", sectionId: "faq" }] },
     {
       title: "Company",
-      links: [{ label: "Contact", sectionId: "contact" }],
+      links: [
+        { label: "About Us", to: "/about" },
+        { label: "Contact", sectionId: "contact" },
+      ],
     },
     {
       title: "Legal",

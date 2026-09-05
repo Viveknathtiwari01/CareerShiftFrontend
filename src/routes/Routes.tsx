@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Landing from "../pages/Landing";
+import About from "../pages/About";
 import Auth from "../pages/Auth";
 import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
@@ -21,6 +22,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/about" element={<About />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
