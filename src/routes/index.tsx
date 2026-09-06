@@ -624,7 +624,7 @@ function Pricing() {
       sub: "Try the assessment risk-free",
       features: [
         "12-minute AI assessment",
-        "Basic readiness score",
+        "Basic readiness analysis",
         "3 tool recommendations",
         "Email report",
       ],

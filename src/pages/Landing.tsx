@@ -1275,7 +1275,7 @@ After watching brilliant colleagues paralyzed by generic AI noise, she built the
     },
     {
       q: "Do you offer workshops for teams or organizations?",
-      a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and readiness scores first, then design the workshop around the specific gaps and opportunities in your organization.
+      a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and AI readiness first, then design the workshop around the specific gaps and opportunities in your organization.
 <br/><br/>
 You don't get a standard slide deck. You get a session mapped to your workflows, your tools, and your productivity bottlenecks so every minute drives real efficiency, not just awareness.
 <br/><br/>

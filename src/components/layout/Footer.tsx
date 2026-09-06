@@ -3,13 +3,10 @@ import { Clock, Instagram, Linkedin, Youtube, ArrowRight } from "lucide-react";
 
 export function Footer() {
   const links = [
-    { label: "About", to: "/about" },
-    { label: "Founder", to: "#" },
-    { label: "Contact", to: "#contact" },
-    { label: "FAQ", to: "#faq" },
+    { label: "About Us", to: "/about" },
     { label: "Privacy Policy", to: "/privacy" },
     { label: "Terms of Use", to: "/terms" },
-    { label: "Refund Policy", to: "#" },
+    { label: "Refund Policy", to: "#" }
   ];
 
   const socials = [
