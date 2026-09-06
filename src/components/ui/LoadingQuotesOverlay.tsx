@@ -60,9 +60,14 @@ export function LoadingQuotesOverlay() {
           <div className="absolute inset-[-6px] border-4 border-transparent rounded-full border-t-transparent border-r-transparent border-b-[#3b82f6]/40 border-l-[#fcd34d]/40 animate-[spin_4s_linear_infinite_reverse] opacity-70" style={{ borderStyle: 'dotted' }}></div>
         </div>
 
-        <h3 className="text-[22px] font-bold text-[#0B1D3A] mb-8 tracking-tight leading-snug">
+        <h3 className="text-[22px] font-bold text-[#0B1D3A] mb-4 tracking-tight leading-snug">
           Creating your Career<br/>Intelligence Report...
         </h3>
+
+        {/* Warning Message */}
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-3 mb-6 mx-4 text-sm font-medium shadow-sm">
+          Generating 3B analysis page may take some time like 2-3 minutes. So keep patient for better result.
+        </div>
 
         {/* Loading dots */}
         <div className="flex gap-2.5 mb-10 justify-center">
