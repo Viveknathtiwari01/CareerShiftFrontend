@@ -63,6 +63,7 @@ import { useCompetencyAssessment } from "@/hooks/use-competency-assessment";
 import StepTaskGenerator from "@/components/assessment/StepTaskGenerator";
 import TaskIntelligenceReview from "@/components/assessment/TaskIntelligenceReview";
 import { Loader2, RefreshCw } from "lucide-react";
+import { LoadingQuotesOverlay } from "@/components/ui/LoadingQuotesOverlay";
 
 const TOOL_OPTIONS = [
   "ChatGPT",
@@ -101,6 +102,7 @@ function AssessmentWizard({
   const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
   const [isSavingTasks, setIsSavingTasks] = useState(false);
+  const [isGenerating3B, setIsGenerating3B] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [tasksReviewComplete, setTasksReviewComplete] = useState(false);
   const pipeline = useCompetencyAssessment({ prefetchedSession });
@@ -145,7 +147,7 @@ function AssessmentWizard({
   }
 
   async function goTo3BAnalysis() {
-    setIsSavingTasks(true);
+    setIsGenerating3B(true);
     setSaveError(null);
     try {
       await persistTasks();
@@ -161,153 +163,155 @@ function AssessmentWizard({
       setSaveError(message);
       console.error("Failed to save tasks before 3B analysis", err);
     } finally {
-      setIsSavingTasks(false);
+      setIsGenerating3B(false);
     }
   }
 
   return (
-    <div className="w-full">
-      {/* Stepper */}
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span className="text-brand">Assessment Profile</span>
-          <span>{Math.round(progress)}% complete</span>
+    <>
+      <div className="w-full">
+        {/* Stepper */}
+        <div className="mb-8">
+          <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
+            <span className="text-brand">Assessment Profile</span>
+            <span>{Math.round(progress)}% complete</span>
+          </div>
+          <div className="h-1 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <ol className="mt-6 hidden grid-cols-4 gap-2 md:grid">
+            {STEPS.map((s, i) => {
+              const Icon = s.icon;
+              const active = i === step;
+              const done = i < step;
+              return (
+                <li key={s.key} className="flex flex-col items-center gap-2 text-center">
+                  <div
+                    className={`grid h-9 w-9 place-items-center rounded-full border transition-colors ${
+                      done
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : active
+                          ? "border-primary bg-primary text-primary-foreground shadow-soft"
+                          : "border-border bg-card text-muted-foreground"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <span
+                    className={`text-xs font-medium ${active ? "text-foreground" : "text-muted-foreground"}`}
+                  >
+                    {s.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
         </div>
-        <div className="h-1 overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-            style={{ width: `${progress}%` }}
-          />
+
+        <div className="panel p-6 md:p-10">
+          {STEPS[step].key === "finalReport" && (
+            <StepReview pipelineStatus={pipeline.status} isProcessing={pipeline.isProcessing} />
+          )}
+          {STEPS[step].key === "competencies" && (
+            <StepCompetencies
+              draft={draft}
+              setDraft={setDraft}
+              competencyMapping={pipeline.competencyMapping}
+              status={pipeline.status}
+              pipelineProgress={pipeline.pipelineProgress}
+              isProcessing={pipeline.isProcessing}
+              isComplete={pipeline.isComplete}
+              isFailed={pipeline.isFailed}
+              profileStale={pipeline.profileStale}
+              pipelineError={pipeline.pipelineError}
+              startError={pipeline.error}
+              onRetry={pipeline.retry}
+              isRetrying={pipeline.isRetrying}
+            />
+          )}
+          {STEPS[step].key === "taskGen" && (
+            <StepTaskGenerator
+              assessmentId={pipeline.assessmentId}
+              isCompetencyComplete={pipeline.isComplete}
+              draft={draft}
+              setDraft={setDraft}
+            />
+          )}
+          {STEPS[step].key === "tasks" && (
+            <TaskIntelligenceReview
+              tasks={draft.tasks}
+              updateTask={updateTask}
+              onReviewComplete={setTasksReviewComplete}
+            />
+          )}
         </div>
-        <ol className="mt-6 hidden grid-cols-4 gap-2 md:grid">
-          {STEPS.map((s, i) => {
-            const Icon = s.icon;
-            const active = i === step;
-            const done = i < step;
-            return (
-              <li key={s.key} className="flex flex-col items-center gap-2 text-center">
-                <div
-                  className={`grid h-9 w-9 place-items-center rounded-full border transition-colors ${
-                    done
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : active
-                        ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                        : "border-border bg-card text-muted-foreground"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
-                <span
-                  className={`text-xs font-medium ${active ? "text-foreground" : "text-muted-foreground"}`}
-                >
-                  {s.label}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
 
-      <div className="panel p-6 md:p-10">
-        {STEPS[step].key === "finalReport" && (
-          <StepReview pipelineStatus={pipeline.status} isProcessing={pipeline.isProcessing} />
+        {saveError && (
+          <div className="mt-6 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            {saveError}
+          </div>
         )}
-        {STEPS[step].key === "competencies" && (
-          <StepCompetencies
-            draft={draft}
-            setDraft={setDraft}
-            competencyMapping={pipeline.competencyMapping}
-            status={pipeline.status}
-            pipelineProgress={pipeline.pipelineProgress}
-            isProcessing={pipeline.isProcessing}
-            isComplete={pipeline.isComplete}
-            isFailed={pipeline.isFailed}
-            profileStale={pipeline.profileStale}
-            pipelineError={pipeline.pipelineError}
-            startError={pipeline.error}
-            onRetry={pipeline.retry}
-            isRetrying={pipeline.isRetrying}
-          />
-        )}
-        {STEPS[step].key === "taskGen" && (
-          <StepTaskGenerator
-            assessmentId={pipeline.assessmentId}
-            isCompetencyComplete={pipeline.isComplete}
-            draft={draft}
-            setDraft={setDraft}
-          />
-        )}
-        {STEPS[step].key === "tasks" && (
-          <TaskIntelligenceReview
-            tasks={draft.tasks}
-            updateTask={updateTask}
-            onReviewComplete={setTasksReviewComplete}
-          />
-        )}
-      </div>
 
-      {saveError && (
-        <div className="mt-6 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {saveError}
+        <div className="sticky bottom-0 z-10 mt-6 flex items-center justify-between border-t border-border bg-background/95 py-4 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
+          <button
+            onClick={prev}
+            disabled={step === 0}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-40"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
+          {step < STEPS.length - 1 ? (
+            <button
+              onClick={next}
+              disabled={!canContinue || isSavingTasks}
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSavingTasks ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Saving tasks...
+                </>
+              ) : currentStepKey === "competencies" && pipeline.isProcessing ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Mapping competencies...
+                </>
+              ) : (
+                <>
+                  Continue <ArrowRight className="h-4 w-4" />
+                </>
+              )}
+            </button>
+          ) : tasksReviewComplete ? (
+            <button
+              type="button"
+              onClick={goTo3BAnalysis}
+              disabled={isGenerating3B}
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {isGenerating3B ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Preparing 3B analysis...
+                </>
+              ) : (
+                <>
+                  View Your 3B Analysis <ArrowRight className="h-5 w-5" />
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              disabled
+              className="inline-flex items-center gap-2 rounded-xl bg-muted px-6 py-2.5 text-sm font-medium text-muted-foreground"
+            >
+              Complete all task reviews to continue
+            </button>
+          )}
         </div>
-      )}
-
-      <div className="sticky bottom-0 z-10 mt-6 flex items-center justify-between border-t border-border bg-background/95 py-4 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
-        <button
-          onClick={prev}
-          disabled={step === 0}
-          className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-40"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </button>
-        {step < STEPS.length - 1 ? (
-          <button
-            onClick={next}
-            disabled={!canContinue || isSavingTasks}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isSavingTasks ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" /> Saving tasks...
-              </>
-            ) : currentStepKey === "competencies" && pipeline.isProcessing ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" /> Mapping competencies...
-              </>
-            ) : (
-              <>
-                Continue <ArrowRight className="h-4 w-4" />
-              </>
-            )}
-          </button>
-        ) : tasksReviewComplete ? (
-          <button
-            type="button"
-            onClick={goTo3BAnalysis}
-            disabled={isSavingTasks}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            {isSavingTasks ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" /> Preparing 3B analysis...
-              </>
-            ) : (
-              <>
-                View Your 3B Analysis <ArrowRight className="h-5 w-5" />
-              </>
-            )}
-          </button>
-        ) : (
-          <button
-            disabled
-            className="inline-flex items-center gap-2 rounded-xl bg-muted px-6 py-2.5 text-sm font-medium text-muted-foreground"
-          >
-            Complete all task reviews to continue
-          </button>
-        )}
       </div>
-    </div>
-  );
+      {isGenerating3B && <LoadingQuotesOverlay />}
+    </>  );
 }
 
 /* ---------- Steps ---------- */
