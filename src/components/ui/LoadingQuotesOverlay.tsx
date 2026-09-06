@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FileBarChart2 } from "lucide-react";
+import { FileBarChart2, AlertCircle } from "lucide-react";
 
 const QUOTES = [
   "You've taken the first step. That matters.\nYou chose clarity over simply wondering what comes next.",
@@ -29,8 +29,8 @@ export function LoadingQuotesOverlay() {
       setTimeout(() => {
         setQuoteIndex((prevIndex) => (prevIndex + 1) % QUOTES.length);
         setIsFading(false);
-      }, 500); // 500ms fade out transition
-    }, 10000); // 10 seconds
+      }, 600); // 600ms fade out transition for smoother easing
+    }, 8000); // 8 seconds per quote
 
     return () => clearInterval(intervalId);
   }, []);
@@ -38,53 +38,57 @@ export function LoadingQuotesOverlay() {
   const currentQuote = QUOTES[quoteIndex].split('\n');
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B1D3A]/40 backdrop-blur-sm animate-in fade-in duration-300 p-4">
-      <div className="flex flex-col items-center w-full max-w-lg mx-auto bg-white rounded-[2rem] shadow-2xl p-10 sm:p-14 text-center relative overflow-hidden animate-in zoom-in-95 duration-500 ease-out">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B1D3A]/60 backdrop-blur-md animate-in fade-in duration-500 p-4">
+      <div className="flex flex-col items-center w-full max-w-[520px] mx-auto bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] p-6 sm:p-10 text-center relative overflow-hidden animate-in zoom-in-[0.98] duration-700 ease-out">
         
         {/* Subtle background decoration */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-yellow-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+        <div className="absolute -top-32 -right-32 w-64 h-64 bg-blue-100/50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-amber-100/50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
 
         {/* Animated Spinner Graphic */}
-        <div className="relative w-40 h-40 mb-10 flex items-center justify-center">
+        <div className="relative w-24 h-24 mb-5 flex items-center justify-center">
           {/* Inner pulsating circle */}
-          <div className="absolute inset-4 bg-slate-50/80 rounded-full animate-pulse shadow-inner"></div>
+          <div className="absolute inset-2 bg-slate-50 rounded-full animate-pulse shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)]"></div>
           
           {/* Document Icon in the center */}
           <div className="relative z-10 text-[#0B1D3A]">
-            <FileBarChart2 size={56} strokeWidth={1.5} />
+            <FileBarChart2 size={36} strokeWidth={1.5} />
           </div>
 
-          {/* Outer rotating segmented ring */}
-          <div className="absolute inset-0 border-[6px] border-transparent rounded-full border-t-[#3b82f6] border-r-[#fcd34d] border-b-[#2dd4bf] border-l-[#e2e8f0] animate-[spin_3s_linear_infinite] opacity-90" style={{ borderStyle: 'solid' }}></div>
-          <div className="absolute inset-[-6px] border-4 border-transparent rounded-full border-t-transparent border-r-transparent border-b-[#3b82f6]/40 border-l-[#fcd34d]/40 animate-[spin_4s_linear_infinite_reverse] opacity-70" style={{ borderStyle: 'dotted' }}></div>
+          {/* Clean rotating ring */}
+          <svg className="absolute inset-0 w-full h-full animate-[spin_3s_linear_infinite]" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#E2E8F0" strokeWidth="3" />
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#0B1D3A" strokeWidth="3" strokeDasharray="75 226" strokeLinecap="round" />
+          </svg>
+          {/* Inner accent ring */}
+          <svg className="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] animate-[spin_4s_linear_infinite_reverse] opacity-60" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#D4AF37" strokeWidth="2" strokeDasharray="150 150" strokeLinecap="round" />
+          </svg>
         </div>
 
-        <h3 className="text-[22px] font-bold text-[#0B1D3A] mb-4 tracking-tight leading-snug">
+        <h3 className="text-[22px] font-bold text-[#0B1D3A] mb-5 tracking-tight leading-snug">
           Creating your Career<br/>Intelligence Report...
         </h3>
 
         {/* Warning Message */}
-        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-3 mb-6 mx-4 text-sm font-medium shadow-sm">
-          Generating 3B analysis page may take some time like 2-3 minutes. So keep patient for better result.
-        </div>
-
-        {/* Loading dots */}
-        <div className="flex gap-2.5 mb-10 justify-center">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#5c6ac4] animate-bounce shadow-sm" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-[#00a896] animate-bounce shadow-sm" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-[#f2c94c] animate-bounce shadow-sm" style={{ animationDelay: '300ms' }}></div>
+        <div className="bg-amber-50/80 border border-amber-200/60 rounded-2xl p-4 mb-6 mx-auto w-full max-w-[420px] text-left flex items-start gap-3 shadow-sm relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-amber-400"></div>
+          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div className="text-[13px] leading-relaxed text-amber-900/90 font-medium">
+            <strong className="block text-amber-950 font-semibold mb-0.5 text-[14px]">Action Required: Please Wait</strong>
+            Do not refresh or close the page during 3B analysis. It may take 2-3 minutes, so please wait for a better result.
+          </div>
         </div>
 
         {/* Quotes Section */}
         <div 
-          className={`min-h-[100px] flex flex-col justify-center items-center w-full transition-opacity duration-700 ease-in-out ${isFading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+          className={`min-h-[80px] flex flex-col justify-center items-center w-full transition-all duration-700 ease-in-out ${isFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
         >
-          <p className="text-[#0B1D3A] font-semibold text-lg leading-relaxed mb-2 px-2">
+          <p className="text-[#0B1D3A] font-semibold text-[16px] leading-relaxed mb-1.5 px-4">
             {currentQuote[0]}
           </p>
           {currentQuote[1] && (
-            <p className="text-muted-foreground text-[15px] leading-relaxed px-4">
+            <p className="text-muted-foreground text-[14px] leading-relaxed px-6">
               {currentQuote[1]}
             </p>
           )}

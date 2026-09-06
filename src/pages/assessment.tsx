@@ -45,7 +45,7 @@ export default function AssessmentPage() {
   const [wizardKey, setWizardKey] = useState(0);
   const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
   const [wizardLoading, setWizardLoading] = useState(false);
-  const { draft } = useAssessment();
+  const { draft, reset } = useAssessment();
 
   const { data: profileStatus, isLoading: profileLoading } = useQuery({
     queryKey: ["profile-status"],
@@ -117,6 +117,7 @@ export default function AssessmentPage() {
     }
 
     if (fresh) {
+      reset();
       setWizardLoading(true);
       try {
         const result = await startAssessment({ force: true });
