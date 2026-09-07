@@ -1,91 +1,196 @@
-import {
-  User,
-  ClipboardList,
-  Briefcase,
-  Sparkles,
-  FileText,
-  BookOpen,
-  TrendingUp,
-} from "lucide-react";
-import { motion } from "framer-motion";
+import { Check, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useJourneyStatus, type JourneyStatus } from "@/hooks/use-journey-status";
+import { cn } from "@/lib/utils";
 
-const steps = [
-  { step: 1, title: "Understand Yourself", name: "Career Profile", icon: User },
-  { step: 2, title: "Analyze Your Work", name: "AI Assessment", icon: ClipboardList },
-  {
-    step: 3,
-    title: "Discover AI Opportunities",
-    name: "Task Routing (BUILD, BOT, BLEND)",
-    icon: Briefcase,
-  },
-  {
-    step: 4,
-    title: "Create Your Career Identity",
-    name: "Career Intelligence Report",
-    icon: FileText,
-  },
-  { step: 5, title: "Learn", name: "Workshops & Upskill Roadmap", icon: BookOpen },
-  { step: 6, title: "Grow", name: "Continuous Improvement", icon: TrendingUp },
-];
+type StepState = "completed" | "current" | "upcoming";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+const STEPS = [
+  { id: "profile", label: "Profile" },
+  { id: "work", label: "Work Mapping" },
+  { id: "analysis", label: "Analysis" },
+  { id: "report", label: "Your Report" },
+] as const;
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+function getStepStates(status: JourneyStatus): StepState[] {
+  if (status === "LOADING" || status === "NEEDS_PROFILE") {
+    return ["current", "upcoming", "upcoming", "upcoming"];
+  }
+  if (status === "NEEDS_ASSESSMENT") {
+    return ["completed", "current", "upcoming", "upcoming"];
+  }
+  if (status === "NEEDS_3B") {
+    return ["completed", "completed", "current", "upcoming"];
+  }
+  if (status === "NEEDS_REPORT") {
+    return ["completed", "completed", "completed", "current"];
+  }
+  return ["completed", "completed", "completed", "completed"];
+}
+
+function getCta(status: JourneyStatus): { text: string; to: string; blurb: string } {
+  switch (status) {
+    case "NEEDS_PROFILE":
+      return {
+        text: "Complete My Profile",
+        to: "/my-profile",
+        blurb: "Start by completing your profile so we can understand your professional background.",
+      };
+    case "NEEDS_ASSESSMENT":
+      return {
+        text: "Continue My Work Mapping",
+        to: "/assessment",
+        blurb: "You're on your way! Complete your work mapping to see your full analysis and CareerShift report.",
+      };
+    case "NEEDS_3B":
+      return {
+        text: "Generate 3B Analysis",
+        to: "/3b-analysis",
+        blurb: "Great progress! Generate your Build, Bot and Blend analysis to unlock personalized opportunities.",
+      };
+    case "NEEDS_REPORT":
+      return {
+        text: "Generate My Report",
+        to: "/report",
+        blurb: "Your analysis is ready. Generate your CareerShift report for clear next actions.",
+      };
+    case "COMPLETED":
+      return {
+        text: "View My Report",
+        to: "/report",
+        blurb: "Your CareerShift journey is complete. Explore your report, toolkit, and next steps.",
+      };
+    default:
+      return {
+        text: "Continue",
+        to: "/my-profile",
+        blurb: "Loading your progress…",
+      };
+  }
+}
 
 export function CareerShiftJourney() {
-  return (
-    <div className="py-10">
-      <div className="mb-12 text-center max-w-2xl mx-auto">
-        <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
-          How CareerShift Helps You
-        </h2>
-        <p className="text-[17px] text-[#4A5568] font-light">
-          Your step-by-step roadmap to achieving AI fluency and career resilience.
-        </p>
-      </div>
+  const status = useJourneyStatus();
+  const states = getStepStates(status);
+  const cta = getCta(status);
+  const isLoading = status === "LOADING";
 
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {steps.map((item, index) => (
-          <motion.div 
-            key={index} 
-            variants={itemVariants}
-            className="flex items-center gap-5 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
-          >
-            <div className="w-14 h-14 rounded-full bg-[#F1F5F9] flex items-center justify-center shrink-0 text-[#475569] group-hover:bg-[#E2E8F0] group-hover:text-[#0B1D3A] transition-colors duration-300">
-              <item.icon className="w-6 h-6" strokeWidth={1.5} />
+  return (
+    <section className="overflow-hidden rounded-2xl bg-[#0B1D3A] px-5 py-6 text-white shadow-elevated sm:px-7 sm:py-7">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+        <div className="min-w-0 flex-1 overflow-hidden lg:pr-2">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+            Your CareerShift Journey
+          </h2>
+
+          <div className="relative mt-6 overflow-hidden">
+            <div className="relative grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-0">
+              {STEPS.map((step, index) => {
+                const state = states[index];
+                const prevCompleted = index > 0 && states[index - 1] === "completed";
+                const isLast = index === STEPS.length - 1;
+
+                return (
+                  <div key={step.id} className="relative flex flex-col items-center text-center">
+                    {/* Line from previous step → this step (desktop only) */}
+                    {index > 0 && (
+                      <div
+                        className="absolute right-1/2 top-5 hidden h-[2px] w-full -translate-y-1/2 sm:block"
+                        aria-hidden
+                      >
+                        <div
+                          className={cn(
+                            "h-full w-full rounded-full",
+                            prevCompleted ? "bg-[#F2C94C]" : "bg-white/20",
+                          )}
+                        />
+                      </div>
+                    )}
+                    {/* Soft stop so nothing paints past the last step */}
+                    {!isLast && (
+                      <div
+                        className="absolute left-1/2 top-5 hidden h-[2px] w-full -translate-y-1/2 sm:block"
+                        aria-hidden
+                      >
+                        <div
+                          className={cn(
+                            "h-full w-full rounded-full",
+                            state === "completed" ? "bg-[#F2C94C]" : "bg-white/20",
+                          )}
+                        />
+                      </div>
+                    )}
+
+                    <div
+                      className={cn(
+                        "relative z-10 flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold",
+                        state === "completed" && "bg-white text-[#0B1D3A]",
+                        state === "current" && "bg-[#F2C94C] text-[#0B1D3A] ring-4 ring-[#F2C94C]/25",
+                        state === "upcoming" &&
+                          "border-2 border-white/35 bg-[#0B1D3A] text-white/80",
+                      )}
+                    >
+                      {state === "completed" ? (
+                        <Check className="h-4 w-4" strokeWidth={2.5} />
+                      ) : (
+                        index + 1
+                      )}
+                    </div>
+                    <p
+                      className={cn(
+                        "mt-2.5 text-[13px] font-semibold leading-tight",
+                        state === "current" ? "text-[#F2C94C]" : "text-white",
+                      )}
+                    >
+                      {step.label}
+                    </p>
+                    <p
+                      className={cn(
+                        "mt-0.5 text-[11px] font-medium",
+                        state === "completed" && "text-white/55",
+                        state === "current" && "text-[#F2C94C]/90",
+                        state === "upcoming" && "text-white/40",
+                      )}
+                    >
+                      {state === "completed"
+                        ? "Completed"
+                        : state === "current"
+                          ? "In Progress"
+                          : "Not Started"}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
-            
-            <div className="flex flex-col">
-              <div className="text-[11px] font-bold uppercase tracking-widest text-[#C9A84C] mb-1.5">
-                STEP {item.step}
-              </div>
-              <h3 className="font-display text-[20px] font-medium text-[#0B1D3A] leading-tight mb-1">
-                {item.title}
-              </h3>
-              <p className="text-[14px] text-[#718096] font-light">
-                {item.name}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
+          </div>
+        </div>
+
+        <div className="flex w-full shrink-0 flex-col gap-3 border-t border-white/10 pt-5 lg:w-[280px] lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 xl:w-[300px]">
+          <p className="text-[13px] leading-relaxed text-white/70">
+            {isLoading ? "Checking your progress…" : cta.blurb}
+          </p>
+          {isLoading ? (
+            <Button
+              disabled
+              className="h-11 w-full rounded-full bg-[#F2C94C] px-5 text-[14px] font-semibold text-[#0B1D3A] opacity-60"
+            >
+              Continue
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          ) : (
+            <Button
+              asChild
+              className="h-11 w-full rounded-full bg-[#F2C94C] px-5 text-[14px] font-semibold text-[#0B1D3A] hover:bg-[#F7D76A]"
+            >
+              <Link to={cta.to}>
+                {cta.text}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

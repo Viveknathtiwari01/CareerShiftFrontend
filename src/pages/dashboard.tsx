@@ -1,21 +1,20 @@
 import { motion } from "framer-motion";
 import { DashboardHero } from "@/components/dashboard/DashboardHero";
-import { WhyCareerShift } from "@/components/dashboard/WhyCareerShift";
-import { MythVsReality } from "@/components/dashboard/MythVsReality";
 import { CareerShiftJourney } from "@/components/dashboard/CareerShiftJourney";
-import { AISuccessStories } from "@/components/dashboard/AISuccessStories";
-import { PersonalizedGuidance } from "@/components/dashboard/PersonalizedGuidance";
-import { FeaturedWorkshop } from "@/components/dashboard/FeaturedWorkshop";
-import { Principles } from "@/components/dashboard/Principles";
-import { MotivationBanner } from "@/components/dashboard/MotivationBanner";
+import { OverviewTopBar } from "@/components/dashboard/OverviewTopBar";
+import { OverviewQuickAccess } from "@/components/dashboard/OverviewQuickAccess";
+import { OverviewCareerGlance } from "@/components/dashboard/OverviewCareerGlance";
+import { OverviewReportBanner } from "@/components/dashboard/OverviewReportBanner";
+import { OverviewExploreSections } from "@/components/dashboard/OverviewExploreSections";
+import { OverviewFooter } from "@/components/dashboard/OverviewFooter";
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.6, ease: "easeOut" } 
-  }
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 const staggerContainer = {
@@ -23,90 +22,45 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 export default function Dashboard() {
   return (
-    <motion.div 
-      className="space-y-12 pb-10"
+    <motion.div
+      className="w-full space-y-8 pb-6"
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
     >
-      <section className="relative flex flex-col items-center pb-8">
-        <motion.div variants={fadeInUp} className="w-full max-w-7xl px-4 sm:px-6 pt-4 z-20">
-          <PersonalizedGuidance />
-        </motion.div>
-
-        <motion.div variants={fadeInUp} className="w-full">
+      <motion.div variants={fadeInUp} className="space-y-3">
+        <OverviewTopBar />
+        <div className="space-y-5">
           <DashboardHero />
-        </motion.div>
-      </section>
-
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <WhyCareerShift />
+          <CareerShiftJourney />
+        </div>
       </motion.div>
 
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <Principles />
+      <motion.div variants={fadeInUp}>
+        <OverviewQuickAccess />
       </motion.div>
 
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <MotivationBanner />
+      <motion.div variants={fadeInUp}>
+        <OverviewCareerGlance />
       </motion.div>
 
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <MythVsReality />
+      <motion.div variants={fadeInUp}>
+        <OverviewReportBanner />
       </motion.div>
 
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <CareerShiftJourney />
+      <motion.div variants={fadeInUp}>
+        <OverviewExploreSections />
       </motion.div>
 
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <AISuccessStories />
-      </motion.div>
-
-      <motion.div 
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <FeaturedWorkshop />
+      <motion.div variants={fadeInUp}>
+        <OverviewFooter />
       </motion.div>
     </motion.div>
   );

@@ -1,62 +1,55 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { useAuth } from "@/store/mock-store";
 
 export function DashboardHero() {
+  const { user } = useAuth();
+  const firstName = user?.name?.split(" ")[0] || "there";
+
   return (
-    <section className="bg-[#0B1D3A] p-8 sm:p-12 md:p-14 lg:p-16 rounded-[2rem] overflow-hidden relative shadow-lg">
-      <div className="relative z-10 grid lg:grid-cols-[1fr_auto] gap-12 items-center w-full">
-        <div className="flex flex-col items-start text-left">
-          {/* Badge */}
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-sm font-medium text-[#E8C96A]">
-            <Sparkles className="w-4 h-4" />
-            <span>Welcome to your new career advantage</span>
-          </div>
+    <section className="relative isolate overflow-hidden rounded-[1.25rem] bg-[#F5F2EC]">
+      {/* Full-bleed banner — art weighted to the right like the reference */}
+      <img
+        src="/overview_background.jpeg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[68%_center] sm:object-[75%_center] lg:object-right"
+      />
 
-          <h1 className="font-display text-4xl sm:text-5xl md:text-[52px] leading-[1.1] text-white font-normal tracking-wide">
-            AI Is Not Here to Replace You.
-            <br className="hidden sm:block" />
-            It's Here to Redefine How You Work.
-          </h1>
+      {/* Soft left readability wash — keeps mountains visible on the right */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F5F2EC] from-0% via-[#F5F2EC]/78 via-[28%] to-transparent to-[55%]"
+        aria-hidden
+      />
 
-          {/* Subtitle */}
-          <p className="mt-8 text-[16px] sm:text-[17px] text-white/70 leading-[1.7] max-w-[620px] font-light">
-            Most professionals fear AI because they don't know how to use it effectively. CareerShift
-            gives you a personalized diagnosis of your AI exposure, and pairs it with the exact tools,
-            courses, and timelines to upskill.
+      <div className="relative z-10 grid min-h-[240px] grid-cols-1 content-end gap-6 px-6 py-8 sm:min-h-[280px] sm:px-8 sm:py-9 lg:min-h-[310px] lg:grid-cols-[1fr_auto] lg:items-end lg:px-10 lg:pb-11 lg:pt-9">
+        <div className="max-w-[36rem]">
+          <p className="text-[20px] font-semibold text-[#0B1D3A]">
+            Welcome back, {firstName} 👋
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <Button asChild size="lg" className="w-full sm:w-auto bg-[#E8C96A] hover:bg-[#F3D782] text-[#0B1D3A] rounded-full h-12 px-7 font-semibold text-[15px] border-none">
-              <Link to="/my-profile">Start My AI Journey <ArrowRight className="ml-2 w-4 h-4" /></Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full sm:w-auto border-white/20 bg-transparent text-white rounded-full h-12 px-7 hover:bg-white/10 text-[15px] hover:text-white"
-            >
-              <Play className="mr-2 w-4 h-4" fill="currentColor" /> Watch 2-Min Intro
-            </Button>
-          </div>
+          <h1 className="mt-3 font-serif text-[34px] font-semibold leading-[1.12] tracking-[-0.01em] text-[#0B1D3A] sm:text-[42px] lg:text-[48px]">
+            Your CareerShift
+            <br />
+            continues here.
+          </h1>
+
+          <div className="mt-3 h-[3px] w-14 rounded-full bg-[#F2C94C] sm:mt-3.5 sm:h-[3.5px] sm:w-16" aria-hidden />
+
+          <p className="mt-4 max-w-[30rem] text-[15px] leading-[1.65] text-[#4A5568] sm:mt-5 sm:text-[16px]">
+            Understand your work. Discover your opportunities.
+            <br />
+            Know what to do next.
+          </p>
         </div>
 
-        <div className="hidden lg:flex w-full max-w-[340px] xl:max-w-[380px] aspect-square relative mx-auto items-center justify-center shrink-0">
-          <svg className="w-full h-full drop-shadow-xl" viewBox="0 0 340 340">
-            <g transform="translate(0,0)">
-              <circle cx="170" cy="170" r="150" fill="none" stroke="rgba(241,245,249,.08)" strokeWidth="1"/>
-              <g className="origin-center animate-[spin_12s_linear_infinite]">
-                <circle cx="170" cy="170" r="128" fill="none" stroke="#0B1D3A" strokeWidth="20" strokeDasharray="80 188" strokeLinecap="round" transform="rotate(-90 170 170)"/>
-                <circle cx="170" cy="170" r="128" fill="none" stroke="#c9a84c" strokeWidth="20" strokeDasharray="80 188" strokeLinecap="round" transform="rotate(30 170 170)"/>
-                <circle cx="170" cy="170" r="128" fill="none" stroke="#0d9488" strokeWidth="20" strokeDasharray="80 188" strokeLinecap="round" transform="rotate(150 170 170)"/>
-              </g>
-              <circle cx="170" cy="170" r="86" fill="#0B1D3A" stroke="rgba(241,245,249,.1)"/>
-              <text x="170" y="163" textAnchor="middle" fill="#f1f5f9" className="font-mono text-[10px] tracking-[0.2em] font-semibold">THE 3B</text>
-              <text x="170" y="182" textAnchor="middle" fill="#e8c96a" className="font-serif italic text-[17px]">Framework</text>
-              <text x="80" y="52" fill="#8fa2b8" className="font-mono text-[11px] font-semibold tracking-[0.1em]">BUILD</text>
-              <text x="248" y="80" fill="#e8c96a" className="font-mono text-[11px] font-semibold tracking-[0.1em]">BLEND</text>
-              <text x="118" y="308" fill="#4fc3b8" className="font-mono text-[11px] font-semibold tracking-[0.1em]">BOT</text>
-            </g>
-          </svg>
+        <div className="hidden flex-col items-end lg:absolute lg:right-10 lg:top-9 lg:flex">
+          <p className="w-[10rem] text-right text-[15px] font-semibold uppercase leading-[1.5] tracking-[0.17em] text-[#8AA0B8]">
+            Same you.
+            <br />
+            A broader
+            <br />
+            tomorrow.
+          </p>
+          <div className="mt-2.5 h-[3px] w-[4.75rem] rounded-full bg-[#F2C94C]" aria-hidden />
         </div>
       </div>
     </section>
