@@ -4,24 +4,18 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
-  BarChart,
-  Bot,
-  BrainCircuit,
   Briefcase,
   CheckCircle2,
   ClipboardList,
   Compass,
   Cpu,
   FileText,
-  Map,
   PlayCircle,
   RotateCcw,
-  Sparkles,
-  Loader2,
 } from "lucide-react";
 import { AppLoader } from "@/components/ui/app-loader";
 import AssessmentWizard from "@/components/AssessmentWizard";
-import { PageHeader, PageShell } from "@/components/layout/PageShell";
+import { AssessmentHero } from "@/components/assessment/AssessmentHero";
 import { useAssessment } from "@/store/mock-store";
 import { getCurrentAssessment, listAssessments, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
@@ -159,61 +153,56 @@ export default function AssessmentPage() {
 
   return (
     <div className="w-full">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-start"
+        className="mb-6 space-y-4"
       >
-        <div className="max-w-2xl">
-          <h1 className="font-display text-4xl sm:text-5xl font-medium text-[#0B1D3A] mb-4">
-            AI Based Career Assessment
-          </h1>
-          <p className="text-[17px] text-[#4A5568] font-light leading-relaxed">
-            Understand how AI will impact your career, analyze your daily work, measure your AI
-            readiness, and receive a personalized career transformation roadmap.
-          </p>
-        </div>
-        
-        <div className="flex shrink-0 items-center gap-3 md:mt-2">
-          {!profileComplete && (
-            <Link
-              to="/my-profile"
-              className="text-[15px] font-medium text-[#C9A84C] hover:underline"
-            >
-              Complete My Career profile first
-            </Link>
-          )}
-          {hasSavedAssessment && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button
-                  type="button"
-                  disabled={!profileComplete || wizardLoading}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-5 py-2.5 text-[14px] font-medium text-[#0B1D3A] shadow-sm transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Regenerate from scratch
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Regenerate from scratch?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This runs a new AI competency analysis and replaces your current task list. Your profile must be up to date.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleRegenerateFromScratch}>
-                    Regenerate
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
-        </div>
+        <AssessmentHero
+          actions={
+            hasSavedAssessment || !profileComplete ? (
+              <div className="flex flex-wrap items-center gap-3">
+                {hasSavedAssessment && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button
+                        type="button"
+                        disabled={!profileComplete || wizardLoading}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white/90 px-5 py-2.5 text-[14px] font-medium text-[#0B1D3A] shadow-sm backdrop-blur-sm transition-all hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                        Regenerate assessment from scratch
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Regenerate from scratch?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This runs a new AI competency analysis and replaces your current task list. Your profile must be up to date.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleRegenerateFromScratch}>
+                          Regenerate
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+                {!profileComplete && (
+                  <Link
+                    to="/my-profile"
+                    className="text-[15px] font-medium text-[#C9A84C] hover:underline"
+                  >
+                    Complete My Career profile first
+                  </Link>
+                )}
+              </div>
+            ) : undefined
+          }
+        />
       </motion.div>
 
       {/* Overview Cards Row */}
@@ -339,75 +328,13 @@ export default function AssessmentPage() {
         </div>
       </motion.div>
 
-      {/* Assessment Benefits Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-20"
-      >
-        <div className="text-center mb-10 max-w-2xl mx-auto">
-          <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
-            What You Will Gain
-          </h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              icon: BrainCircuit,
-              title: "Career Intelligence",
-              description: "Understand where you stand in the AI era.",
-            },
-            {
-              icon: Compass,
-              title: "Competency Mapping",
-              description: "Discover your strengths and competency gaps.",
-            },
-            {
-              icon: ClipboardList,
-              title: "Daily Task Analysis",
-              description: "Analyze how AI impacts your actual work.",
-            },
-            {
-              icon: Cpu,
-              title: "3B Framework",
-              description: "Classify every task into Build, Bot, or Blend.",
-            },
-            {
-              icon: Map,
-              title: "Career Roadmap",
-              description: "Receive actionable recommendations to future-proof your career.",
-            },
-          ].map((benefit, i) => {
-            const Icon = benefit.icon;
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="bg-white p-8 rounded-3xl shadow-sm text-center flex flex-col items-center justify-center min-h-[220px] hover:-translate-y-1 hover:shadow-md transition-all duration-300 group"
-              >
-                <div className="bg-[#FDFBF2] border border-[#E8C96A]/20 p-3.5 rounded-full mb-6 text-[#C9A84C] group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="h-6 w-6" strokeWidth={1.5} />
-                </div>
-                <h3 className="font-display text-[20px] font-medium text-[#0B1D3A] mb-2">{benefit.title}</h3>
-                <p className="text-[14px] text-[#4A5568] font-light leading-relaxed">{benefit.description}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
-
       {/* What's Included Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-24 bg-[#FDFBF2] py-16 px-4 md:px-8 rounded-[3rem]"
+        className="mb-24 py-16 px-4 md:px-8 rounded-[3rem]"
       >
         <div className="text-center mb-14 max-w-2xl mx-auto">
           <h2 className="font-display text-3xl sm:text-4xl font-normal text-[#0B1D3A] mb-3">
@@ -473,40 +400,35 @@ export default function AssessmentPage() {
         </div>
       </motion.div>
 
-      {/* CTA Section */}
+      {/* CTA Section — cream banner with mountain footer art */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="bg-[#0B1D3A] rounded-[2rem] p-8 md:p-10 lg:p-12 relative overflow-hidden shadow-2xl"
+        transition={{ duration: 0.45 }}
+        className="relative overflow-hidden rounded-[1.25rem] bg-[#FAF8F3]"
       >
-        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none">
+        {/* Scale to card height (not cover-crop) so the summit flag stays fully visible */}
+        <img
+          src="/assessment_footer.jpeg"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute right-0 top-0 h-full w-auto max-w-none select-none"
+        />
 
-        </div>
-        <div className="relative z-10 w-full">
-          <h2 className="font-display text-4xl sm:text-5xl font-medium text-white leading-tight mb-4">
-            Ready to Discover Your AI Career Potential?
-          </h2>
-          <p className="text-[17px] text-white/70 font-light mb-8 w-full leading-relaxed">
-            Complete your first AI Career Assessment and receive personalized insights into your
-            strengths, automation opportunities, AI fitness, and future career strategy.
-          </p>
-          <div className="flex flex-wrap items-center gap-4">
-            <button
-              type="button"
-              onClick={() => openWizard(false)}
-              className="inline-flex items-center gap-2 rounded-full bg-[#C9A84C] hover:bg-[#F3D782] text-[#0B1D3A] px-8 py-4 text-[15px] font-semibold shadow-md transition-all hover:-translate-y-0.5 group"
-            >
-              {hasSavedAssessment ? "Continue Assessment" : "Start Assessment"}
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-[15px] font-medium text-white transition-all hover:bg-white/10"
-            >
-              Learn More
-            </Link>
+        <div className="relative z-10 flex min-h-[280px] items-center gap-5 px-6 py-12 sm:min-h-[300px] sm:gap-6 sm:px-8 sm:py-14 lg:min-h-[320px] lg:gap-7 lg:px-10 lg:py-16">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#F2C94C] sm:h-[4.25rem] sm:w-[4.25rem]">
+            <Compass className="h-7 w-7 text-[#0B1D3A] sm:h-8 sm:w-8" strokeWidth={1.75} />
+          </div>
+
+          <div className="min-w-0 max-w-2xl">
+            <div className="mb-3 h-[3px] w-11 rounded-full bg-[#F2C94C]" aria-hidden />
+            <h2 className="font-serif text-[1.55rem] font-semibold leading-[1.25] tracking-[-0.01em] text-[#0B1D3A] sm:text-[1.85rem] lg:text-[2.05rem]">
+              You&apos;re one step closer to your CareerShift report.
+            </h2>
+            <p className="mt-2.5 text-[15px] leading-relaxed text-[#4A5568] sm:text-[16px]">
+              Your work. New possibilities. A clearer tomorrow.
+            </p>
           </div>
         </div>
       </motion.div>
