@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Download, Share2, FileText, Loader2 } from "lucide-react";
+import { Download, Share2, Loader2 } from "lucide-react";
 import type { CareerIntelligenceReport } from "@/api/report";
-import { downloadReportDocx, downloadReportPdf, formatReportVersion } from "@/api/report";
+import { downloadReportPdf, formatReportVersion } from "@/api/report";
 import { ReportShareDialog } from "@/components/report/ReportShareDialog";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export function ReportHeader({ report }: Props) {
   const [shareOpen, setShareOpen] = useState(false);
-  const [busy, setBusy] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const generated = new Date(report.generated_at).toLocaleDateString(undefined, {
@@ -19,16 +19,15 @@ export function ReportHeader({ report }: Props) {
     day: "numeric",
   });
 
-  async function runExport(action: "pdf" | "docx") {
+  async function runPdfExport() {
     setError(null);
-    setBusy(action);
+    setBusy(true);
     try {
-      if (action === "pdf") await downloadReportPdf(report.assessment_id);
-      if (action === "docx") await downloadReportDocx(report.assessment_id);
+      await downloadReportPdf(report.assessment_id);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Export failed");
     } finally {
-      setBusy(null);
+      setBusy(false);
     }
   }
 
@@ -60,21 +59,12 @@ export function ReportHeader({ report }: Props) {
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            disabled={!!busy}
-            onClick={() => runExport("pdf")}
+            disabled={busy}
+            onClick={() => void runPdfExport()}
             className="inline-flex items-center gap-2 rounded-full bg-[#D9A928] hover:bg-[#C2941E] px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {busy === "pdf" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
             Download PDF
-          </button>
-          <button
-            type="button"
-            disabled={!!busy}
-            onClick={() => runExport("docx")}
-            className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-[14px] font-medium text-[#0B1D3A] hover:bg-gray-50 transition-all disabled:opacity-60 shadow-sm"
-          >
-            {busy === "docx" ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-            Download DOC
           </button>
           <button
             type="button"

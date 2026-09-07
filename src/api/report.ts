@@ -425,18 +425,6 @@ export async function downloadToolkitHtml(assessmentId: string) {
   downloadBlob(blob, `careershift-toolkit-${assessmentId}.html`);
 }
 
-export async function downloadReportDocx(assessmentId: string) {
-  const { fetchBlob } = await import("@/lib/api");
-  const blob = await fetchBlob(`/assessment/${assessmentId}/report/docx`);
-  const docBlob =
-    blob.type && blob.type !== "application/json"
-      ? blob
-      : new Blob([blob], {
-          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        });
-  downloadBlob(docBlob, "careershift-report.docx");
-}
-
 export async function downloadReportJson(assessmentId: string) {
   const { fetchBlob } = await import("@/lib/api");
   const blob = await fetchBlob(`/assessment/${assessmentId}/report/export.json`);
