@@ -662,7 +662,7 @@ function HowItWorks() {
 function ReportPreview() {
   return (
     <div id="report" className="bg-[#F3F7FC] py-12 md:py-16">
-      <div className="container-page animate-fade-in-up grid gap-8 lg:grid-cols-[0.85fr_1.25fr] lg:items-center xl:gap-12">
+      <div className="container-page animate-fade-in-up grid gap-8 lg:grid-cols-[minmax(0,0.55fr)_minmax(0,1.45fr)] lg:items-center xl:gap-8">
         <div className="max-w-md">
           <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
             Sample report
@@ -683,35 +683,40 @@ function ReportPreview() {
         </div>
 
         <div className="relative min-w-0">
-          <ReportCardsPreview />
-          <div className="pointer-events-none absolute -right-32 bottom-8 hidden w-36 rotate-[10deg] xl:block xl:-right-40">
-            <p
-              className="text-[22px] leading-[1.15] text-[#0B1D3A]"
-              style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
-            >
-              Insights today.
-              <br />
-              A more
-              <br />
-              relevant
-              <br />
-              tomorrow.
-            </p>
-            <svg
-              width="100"
-              height="14"
-              viewBox="0 0 100 14"
-              className="mt-0.5 text-[#FDCF58]"
-              aria-hidden
-            >
-              <path
-                d="M2,10 Q50,0 98,9"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-              />
-            </svg>
+          <div className="flex flex-col items-stretch gap-5 xl:flex-row xl:items-end xl:gap-5">
+            <div className="min-w-0 flex-1">
+              <ReportCardsPreview />
+            </div>
+            {/* Kept in-flow so page overflow-x-hidden cannot clip it */}
+            <div className="hidden w-[10.5rem] shrink-0 pb-10 xl:block">
+              <p
+                className="rotate-[8deg] text-[24px] leading-[1.15] text-[#0B1D3A]"
+                style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
+              >
+                Insights today.
+                <br />
+                A more
+                <br />
+                relevant
+                <br />
+                tomorrow.
+              </p>
+              <svg
+                width="100"
+                height="14"
+                viewBox="0 0 100 14"
+                className="mt-0.5 ml-1 rotate-[8deg] text-[#FDCF58]"
+                aria-hidden
+              >
+                <path
+                  d="M2,10 Q50,0 98,9"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
           </div>
           <div className="mt-8 text-center xl:hidden">
             <p
@@ -794,7 +799,7 @@ function ReportCardsPreview() {
   ];
 
   const cardBase =
-    "flex h-[300px] w-[168px] shrink-0 flex-col rounded-2xl p-4 sm:w-[176px] xl:w-[180px]";
+    "flex h-[300px] w-[172px] shrink-0 flex-col rounded-2xl p-4 sm:w-[180px] xl:w-[176px]";
   const whiteCard = `${cardBase} relative border border-black/[0.04] bg-white shadow-[0_8px_28px_rgba(11,29,58,0.08)]`;
 
   const containerVariants = {
@@ -815,9 +820,9 @@ function ReportCardsPreview() {
   };
 
   return (
-    <div className="-mx-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:overflow-visible sm:px-0">
+    <div className="-mx-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:overflow-x-auto sm:px-0 xl:overflow-visible">
       <motion.div
-        className="flex min-w-[700px] items-stretch gap-3 sm:min-w-0 lg:pr-28 xl:gap-3.5 xl:pr-36"
+        className="flex min-w-[760px] items-stretch gap-3 sm:min-w-0 xl:min-w-0 xl:gap-3.5"
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
@@ -890,7 +895,7 @@ function ReportCardsPreview() {
           <div className="mt-3 flex flex-1 flex-col justify-between gap-1.5">
             {tasks.map((t, i) => (
               <div key={t.label} className="flex items-center gap-1.5">
-                <span className="w-[72px] shrink-0 truncate text-[8px] font-medium text-[#64748B]">
+                <span className="w-[88px] shrink-0 text-[8px] font-medium leading-tight text-[#64748B]">
                   {t.label}
                 </span>
                 <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-[#F1F5F9]">
@@ -942,7 +947,7 @@ function ReportCardsPreview() {
                   {a.icon}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-[10px] font-semibold text-[#0B1D3A]">{a.label}</p>
+                  <p className="text-[10px] font-semibold leading-tight text-[#0B1D3A]">{a.label}</p>
                   <p className="text-[8px] text-[#94A3B8]">{a.tag}</p>
                 </div>
               </motion.div>
