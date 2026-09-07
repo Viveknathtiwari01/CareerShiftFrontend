@@ -78,7 +78,7 @@ function AuthPage() {
             </p>
             <ul className="mt-8 space-y-3 text-sm text-primary-foreground/80">
               {[
-                "Personalized readiness score",
+                "Personalized readiness analysis",
                 "Task-by-task automate / augment / master routing",
                 "Curated AI toolkit and 12-week learning plan",
               ].map((s) => (

@@ -12,7 +12,6 @@ import { DailyWorkTab } from "@/components/report/DailyWorkTab";
 import { ThreeBAnalysisTab } from "@/components/report/ThreeBAnalysisTab";
 
 import { AIToolsTab } from "@/components/report/AIToolsTab";
-import { HealthIndicators } from "@/components/report/HealthIndicators";
 import { ReportFooter } from "@/components/report/ReportFooter";
 import { useReportData } from "@/hooks/use-report-data";
 
@@ -129,7 +128,6 @@ export default function ReportPage() {
         </AnimatePresence>
       </div>
 
-      <HealthIndicators report={report} />
       <ReportFooter
         assessmentId={assessmentId ?? report.assessment_id}
         generatedAt={report.generated_at}

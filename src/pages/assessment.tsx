@@ -25,6 +25,7 @@ import { PageHeader, PageShell } from "@/components/layout/PageShell";
 import { useAssessment } from "@/store/mock-store";
 import { getCurrentAssessment, listAssessments, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
+import { getReport } from "@/api/report";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,7 +45,7 @@ export default function AssessmentPage() {
   const [wizardKey, setWizardKey] = useState(0);
   const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
   const [wizardLoading, setWizardLoading] = useState(false);
-  const { draft } = useAssessment();
+  const { draft, reset } = useAssessment();
 
   const { data: profileStatus, isLoading: profileLoading } = useQuery({
     queryKey: ["profile-status"],
@@ -69,23 +70,36 @@ export default function AssessmentPage() {
     currentAssessment?.reused_existing === true &&
     currentAssessment?.status === "COMPLETED";
 
+  const { data: report } = useQuery({
+    queryKey: ["report-status", currentAssessment?.assessment_id],
+    queryFn: () => getReport(currentAssessment!.assessment_id!),
+    enabled: hasSavedAssessment && !!currentAssessment?.assessment_id,
+    retry: false,
+  });
+
+  const hasReport = !!report;
+
   const assessmentStatusLabel = !profileComplete
     ? "Profile incomplete"
     : currentAssessment?.status === "PROCESSING"
       ? "In progress"
-      : hasSavedAssessment
-        ? "Ready to continue"
-        : "Not started";
+      : hasReport
+        ? "Completed"
+        : hasSavedAssessment
+          ? "Ready to continue"
+          : "Not started";
 
   const assessmentProgress = !profileComplete
     ? 0
     : currentAssessment?.status === "PROCESSING"
       ? 40
-      : hasSavedAssessment
-        ? 75
-        : profileComplete
-          ? 15
-          : 0;
+      : hasReport
+        ? 100
+        : hasSavedAssessment
+          ? 75
+          : profileComplete
+            ? 15
+            : 0;
 
   useEffect(() => {
     if (!profileComplete || profileLoading) return;
@@ -103,6 +117,7 @@ export default function AssessmentPage() {
     }
 
     if (fresh) {
+      reset();
       setWizardLoading(true);
       try {
         const result = await startAssessment({ force: true });

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { submitAssessmentFlow, type SubmitAssessmentStep } from "@/api/submit";
+import { LoadingQuotesOverlay } from "@/components/ui/LoadingQuotesOverlay";
 
 const STEP_LABELS: Record<SubmitAssessmentStep, string> = {
   saving_tasks: "Saving tasks…",
@@ -45,23 +46,28 @@ export function SubmitAssessmentButton({
   }
 
   return (
-    <div className="space-y-2">
-      <button
-        type="button"
-        onClick={handleSubmit}
-        disabled={!!step}
-        className={className}
-      >
-        {step ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin inline mr-2" />
-            {STEP_LABELS[step]}
-          </>
-        ) : (
-          label
-        )}
-      </button>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
-    </div>
+    <>
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!!step}
+          className={className}
+        >
+          {step ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin inline mr-2" />
+              {STEP_LABELS[step]}
+            </>
+          ) : (
+            label
+          )}
+        </button>
+        {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      </div>
+      
+      {/* Show full-screen engaging loader when processing */}
+      {step && !error && <LoadingQuotesOverlay />}
+    </>
   );
 }

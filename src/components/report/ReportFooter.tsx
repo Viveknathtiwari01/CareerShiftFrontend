@@ -23,7 +23,7 @@ export function ReportFooter({ assessmentId, generatedAt, version = "1" }: Props
       <div className="flex items-center gap-2">
         <Info className="h-4 w-4" />
         <span className="font-medium">
-          Career Intelligence Assessment · {versionLabel} · {assessmentId.slice(0, 8)}
+          Career Intelligence Assessment
         </span>
       </div>
 

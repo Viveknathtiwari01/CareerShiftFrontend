@@ -42,6 +42,7 @@ import { useEffect, useState } from "react";
 import { restoreSectionFromHash, scrollToSection } from "@/lib/scroll-to-section";
 import heroImg from "@/assets/hero.jpg";
 import logoImg from "@/assets/Logo.png";
+import { Footer } from "@/components/layout/Footer";
 
 export default Landing;
 
@@ -51,7 +52,7 @@ function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen pt-16 overflow-x-hidden bg-background text-foreground">
       <Nav />
       <Hero />
       <MockStats />
@@ -83,14 +84,12 @@ const NAV_LINKS: NavLinkItem[] = [
   { label: "What's Inside", sectionId: "features" },
   { label: "Pricing", sectionId: "pricing" },
   { label: "About Us", to: "/about" },
-  { label: "FAQ", sectionId: "faq" },
-  { label: "Contact", sectionId: "contact" },
 ];
 
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 animate-fade-in-up bg-white">
+    <header className="fixed w-full top-0 left-0 z-50 border-b border-black/5 animate-fade-in-up bg-white">
       <div className="container-page flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="/new_logo11.png" alt="CareerShift Logo" className="h-14 object-contain" />
@@ -195,19 +194,20 @@ function Hero() {
         <div className="absolute right-[5%] -top-[10%] h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[100px]" />
       </div>
       
-      <div className="container-page animate-fade-in-up relative grid gap-10 pt-6 pb-6 md:gap-14 md:pt-10 md:pb-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-12 lg:pb-10 items-center">
+      <div className="container-page animate-fade-in-up relative grid gap-8 pt-4 pb-4 md:gap-10 md:pt-8 md:pb-6 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:pt-8 lg:pb-6 items-center">
         <div className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left">
-          <div className="text-xs font-semibold tracking-widest text-black/50 uppercase">
+          <div className="inline-flex items-center text-xs font-semibold tracking-widest text-black/60 uppercase rounded-md border border-black/15 px-3 py-1.5 bg-white shadow-sm">
             CAREER INTELLIGENCE FOR THE FUTURE OF WORK
           </div>
-          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
-            Your work is changing.<br />
-            <span className="text-[#D39933]">Know what to do next.</span>
+          <h1 className="mt-4 font-display text-[32px] font-bold leading-[1.1] tracking-tight text-[#0B1D3A] sm:text-5xl lg:text-6xl">
+            <span className="whitespace-nowrap">Your work is changing.</span>
+            <br />
+            <span className="text-[#D68822] whitespace-nowrap">Know what to do next.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/70">
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-black/70">
             CareerShift analyses your role, tasks and skills to show what to Build, Bot and Blend - and gives you practical tools and opportunities for what comes next.
           </p>
-          <div className="mt-8 flex w-full flex-col gap-4 sm:flex-row lg:mr-auto max-w-2xl">
+          <div className="mt-4 flex w-full flex-col gap-3 sm:flex-row lg:mr-auto max-w-2xl">
             <Link
               to="/auth"
               className="inline-flex w-full sm:w-auto whitespace-nowrap items-center justify-center gap-2 rounded-full bg-[#FDCF58] px-8 py-3.5 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
@@ -227,7 +227,7 @@ function Hero() {
           </div>
         </div>
 
-        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-10 lg:mt-0">
+        <div className="relative w-full max-w-[600px] justify-self-center lg:justify-self-end mt-4 lg:mt-0 lg:max-w-[540px]">
           <HeroGraphic />
         </div>
       </div>
@@ -237,7 +237,7 @@ function Hero() {
 
 function MockStats() {
   return (
-    <section className="relative z-0 -mt-2 bg-white pb-8 md:-mt-14 lg:-mt-8">
+    <section className="relative z-0 bg-white pb-8 md:-mt-10 lg:-mt-4">
       <div className="container-page">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 rounded-[2rem] border border-black/5 bg-white p-6 md:p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)]">
           <div className="flex flex-1 flex-col sm:flex-row items-center justify-around gap-6 w-full">
@@ -341,7 +341,7 @@ function Problem() {
     },
   ];
   return (
-    <section className="bg-background py-24">
+    <section className="bg-background py-10 md:py-12">
       <div className="container-page animate-fade-in-up">
         <div className="relative mb-16">
           {/* Left Decorative - absolutely positioned so it doesn't affect centering */}
@@ -369,7 +369,7 @@ function Problem() {
           </div>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
           {items.map((it) => (
             <div key={it.title} className="surface-card p-6 hover-lift relative overflow-hidden">
               <div className="absolute top-6 right-6 text-4xl font-display font-bold text-muted-foreground/20 select-none">
@@ -393,10 +393,10 @@ function Problem() {
 /* ---------- THE CAREERSHIFT WAY ---------- */
 function TheCareerShiftWay() {
   return (
-    <section id="framework" className="bg-[#0B1D3A] text-white py-24 overflow-hidden font-sans">
+    <section id="framework" className="bg-[#0B1D3A] text-white py-12 overflow-hidden font-sans">
       <div className="container-page">
         {/* Header */}
-        <div className="text-center max-w-4xl mx-auto mb-20">
+        <div className="text-center max-w-4xl mx-auto mb-12">
           <SectionEyebrow dark>The Careershift way</SectionEyebrow>
           <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl lg:text-5xl tracking-tight leading-tight">
             Your job title doesn't tell the whole story. <span className="text-[#FDCF58]">Your work does.</span>
@@ -407,7 +407,7 @@ function TheCareerShiftWay() {
         </div>
 
         {/* Graphic Area */}
-        <div className="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-0 mb-24">
+        <div className="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-center gap-6 xl:gap-0 mb-12">
           
           {/* Left Side Group */}
           <div className="flex flex-col xl:flex-row items-center justify-end flex-1 gap-8 xl:gap-4 xl:pr-6">
@@ -622,7 +622,7 @@ function HowItWorks() {
   ];
 
   return (
-    <div className="relative overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
+    <div className="relative overflow-hidden bg-[#F8FAFC] py-12 md:py-16">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#DBEAFE]/50 blur-3xl" />
       <div className="container-page animate-fade-in-up relative">
         <div className="mx-auto max-w-2xl text-center">
@@ -634,7 +634,7 @@ function HowItWorks() {
           </h2>
         </div>
 
-        <div className="mt-14 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
+        <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
           {steps.map((s, i) => (
             <div key={s.n} className="contents">
               <div className="flex min-w-0 flex-1 items-center gap-3.5">
@@ -667,12 +667,12 @@ function HowItWorks() {
 /* ---------- REPORT PREVIEW ---------- */
 function ReportPreview() {
   return (
-    <div id="report" className="bg-[#F3F7FC] py-20 md:py-24">
-      <div className="container-page animate-fade-in-up grid gap-12 lg:grid-cols-[0.85fr_1.25fr] lg:items-center lg:gap-8 xl:gap-12">
+    <div id="report" className="bg-[#F3F7FC] py-12 md:py-16">
+      <div className="container-page animate-fade-in-up grid gap-8 lg:grid-cols-[0.85fr_1.25fr] lg:items-center xl:gap-12">
         <div className="max-w-md">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99]">
+          <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
             Sample report
-          </p>
+          </div>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
             See what&apos;s inside.
           </h2>
@@ -682,7 +682,7 @@ function ReportPreview() {
           </p>
           <a
             href="#"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#FDCF58] px-6 py-3.5 text-sm font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FDCF58] px-6 py-3.5 text-sm font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
           >
             View sample report <ArrowRight className="h-4 w-4" />
           </a>
@@ -690,7 +690,7 @@ function ReportPreview() {
 
         <div className="relative min-w-0">
           <ReportCardsPreview />
-          <div className="pointer-events-none absolute -right-10 bottom-8 hidden w-36 rotate-[10deg] xl:block 2xl:-right-16">
+          <div className="pointer-events-none absolute -right-32 bottom-8 hidden w-36 rotate-[10deg] xl:block 2xl:-right-40">
             <p
               className="text-[22px] leading-[1.15] text-[#0B1D3A]"
               style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
@@ -1016,13 +1016,13 @@ function WorkIntelligence() {
   ];
 
   return (
-    <section className="bg-[#F8FAFC] py-14 md:py-16">
+    <section className="bg-[#F8FAFC] py-10 md:py-12">
       <div className="container-page animate-fade-in-up">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           <div className="max-w-[340px] shrink-0 lg:max-w-[380px]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5B7C99]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#5B7C99] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Built on real work intelligence
-            </p>
+            </div>
             <h2 className="mt-2.5 font-display text-2xl font-bold tracking-tight text-[#0B1D3A] sm:text-[28px] sm:leading-tight">
               A deeper foundation. Better insights.
             </h2>
@@ -1093,18 +1093,18 @@ function Features() {
   ];
 
   return (
-    <section id="features" className="bg-[#F3F7FC] py-20 md:py-24">
+    <section id="features" className="bg-[#F3F7FC] py-12 md:py-16">
       <div className="container-page animate-fade-in-up">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center rounded-full bg-[#CCFBF1] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[#0F766E]">
             What you walk away with
           </span>
-          <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
             More clarity. Greater control.
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <div className="mt-8 grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4 lg:gap-6">
           {feats.map((f) => (
             <div key={f.title} className="flex flex-col items-start">
               <div
@@ -1135,13 +1135,13 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="bg-white py-20 md:py-24">
+    <section id="pricing" className="bg-white py-12 md:py-16">
       <div className="container-page animate-fade-in-up">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_minmax(420px,1.15fr)_0.85fr] lg:items-center lg:gap-10 xl:gap-14">
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_minmax(420px,1.15fr)_0.85fr] lg:items-center lg:gap-8 xl:gap-10">
           <div className="max-w-sm">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Pricing
-            </p>
+            </div>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
               One report. Real value.
             </h2>
@@ -1275,7 +1275,7 @@ After watching brilliant colleagues paralyzed by generic AI noise, she built the
     },
     {
       q: "Do you offer workshops for teams or organizations?",
-      a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and readiness scores first, then design the workshop around the specific gaps and opportunities in your organization.
+      a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and AI readiness first, then design the workshop around the specific gaps and opportunities in your organization.
 <br/><br/>
 You don't get a standard slide deck. You get a session mapped to your workflows, your tools, and your productivity bottlenecks so every minute drives real efficiency, not just awareness.
 <br/><br/>
@@ -1298,12 +1298,12 @@ Workshops are available as part of our Enterprise tier. Contact sales to learn m
 
   return (
     <>
-      <section id="faq" className="bg-[#F3F7FC] py-16 md:py-20">
-        <div className="container-page animate-fade-in-up flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+      <section id="faq" className="bg-[#F3F7FC] py-10 md:py-14">
+        <div className="container-page animate-fade-in-up flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+            <div className="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B] rounded-md border border-black/10 px-3 py-1.5 bg-white shadow-sm">
               Frequently asked questions
-            </p>
+            </div>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
               Have questions?
             </h2>
@@ -1469,7 +1469,7 @@ function HeroGraphic() {
       {/* Top Node */}
       <div
         className="absolute z-10 w-[260px] pointer-events-auto"
-        style={{ left: "50%", top: "58px", transform: "translateX(-50%)" }}
+        style={{ left: "50%", top: "calc(58 / 650 * 100%)", transform: "translateX(-50%)" }}
       >
         <div className="flex items-center gap-3.5 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)]">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-blue-100/50 text-blue-700">
@@ -1489,7 +1489,7 @@ function HeroGraphic() {
         <div
           key={card.key}
           className="absolute z-10 w-[138px] pointer-events-auto"
-          style={{ left: `${card.x}px`, top: "310px", transform: "translate(-50%, -50%)" }}
+          style={{ left: `calc(${card.x} / 650 * 100%)`, top: "calc(310 / 650 * 100%)", transform: "translate(-50%, -50%)" }}
         >
           <div
             className={`${card.bg} flex h-[124px] flex-col items-center justify-center rounded-xl p-3 text-center shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md`}
@@ -1510,7 +1510,7 @@ function HeroGraphic() {
       {/* Bottom Node */}
       <div
         className="absolute z-10 w-[290px] pointer-events-auto"
-        style={{ left: "50%", bottom: "78px", transform: "translateX(-50%)" }}
+        style={{ left: "50%", bottom: "calc(78 / 650 * 100%)", transform: "translateX(-50%)" }}
       >
         <div className="flex items-center gap-3.5 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)]">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-indigo-100/50 text-indigo-700">
@@ -1550,21 +1550,22 @@ function HeroGraphic() {
 /* ---------- CONTACT US ---------- */
 function ContactUs() {
   return (
-    <section id="contact" className="bg-white py-24 text-[#0B1D3A]">
+    <section id="contact" className="bg-white py-16 text-[#0B1D3A]">
       <div className="container-page">
-        <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>Contact Us</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl">
-            Let&apos;s talk about your next move.
-          </h2>
-          <p className="mt-4 text-[#64748B]">
-            Whether you&apos;re mapping your own AI fitness or building a workforce plan for your team,
-            we&apos;re here to help you get clarity fast.
-          </p>
-        </div>
+        <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="flex flex-col items-start text-left">
+            <SectionEyebrow>Contact Us</SectionEyebrow>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-[#0B1D3A] sm:text-4xl lg:text-[42px] lg:leading-[1.15]">
+              Let&apos;s talk about your next move.
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-[#64748B]">
+              Whether you&apos;re mapping your own AI fitness or building a workforce plan for your team,
+              we&apos;re here to help you get clarity fast.
+            </p>
+          </div>
 
-        <div className="mx-auto mt-14 max-w-xl">
-          <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
+          <div className="mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none">
+            <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_8px_28px_rgba(11,29,58,0.06)]">
             <h3 className="mb-6 font-display text-xl font-semibold text-[#0B1D3A]">Send a Message</h3>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-2 gap-4">
@@ -1615,183 +1616,13 @@ function ContactUs() {
             </form>
           </div>
         </div>
+        </div>
       </div>
     </section>
   );
 }
 
-/* ---------- FOOTER ---------- */
-type FooterLink =
-  | { label: string; to: string }
-  | { label: string; sectionId: string };
 
-function Footer() {
-  const cols: { title: string; links: FooterLink[] }[] = [
-    {
-      title: "Product",
-      links: [
-        { label: "CareerShift Way", sectionId: "framework" },
-        { label: "How It Works", sectionId: "how" },
-        { label: "Features", sectionId: "features" },
-        { label: "Pricing", sectionId: "pricing" },
-      ],
-    },
-    { title: "Resources", links: [{ label: "FAQ", sectionId: "faq" }] },
-    {
-      title: "Company",
-      links: [
-        { label: "About Us", to: "/about" },
-        { label: "Contact", sectionId: "contact" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { label: "Privacy", to: "/privacy" },
-        { label: "Terms", to: "/terms" },
-      ],
-    },
-  ];
-
-  const socials = [
-    {
-      Icon: Linkedin,
-      href: "https://www.linkedin.com/company/careershift3b/",
-      label: "CareerShift on LinkedIn",
-    },
-    {
-      Icon: Instagram,
-      href: "https://www.instagram.com/careershift3b/",
-      label: "CareerShift on Instagram",
-    },
-  ];
-
-  return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0B1D3A] text-white">
-      <div className="pointer-events-none absolute -left-40 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full border border-white/[0.06]" />
-      <div className="pointer-events-none absolute -left-24 top-1/2 h-[380px] w-[380px] -translate-y-1/2 rounded-full border border-white/[0.08]" />
-      <div className="pointer-events-none absolute -left-10 top-1/2 h-[240px] w-[240px] -translate-y-1/2 rounded-full border border-white/[0.05]" />
-
-      <div className="container-page relative py-14 md:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.35fr_0.9fr] lg:items-center lg:gap-12 xl:gap-16">
-          {/* Left - headline, logo, tagline, socials */}
-          <div className="max-w-sm">
-            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
-              Your next chapter starts with{" "}
-              <span className="text-[#FDCF58]">clarity.</span>
-            </h2>
-            <Link to="/" className="mt-5 inline-flex">
-              <img
-                src="/new_logo_white1.png"
-                alt="CareerShift Logo"
-                className="h-16 w-auto object-contain sm:h-20"
-              />
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/55 sm:text-[15px]">
-              Bridge your career to the AI future with clarity, confidence, and a plan.
-            </p>
-            <div className="mt-6 flex gap-2.5">
-              {socials.map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white/60 transition-colors hover:bg-white/10 hover:text-[#C9A84C]"
-                  aria-label={label}
-                >
-                  <Icon className="h-[18px] w-[18px]" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Middle - nav + CTA */}
-          <div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-8">
-              {cols.map((c) => (
-                <div key={c.title}>
-                  <h4 className="font-display text-base font-bold tracking-wide text-white">
-                    {c.title}
-                  </h4>
-                  <ul className="mt-4 space-y-3">
-                    {c.links.map((l) => (
-                      <li key={l.label}>
-                        {"to" in l ? (
-                          <Link
-                            to={l.to}
-                            className="text-[15px] font-medium text-white/70 transition-colors hover:text-[#C9A84C]"
-                          >
-                            {l.label}
-                          </Link>
-                        ) : (
-                          <SectionLink
-                            sectionId={l.sectionId}
-                            className="text-[15px] font-medium text-white/70 transition-colors hover:text-[#C9A84C]"
-                          >
-                            {l.label}
-                          </SectionLink>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 flex flex-col items-center gap-3.5 border-t border-white/10 pt-8 text-center">
-              <Link
-                to="/auth"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#FDCF58] px-8 py-3.5 text-base font-bold text-[#0B1D3A] shadow-sm transition-transform hover:scale-[1.02] hover:bg-[#ebd593]"
-              >
-                Get My Report <ArrowRight className="h-5 w-5" />
-              </Link>
-              <div className="flex items-center justify-center gap-2.5 text-[15px] text-white/70">
-                <Clock className="h-4.5 w-4.5 shrink-0" />
-                <span>One-time report · Takes about 20 minutes</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right - handwritten accent */}
-          <div className="flex items-center justify-start lg:justify-center">
-            <div className="w-[220px] rotate-[7deg] sm:w-[240px]">
-              <p
-                className="text-[34px] leading-[1.12] text-white sm:text-[38px]"
-                style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}
-              >
-                Same you.
-                <br />
-                A broader
-                <br />
-                tomorrow.
-              </p>
-              <svg
-                width="150"
-                height="16"
-                viewBox="0 0 150 16"
-                className="mt-1.5 text-[#FDCF58]"
-                aria-hidden
-              >
-                <path
-                  d="M2,11 Q75,1 148,10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 border-t border-white/10 pt-8 text-sm font-medium text-white/70 md:text-base">
-          <span>© {new Date().getFullYear()} CareerShift. All rights reserved.</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 /* ---------- SCROLL TO TOP ---------- */
 function ScrollToTop() {
