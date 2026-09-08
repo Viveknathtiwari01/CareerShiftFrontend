@@ -6,9 +6,10 @@ import { createCheckoutSession } from "@/api/payments";
 import { useAuth } from "@/store/mock-store";
 
 export default function CheckoutPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [starting, setStarting] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,6 +38,16 @@ export default function CheckoutPage() {
       setError(message);
       toast.error(message);
       setStarting(false);
+    }
+  }
+
+  async function handleSwitchAccount() {
+    setSigningOut(true);
+    try {
+      await logout();
+      navigate("/auth", { replace: true });
+    } finally {
+      setSigningOut(false);
     }
   }
 
@@ -84,7 +95,7 @@ export default function CheckoutPage() {
         <button
           type="button"
           onClick={startCheckout}
-          disabled={starting}
+          disabled={starting || signingOut}
           className="mt-9 mx-auto inline-flex w-full max-w-[400px] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#F6D56A] to-[#E8B923] px-5 py-3.5 text-[15px] font-bold text-[#0B1D3A] shadow-[0_8px_20px_rgba(232,185,35,0.35)] transition hover:brightness-[1.03] hover:shadow-[0_10px_24px_rgba(232,185,35,0.45)] disabled:opacity-60 sm:py-4"
         >
           {starting ? (
@@ -107,12 +118,22 @@ export default function CheckoutPage() {
           <span>Secure checkout powered by Stripe.</span>
         </div>
 
-        <Link
-          to="/"
-          className="mt-6 inline-block text-[13px] font-medium text-[#5B7C99] underline underline-offset-2 transition-colors hover:text-[#0B1D3A]"
-        >
-          Back to home
-        </Link>
+        <div className="mt-6 flex flex-col items-center gap-3">
+          <Link
+            to="/"
+            className="text-[13px] font-medium text-[#5B7C99] underline underline-offset-2 transition-colors hover:text-[#0B1D3A]"
+          >
+            Back to home
+          </Link>
+          <button
+            type="button"
+            onClick={handleSwitchAccount}
+            disabled={signingOut || starting}
+            className="text-[13px] font-medium text-[#5B7C99] underline underline-offset-2 transition-colors hover:text-[#0B1D3A] disabled:opacity-60"
+          >
+            {signingOut ? "Signing out…" : "Use a different account"}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ export function Footer() {
     { label: "About Us", to: "/about" },
     { label: "Privacy Policy", to: "/privacy" },
     { label: "Terms of Use", to: "/terms" },
-    { label: "Refund Policy", to: "#" }
   ];
 
   const socials = [

@@ -19,7 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
 export default function AuthPage() {
-  const { user, login, loading } = useAuth();
+  const { user, login, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<AuthMode>("login");
   
@@ -30,6 +30,7 @@ export default function AuthPage() {
   const [otp, setOtp] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   
   const [submitting, setSubmitting] = useState(false);
 
@@ -41,10 +42,8 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (loading || !user) return;
-    if (!user.hasPaid) {
-      navigate("/checkout", { replace: true });
-      return;
-    }
+    // Unpaid users stay on this page so they can sign out and switch accounts
+    if (!user.hasPaid) return;
     if (!isLoadingProfile && profileStatus !== undefined) {
       if (profileStatus.is_completed) {
         navigate("/dashboard", { replace: true });
@@ -53,6 +52,22 @@ export default function AuthPage() {
       }
     }
   }, [user, loading, navigate, profileStatus, isLoadingProfile]);
+
+  async function handleSwitchAccount() {
+    setSigningOut(true);
+    try {
+      await logout();
+      setMode("login");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setOtp("");
+      setAcceptedTerms(false);
+      toast.success("Signed out. You can log in or create another account.");
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   async function handleLogin() {
     await login(email, password);
@@ -197,6 +212,44 @@ export default function AuthPage() {
             <span className="font-display text-xl font-bold">CareerShift</span>
           </Link>
 
+          {!loading && user && !user.hasPaid ? (
+            <div className="space-y-5">
+              <h2 className="font-display text-[1.75rem] font-bold tracking-tight sm:text-3xl">
+                Finish checkout
+              </h2>
+              <p className="text-base leading-relaxed text-muted-foreground sm:text-sm">
+                You&apos;re signed in as{" "}
+                <span className="font-semibold text-foreground">{user.email}</span>, but payment
+                is still pending.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate("/checkout", { replace: true })}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] sm:py-3 sm:text-sm"
+              >
+                Continue to payment
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={handleSwitchAccount}
+                disabled={signingOut}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-3.5 text-base font-semibold text-foreground transition-colors hover:bg-black/5 disabled:opacity-70 sm:py-3 sm:text-sm"
+              >
+                {signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Sign out &amp; use another account
+              </button>
+              <div className="flex justify-center">
+                <Link
+                  to="/"
+                  className="text-xs font-medium text-muted-foreground hover:text-foreground"
+                >
+                  Back to home
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <>
           {(mode === "login" || mode === "register") && (
             <div className="mb-6 inline-flex w-full rounded-full border border-border bg-brand p-1 text-sm sm:w-auto">
               <button
@@ -364,6 +417,8 @@ export default function AuthPage() {
                </div>
             )}
           </form>
+            </>
+          )}
         </div>
       </main>
     </div>
