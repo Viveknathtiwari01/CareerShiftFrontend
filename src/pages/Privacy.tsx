@@ -1,8 +1,14 @@
+import { Link } from "react-router-dom";
 import { LegalPageLayout, LegalSection } from "@/components/legal/LegalPageLayout";
 
 export default function Privacy() {
   return (
-    <LegalPageLayout title="Privacy Policy" lastUpdated="September 2026">
+    <LegalPageLayout
+      title="Privacy Policy"
+      lastUpdated="September 2026"
+      badge="Privacy"
+      description="How CareerShift collects, uses, and protects your personal information - clearly and transparently."
+    >
       <LegalSection title="Introduction">
         <p>CareerShift is operated by Noorak Ventures FZE LLC (“Noorak Ventures”, “CareerShift”, “we”, “us” or “our”).</p>
         <p>We respect your privacy and are committed to handling your personal information responsibly and transparently.</p>
@@ -134,15 +140,22 @@ export default function Privacy() {
       <LegalSection title="15. Contact Us and Privacy Requests">
         <p>If you have questions about this Privacy Policy, want to exercise your privacy rights, or have a concern about how your personal information is handled, you can contact us through the Contact Us page on the CareerShift website.</p>
         <p>Please select or state that your message relates to Privacy / Personal Data so that we can appropriately review your request.</p>
-        <p className="mt-4 font-semibold">Data Controller:</p>
+        <p className="mt-4 font-semibold text-[#0B1D3A]">Data Controller:</p>
         <p>
           Noorak Ventures FZE LLC<br />
           Operator of CareerShift<br />
           United Arab Emirates
         </p>
-        <div className="mt-8 pt-8 border-t border-border">
-          <p className="font-semibold text-lg text-brand">CareerShift</p>
-          <p className="text-muted-foreground">Bridge Your Career to the AI Future.</p>
+        <div className="mt-8 rounded-xl border border-[#FDCF58]/40 bg-[#FDCF58]/10 p-5">
+          <p className="font-display text-lg font-bold text-[#0B1D3A]">CareerShift</p>
+          <p className="mt-1 text-sm text-[#3B4A72]">Bridge Your Career to the AI Future.</p>
+          <p className="mt-3 text-sm text-[#3B4A72]">
+            Also see our{" "}
+            <Link to="/terms" className="font-semibold text-[#0B1D3A] underline underline-offset-2">
+              Terms & Conditions
+            </Link>
+            .
+          </p>
         </div>
       </LegalSection>
     </LegalPageLayout>

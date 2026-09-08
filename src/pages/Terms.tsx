@@ -1,13 +1,22 @@
+import { Link } from "react-router-dom";
 import { LegalPageLayout, LegalSection } from "@/components/legal/LegalPageLayout";
 
 export default function Terms() {
   return (
-    <LegalPageLayout title="Terms & Conditions" lastUpdated="September 2026">
+    <LegalPageLayout
+      title="Terms & Conditions"
+      lastUpdated="September 2026"
+      badge="Terms"
+      description="The rules that govern your use of CareerShift- written clearly so you know what to expect."
+    >
       <LegalSection title="Welcome">
         <p>Welcome to CareerShift.</p>
         <p>CareerShift is a career intelligence platform operated by Noorak Ventures FZE LLC, Ajman, United Arab Emirates (“Noorak Ventures”, “CareerShift”, “we”, “our” or “us”).</p>
         <p>These Terms & Conditions (“Terms”) govern your access to and use of the CareerShift website, platform, assessments, reports and related digital services.</p>
-        <p>By creating an account, purchasing a CareerShift service or using the platform, you agree to these Terms and acknowledge our Privacy Policy.</p>
+        <p>
+          By creating an account, purchasing a CareerShift service or using the platform, you agree to these Terms and acknowledge our{" "}
+          <Link to="/privacy">Privacy Policy</Link>.
+        </p>
         <p>Please read these Terms before using CareerShift.</p>
       </LegalSection>
 
@@ -19,9 +28,9 @@ export default function Terms() {
           <li>Your job role and professional context</li>
           <li>Competencies and skills</li>
           <li>Tasks and work activities</li>
-          <li>Opportunities to BUILD IT — strengthen or develop human capabilities</li>
-          <li>Opportunities to BOT IT — automate suitable activities</li>
-          <li>Opportunities to BLEND IT — combine human capability with AI or other technology</li>
+          <li>Opportunities to BUILD IT- strengthen or develop human capabilities</li>
+          <li>Opportunities to BOT IT- automate suitable activities</li>
+          <li>Opportunities to BLEND IT- combine human capability with AI or other technology</li>
           <li>Relevant AI and technology tools</li>
           <li>Learning and development opportunities</li>
           <li>Career-related insights and recommendations</li>
@@ -114,7 +123,10 @@ export default function Terms() {
           <li>Unnecessary sensitive information</li>
         </ul>
         <p>Information contained in uploaded documents may be processed to support your CareerShift assessment and report.</p>
-        <p>How personal information is handled is explained in our Privacy Policy.</p>
+        <p>
+          How personal information is handled is explained in our{" "}
+          <Link to="/privacy">Privacy Policy</Link>.
+        </p>
       </LegalSection>
 
       <LegalSection title="9. AI-Assisted Analysis and Responsible Use">
@@ -141,7 +153,7 @@ export default function Terms() {
         <p>They do not guarantee that a task can or should be automated, that a particular technology will work within your organization, or that developing a particular skill will produce a particular career outcome.</p>
       </LegalSection>
 
-      <LegalSection title="11. CareerShift Is Guidance — Not a Career Guarantee">
+      <LegalSection title="11. CareerShift Is Guidance- Not a Career Guarantee">
         <p>CareerShift does not make career decisions for you.</p>
         <p>CareerShift does not guarantee:</p>
         <ul className="list-disc space-y-2 pl-6">
@@ -350,7 +362,10 @@ export default function Terms() {
         <p>Where applicable law requires consent or another user choice before optional technologies are used, CareerShift will provide appropriate controls.</p>
         <p>These may include options to Accept All, Reject Non-Essential or Manage Preferences.</p>
         <p>Where consent is legally required, declining optional analytics or advertising technologies will not prevent access to CareerShift’s core functionality where those technologies are not necessary to provide the service.</p>
-        <p>Further information about personal data associated with these technologies is available in our Privacy Policy.</p>
+        <p>
+          Further information about personal data associated with these technologies is available in our{" "}
+          <Link to="/privacy">Privacy Policy</Link>.
+        </p>
       </LegalSection>
 
       <LegalSection title="24. Training, Bootcamps and Other Services">
@@ -390,7 +405,10 @@ export default function Terms() {
       </LegalSection>
 
       <LegalSection title="28. Privacy">
-        <p>Your use of CareerShift is governed alongside these Terms by our Privacy Policy.</p>
+        <p>
+          Your use of CareerShift is governed alongside these Terms by our{" "}
+          <Link to="/privacy">Privacy Policy</Link>.
+        </p>
         <p>The Privacy Policy explains how Noorak Ventures FZE LLC collects, processes, uses, shares, retains and protects personal information and explains applicable privacy choices and rights.</p>
         <p>By using CareerShift, you acknowledge that you have had the opportunity to review the Privacy Policy.</p>
       </LegalSection>
@@ -415,9 +433,16 @@ export default function Terms() {
           Noorak Ventures FZE LLC<br />
           Ajman, United Arab Emirates
         </p>
-        <div className="mt-8 pt-8 border-t border-border">
-          <p className="font-semibold text-lg text-brand">CareerShift</p>
-          <p className="text-muted-foreground">Bridge Your Career to the AI Future.</p>
+        <div className="mt-8 rounded-xl border border-[#FDCF58]/40 bg-[#FDCF58]/10 p-5">
+          <p className="font-display text-lg font-bold text-[#0B1D3A]">CareerShift</p>
+          <p className="mt-1 text-sm text-[#3B4A72]">Bridge Your Career to the AI Future.</p>
+          <p className="mt-3 text-sm text-[#3B4A72]">
+            Also see our{" "}
+            <Link to="/privacy" className="font-semibold text-[#0B1D3A] underline underline-offset-2">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </div>
       </LegalSection>
     </LegalPageLayout>
