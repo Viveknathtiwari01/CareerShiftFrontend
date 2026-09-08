@@ -58,7 +58,7 @@ export default function CheckoutPage() {
           Unlock your Career Intelligence Report
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          One-time payment of <span className="font-semibold text-[#0B1D3A]">AED 19</span>.
+          One-time payment of <span className="font-semibold text-[#0B1D3A]">$19 USD</span>.
           After payment you will continue to your dashboard.
         </p>
 
@@ -74,7 +74,7 @@ export default function CheckoutPage() {
               Redirecting to Stripe…
             </>
           ) : (
-            "Pay AED 19"
+            "Pay $19"
           )}
         </button>
 
