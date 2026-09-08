@@ -43,6 +43,12 @@ export default function AuthenticatedLayout() {
   }, [user, loading, navigate]);
 
   useEffect(() => {
+    if (!loading && user && !user.hasPaid) {
+      navigate("/checkout", { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
     setMobileNav(false);
   }, [pathname]);
 
@@ -55,7 +61,7 @@ export default function AuthenticatedLayout() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [mobileNav]);
 
-  if (loading || !user) {
+  if (loading || !user || !user.hasPaid) {
     return (
       <div className="grid min-h-screen place-items-center bg-background">
         <div className="animate-pulse text-sm text-muted-foreground">Loading…</div>

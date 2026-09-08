@@ -34,11 +34,16 @@ export default function AuthPage() {
   const { data: profileStatus, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["profile-status"],
     queryFn: getProfileStatus,
-    enabled: !!user && !loading,
+    enabled: !!user && !loading && !!user.hasPaid,
   });
 
   useEffect(() => {
-    if (!loading && user && !isLoadingProfile && profileStatus !== undefined) {
+    if (loading || !user) return;
+    if (!user.hasPaid) {
+      navigate("/checkout", { replace: true });
+      return;
+    }
+    if (!isLoadingProfile && profileStatus !== undefined) {
       if (profileStatus.is_completed) {
         navigate("/dashboard", { replace: true });
       } else {

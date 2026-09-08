@@ -4,6 +4,9 @@ import About from "../pages/About";
 import Auth from "../pages/Auth";
 import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
+import Checkout from "../pages/Checkout";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import PaymentCancel from "../pages/PaymentCancel";
 import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
 import Dashboard from "../pages/dashboard";
 import Assessment from "../pages/assessment";
@@ -26,6 +29,9 @@ export default function AppRoutes() {
       <Route path="/auth" element={<Auth />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment/success" element={<PaymentSuccess />} />
+      <Route path="/payment/cancel" element={<PaymentCancel />} />
 
       <Route element={<AuthenticatedLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />

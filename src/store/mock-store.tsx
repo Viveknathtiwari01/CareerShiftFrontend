@@ -26,6 +26,7 @@ export type User = {
   industry?: string;
   yearsExp?: number;
   onboarded?: boolean;
+  hasPaid?: boolean;
 };
 
 export type Task = {
@@ -84,10 +85,30 @@ type AuthCtx = {
   register: (name: string, email: string, password: string) => Promise<User>;
   logout: () => void;
   updateUser: (patch: Partial<User>) => void;
+  refreshUser: () => Promise<User | null>;
 };
 
 const AuthContext = createContext<AuthCtx | null>(null);
 const USER_KEY = "careershift.user";
+
+function mapApiUser(data: {
+  id: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  username?: string;
+  email: string;
+  has_paid?: boolean;
+}): User {
+  return {
+    id: data.id,
+    name: data.first_name
+      ? `${data.first_name} ${data.last_name || ""}`.trim()
+      : data.username || data.email,
+    email: data.email,
+    onboarded: !!data.first_name,
+    hasPaid: !!data.has_paid,
+  };
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -112,12 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { fetchApi } = await import("@/lib/api");
       const res = await fetchApi("/users/me");
-      const u: User = {
-        id: res.data.id,
-        name: res.data.first_name ? `${res.data.first_name} ${res.data.last_name || ""}`.trim() : res.data.username,
-        email: res.data.email,
-        onboarded: !!res.data.first_name,
-      };
+      const u = mapApiUser(res.data);
       const refresh = getRefreshToken();
       if (refresh) {
         persist(u, getAccessToken() || undefined, refresh);
@@ -146,12 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const refreshToken = res.data.refresh_token as string;
       setTokens(accessToken, refreshToken);
       const userRes = await fetchApi("/users/me");
-      const u: User = {
-        id: userRes.data.id,
-        name: userRes.data.first_name ? `${userRes.data.first_name} ${userRes.data.last_name || ""}`.trim() : userRes.data.username,
-        email: userRes.data.email,
-        onboarded: !!userRes.data.first_name,
-      };
+      const u = mapApiUser(userRes.data);
       persist(u, accessToken, refreshToken);
       return u;
     },
@@ -195,9 +206,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    if (!getAccessToken()) {
+      persist(null);
+      return null;
+    }
+    try {
+      const { fetchApi } = await import("@/lib/api");
+      const res = await fetchApi("/users/me");
+      const u = mapApiUser(res.data);
+      const refresh = getRefreshToken();
+      if (refresh) {
+        persist(u, getAccessToken() || undefined, refresh);
+        return u;
+      }
+      persist(null);
+      return null;
+    } catch {
+      persist(null);
+      return null;
+    }
+  }, [persist]);
+
   const value = useMemo(
-    () => ({ user, loading, login, register, logout, updateUser }),
-    [user, loading, login, register, logout, updateUser],
+    () => ({ user, loading, login, register, logout, updateUser, refreshUser }),
+    [user, loading, login, register, logout, updateUser, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

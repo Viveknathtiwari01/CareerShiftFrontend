@@ -1147,7 +1147,7 @@ function Pricing() {
             <p className="mt-4 text-[15px] leading-relaxed text-[#64748B]">
               Get a complete{" "}
               <span className="font-semibold text-[#0B1D3A]">Career Intelligence Report</span> for
-              just $19 — limited launch pricing.
+              just AED 19 — limited launch pricing.
             </p>
           </div>
 
@@ -1159,14 +1159,14 @@ function Pricing() {
 
             <div className="mt-7 flex items-center justify-center gap-3 sm:gap-3.5">
               <span className="relative inline-flex items-center justify-center px-0.5">
-                <span className="text-[1.65rem] font-medium leading-none text-[#94A3B8]">$49</span>
+                <span className="text-[1.65rem] font-medium leading-none text-[#94A3B8]">AED 49</span>
                 <span
                   className="pointer-events-none absolute left-[-2px] right-[-2px] top-1/2 h-[2.5px] -translate-y-1/2 rotate-[-18deg] rounded-full bg-[#E11D48]"
                   aria-hidden
                 />
               </span>
               <span className="font-display text-[2.75rem] font-bold leading-none tracking-tight text-[#0B1D3A] sm:text-[3rem]">
-                $19
+                AED 19
               </span>
               <span className="inline-flex items-center rounded-full bg-[#FDCF58] px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#0B1D3A]">
                 61% OFF
