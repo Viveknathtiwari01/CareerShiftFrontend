@@ -30,4 +30,9 @@ export interface WizardData {
   aiTools: string[];
   suggestedAiTools?: string[];
   aiComfortLevel: number;
+
+  // Legal consent (required on profile creation)
+  termsAccepted?: boolean;
+  privacyAccepted?: boolean;
+  consentAcceptedAt?: string | null;
 }

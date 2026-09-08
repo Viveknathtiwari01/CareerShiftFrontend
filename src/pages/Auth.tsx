@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { fetchApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { getProfileStatus } from "@/api/profile";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
@@ -28,6 +29,7 @@ export default function AuthPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   
   const [submitting, setSubmitting] = useState(false);
 
@@ -62,12 +64,18 @@ export default function AuthPage() {
       toast.error("Passwords do not match");
       return;
     }
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions and Privacy Policy to continue.");
+      return;
+    }
     await fetchApi("/auth/register/request-otp", {
       method: "POST",
       body: JSON.stringify({ 
         email, 
         password, 
-        username: email.split("@")[0] // Auto-generated username
+        username: email.split("@")[0],
+        terms_accepted: true,
+        privacy_accepted: true,
       }),
     });
     toast.success("OTP sent to your email!");
@@ -84,6 +92,7 @@ export default function AuthPage() {
     setOtp("");
     setPassword("");
     setConfirmPassword("");
+    setAcceptedTerms(false);
   }
 
   async function handleForgotRequest() {
@@ -282,6 +291,40 @@ export default function AuthPage() {
               />
             )}
 
+            {mode === "register" && (
+              <label className="flex items-start gap-3 cursor-pointer rounded-xl border border-border bg-background/60 px-3.5 py-3">
+                <Checkbox
+                  id="register-legal-consent"
+                  checked={acceptedTerms}
+                  onCheckedChange={(value) => setAcceptedTerms(value === true)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm leading-relaxed text-muted-foreground">
+                  I have read and agree to the{" "}
+                  <Link
+                    to="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-foreground underline underline-offset-2 hover:text-brand"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Terms & Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    to="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-foreground underline underline-offset-2 hover:text-brand"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Privacy Policy
+                  </Link>
+                  .
+                </span>
+              </label>
+            )}
+
             {mode === "login" && (
               <div className="flex justify-end">
                 <button 
@@ -296,7 +339,7 @@ export default function AuthPage() {
 
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || (mode === "register" && !acceptedTerms)}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70 sm:py-3 sm:text-sm"
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}

@@ -16,9 +16,10 @@ interface Props {
   data: WizardData;
   goToStep: (step: number) => void;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
-export function Step6Review({ data, goToStep, onSubmit }: Props) {
+export function Step6Review({ data, goToStep, onSubmit, isSubmitting }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -239,11 +240,16 @@ export function Step6Review({ data, goToStep, onSubmit }: Props) {
           </div>
         </CardContent>
         <CardFooter className="flex justify-center space-x-4 pt-6 pb-8 border-t bg-muted/20">
-          <Button variant="outline" size="lg" onClick={() => goToStep(1)}>
+          <Button variant="outline" size="lg" onClick={() => goToStep(1)} disabled={isSubmitting}>
             Edit Information
           </Button>
-          <Button size="lg" onClick={onSubmit} className="px-8 shadow-md">
-            Complete Onboarding
+          <Button
+            size="lg"
+            onClick={onSubmit}
+            disabled={isSubmitting}
+            className="px-8 shadow-md"
+          >
+            {isSubmitting ? "Saving…" : "Complete Onboarding"}
           </Button>
         </CardFooter>
       </Card>

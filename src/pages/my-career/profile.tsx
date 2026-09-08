@@ -321,7 +321,15 @@ export default function MyCareerProfile() {
       case 2: return <Step2Background key="step2" data={data} updateData={updateData} />;
       case 3: return <Step3Skills key="step3" data={data} updateData={updateData} />;
       case 4: return <Step5AIFitness key="step4" data={data} updateData={updateData} />;
-      case 5: return <Step6Review key="step5" data={data} goToStep={setCurrentStep} onSubmit={handleSubmit} />;
+      case 5: return (
+        <Step6Review
+          key="step5"
+          data={data}
+          goToStep={setCurrentStep}
+          onSubmit={handleSubmit}
+          isSubmitting={createMutation.isPending}
+        />
+      );
       default: return null;
     }
   };

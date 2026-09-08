@@ -58,26 +58,25 @@ export default function CheckoutPage() {
       className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-10"
       style={{ backgroundImage: "url('/paymentcheckout_bg.jpeg')" }}
     >
-      <div className="w-full max-w-[420px] rounded-[28px] bg-white px-8 py-10 text-center shadow-[0_20px_60px_rgba(11,29,58,0.18)] sm:px-10 sm:py-12">
+      <div className="w-full max-w-[560px] rounded-[32px] bg-white px-10 py-12 text-center shadow-[0_20px_60px_rgba(11,29,58,0.18)] sm:px-14 sm:py-14">
         {/* Brand */}
         <div className="flex flex-col items-center">
-          <p className="font-sans text-[22px] font-bold tracking-tight text-[#0B1D3A] sm:text-[24px]">
-            Career<span className="text-[#E8B923]">Shift</span>
-          </p>
-          <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#4A5B78]">
-            Build It · Bot It · Blend It
-          </p>
-          <div className="mt-4 h-[2px] w-10 rounded-full bg-[#E8B923]" />
+          <img
+            src="/new_logo11.png"
+            alt="CareerShift — Build It · Bot It · Blend It"
+            className="h-14 w-auto object-contain sm:h-16"
+          />
+          <div className="mt-5 h-[2px] w-12 rounded-full bg-[#E8B923]" />
         </div>
 
         {/* Headline */}
-        <h1 className="mt-8 font-display text-[1.65rem] font-bold leading-[1.25] tracking-tight text-[#0B1D3A] sm:text-[1.85rem]">
+        <h1 className="mt-9 font-display text-[1.85rem] font-bold leading-[1.25] tracking-tight text-[#0B1D3A] sm:text-[2.15rem]">
           Unlock your Career
           <br />
           Intelligence Report
         </h1>
 
-        <p className="mx-auto mt-4 max-w-[300px] text-[14px] leading-[1.65] text-[#5B7C99]">
+        <p className="mx-auto mt-5 max-w-[420px] text-[15px] leading-[1.7] text-[#5B7C99] sm:text-base">
           One-time payment of $19 USD. After payment you will continue to your dashboard.
         </p>
 
@@ -86,7 +85,7 @@ export default function CheckoutPage() {
           type="button"
           onClick={startCheckout}
           disabled={starting}
-          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#F6D56A] to-[#E8B923] px-5 py-3.5 text-[15px] font-bold text-[#0B1D3A] shadow-[0_8px_20px_rgba(232,185,35,0.35)] transition hover:brightness-[1.03] hover:shadow-[0_10px_24px_rgba(232,185,35,0.45)] disabled:opacity-60"
+          className="mt-9 mx-auto inline-flex w-full max-w-[400px] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#F6D56A] to-[#E8B923] px-5 py-3.5 text-[15px] font-bold text-[#0B1D3A] shadow-[0_8px_20px_rgba(232,185,35,0.35)] transition hover:brightness-[1.03] hover:shadow-[0_10px_24px_rgba(232,185,35,0.45)] disabled:opacity-60 sm:py-4"
         >
           {starting ? (
             <>

@@ -19,6 +19,8 @@ function mapToBackend(data: Partial<WizardData>) {
   if (data.aiFrequency !== undefined) mapped.ai_frequency = data.aiFrequency;
   if (data.aiTools !== undefined) mapped.ai_tools = data.aiTools;
   if (data.aiComfortLevel !== undefined) mapped.ai_comfort_level = data.aiComfortLevel;
+  if (data.termsAccepted !== undefined) mapped.terms_accepted = data.termsAccepted;
+  if (data.privacyAccepted !== undefined) mapped.privacy_accepted = data.privacyAccepted;
   return mapped;
 }
 
@@ -39,6 +41,9 @@ function mapToFrontend(data: any): WizardData {
     aiFrequency: data.ai_frequency || "",
     aiTools: data.ai_tools || [],
     aiComfortLevel: data.ai_comfort_level || 5,
+    termsAccepted: Boolean(data.terms_accepted),
+    privacyAccepted: Boolean(data.privacy_accepted),
+    consentAcceptedAt: data.consent_accepted_at || null,
   };
 }
 
