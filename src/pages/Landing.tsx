@@ -1280,20 +1280,19 @@ Your report is yours. Period.`,
     {
       q: "Can I share my report with my manager?",
       a: `Yes. Every paid report includes a PDF export and a private shareable link perfect for performance reviews, career conversations, or proving you're thinking ahead.`,
+      a: `Yes.<br/><br/>Your CareerShift report can be used as a practical starting point for a career or development conversation with your manager.<br/><br/>Rather than discussing development only in broad terms, you can use the report to explore questions such as:<br/><br/>Where should I strengthen my capability?<br/>Which repetitive parts of my work could potentially be automated?<br/>Where could AI help me perform better?<br/>Which capabilities may become more important for my future role?<br/><br/>You decide whether and with whom you want to share your report.`,
     },
     {
       q: "Who built this?",
-      a: `CareerShift was built by Nureen Choudhary a talent and capability professional with 15+ years of experience at the intersection of AI transformation and workforce development.
-<br/><br/>
-After watching brilliant colleagues paralyzed by generic AI noise, she built the tool she wished existed: a personalized compass, not another conversation.`,
+      a: `CareerShift is developed by Noorak Ventures FZE.<br/><br/>It was built around a simple belief:<br/>People should not have to wait for their employer, their industry or the job market to tell them that their role has changed.<br/><br/>CareerShift is designed to give individuals a structured way to understand their own work, evaluate how technology may affect it and make more deliberate decisions about what they build next.`,
     },
     {
       q: "Do you offer workshops for teams or organizations?",
-      a: `CareerShift workshops are built on your enterprise assessment data. We analyze your team's actual roles, tasks, and AI readiness first, then design the workshop around the specific gaps and opportunities in your organization.
-<br/><br/>
-You don't get a standard slide deck. You get a session mapped to your workflows, your tools, and your productivity bottlenecks so every minute drives real efficiency, not just awareness.
-<br/><br/>
-Workshops are available as part of our Enterprise tier. Contact sales to learn more.`,
+      a: `Yes.<br/><br/>CareerShift also supports organizations through workshops and learning experiences focused on practical AI adoption, workforce readiness and capability development.<br/><br/>These can build on the same principle as the CareerShift journey:<br/>understand the work → identify where AI matters → determine what to BUILD, BOT or BLEND → develop the capabilities required to move forward.<br/><br/>Programs can be designed around specific teams, functions, leadership populations or broader workforce priorities.`,
+    },
+    {
+      q: "Contact Us",
+      a: `Let’s talk about your next move.<br/><br/>Whether you’re understanding how AI may reshape your own work or mapping what it means for your workforce, CareerShift helps turn uncertainty into a clearer next move.`,
     },
   ];
 
