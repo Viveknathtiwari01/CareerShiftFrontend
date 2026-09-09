@@ -219,11 +219,11 @@ export default function AuthPage() {
 
       {/* Right: form over mountain background */}
       <main
-        className="flex min-h-screen flex-col justify-start bg-cover bg-center bg-no-repeat px-4 py-8 sm:justify-center sm:px-10 sm:py-12 lg:px-14"
+        className="flex min-h-screen flex-col justify-start bg-cover bg-center bg-no-repeat px-4 py-6 sm:justify-center sm:px-10 sm:py-8 lg:px-14"
         style={{ backgroundImage: "url('/paymentcheckout_bg.jpeg')" }}
       >
-        <div className="mx-auto w-full max-w-xl rounded-[28px] border border-white/70 bg-white/95 p-7 shadow-[0_20px_50px_rgba(11,29,58,0.14)] backdrop-blur-[2px] sm:p-10 lg:p-12">
-          <Link to="/" className="mb-7 flex items-center gap-2 sm:mb-9 lg:hidden">
+        <div className="mx-auto w-full max-w-xl rounded-[24px] border border-white/70 bg-white/95 p-6 shadow-[0_20px_50px_rgba(11,29,58,0.14)] backdrop-blur-[2px] sm:p-8 lg:p-10">
+          <Link to="/" className="mb-5 flex items-center gap-2 sm:mb-7 lg:hidden">
             <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary">
               <BrainCircuit className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
             </div>
@@ -269,9 +269,9 @@ export default function AuthPage() {
           ) : (
             <>
           {(mode === "login" || mode === "register") && (
-            <div className="mb-8 inline-flex w-full rounded-full border border-border bg-brand/90 p-1.5 text-[15px]">
+            <div className="mb-6 inline-flex w-full rounded-full border border-border bg-brand/90 p-1.5 text-[14px]">
               <button
-                className={`flex-1 rounded-full px-5 py-2.5 font-semibold transition-colors ${
+                className={`flex-1 rounded-full px-5 py-2 font-semibold transition-colors ${
                   mode === "login"
                     ? "bg-white shadow-soft text-[#0B1D3A]"
                     : "text-[#0B1D3A]/65 hover:text-[#0B1D3A]"
@@ -282,7 +282,7 @@ export default function AuthPage() {
                 Log in
               </button>
               <button
-                className={`flex-1 rounded-full px-5 py-2.5 font-semibold transition-colors ${
+                className={`flex-1 rounded-full px-5 py-2 font-semibold transition-colors ${
                   mode === "register"
                     ? "bg-white shadow-soft text-[#0B1D3A]"
                     : "text-[#0B1D3A]/65 hover:text-[#0B1D3A]"
@@ -295,7 +295,7 @@ export default function AuthPage() {
             </div>
           )}
 
-          <h2 className="font-display text-[2rem] font-bold tracking-tight text-[#0B1D3A] sm:text-[2.35rem]">
+          <h2 className="font-display text-[1.75rem] font-bold tracking-tight text-[#0B1D3A] sm:text-[2rem]">
             {mode === "login" && "Welcome back"}
             {mode === "register" && "Create your account"}
             {mode === "register-verify" && "Verify your email"}
@@ -303,7 +303,7 @@ export default function AuthPage() {
             {mode === "forgot-verify" && "Verify OTP"}
             {mode === "forgot-reset" && "Create New Password"}
           </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-[#5B7C99] sm:text-base">
+          <p className="mt-2 text-[14px] leading-relaxed text-[#5B7C99] sm:text-[15px]">
             {mode === "login" && "Sign in to continue building your Career Intelligence Report."}
             {mode === "register" && "Get started with your free AI Career Readiness assessment."}
             {mode === "register-verify" && `We sent a 6-digit code to ${email}.`}
@@ -312,7 +312,7 @@ export default function AuthPage() {
             {mode === "forgot-reset" && "Enter a new secure password for your account."}
           </p>
 
-          <form onSubmit={onSubmit} className="mt-8 space-y-5">
+          <form onSubmit={onSubmit} className="mt-6 space-y-4">
             
             {(mode === "login" || mode === "register" || mode === "forgot") && (
               <Field
@@ -363,14 +363,14 @@ export default function AuthPage() {
             )}
 
             {mode === "register" && (
-              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-border bg-background/70 px-4 py-3.5">
+              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-border bg-background/70 px-4 py-3">
                 <Checkbox
                   id="register-legal-consent"
                   checked={acceptedTerms}
                   onCheckedChange={(value) => setAcceptedTerms(value === true)}
                   className="mt-0.5"
                 />
-                <span className="text-[14px] leading-relaxed text-muted-foreground">
+                <span className="text-[13px] leading-relaxed text-muted-foreground">
                   I have read and agree to the{" "}
                   <Link
                     to="/terms"
@@ -411,7 +411,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={submitting || (mode === "register" && !acceptedTerms)}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-4 text-[15px] font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70"
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {mode === "login" && "Log in"}
@@ -466,8 +466,8 @@ function Field({
 
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-semibold text-[#0B1D3A]">{label}</span>
-      <div className="flex items-center gap-3 rounded-2xl border border-input bg-background px-4 py-3.5 shadow-soft focus-within:ring-2 focus-within:ring-ring">
+      <span className="mb-1.5 block text-[13px] font-semibold text-[#0B1D3A]">{label}</span>
+      <div className="flex items-center gap-3 rounded-2xl border border-input bg-background px-4 py-2.5 shadow-soft focus-within:ring-2 focus-within:ring-ring">
         <span className="text-muted-foreground">{icon}</span>
         <input
           type={inputType}

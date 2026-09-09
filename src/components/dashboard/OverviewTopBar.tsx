@@ -21,7 +21,7 @@ export function OverviewTopBar() {
     .join("");
 
   return (
-    <header className="flex h-12 items-center justify-end">
+    <header className="mb-2 flex h-14 items-center justify-end rounded-md bg-[#F5F2EC] px-5 shadow-elevated">
       <div className="flex items-center gap-3 sm:gap-4">
         <button
           type="button"
@@ -30,7 +30,7 @@ export function OverviewTopBar() {
         >
           <Bell className="h-[18px] w-[18px]" strokeWidth={1.5} />
           <span
-            className="absolute right-[7px] top-[7px] h-[7px] w-[7px] rounded-full bg-[#F2C94C] ring-[1.5px] ring-[#F8FAFC]"
+            className="absolute right-[7px] top-[7px] h-[7px] w-[7px] rounded-full bg-[#F2C94C] ring-[1.5px] ring-[#F5F2EC]"
             aria-hidden
           />
         </button>
