@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Download, Share2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import type { CareerIntelligenceReport } from "@/api/report";
 import { downloadReportPdf, formatReportVersion } from "@/api/report";
 import { ReportShareDialog } from "@/components/report/ReportShareDialog";
@@ -24,8 +25,11 @@ export function ReportHeader({ report }: Props) {
     setBusy(true);
     try {
       await downloadReportPdf(report.assessment_id);
+      toast.success("PDF downloaded successfully!");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Export failed");
+      const msg = err instanceof Error ? err.message : "Export failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setBusy(false);
     }
