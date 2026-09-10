@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AlertTriangle, ArrowRight, Download, Loader2, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 import {
   downloadCategoryAnalysis,
   formatGeneratedAt,
@@ -140,8 +141,10 @@ export default function Step3BAnalysis({
     setExportingPdf(true);
     try {
       await downloadCategoryAnalysis(assessmentId, activeTab, "pdf");
+      toast.success(`${activeTab} PDF downloaded successfully!`);
     } catch (err) {
       console.error("PDF export failed", err);
+      toast.error(err instanceof Error ? err.message : "Export failed");
     } finally {
       setExportingPdf(false);
     }

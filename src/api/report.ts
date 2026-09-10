@@ -1,4 +1,5 @@
-import { fetchApi } from "@/lib/api";
+import { fetchApi, fetchBlob } from "@/lib/api";
+import { saveBlobAs } from "@/lib/save-file";
 
 export interface ReadinessDimension {
   name: string;
@@ -416,7 +417,7 @@ function downloadBlob(blob: Blob, filename: string) {
 export async function downloadReportPdf(assessmentId: string) {
   const { fetchBlob } = await import("@/lib/api");
   const blob = await fetchBlob(`/assessment/${assessmentId}/report/pdf`);
-  downloadBlob(blob, "careershift-report.pdf");
+  await saveBlobAs(blob, "careershift-report.pdf");
 }
 
 export async function downloadToolkitHtml(assessmentId: string) {
