@@ -15,6 +15,8 @@ import { fetchApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { getProfileStatus } from "@/api/profile";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PasswordRequirements } from "@/components/auth/PasswordRequirements";
+import { isPasswordValid } from "@/lib/passwordPolicy";
 
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
@@ -31,8 +33,15 @@ export default function AuthPage() {
   const [verificationToken, setVerificationToken] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
   
   const [submitting, setSubmitting] = useState(false);
+
+  const needsPasswordPolicy = mode === "register" || mode === "forgot-reset";
+  const showPasswordGuide =
+    needsPasswordPolicy && (passwordFocused || password.length > 0 || confirmPassword.length > 0);
+  const passwordReady =
+    isPasswordValid(password) && password === confirmPassword;
 
   const { data: profileStatus, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["profile-status"],
@@ -75,6 +84,12 @@ export default function AuthPage() {
   }
 
   async function handleRegisterRequest() {
+    if (!isPasswordValid(password)) {
+      toast.error(
+        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.",
+      );
+      return;
+    }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -130,6 +145,12 @@ export default function AuthPage() {
   }
 
   async function handleForgotReset() {
+    if (!isPasswordValid(password)) {
+      toast.error(
+        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.",
+      );
+      return;
+    }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -276,7 +297,10 @@ export default function AuthPage() {
                     ? "bg-white shadow-soft text-[#0B1D3A]"
                     : "text-[#0B1D3A]/65 hover:text-[#0B1D3A]"
                 }`}
-                onClick={() => setMode("login")}
+                onClick={() => {
+                  setMode("login");
+                  setPasswordFocused(false);
+                }}
                 type="button"
               >
                 Log in
@@ -287,7 +311,10 @@ export default function AuthPage() {
                     ? "bg-white shadow-soft text-[#0B1D3A]"
                     : "text-[#0B1D3A]/65 hover:text-[#0B1D3A]"
                 }`}
-                onClick={() => setMode("register")}
+                onClick={() => {
+                  setMode("register");
+                  setPasswordFocused(false);
+                }}
                 type="button"
               >
                 Create account
@@ -335,8 +362,20 @@ export default function AuthPage() {
                 onChange={setPassword}
                 placeholder="••••••••"
                 required
+                autoComplete={mode === "login" ? "current-password" : "new-password"}
+                onFocus={needsPasswordPolicy ? () => setPasswordFocused(true) : undefined}
+                onBlur={needsPasswordPolicy ? () => setPasswordFocused(false) : undefined}
               />
             )}
+
+            {needsPasswordPolicy ? (
+              <PasswordRequirements
+                password={password}
+                confirmPassword={confirmPassword}
+                showConfirmMatch
+                visible={showPasswordGuide}
+              />
+            ) : null}
 
             {(mode === "register" || mode === "forgot-reset") && (
               <Field
@@ -347,6 +386,9 @@ export default function AuthPage() {
                 onChange={setConfirmPassword}
                 placeholder="••••••••"
                 required
+                autoComplete="new-password"
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
               />
             )}
 
@@ -410,7 +452,11 @@ export default function AuthPage() {
 
             <button
               type="submit"
-              disabled={submitting || (mode === "register" && !acceptedTerms)}
+              disabled={
+                submitting ||
+                (mode === "register" && (!acceptedTerms || !passwordReady)) ||
+                (mode === "forgot-reset" && !passwordReady)
+              }
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01] disabled:opacity-70"
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
@@ -451,6 +497,9 @@ function Field({
   onChange,
   placeholder,
   required,
+  autoComplete,
+  onFocus,
+  onBlur,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -459,6 +508,9 @@ function Field({
   onChange: (v: string) => void;
   placeholder?: string;
   required?: boolean;
+  autoComplete?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -473,8 +525,11 @@ function Field({
           type={inputType}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeholder}
           required={required}
+          autoComplete={autoComplete}
           className="w-full bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
         />
         {isPassword && (
@@ -482,6 +537,7 @@ function Field({
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="text-muted-foreground hover:text-foreground focus:outline-none"
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
