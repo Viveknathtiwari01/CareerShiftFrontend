@@ -44,7 +44,7 @@ export function Step0ProfessionalBackground({
           transition={{ duration: 0.3 }}
           className="space-y-4 px-4 sm:px-6"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
             <button
               type="button"
               onClick={() => setMode("ai-input")}
@@ -67,11 +67,12 @@ export function Step0ProfessionalBackground({
                   ~30 sec
                 </span>
               </div>
-              <div className="font-semibold text-xs flex items-center text-foreground group-hover:text-primary transition-colors">
-                Continue with AI <ArrowRight className="ml-1 h-3.5 w-3.5" />
+              <div className="mt-2 w-max inline-flex font-semibold text-xs items-center text-white bg-[#B59146] px-4 py-2 rounded-lg hover:bg-[#9a7b3c] transition-colors">
+                Continue with AI <ArrowRight className="ml-2 h-3.5 w-3.5" />
               </div>
             </button>
 
+            {/*
             <button
               type="button"
               onClick={onEnterManually}
@@ -98,6 +99,7 @@ export function Step0ProfessionalBackground({
                 Enter manually <ArrowRight className="ml-1 h-3.5 w-3.5" />
               </div>
             </button>
+            */}
           </div>
         </motion.div>
       ) : (

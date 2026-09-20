@@ -366,7 +366,7 @@ export default function MyCareerProfile() {
     return (
       <div className="flex w-full flex-col pb-2">
         {successModal}
-        <div className="mb-4 space-y-4 px-4 sm:mb-6 sm:px-6">
+        <div className="mb-4 space-y-6 px-4 sm:mb-6 sm:px-6">
           <div className="max-w-3xl">
             <div className="mb-2 flex items-center text-[10px] font-bold uppercase tracking-widest text-[#B59146]">
               Career Identity Setup
@@ -379,66 +379,71 @@ export default function MyCareerProfile() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-xl border border-border bg-card p-2 shadow-sm">
-            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
-                1
-              </div>
-              <div>
-                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Choose a method</div>
-                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Describe it, or fill it in</div>
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
+            {/* Left side: Vertical Stepper */}
+            <div className="w-full md:w-[280px] shrink-0 pt-2 pr-2">
+              <div className="relative border-l-2 border-slate-200 dark:border-slate-800 space-y-6 ml-3">
+                {/* Step 1 - Active */}
+                <div className="relative pl-6">
+                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
+                    <span className="text-[10px] font-bold">1</span>
+                  </div>
+                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
+                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Choose a method</h3>
+                    <p className="mt-1.5 text-xs font-medium text-slate-500">Let AI analyze your profile</p>
+                  </div>
+                </div>
+                
+                {/* Step 2 - Upcoming */}
+                <div className="relative pl-6 opacity-60 transition-opacity hover:opacity-100">
+                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-slate-50 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-950">
+                    <span className="text-[10px] font-bold">2</span>
+                  </div>
+                  <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Add your details</h3>
+                    <p className="mt-1.5 text-xs font-medium text-slate-500">Background or fields</p>
+                  </div>
+                </div>
+                
+                {/* Step 3 - Upcoming */}
+                <div className="relative pl-6 opacity-60 transition-opacity hover:opacity-100">
+                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-slate-50 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-950">
+                    <span className="text-[10px] font-bold">3</span>
+                  </div>
+                  <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Review & confirm</h3>
+                    <p className="mt-1.5 text-xs font-medium text-slate-500">Check your identity</p>
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <div className="hidden h-8 w-px bg-border sm:block"></div>
-            
-            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
-                2
-              </div>
-              <div>
-                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Add your details</div>
-                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Background or fields</div>
-              </div>
-            </div>
-            
-            <div className="hidden h-8 w-px bg-border sm:block"></div>
-            
-            <div className="flex flex-1 items-center gap-3 px-3 py-1.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#B59146] text-[10px] font-bold text-white dark:bg-slate-100 dark:text-slate-900">
-                3
-              </div>
-              <div>
-                <div className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Review & confirm</div>
-                <div className="text-[11px] mt-0.5 font-medium text-slate-500">Check your identity</div>
-              </div>
+
+            {/* Right side: Content */}
+            <div className="w-full min-w-0 flex-1 relative -mx-4 sm:mx-0">
+              <AnimatePresence mode="wait">
+                {preIdentity === "background" ? (
+                  <Step0ProfessionalBackground
+                    key="step0"
+                    backgroundText={backgroundText}
+                    onBackgroundTextChange={setBackgroundText}
+                    analyzing={analyzing}
+                    onAnalyze={handleAnalyze}
+                    onEnterManually={handleEnterManually}
+                  />
+                ) : aiSuggestions ? (
+                  <AIAssistedProfileReview
+                    key="ai-review"
+                    suggestions={aiSuggestions}
+                    reviewDraft={reviewDraft}
+                    onReviewDraftChange={setReviewDraft}
+                    onConfirm={handleConfirmIdentity}
+                    onStartOver={handleStartOver}
+                    onEnterManually={handleEnterManually}
+                  />
+                ) : null}
+              </AnimatePresence>
             </div>
           </div>
-        </div>
-
-        <div className="relative min-h-0 flex-1">
-          <AnimatePresence mode="wait">
-            {preIdentity === "background" ? (
-              <Step0ProfessionalBackground
-                key="step0"
-                backgroundText={backgroundText}
-                onBackgroundTextChange={setBackgroundText}
-                analyzing={analyzing}
-                onAnalyze={handleAnalyze}
-                onEnterManually={handleEnterManually}
-              />
-            ) : aiSuggestions ? (
-              <AIAssistedProfileReview
-                key="ai-review"
-                suggestions={aiSuggestions}
-                reviewDraft={reviewDraft}
-                onReviewDraftChange={setReviewDraft}
-                onConfirm={handleConfirmIdentity}
-                onStartOver={handleStartOver}
-                onEnterManually={handleEnterManually}
-              />
-            ) : null}
-          </AnimatePresence>
         </div>
       </div>
     );

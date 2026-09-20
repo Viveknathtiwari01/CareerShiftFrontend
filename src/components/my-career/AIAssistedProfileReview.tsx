@@ -160,14 +160,14 @@ export function AIAssistedProfileReview({
             >
               Start Over
             </Button>
-            <Button
+            {/* <Button
               type="button"
               variant="outline"
               onClick={onEnterManually}
               className="h-11 border-border bg-card"
             >
               Enter manually instead
-            </Button>
+            </Button> */}
           </div>
         </CardContent>
       </Card>
