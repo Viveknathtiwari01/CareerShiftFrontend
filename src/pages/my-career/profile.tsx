@@ -382,10 +382,10 @@ export default function MyCareerProfile() {
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
             {/* Left side: Vertical Stepper */}
             <div className="w-full md:w-[280px] shrink-0 pt-2 pr-2">
-              <div className="relative border-l-2 border-slate-200 dark:border-slate-800 space-y-6 ml-3">
+              <div className="relative border-l-4 border-[#B59146]/40 dark:border-[#B59146]/30 space-y-6 ml-3">
                 {/* Step 1 - Active */}
                 <div className="relative pl-6">
-                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
+                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
                     <span className="text-[10px] font-bold">1</span>
                   </div>
                   <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
@@ -395,22 +395,22 @@ export default function MyCareerProfile() {
                 </div>
                 
                 {/* Step 2 - Upcoming */}
-                <div className="relative pl-6 opacity-60 transition-opacity hover:opacity-100">
-                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-slate-50 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-950">
+                <div className="relative pl-6">
+                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
                     <span className="text-[10px] font-bold">2</span>
                   </div>
-                  <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
                     <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Add your details</h3>
                     <p className="mt-1.5 text-xs font-medium text-slate-500">Background or fields</p>
                   </div>
                 </div>
                 
                 {/* Step 3 - Upcoming */}
-                <div className="relative pl-6 opacity-60 transition-opacity hover:opacity-100">
-                  <div className="absolute -left-[13px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-slate-50 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-950">
+                <div className="relative pl-6">
+                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
                     <span className="text-[10px] font-bold">3</span>
                   </div>
-                  <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
                     <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Review & confirm</h3>
                     <p className="mt-1.5 text-xs font-medium text-slate-500">Check your identity</p>
                   </div>
