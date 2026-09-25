@@ -2,7 +2,8 @@ import { WizardData } from "./types";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Pencil } from "lucide-react";
+import { Pencil, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ProfileViewProps {
   data: WizardData;
@@ -10,18 +11,29 @@ interface ProfileViewProps {
 }
 
 export function ProfileView({ data, onEdit }: ProfileViewProps) {
+  const editCount = data.editCount || 0;
+  
   return (
     <div className="space-y-6">
       {/* Card 1: Current Career Identity */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
-            Current Career Identity
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
+              Current Career Identity
+            </div>
+            <TooltipProvider delayDuration={100}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[280px] p-3 text-sm font-medium bg-white text-black border shadow-lg flex gap-2">
+                  <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white">!</div>
+                  <p>You cannot edit your Current Career Identity once it has been created.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(1)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
-            <Pencil className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
@@ -53,10 +65,27 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
             Professional Background
           </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(2)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
-            <Pencil className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+          <div className="flex items-center gap-3">
+            {editCount >= 3 ? (
+              <span className="text-xs text-destructive font-medium flex items-center gap-1">
+                Edit limit reached
+              </span>
+            ) : (
+              <span className="text-xs text-muted-foreground font-medium">
+                {3 - editCount} edit{3 - editCount !== 1 ? 's' : ''} left
+              </span>
+            )}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => onEdit(2)} 
+              disabled={editCount >= 3}
+              className="rounded-full bg-brand text-foreground hover:bg-brand/80 disabled:opacity-50"
+            >
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div>
@@ -76,10 +105,27 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
             Skills Intelligence
           </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(3)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
-            <Pencil className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+          <div className="flex items-center gap-3">
+            {editCount >= 3 ? (
+              <span className="text-xs text-destructive font-medium flex items-center gap-1">
+                Edit limit reached
+              </span>
+            ) : (
+              <span className="text-xs text-muted-foreground font-medium">
+                {3 - editCount} edit{3 - editCount !== 1 ? 's' : ''} left
+              </span>
+            )}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => onEdit(3)} 
+              disabled={editCount >= 3}
+              className="rounded-full bg-brand text-foreground hover:bg-brand/80 disabled:opacity-50"
+            >
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -131,10 +177,27 @@ export function ProfileView({ data, onEdit }: ProfileViewProps) {
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-brand px-4 py-1.5 text-sm font-semibold text-foreground">
             AI Fitness
           </div>
-          <Button variant="outline" size="sm" onClick={() => onEdit(4)} className="rounded-full bg-brand text-foreground hover:bg-brand/80">
-            <Pencil className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+          <div className="flex items-center gap-3">
+            {editCount >= 3 ? (
+              <span className="text-xs text-destructive font-medium flex items-center gap-1">
+                Edit limit reached
+              </span>
+            ) : (
+              <span className="text-xs text-muted-foreground font-medium">
+                {3 - editCount} edit{3 - editCount !== 1 ? 's' : ''} left
+              </span>
+            )}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => onEdit(4)} 
+              disabled={editCount >= 3}
+              className="rounded-full bg-brand text-foreground hover:bg-brand/80 disabled:opacity-50"
+            >
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

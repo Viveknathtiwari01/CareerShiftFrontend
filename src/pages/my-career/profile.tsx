@@ -235,7 +235,25 @@ export default function MyCareerProfile() {
 
   const handleSubmit = () => {
     if (viewMode === "edit") {
-      updateMutation.mutate(data);
+      let payload: Partial<WizardData> = {};
+      if (editStep === 2) {
+        payload = { experience: data.experience, salary: data.salary };
+      } else if (editStep === 3) {
+        payload = {
+          technicalSkills: data.technicalSkills,
+          professionalSkills: data.professionalSkills,
+          softSkills: data.softSkills,
+          behaviouralSkills: data.behaviouralSkills,
+          digitalSkills: data.digitalSkills,
+        };
+      } else if (editStep === 4) {
+        payload = {
+          aiFrequency: data.aiFrequency,
+          aiTools: data.aiTools,
+          aiComfortLevel: data.aiComfortLevel,
+        };
+      }
+      updateMutation.mutate(payload);
     } else {
       createMutation.mutate(data);
     }

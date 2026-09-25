@@ -44,6 +44,7 @@ function mapToFrontend(data: any): WizardData {
     termsAccepted: Boolean(data.terms_accepted),
     privacyAccepted: Boolean(data.privacy_accepted),
     consentAcceptedAt: data.consent_accepted_at || null,
+    editCount: data.edit_count || 0,
   };
 }
 

@@ -145,15 +145,6 @@ export default function TaskIntelligenceReview({
     return () => observer.disconnect();
   }, [activeTask?.id, activeTask?.description]);
 
-  useEffect(() => {
-    if (!activeTask) return;
-    if (!isTaskReviewComplete(activeTask)) return;
-    const next = selectedTasks.find((t) => !isTaskReviewComplete(t));
-    if (next && next.id !== activeTask.id) {
-      const timer = setTimeout(() => setActiveId(next.id), 450);
-      return () => clearTimeout(timer);
-    }
-  }, [activeTask, selectedTasks, tasksReviewed]);
 
   const avgConfidence = selectedTasks.length
     ? (

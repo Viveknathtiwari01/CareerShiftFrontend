@@ -35,4 +35,7 @@ export interface WizardData {
   termsAccepted?: boolean;
   privacyAccepted?: boolean;
   consentAcceptedAt?: string | null;
+
+  // Edit tracking
+  editCount?: number;
 }
