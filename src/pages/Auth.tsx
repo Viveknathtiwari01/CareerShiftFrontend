@@ -21,7 +21,7 @@ import { isPasswordValid } from "@/lib/passwordPolicy";
 type AuthMode = "login" | "register" | "register-verify" | "forgot" | "forgot-verify" | "forgot-reset";
 
 export default function AuthPage() {
-  const { user, login, loading, logout } = useAuth();
+  const { user, login, loading } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<AuthMode>("login");
   
@@ -32,7 +32,6 @@ export default function AuthPage() {
   const [otp, setOtp] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [signingOut, setSigningOut] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   
   const [submitting, setSubmitting] = useState(false);
@@ -46,13 +45,11 @@ export default function AuthPage() {
   const { data: profileStatus, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["profile-status"],
     queryFn: getProfileStatus,
-    enabled: !!user && !loading && !!user.hasPaid,
+    enabled: !!user && !loading,
   });
 
   useEffect(() => {
     if (loading || !user) return;
-    // Unpaid users stay on this page so they can sign out and switch accounts
-    if (!user.hasPaid) return;
     if (!isLoadingProfile && profileStatus !== undefined) {
       if (profileStatus.is_completed) {
         navigate("/dashboard", { replace: true });
@@ -61,22 +58,6 @@ export default function AuthPage() {
       }
     }
   }, [user, loading, navigate, profileStatus, isLoadingProfile]);
-
-  async function handleSwitchAccount() {
-    setSigningOut(true);
-    try {
-      await logout();
-      setMode("login");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setOtp("");
-      setAcceptedTerms(false);
-      toast.success("Signed out. You can log in or create another account.");
-    } finally {
-      setSigningOut(false);
-    }
-  }
 
   async function handleLogin() {
     await login(email, password);
@@ -251,44 +232,6 @@ export default function AuthPage() {
             <span className="font-display text-xl font-bold">CareerShift</span>
           </Link>
 
-          {!loading && user && !user.hasPaid ? (
-            <div className="space-y-6">
-              <h2 className="font-display text-[2rem] font-bold tracking-tight text-[#0B1D3A] sm:text-[2.35rem]">
-                Finish checkout
-              </h2>
-              <p className="text-[15px] leading-relaxed text-[#5B7C99] sm:text-base">
-                You&apos;re signed in as{" "}
-                <span className="font-semibold text-[#0B1D3A]">{user.email}</span>, but payment
-                is still pending.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate("/checkout", { replace: true })}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-4 text-[15px] font-semibold text-primary-foreground shadow-elevated transition-transform hover:scale-[1.01]"
-              >
-                Continue to payment
-                <ArrowRight className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={handleSwitchAccount}
-                disabled={signingOut}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-background px-5 py-4 text-[15px] font-semibold text-foreground transition-colors hover:bg-black/5 disabled:opacity-70"
-              >
-                {signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                Sign out &amp; use another account
-              </button>
-              <div className="flex justify-center">
-                <Link
-                  to="/"
-                  className="text-sm font-medium text-[#5B7C99] underline underline-offset-2 hover:text-[#0B1D3A]"
-                >
-                  Back to home
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <>
           {(mode === "login" || mode === "register") && (
             <div className="mb-6 inline-flex w-full rounded-full border border-border bg-brand/90 p-1.5 text-[14px]">
               <button
@@ -481,8 +424,6 @@ export default function AuthPage() {
                </div>
             )}
           </form>
-            </>
-          )}
         </div>
       </main>
     </div>

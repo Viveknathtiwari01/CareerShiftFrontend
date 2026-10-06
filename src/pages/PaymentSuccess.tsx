@@ -82,7 +82,10 @@ export default function PaymentSuccessPage() {
 
   useEffect(() => {
     if (!user?.hasPaid || profileStatus === undefined) return;
-    navigate(profileStatus.is_completed ? "/dashboard" : "/my-profile", { replace: true });
+    navigate(profileStatus.is_completed ? "/assessment" : "/my-profile", {
+      replace: true,
+      state: profileStatus.is_completed ? { openWizard: true } : undefined,
+    });
   }, [user?.hasPaid, profileStatus, navigate]);
 
   if (loading || !user) {

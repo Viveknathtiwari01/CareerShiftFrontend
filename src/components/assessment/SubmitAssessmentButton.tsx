@@ -19,7 +19,7 @@ type Props = {
 
 export function SubmitAssessmentButton({
   assessmentId,
-  className = "",
+  className = "inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:brightness-[1.03] disabled:opacity-60",
   label = "Submit Assessment & View Report",
 }: Props) {
   const navigate = useNavigate();

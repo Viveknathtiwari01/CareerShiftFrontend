@@ -272,8 +272,8 @@ export default function Step3BAnalysis({
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h3 className="font-display text-2xl font-bold font-serif text-slate-900">Your tasks</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h3 className="text-xl font-bold tracking-tight text-[#0B1D3A] sm:text-2xl">Your tasks</h3>
+          <p className="mt-1 text-sm leading-relaxed text-[#5B7C99]">
             Expand each task to follow the guided path — classification, options, action, and learning.
           </p>
         </div>
@@ -344,7 +344,7 @@ export default function Step3BAnalysis({
         )}
       </motion.section>
 
-      {analysisQuery.data?.generated_at && (
+      {!embedded && analysisQuery.data?.generated_at && (
         <p className="text-center text-xs text-muted-foreground">
           Analysis generated {generatedAtLabel}
           {analysisQuery.data.summary_confidence != null &&

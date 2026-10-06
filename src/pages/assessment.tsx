@@ -16,7 +16,7 @@ import {
 import { AppLoader } from "@/components/ui/app-loader";
 import AssessmentWizard from "@/components/AssessmentWizard";
 import { AssessmentHero } from "@/components/assessment/AssessmentHero";
-import { useAssessment } from "@/store/mock-store";
+import { useAssessment, useAuth } from "@/store/mock-store";
 import { getCurrentAssessment, listAssessments, startAssessment, type AssessmentStartResponse } from "@/api/assessment";
 import { getProfileStatus } from "@/api/profile";
 import { getReport } from "@/api/report";
@@ -40,6 +40,7 @@ export default function AssessmentPage() {
   const [prefetchedSession, setPrefetchedSession] = useState<AssessmentStartResponse | null>(null);
   const [wizardLoading, setWizardLoading] = useState(false);
   const { draft, reset } = useAssessment();
+  const { user } = useAuth();
 
   const { data: profileStatus, isLoading: profileLoading } = useQuery({
     queryKey: ["profile-status"],
@@ -67,7 +68,7 @@ export default function AssessmentPage() {
   const { data: report } = useQuery({
     queryKey: ["report-status", currentAssessment?.assessment_id],
     queryFn: () => getReport(currentAssessment!.assessment_id!),
-    enabled: hasSavedAssessment && !!currentAssessment?.assessment_id,
+    enabled: hasSavedAssessment && !!currentAssessment?.assessment_id && !!user?.hasPaid,
     retry: false,
   });
 

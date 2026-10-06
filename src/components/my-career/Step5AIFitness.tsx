@@ -16,9 +16,10 @@ import { wizardFieldLabelClass, wizardInputClass, wizardStepCardClass } from "./
 interface Props {
   data: WizardData;
   updateData: (fields: Partial<WizardData>) => void;
+  prefilledFromResume?: boolean;
 }
 
-export function Step5AIFitness({ data, updateData }: Props) {
+export function Step5AIFitness({ data, updateData, prefilledFromResume = false }: Props) {
   const [showOtherFreq, setShowOtherFreq] = useState(false);
   const [showOtherTool, setShowOtherTool] = useState(false);
   const [customToolInput, setCustomToolInput] = useState("");
@@ -133,6 +134,11 @@ export function Step5AIFitness({ data, updateData }: Props) {
 
           <div className="space-y-4">
             <Label className={wizardFieldLabelClass}>Which AI tools do you use?</Label>
+            {prefilledFromResume && data.aiTools.length > 0 ? (
+              <p className="text-sm text-muted-foreground">
+                AI tools named in your resume are already selected. Uncheck any you do not use.
+              </p>
+            ) : null}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               {currentAiTools.map((tool) => {
                 const isSelected = data.aiTools.includes(tool);

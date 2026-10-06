@@ -119,3 +119,17 @@ export async function suggestCareerIdentity(
   });
   return response.data;
 }
+
+export async function suggestCareerIdentityFromResume(
+  file: File,
+  options: { signal?: AbortSignal } = {},
+): Promise<SuggestIdentityResponse> {
+  const form = new FormData();
+  form.append("file", file);
+  const response = await fetchApi("/profile/suggest-identity/resume", {
+    method: "POST",
+    body: form,
+    signal: options.signal,
+  });
+  return response.data;
+}

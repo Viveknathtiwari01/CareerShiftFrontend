@@ -1,3 +1,4 @@
+import { EXPERIENCE_LEVELS } from "@/lib/app-enums";
 import type { WizardData } from "./types";
 
 /** Evidence-confidence threshold for trusted AI suggestions (frontend-only). */
@@ -19,13 +20,29 @@ export interface FieldSuggestion {
   reason: string;
 }
 
+export interface ResumeExtractedDetails {
+  experience_years: number | null;
+  experience_level: string | null;
+  tools: string[];
+  technical_skills: string[];
+  professional_skills: string[];
+  soft_skills: string[];
+  behavioural_skills: string[];
+  digital_skills: string[];
+  ai_tools: string[];
+}
+
 export interface SuggestIdentityResponse {
   industry: FieldSuggestion;
   department: FieldSuggestion;
   functional_domain: FieldSuggestion;
   specialization: FieldSuggestion;
   job_title: FieldSuggestion;
+  resume_details?: ResumeExtractedDetails | null;
 }
+
+export const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+export const RESUME_ACCEPT = ".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 export type ReviewDraft = Record<IdentityFieldKey, string>;
 
@@ -116,4 +133,66 @@ export function mapReviewToWizardData(draft: ReviewDraft, current: WizardData): 
 
 export function formatConfidencePercent(confidence: number): string {
   return `${Math.round(confidence * 100)}% confidence`;
+}
+
+function uniqueItems(items: string[] | null | undefined): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const item of items ?? []) {
+    const value = item.trim();
+    const key = value.toLowerCase();
+    if (!value || seen.has(key)) continue;
+    seen.add(key);
+    result.push(value);
+  }
+  return result;
+}
+
+function withoutExisting(items: string[], existing: string[]): string[] {
+  const taken = new Set(existing.map((item) => item.toLowerCase()));
+  return items.filter((item) => !taken.has(item.toLowerCase()));
+}
+
+/**
+ * Copies resume-extracted experience, tools, and skills onto the wizard.
+ * Identity fields already on `current` are left as confirmed.
+ */
+export function applyResumeDetails(
+  current: WizardData,
+  details: ResumeExtractedDetails | null | undefined,
+): WizardData {
+  if (!details) return current;
+
+  const technical = uniqueItems(details.technical_skills);
+  const digital = withoutExisting(uniqueItems(details.digital_skills), technical);
+  const professional = uniqueItems(details.professional_skills);
+  const soft = uniqueItems(details.soft_skills);
+  const behavioural = uniqueItems(details.behavioural_skills);
+  const placed = [...technical, ...digital, ...professional, ...soft, ...behavioural];
+  const tools = withoutExisting(uniqueItems(details.tools), placed);
+  const aiTools = uniqueItems(details.ai_tools);
+  const experienceLevel = details.experience_level?.trim() ?? "";
+  const experience = (EXPERIENCE_LEVELS as readonly string[]).includes(experienceLevel)
+    ? experienceLevel
+    : current.experience;
+
+  return {
+    ...current,
+    experience,
+    technicalSkills: uniqueItems([...technical, ...tools]),
+    professionalSkills: professional,
+    softSkills: soft,
+    behaviouralSkills: behavioural,
+    digitalSkills: digital,
+    aiTools: aiTools.length > 0 ? uniqueItems([...current.aiTools, ...aiTools]) : current.aiTools,
+  };
+}
+
+export function resumeFileError(file: File): string | null {
+  const name = file.name.toLowerCase();
+  const allowed = name.endsWith(".pdf") || name.endsWith(".docx");
+  if (!allowed) return "Upload a PDF or DOCX resume.";
+  if (file.size <= 0) return "The uploaded file is empty.";
+  if (file.size > MAX_RESUME_BYTES) return "Resume must be 5 MB or smaller.";
+  return null;
 }

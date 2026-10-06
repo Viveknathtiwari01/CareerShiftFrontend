@@ -14,7 +14,7 @@ export default function PaymentCancelPage() {
 
   useEffect(() => {
     if (!loading && user?.hasPaid) {
-      navigate("/dashboard", { replace: true });
+      navigate("/assessment", { replace: true, state: { openWizard: true } });
     }
   }, [loading, user, navigate]);
 
@@ -31,7 +31,7 @@ export default function PaymentCancelPage() {
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
         <h1 className="font-display text-2xl font-bold text-[#0B1D3A]">Payment cancelled</h1>
         <p className="mt-3 text-sm text-slate-600">
-          No charge was made. You can complete payment anytime to unlock your dashboard.
+          No charge was made. Your technical competency map stays available. Complete payment to unlock the rest.
         </p>
         <Link
           to="/checkout"
@@ -39,8 +39,8 @@ export default function PaymentCancelPage() {
         >
           Try again
         </Link>
-        <Link to="/" className="mt-4 inline-block text-sm text-slate-500 underline">
-          Back to home
+        <Link to="/assessment" className="mt-4 inline-block text-sm text-slate-500 underline">
+          Back to competency mapping
         </Link>
       </div>
     </div>

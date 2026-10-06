@@ -20,7 +20,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (!loading && user?.hasPaid) {
-      navigate("/dashboard", { replace: true });
+      navigate("/assessment", { replace: true, state: { openWizard: true } });
     }
   }, [loading, user, navigate]);
 
@@ -88,7 +88,7 @@ export default function CheckoutPage() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-[420px] text-[15px] leading-[1.7] text-[#5B7C99] sm:text-base">
-          One-time payment of $19 USD. After payment you will continue to your dashboard.
+          One-time payment of $19 USD. After payment, the rest of your competency map and assessment unlock.
         </p>
 
         {/* CTA */}

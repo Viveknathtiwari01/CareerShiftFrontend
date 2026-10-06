@@ -10,6 +10,7 @@ import { Step5AIFitness } from "@/components/my-career/Step5AIFitness";
 import { Step6Review } from "@/components/my-career/Step6Review";
 import { ProfileView } from "@/components/my-career/ProfileView";
 import {
+  applyResumeDetails,
   buildReviewDraftFromSuggestions,
   emptyReviewDraft,
   isReviewDraftComplete,
@@ -19,7 +20,7 @@ import {
 } from "@/components/my-career/identity-suggest";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -36,11 +37,71 @@ import {
   createProfile,
   updateProfile,
   suggestCareerIdentity,
+  suggestCareerIdentityFromResume,
 } from "@/api/profile";
 
 const TOTAL_STEPS = 4;
 
 type PreIdentityPhase = "background" | "review" | null;
+type IdentityEntryMode = "select" | "ai-input" | "resume";
+
+const IDENTITY_SETUP_STEPS = [
+  { title: "Choose a method", hint: "Background or resume" },
+  { title: "Add your details", hint: "AI reads what you provide" },
+  { title: "Review & confirm", hint: "Check your identity" },
+] as const;
+
+function IdentitySetupStepper({ activeIndex }: { activeIndex: number }) {
+  const filled = activeIndex <= 0 ? "0%" : activeIndex >= 2 ? "66.66%" : "33.33%";
+
+  return (
+    <ol className="relative grid grid-cols-3">
+      <span className="absolute left-[16.67%] right-[16.67%] top-4 h-0.5 -translate-y-1/2 rounded-full bg-slate-200" />
+      <span
+        className="absolute left-[16.67%] top-4 h-0.5 -translate-y-1/2 rounded-full bg-[#F2C94C] transition-[width] duration-300"
+        style={{ width: filled }}
+      />
+      {IDENTITY_SETUP_STEPS.map((step, index) => {
+        const state = index < activeIndex ? "done" : index === activeIndex ? "current" : "upcoming";
+        return (
+          <li key={step.title} className="relative flex min-w-0 flex-col items-center px-1 text-center">
+            <span
+              className={
+                state === "current"
+                  ? "relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#F2C94C] bg-[#0B1D3A] text-xs font-bold text-[#F2C94C] ring-4 ring-card"
+                  : state === "done"
+                    ? "relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#F2C94C] text-[#0B1D3A] ring-4 ring-card"
+                    : "relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-400 ring-4 ring-card"
+              }
+            >
+              {state === "done" ? <Check className="h-4 w-4" strokeWidth={2.5} /> : index + 1}
+            </span>
+            <p
+              className={
+                state === "current"
+                  ? "mt-2.5 text-sm font-semibold leading-tight text-[#0B1D3A]"
+                  : state === "done"
+                    ? "mt-2.5 text-sm font-medium leading-tight text-[#0B1D3A]"
+                    : "mt-2.5 text-sm font-medium leading-tight text-slate-400"
+              }
+            >
+              {step.title}
+            </p>
+            <p
+              className={
+                state === "upcoming"
+                  ? "mt-0.5 hidden text-xs text-slate-400 sm:block"
+                  : "mt-0.5 hidden text-xs text-slate-500 sm:block"
+              }
+            >
+              {step.hint}
+            </p>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
 
 const initialData: WizardData = {
   jobTitle: "",
@@ -88,10 +149,13 @@ export default function MyCareerProfile() {
 
   // AI-assisted entry (first-time / no profile only)
   const [preIdentity, setPreIdentity] = useState<PreIdentityPhase>("background");
+  const [entryMode, setEntryMode] = useState<IdentityEntryMode>("select");
   const [backgroundText, setBackgroundText] = useState("");
   const [aiSuggestions, setAiSuggestions] = useState<SuggestIdentityResponse | null>(null);
   const [reviewDraft, setReviewDraft] = useState<ReviewDraft>(emptyReviewDraft);
   const [analyzing, setAnalyzing] = useState(false);
+  const [suggestionSource, setSuggestionSource] = useState<"background" | "resume">("background");
+  const [resumePrefill, setResumePrefill] = useState(false);
   const analyzeRequestIdRef = useRef(0);
   const analyzeAbortRef = useRef<AbortController | null>(null);
 
@@ -158,6 +222,8 @@ export default function MyCareerProfile() {
     setAiSuggestions(null);
     setReviewDraft(emptyReviewDraft());
     setBackgroundText("");
+    setSuggestionSource("background");
+    setResumePrefill(false);
     setData((prev) => clearIdentityFields(prev));
     setPreIdentity(null);
     setCurrentStep(1);
@@ -167,6 +233,9 @@ export default function MyCareerProfile() {
     abortAnalyze();
     setAiSuggestions(null);
     setReviewDraft(emptyReviewDraft());
+    setSuggestionSource("background");
+    setResumePrefill(false);
+    setEntryMode("select");
     setPreIdentity("background");
   };
 
@@ -179,7 +248,8 @@ export default function MyCareerProfile() {
     const controller = new AbortController();
     analyzeAbortRef.current = controller;
 
-    setAnalyzing(true); 
+    setAnalyzing(true);
+    setSuggestionSource("background");
     try {
       const suggestions = await suggestCareerIdentity(backgroundText, {
         signal: controller.signal,
@@ -200,12 +270,48 @@ export default function MyCareerProfile() {
     }
   };
 
+  const handleAnalyzeResume = async (file: File) => {
+    if (analyzing) return;
+
+    const requestId = analyzeRequestIdRef.current + 1;
+    analyzeRequestIdRef.current = requestId;
+    analyzeAbortRef.current?.abort();
+    const controller = new AbortController();
+    analyzeAbortRef.current = controller;
+
+    setAnalyzing(true);
+    setSuggestionSource("resume");
+    try {
+      const suggestions = await suggestCareerIdentityFromResume(file, {
+        signal: controller.signal,
+      });
+      if (analyzeRequestIdRef.current !== requestId) return;
+      setAiSuggestions(suggestions);
+      setReviewDraft(buildReviewDraftFromSuggestions(suggestions));
+      setPreIdentity("review");
+    } catch (err: any) {
+      if (err?.name === "AbortError" || controller.signal.aborted) return;
+      if (analyzeRequestIdRef.current !== requestId) return;
+      toast.error(err?.message || "We couldn't read that resume. You can try again or describe your background.");
+    } finally {
+      if (analyzeRequestIdRef.current === requestId) {
+        setAnalyzing(false);
+        analyzeAbortRef.current = null;
+      }
+    }
+  };
+
   const handleConfirmIdentity = () => {
     if (!isReviewDraftComplete(reviewDraft)) {
       toast.error("Please fill in all required fields to proceed.");
       return;
     }
-    setData((prev) => mapReviewToWizardData(reviewDraft, prev));
+    const fromResume = suggestionSource === "resume";
+    setData((prev) => {
+      const withIdentity = mapReviewToWizardData(reviewDraft, prev);
+      return fromResume ? applyResumeDetails(withIdentity, aiSuggestions?.resume_details) : withIdentity;
+    });
+    setResumePrefill(fromResume);
     setAiSuggestions(null);
     setReviewDraft(emptyReviewDraft());
     setPreIdentity(null);
@@ -336,9 +442,9 @@ export default function MyCareerProfile() {
   const renderStep = (stepNumber: number) => {
     switch (stepNumber) {
       case 1: return <Step1CareerIdentity key="step1" data={data} updateData={updateData} />;
-      case 2: return <Step2Background key="step2" data={data} updateData={updateData} />;
-      case 3: return <Step3Skills key="step3" data={data} updateData={updateData} />;
-      case 4: return <Step5AIFitness key="step4" data={data} updateData={updateData} />;
+      case 2: return <Step2Background key="step2" data={data} updateData={updateData} prefilledFromResume={resumePrefill} />;
+      case 3: return <Step3Skills key="step3" data={data} updateData={updateData} prefilledFromResume={resumePrefill} />;
+      case 4: return <Step5AIFitness key="step4" data={data} updateData={updateData} prefilledFromResume={resumePrefill} />;
       case 5: return (
         <Step6Review
           key="step5"
@@ -384,83 +490,52 @@ export default function MyCareerProfile() {
     return (
       <div className="flex w-full flex-col pb-2">
         {successModal}
-        <div className="mb-4 space-y-6 px-4 sm:mb-6 sm:px-6">
-          <div className="max-w-3xl">
-            <div className="mb-2 flex items-center text-[10px] font-bold uppercase tracking-widest text-[#B59146]">
+        <div className="mx-auto w-full max-w-5xl space-y-4 px-4 sm:px-6">
+          <div className="max-w-2xl">
+            <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#B59146]">
               Career Identity Setup
             </div>
             <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
               Build Your Career Identity
             </h1>
-            <p className="mt-2 text-base leading-relaxed text-slate-600 dark:text-slate-400">
-              Three short steps set the Industry, Department, Functional Domain, Specialization, and Job Title that define your profile everywhere on the platform.
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
+              Describe your background or upload a resume. AI maps your industry, department, domain, specialization, and job title for you to confirm.
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
-            {/* Left side: Vertical Stepper */}
-            <div className="w-full md:w-[280px] shrink-0 pt-2 pr-2">
-              <div className="relative border-l-4 border-[#B59146]/40 dark:border-[#B59146]/30 space-y-6 ml-3">
-                {/* Step 1 - Active */}
-                <div className="relative pl-6">
-                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
-                    <span className="text-[10px] font-bold">1</span>
-                  </div>
-                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
-                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Choose a method</h3>
-                    <p className="mt-1.5 text-xs font-medium text-slate-500">Let AI analyze your profile</p>
-                  </div>
-                </div>
-                
-                {/* Step 2 - Upcoming */}
-                <div className="relative pl-6">
-                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
-                    <span className="text-[10px] font-bold">2</span>
-                  </div>
-                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
-                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Add your details</h3>
-                    <p className="mt-1.5 text-xs font-medium text-slate-500">Background or fields</p>
-                  </div>
-                </div>
-                
-                {/* Step 3 - Upcoming */}
-                <div className="relative pl-6">
-                  <div className="absolute -left-[14px] top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#B59146] text-white shadow-sm ring-4 ring-slate-50 dark:ring-slate-950">
-                    <span className="text-[10px] font-bold">3</span>
-                  </div>
-                  <div className="rounded-xl border border-[#B59146]/30 bg-card p-3.5 shadow-sm">
-                    <h3 className="text-sm font-bold leading-none text-slate-900 dark:text-slate-100">Review & confirm</h3>
-                    <p className="mt-1.5 text-xs font-medium text-slate-500">Check your identity</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="rounded-2xl border border-border bg-card px-3 py-4 shadow-sm sm:px-6">
+            <IdentitySetupStepper
+              activeIndex={preIdentity === "review" ? 2 : entryMode === "select" ? 0 : 1}
+            />
+          </div>
 
-            {/* Right side: Content */}
-            <div className="w-full min-w-0 flex-1 relative -mx-4 sm:mx-0">
-              <AnimatePresence mode="wait">
-                {preIdentity === "background" ? (
-                  <Step0ProfessionalBackground
-                    key="step0"
-                    backgroundText={backgroundText}
-                    onBackgroundTextChange={setBackgroundText}
-                    analyzing={analyzing}
-                    onAnalyze={handleAnalyze}
-                    onEnterManually={handleEnterManually}
-                  />
-                ) : aiSuggestions ? (
-                  <AIAssistedProfileReview
-                    key="ai-review"
-                    suggestions={aiSuggestions}
-                    reviewDraft={reviewDraft}
-                    onReviewDraftChange={setReviewDraft}
-                    onConfirm={handleConfirmIdentity}
-                    onStartOver={handleStartOver}
-                    onEnterManually={handleEnterManually}
-                  />
-                ) : null}
-              </AnimatePresence>
-            </div>
+          <div className="w-full min-w-0">
+            <AnimatePresence mode="wait">
+              {preIdentity === "background" ? (
+                <Step0ProfessionalBackground
+                  key="step0"
+                  backgroundText={backgroundText}
+                  onBackgroundTextChange={setBackgroundText}
+                  analyzing={analyzing}
+                  onAnalyze={handleAnalyze}
+                  onAnalyzeResume={handleAnalyzeResume}
+                  onEnterManually={handleEnterManually}
+                  onCancelAnalyze={abortAnalyze}
+                  onEntryModeChange={setEntryMode}
+                />
+              ) : aiSuggestions ? (
+                <AIAssistedProfileReview
+                  key="ai-review"
+                  suggestions={aiSuggestions}
+                  reviewDraft={reviewDraft}
+                  onReviewDraftChange={setReviewDraft}
+                  onConfirm={handleConfirmIdentity}
+                  onStartOver={handleStartOver}
+                  onEnterManually={handleEnterManually}
+                  source={suggestionSource}
+                />
+              ) : null}
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -470,24 +545,22 @@ export default function MyCareerProfile() {
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
 
   return (
-    <div className="flex w-full flex-col pb-24 sm:pb-0">
+    <div className="mx-auto flex w-full max-w-5xl flex-col px-4 pb-8 sm:px-6">
       {successModal}
       {currentStep <= TOTAL_STEPS && (
-        <div className="mb-6 space-y-4 px-4 sm:mb-8 sm:px-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-6 space-y-4">
+          <div className="flex items-end justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Build Your Career Identity
+              <h1 className="text-3xl font-bold tracking-tight text-[#0B1D3A]">
+                Build your career identity
               </h1>
-              <p className="mt-1 text-base text-foreground/75 sm:text-sm sm:text-muted-foreground">
-                Let's map out your professional journey.
-              </p>
+              <p className="mt-1 text-sm text-slate-500">Review the details mapped for your profile.</p>
             </div>
-            <div className="inline-flex w-fit items-center rounded-full border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground shadow-soft">
+            <p className="shrink-0 text-sm font-medium text-slate-500">
               Step {currentStep} of {TOTAL_STEPS}
-            </div>
+            </p>
           </div>
-          <Progress value={progressPercentage} className="h-2.5 bg-border/80" />
+          <Progress value={progressPercentage} className="h-1.5 bg-slate-200" />
         </div>
       )}
 
@@ -498,23 +571,20 @@ export default function MyCareerProfile() {
       </div>
 
       {currentStep <= TOTAL_STEPS && (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background/95 px-4 py-3 shadow-[0_-4px_16px_rgba(10,18,31,0.06)] backdrop-blur-sm sm:static sm:mt-8 sm:border-t sm:bg-transparent sm:px-0 sm:py-0 sm:pt-6 sm:shadow-none sm:backdrop-blur-none">
-          <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              disabled={currentStep === 1 && !isProfileEmpty}
-              className="h-11 min-w-[7rem] flex-1 border-border bg-card text-foreground shadow-soft sm:w-32 sm:flex-none"
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Back
-            </Button>
-
-            <Button onClick={handleNext} className="h-11 min-w-[7rem] flex-1 sm:w-32 sm:flex-none">
-              {currentStep === TOTAL_STEPS ? "Review" : "Next"}
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+        <div className="mt-6 flex items-center justify-between gap-3 border-t border-slate-200 pt-5">
+          <Button
+            variant="outline"
+            onClick={handleBack}
+            disabled={currentStep === 1 && !isProfileEmpty}
+            className="h-11 min-w-[7.5rem] bg-white"
+          >
+            <ChevronLeft className="mr-1 h-4 w-4" />
+            Back
+          </Button>
+          <Button onClick={handleNext} className="h-11 min-w-[7.5rem]">
+            {currentStep === TOTAL_STEPS ? "Review" : "Next"}
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import {
   GraduationCap,
   History,
   LayoutDashboard,
+  Lock,
   LogOut,
   Menu,
   Sparkles,
@@ -31,6 +32,8 @@ const NAV = [
   // { to: "/workshops", label: "Workshops", icon: GraduationCap },
 ] as const;
 
+const OPEN_BEFORE_PAYMENT = new Set(["/dashboard", "/my-profile", "/assessment", "/profile", "/onboarding"]);
+
 export default function AuthenticatedLayout() {
   const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
@@ -42,11 +45,13 @@ export default function AuthenticatedLayout() {
     if (!loading && !user) navigate("/auth", { replace: true });
   }, [user, loading, navigate]);
 
+  const paymentLocked = !loading && !!user && !user.hasPaid && !OPEN_BEFORE_PAYMENT.has(pathname);
+
   useEffect(() => {
-    if (!loading && user && !user.hasPaid) {
-      navigate("/checkout", { replace: true });
+    if (paymentLocked) {
+      navigate("/assessment", { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [paymentLocked, navigate]);
 
   useEffect(() => {
     setMobileNav(false);
@@ -61,7 +66,7 @@ export default function AuthenticatedLayout() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [mobileNav]);
 
-  if (loading || !user || !user.hasPaid) {
+  if (loading || !user || paymentLocked) {
     return (
       <div className="grid min-h-screen place-items-center bg-background">
         <div className="animate-pulse text-sm text-muted-foreground">Loading…</div>
@@ -124,10 +129,11 @@ export default function AuthenticatedLayout() {
             {NAV.map((item) => {
               const active = pathname === item.to;
               const Icon = item.icon;
+              const locked = !user.hasPaid && !OPEN_BEFORE_PAYMENT.has(item.to);
               return (
                 <Link
                   key={item.to}
-                  to={item.to}
+                  to={locked ? "/assessment" : item.to}
                   title={isCollapsed ? item.label : undefined}
                   onClick={() => setMobileNav(false)}
                   className={cn(
@@ -139,7 +145,12 @@ export default function AuthenticatedLayout() {
                   )}
                 >
                   <Icon className={cn("shrink-0", isCollapsed ? "h-5 w-5" : "h-4 w-4")} />
-                  {!isCollapsed && <span className="truncate transition-opacity duration-300">{item.label}</span>}
+                  {!isCollapsed && (
+                    <span className="flex min-w-0 flex-1 items-center gap-2">
+                      <span className="truncate transition-opacity duration-300">{item.label}</span>
+                      {locked && <Lock className="ml-auto h-3.5 w-3.5 shrink-0 opacity-70" />}
+                    </span>
+                  )}
                 </Link>
               );
             })}

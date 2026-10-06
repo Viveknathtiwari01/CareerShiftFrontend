@@ -25,6 +25,8 @@ import {
   TrendingUp,
   AlertTriangle,
   Lightbulb,
+  Loader2,
+  Lock,
   Briefcase,
   Zap,
   BookOpen,
@@ -34,6 +36,7 @@ import {
   Clock,
   Star,
   ChevronRight,
+  RefreshCw,
   Users,
   EyeOff,
 } from "lucide-react";
@@ -45,7 +48,7 @@ import {
   PolarRadiusAxis,
   ResponsiveContainer,
 } from "recharts";
-import { useAssessment, type Task } from "@/store/mock-store";
+import { useAssessment, useAuth, type Task } from "@/store/mock-store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfile } from "@/api/profile";
 import {
@@ -55,6 +58,7 @@ import {
 import { runTaskAnalysis } from "@/api/analysis";
 import {
   groupCompetenciesByCategory,
+  isTechnicalCompetencyCategory,
   type AssessmentStartResponse,
   type CompetencyItem,
   type CompetencyMappingOutput,
@@ -62,7 +66,6 @@ import {
 import { useCompetencyAssessment } from "@/hooks/use-competency-assessment";
 import StepTaskGenerator from "@/components/assessment/StepTaskGenerator";
 import TaskIntelligenceReview from "@/components/assessment/TaskIntelligenceReview";
-import { Loader2, RefreshCw } from "lucide-react";
 import { LoadingQuotesOverlay } from "@/components/ui/LoadingQuotesOverlay";
 
 const TOOL_OPTIONS = [
@@ -98,6 +101,8 @@ function AssessmentWizard({
   prefetchedSession?: AssessmentStartResponse | null;
 }) {
   const { draft, setDraft, addTask, updateTask, removeTask } = useAssessment();
+  const { user } = useAuth();
+  const hasPaid = !!user?.hasPaid;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
@@ -123,6 +128,10 @@ function AssessmentWizard({
   }
 
   async function next() {
+    if (currentStepKey === "competencies" && !hasPaid) {
+      navigate("/checkout");
+      return;
+    }
     if (
       pipeline.assessmentId &&
       (currentStepKey === "taskGen" || currentStepKey === "tasks")
@@ -160,7 +169,11 @@ function AssessmentWizard({
       navigate("/3b-analysis");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to save tasks";
-      setSaveError(message);
+      setSaveError(
+        message === "Failed to fetch"
+          ? "The analysis connection dropped before it finished. Please try View Your 3B Analysis again."
+          : message,
+      );
       console.error("Failed to save tasks before 3B analysis", err);
     } finally {
       setIsGenerating3B(false);
@@ -276,6 +289,10 @@ function AssessmentWizard({
               ) : currentStepKey === "competencies" && pipeline.isProcessing ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" /> Mapping competencies...
+                </>
+              ) : currentStepKey === "competencies" && pipeline.isComplete && !hasPaid ? (
+                <>
+                  Complete payment <ArrowRight className="h-4 w-4" />
                 </>
               ) : (
                 <>
@@ -617,6 +634,7 @@ function StepCompetencies({
   onRetry: () => void;
   isRetrying: boolean;
 }) {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<string>("");
 
   const competencies = competencyMapping?.competencies ?? [];
@@ -625,6 +643,16 @@ function StepCompetencies({
     [competencies],
   );
   const categories = useMemo(() => Object.keys(grouped), [grouped]);
+  const { user } = useAuth();
+  const hasPaid = !!user?.hasPaid;
+  const visibleCategories = useMemo(
+    () => (hasPaid ? categories : categories.filter(isTechnicalCompetencyCategory)),
+    [categories, hasPaid],
+  );
+  const lockedCategories = useMemo(
+    () => (hasPaid ? [] : categories.filter((cat) => !isTechnicalCompetencyCategory(cat))),
+    [categories, hasPaid],
+  );
   const competencyNamesKey = useMemo(
     () => competencies.map((c) => c.name).join("\0"),
     [competencies],
@@ -637,9 +665,12 @@ function StepCompetencies({
 
   useEffect(() => {
     if (categories.length > 0) {
-      setExpanded((prev) => prev || categories[0]);
+      const firstVisible = hasPaid
+        ? categories[0]
+        : categories.find(isTechnicalCompetencyCategory) ?? "";
+      setExpanded((prev) => prev || firstVisible);
     }
-  }, [categories]);
+  }, [categories, hasPaid]);
 
   if (startError) {
     return (
@@ -759,11 +790,7 @@ function StepCompetencies({
     );
   }
 
-  const counts = categories.reduce<Record<string, number>>((acc, cat) => {
-    acc[cat] = grouped[cat].length;
-    return acc;
-  }, {});
-  const totalCount = competencies.length;
+  const visibleCount = visibleCategories.reduce((total, cat) => total + grouped[cat].length, 0);
 
   return (
     <div>
@@ -793,14 +820,14 @@ function StepCompetencies({
           </p>
         </div>
         <div className="text-right">
-          <div className="text-sm font-bold">{totalCount}</div>
+          <div className="text-sm font-bold">{hasPaid ? competencies.length : visibleCount}</div>
           <div className="text-[10px] uppercase tracking-wider opacity-80">Competencies</div>
         </div>
       </div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex-1 space-y-4">
-          {categories.map((cat) => {
+          {visibleCategories.map((cat) => {
             const list = grouped[cat];
             const isExpanded = expanded === cat;
             return (
@@ -837,6 +864,31 @@ function StepCompetencies({
               </div>
             );
           })}
+          {!hasPaid && lockedCategories.length > 0 && (
+            <div className="rounded-2xl border border-[#E8B923]/50 bg-[#FFF9E8] p-6 shadow-soft">
+              <div className="flex items-start gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#0B1D3A] text-[#F2C94C]">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-display text-lg font-semibold text-[#0B1D3A]">
+                    Unlock the rest of your competency map
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#5B7C99]">
+                    Technical competency is ready to review. Complete payment to view{" "}
+                    {lockedCategories.join(", ")} and continue to the rest of your assessment.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/checkout")}
+                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#0B1D3A] px-5 py-2.5 text-sm font-semibold text-white"
+                  >
+                    Complete payment <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* <div className="w-full shrink-0 lg:w-72">

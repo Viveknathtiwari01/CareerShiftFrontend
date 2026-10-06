@@ -94,6 +94,12 @@ export async function listAssessments(): Promise<AssessmentSummary[]> {
   return response.data ?? [];
 }
 
+/** Technical competency is visible before payment. Other categories stay locked. */
+export function isTechnicalCompetencyCategory(category: string): boolean {
+  const value = category.trim().toLowerCase();
+  return value === "technical" || value.startsWith("technical ");
+}
+
 /** Group competencies by category for display. */
 export function groupCompetenciesByCategory(
   competencies: CompetencyItem[],

@@ -22,6 +22,22 @@ import {
 export type ComboboxOption = {
   value: string
   label: string
+  /** ISO 3166-1 alpha-2 code, shown as a country flag. */
+  flag?: string
+  /** Extra search text, such as the country name. */
+  keywords?: string
+}
+
+function OptionFlag({ code }: { code: string }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${code.toLowerCase()}.png`}
+      alt=""
+      width={20}
+      height={14}
+      className="h-3.5 w-5 shrink-0 rounded-[3px] object-cover ring-1 ring-black/10"
+    />
+  )
 }
 
 interface ComboboxProps {
@@ -34,6 +50,7 @@ interface ComboboxProps {
   disabled?: boolean
   loading?: boolean
   className?: string
+  contentClassName?: string
   // For backend search integration
   onSearchChange?: (search: string) => void
 }
@@ -48,6 +65,7 @@ export function Combobox({
   disabled = false,
   loading = false,
   className,
+  contentClassName,
   onSearchChange,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
@@ -86,7 +104,10 @@ export function Combobox({
               Loading...
             </div>
           ) : selectedOption ? (
-            selectedOption.label
+            <span className="flex min-w-0 items-center gap-1.5">
+              {selectedOption.flag ? <OptionFlag code={selectedOption.flag} /> : null}
+              <span className="truncate">{selectedOption.label}</span>
+            </span>
           ) : value ? (
             value
           ) : (
@@ -95,7 +116,13 @@ export function Combobox({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("w-[var(--radix-popover-trigger-width)] p-0", className)} align="start">
+      <PopoverContent
+        className={cn(
+          "w-[var(--radix-popover-trigger-width)] min-w-[14rem] p-0",
+          contentClassName,
+        )}
+        align="start"
+      >
         <Command shouldFilter={!onSearchChange}>
           <CommandInput
             placeholder={searchPlaceholder}
@@ -127,7 +154,7 @@ export function Combobox({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label} // CommandItem filters by textContent by default, so value should match label or be explicitly filtered
+                  value={`${option.label} ${option.keywords ?? ""}`}
                   onSelect={() => {
                     onChange(option.value === value ? "" : option.value)
                     setOpen(false)
@@ -140,7 +167,11 @@ export function Combobox({
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.label}
+                  {option.flag ? <OptionFlag code={option.flag} /> : null}
+                  <span className="font-medium">{option.label}</span>
+                  {option.keywords ? (
+                    <span className="text-muted-foreground">{option.keywords}</span>
+                  ) : null}
                 </CommandItem>
               ))}
             </CommandGroup>

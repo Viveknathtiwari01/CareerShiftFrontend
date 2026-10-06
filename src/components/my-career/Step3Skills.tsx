@@ -14,6 +14,7 @@ import { wizardStepCardClass } from "./wizard-styles";
 interface Props {
   data: WizardData;
   updateData: (fields: Partial<WizardData>) => void;
+  prefilledFromResume?: boolean;
 }
 
 type SkillCategory = "technicalSkills" | "professionalSkills" | "softSkills" | "behaviouralSkills" | "digitalSkills";
@@ -135,7 +136,7 @@ function CustomSkillInput({
   );
 }
 
-export function Step3Skills({ data, updateData }: Props) {
+export function Step3Skills({ data, updateData, prefilledFromResume = false }: Props) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   
@@ -258,7 +259,9 @@ export function Step3Skills({ data, updateData }: Props) {
           <div className="space-y-1.5">
             <CardTitle className="text-xl sm:text-2xl">Skills Intelligence</CardTitle>
             <CardDescription className="text-foreground/70">
-              Select all the skills you possess across different categories.
+              {prefilledFromResume
+                ? "These skills and tools were read from your resume. Uncheck anything that does not apply, or add what is missing."
+                : "Select all the skills you possess across different categories."}
             </CardDescription>
           </div>
         </CardHeader>

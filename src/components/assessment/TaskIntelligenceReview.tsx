@@ -487,7 +487,7 @@ export default function TaskIntelligenceReview({
                       type="button"
                       disabled={activeIndex <= 0}
                       onClick={() => setActiveId(selectedTasks[activeIndex - 1]?.id)}
-                      className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                      className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-[#0B1D3A] transition-colors hover:bg-muted disabled:opacity-40"
                     >
                       ← Previous task
                     </button>
@@ -495,7 +495,7 @@ export default function TaskIntelligenceReview({
                       type="button"
                       disabled={activeIndex >= selectedTasks.length - 1}
                       onClick={() => setActiveId(selectedTasks[activeIndex + 1]?.id)}
-                      className="inline-flex items-center gap-1 rounded-lg bg-primary/10 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-40"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-primary bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:brightness-[1.03] disabled:opacity-40"
                     >
                       Next task <ChevronRight className="h-4 w-4" />
                     </button>
