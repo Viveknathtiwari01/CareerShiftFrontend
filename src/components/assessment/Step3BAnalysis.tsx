@@ -225,7 +225,7 @@ export default function Step3BAnalysis({
               </h2>
               <p className="text-sm text-muted-foreground mt-2 max-w-3xl">
                 CareerShift routes every task into BUILD, BLEND, or BOT — with structured guidance
-                on capabilities, solutions, tools, and what stays human.
+                on capabilities, what stays human, and your next action.
               </p>
             </div>
             <div className="flex flex-col items-end gap-2">
@@ -274,7 +274,7 @@ export default function Step3BAnalysis({
         <div>
           <h3 className="text-xl font-bold tracking-tight text-[#0B1D3A] sm:text-2xl">Your tasks</h3>
           <p className="mt-1 text-sm leading-relaxed text-[#5B7C99]">
-            Expand each task to follow the guided path — classification, options, action, and learning.
+            Expand each task to follow the guided path — classification, work components, action, and learning.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

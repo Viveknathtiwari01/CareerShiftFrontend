@@ -1,16 +1,21 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { AppLoader } from "@/components/ui/app-loader";
+import { LoadingQuotesOverlay } from "@/components/ui/LoadingQuotesOverlay";
 import Step3BAnalysis from "@/components/assessment/Step3BAnalysis";
 import { ThreeBAnalysisHero } from "@/components/assessment/ThreeBAnalysisHero";
-import { SubmitAssessmentButton } from "@/components/assessment/SubmitAssessmentButton";
 import { useActiveAssessmentId } from "@/hooks/use-active-assessment";
 import { MarketRealityCheck } from "@/components/assessment/MarketRealityCheck";
 import { useQuery } from "@tanstack/react-query";
-import { formatGeneratedAt, getTaskAnalysis } from "@/api/analysis";
+import { formatGeneratedAt, generateTaskAiTools, getTaskAnalysis } from "@/api/analysis";
+import { generateReport } from "@/api/report";
 
 export default function ThreeBAnalysisPage() {
+  const navigate = useNavigate();
   const { data: assessmentId, isLoading } = useActiveAssessmentId();
+  const [generatingTools, setGeneratingTools] = useState(false);
+  const [toolsError, setToolsError] = useState<string | null>(null);
 
   const analysisQuery = useQuery({
     queryKey: ["assessment-analysis", assessmentId],
@@ -20,6 +25,26 @@ export default function ThreeBAnalysisPage() {
   });
 
   const generatedLabel = formatGeneratedAt(analysisQuery.data?.generated_at);
+  const hasAnalysis = (analysisQuery.data?.analyses?.length ?? 0) > 0;
+
+  async function handleGenerateTools() {
+    if (!assessmentId || generatingTools) return;
+    setGeneratingTools(true);
+    setToolsError(null);
+    try {
+      await generateTaskAiTools(assessmentId);
+      await generateReport(assessmentId, true);
+      navigate(`/report?assessmentId=${assessmentId}`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not generate AI tools.";
+      setToolsError(
+        message === "Failed to fetch"
+          ? "The connection dropped before the tools finished. Please try again."
+          : message,
+      );
+      setGeneratingTools(false);
+    }
+  }
 
   return (
     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -59,9 +84,10 @@ export default function ThreeBAnalysisPage() {
       <div className="rounded-2xl border border-border bg-card px-5 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="min-w-0 max-w-xl">
-            <p className="text-sm font-bold text-[#0B1D3A]">Ready for your report</p>
+            <p className="text-sm font-bold text-[#0B1D3A]">Generate AI tools</p>
             <p className="mt-1 text-sm leading-relaxed text-[#5B7C99]">
-              Submit to generate your Career Intelligence Report from this analysis.
+              Build industry-standard tools for each task and work component. Your assessment
+              is submitted automatically, then your Career Intelligence Report opens.
             </p>
             {generatedLabel ? (
               <p className="mt-2 text-xs font-medium text-[#8AA0B8]">
@@ -71,24 +97,22 @@ export default function ThreeBAnalysisPage() {
                   : ""}
               </p>
             ) : null}
+            {toolsError ? <p className="mt-2 text-sm text-destructive">{toolsError}</p> : null}
           </div>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-            {assessmentId ? (
-              <SubmitAssessmentButton
-                assessmentId={assessmentId}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:brightness-[1.03] disabled:opacity-60 sm:w-auto"
-              />
-            ) : null}
-            <Link
-              to="/report"
-              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#0B1D3A]/15 bg-white px-5 text-sm font-semibold text-[#0B1D3A] transition-colors hover:bg-[#F8FAFC] sm:w-auto"
-            >
-              Career Intelligence Report
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+          <button
+            type="button"
+            onClick={handleGenerateTools}
+            disabled={!assessmentId || !hasAnalysis || generatingTools}
+            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:brightness-[1.03] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          >
+            <Sparkles className="h-4 w-4" />
+            Generate AI Tools
+          </button>
         </div>
       </div>
+      {generatingTools ? (
+        <LoadingQuotesOverlay title={"Choosing the right AI tools\nfor your work..."} />
+      ) : null}
     </div>
   );
 }

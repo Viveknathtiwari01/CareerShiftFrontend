@@ -134,6 +134,13 @@ export async function runTaskAnalysis(
   return response.data;
 }
 
+export async function generateTaskAiTools(assessmentId: string): Promise<TaskAnalysisResult> {
+  const response = await fetchApi(`/assessment/${assessmentId}/ai-tools`, {
+    method: "POST",
+  });
+  return response.data;
+}
+
 export async function updateTaskStatus(
   assessmentId: string,
   taskId: string,

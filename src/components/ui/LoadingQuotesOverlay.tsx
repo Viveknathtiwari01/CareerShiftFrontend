@@ -19,7 +19,11 @@ const QUOTES = [
   "The future of your work deserves your attention.\nAnd by being here, you've already given it that.",
 ];
 
-export function LoadingQuotesOverlay() {
+export function LoadingQuotesOverlay({
+  title = "Creating your Career\nIntelligence Report...",
+}: {
+  title?: string;
+}) {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
@@ -67,7 +71,11 @@ export function LoadingQuotesOverlay() {
         </div>
 
         <h3 className="text-[22px] font-bold text-[#0B1D3A] mb-5 tracking-tight leading-snug">
-          Creating your Career<br/>Intelligence Report...
+          {title.split("\n").map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
         </h3>
 
         {/* Warning Message */}

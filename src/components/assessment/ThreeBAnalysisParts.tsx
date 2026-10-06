@@ -345,7 +345,7 @@ export const CollapsibleTaskCard = forwardRef<
     humanBuild: isBuild && Boolean(task.human_capability),
     components: components.length > 0,
     capabilities: capabilities.length > 0,
-    solutions: components.length > 0,
+    solutions: false,
     humanBlend: !isBuild && Boolean(task.human_capability),
     feasibility: showFeasibility && Boolean(task.feasibility_note),
     velocity: showVelocity && Boolean(task.velocity_note),
