@@ -5,7 +5,7 @@ import { AppLoader } from "@/components/ui/app-loader";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ToolkitToolCard } from "@/components/report/ToolkitToolCard";
 import { useReportData } from "@/hooks/use-report-data";
-import type { ToolkitItem } from "@/api/report";
+import { groupToolkitByTask, type ToolkitItem } from "@/api/report";
 import { cn } from "@/lib/utils";
 
 const PRIORITY_FILTERS = ["All", "Critical", "High", "Medium", "Supporting"] as const;
@@ -53,16 +53,7 @@ export default function Toolkit() {
     return counts;
   }, [tools]);
 
-  const grouped = useMemo(() => {
-    const map = new Map<string, ToolkitItem[]>();
-    filtered.forEach((tool) => {
-      const key = tool.category || "Recommended AI Tools";
-      const list = map.get(key) ?? [];
-      list.push(tool);
-      map.set(key, list);
-    });
-    return Array.from(map.entries());
-  }, [filtered]);
+  const grouped = useMemo(() => groupToolkitByTask(filtered), [filtered]);
 
   if (isLoading) {
     return (
@@ -98,7 +89,7 @@ export default function Toolkit() {
     <div className="w-full space-y-8">
       <PageHeader
         title="Your AI toolkit"
-        description="Personalized tools from your 3B analysis and career profile ranked by impact on your role."
+        description="Task-specific tools from your 3B analysis. Each recommendation explains how to use it on that task."
       />
 
       {/* Summary */}
@@ -137,30 +128,29 @@ export default function Toolkit() {
 
       {/* Grouped tools */}
       <div className="space-y-10">
-        {grouped.map(([category, categoryTools]) => (
-          <section key={category}>
-            <div className="mb-4 flex items-center justify-between gap-4 border-b border-border pb-3">
-              <h2 className="font-display text-xl font-semibold text-foreground">{category}</h2>
-              <span className="text-sm text-muted-foreground">
-                {categoryTools.length} tool{categoryTools.length === 1 ? "" : "s"}
-              </span>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {categoryTools.map((tool) => {
-                const globalIndex = tools.findIndex(
-                  (t) => t.name === tool.name && t.category === tool.category,
-                );
-                return (
-                  <ToolkitToolCard
-                    key={`${category}-${tool.name}`}
-                    tool={tool}
-                    rank={tool.priority_rank ?? (globalIndex >= 0 ? globalIndex + 1 : undefined)}
-                  />
-                );
-              })}
-            </div>
-          </section>
-        ))}
+        {grouped.map((group) => {
+          const count = group.enterprise.length + group.external.length;
+          return (
+            <section key={group.taskTitle}>
+              <div className="mb-4 flex items-center justify-between gap-4 border-b border-border pb-3">
+                <h2 className="font-display text-xl font-semibold text-foreground">
+                  {group.taskTitle}
+                </h2>
+                <span className="text-sm text-muted-foreground">
+                  {count} tool{count === 1 ? "" : "s"}
+                </span>
+              </div>
+              <div className="space-y-6">
+                <ToolkitClass
+                  title="Enterprise AI Tools"
+                  tools={group.enterprise}
+                  allTools={tools}
+                />
+                <ToolkitClass title="External AI Tools" tools={group.external} allTools={tools} />
+              </div>
+            </section>
+          );
+        })}
       </div>
 
       {assessmentId && (
@@ -176,6 +166,37 @@ export default function Toolkit() {
           </Link>
         </div>
       )}
+    </div>
+  );
+}
+
+function ToolkitClass({
+  title,
+  tools,
+  allTools,
+}: {
+  title: string;
+  tools: ToolkitItem[];
+  allTools: ToolkitItem[];
+}) {
+  if (!tools.length) return null;
+  return (
+    <div className="space-y-3">
+      <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{title}</h3>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {tools.map((tool) => {
+          const globalIndex = allTools.findIndex(
+            (item) => item.name === tool.name && item.category === tool.category,
+          );
+          return (
+            <ToolkitToolCard
+              key={`${title}-${tool.name}`}
+              tool={tool}
+              rank={tool.priority_rank ?? (globalIndex >= 0 ? globalIndex + 1 : undefined)}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

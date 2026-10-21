@@ -15,15 +15,19 @@ import {
   deriveAccessPathTag,
   formatFeasibilityLabel,
   formatVelocityLabel,
+  accessClassLabel,
   getCategoryWhyCopy,
   getComponentTools,
   getToolFitDescription,
   getToolMarketNote,
   getToolPricingLine,
   getUniqueCapabilities,
+  groupToolsByAccess,
   hasLearningContent,
+  toolAccessClass,
   type AnalyzedTask,
   type TaskComponent,
+  type TaskToolGroup,
   type ThreeBCategory,
   type ToolOption,
 } from "@/api/analysis";
@@ -139,10 +143,24 @@ function SectionBlock({
   );
 }
 
-function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
+function ToolOptionCard({
+  tool,
+  index,
+  componentName,
+}: {
+  tool: ToolOption;
+  index: number;
+  componentName?: string;
+}) {
   const rawPricingLine = getToolPricingLine(tool) || "";
   const fitDescription = getToolFitDescription(tool);
   const marketNote = getToolMarketNote(tool);
+  const howToUse = (tool.how_to_use || "").trim();
+  const startingPoint = (tool.starting_point || "").trim();
+  const limitations = (tool.limitations || "").trim();
+  const benefit = (tool.expected_benefit || "").trim();
+  const access = toolAccessClass(tool);
+  const showProsCons = !howToUse && ((tool.pros?.length ?? 0) > 0 || (tool.cons?.length ?? 0) > 0);
 
   let simplifiedPricing = "Paid";
   const pLow = rawPricingLine.toLowerCase();
@@ -186,11 +204,45 @@ function ToolOptionCard({ tool, index }: { tool: ToolOption; index: number }) {
           </span>
         </div>
       </div>
-      <p className="mb-1 text-base font-bold text-slate-900">{tool.name}</p>
+      <div className="mb-1 flex flex-wrap items-center gap-2">
+        <p className="text-base font-bold text-slate-900">{tool.name}</p>
+        <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-600">
+          {accessClassLabel(access)}
+        </span>
+      </div>
+      {componentName && (
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Supports: {componentName}
+        </p>
+      )}
       {fitDescription && (
         <p className="mb-3 mt-2 text-[13px] leading-relaxed text-slate-700">{fitDescription}</p>
       )}
-      {(tool.pros?.length > 0 || tool.cons?.length > 0) && (
+      {howToUse && (
+        <p className="mb-2 text-[13px] leading-relaxed text-slate-700">
+          <span className="font-semibold text-slate-900">How to use it. </span>
+          {howToUse}
+        </p>
+      )}
+      {benefit && benefit !== fitDescription && (
+        <p className="mb-2 text-[13px] leading-relaxed text-slate-700">
+          <span className="font-semibold text-slate-900">Expected benefit. </span>
+          {benefit}
+        </p>
+      )}
+      {startingPoint && (
+        <p className="mb-2 text-[13px] leading-relaxed text-slate-700">
+          <span className="font-semibold text-slate-900">Start here. </span>
+          {startingPoint}
+        </p>
+      )}
+      {limitations && (
+        <p className="mb-2 text-[13px] leading-relaxed text-slate-600">
+          <span className="font-semibold text-slate-800">Check first. </span>
+          {limitations}
+        </p>
+      )}
+      {showProsCons && (tool.pros?.length > 0 || tool.cons?.length > 0) && (
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {tool.pros?.length > 0 && (
             <div className="rounded-md border border-emerald-100 bg-emerald-50/50 p-3">
@@ -267,39 +319,54 @@ function CategoryWhySection({
   );
 }
 
-function ComponentSolutionBlock({ comp }: { comp: TaskComponent }) {
-  const tools = getComponentTools(comp);
-  const isHumanLed = comp.is_automatable === false;
-
+function ToolAccessGroup({
+  title,
+  items,
+}: {
+  title: string;
+  items: TaskToolGroup[];
+}) {
+  if (!items.length) return null;
   return (
-    <div className={`overflow-hidden rounded-xl border shadow-sm ${COMPONENT_BOX_BG}`}>
-      <div className="border-b border-[#e8d5a8]/60 px-4 py-3 md:px-5">
-        <h6 className="font-bold text-[15px] text-[#0B1D3A]">{comp.name}</h6>
-        {comp.capability && (
-          <p className="mt-1 text-xs text-[#6b5a45]">
-            <span className="font-semibold">Capability:</span> {comp.capability}
-          </p>
-        )}
-        {comp.description && (
-          <p className="mt-2 text-[13px] leading-relaxed text-[#5c4a32]">{comp.description}</p>
-        )}
+    <div className="space-y-3">
+      <h6 className="text-[12px] font-bold uppercase tracking-wider text-[#0B1D3A]">{title}</h6>
+      {items.map((item, index) => (
+        <ToolOptionCard
+          key={`${item.componentName}-${item.tool.name}`}
+          tool={item.tool}
+          index={index}
+          componentName={item.componentName}
+        />
+      ))}
+    </div>
+  );
+}
+
+function TaskToolRecommendations({
+  step,
+  components,
+  generatedAtLabel,
+}: {
+  step: number;
+  components: TaskComponent[];
+  generatedAtLabel?: string;
+}) {
+  const grouped = groupToolsByAccess(components);
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <StepBadge step={step} />
+          <h5 className="text-[11px] font-bold uppercase tracking-wider text-[#8b7355]">
+            Tools for this task
+          </h5>
+        </div>
+        <span className="shrink-0 rounded-full border border-[#e8d5a8] bg-[#faf6eb] px-2.5 py-0.5 text-[10px] font-medium text-[#8b7355]">
+          {generatedAtLabel ? `Generated ${generatedAtLabel}` : "Verify before adopting"}
+        </span>
       </div>
-      <div className="space-y-3 bg-white/60 p-4 md:p-5">
-        {tools.length > 0 ? (
-          tools.map((tool, j) => <ToolOptionCard key={j} tool={tool} index={j} />)
-        ) : isHumanLed ? (
-          <p className="text-[13px] leading-relaxed text-[#5c4a32]">
-            <span className="font-semibold text-[#3d3225]">Stays human-led.</span>{" "}
-            This component relies on judgment and context — focus on strengthening the capability
-            rather than replacing it with a tool.
-          </p>
-        ) : (
-          <p className="text-[13px] leading-relaxed text-[#5c4a32]">
-            No tool options were generated for this component yet. Try re-analyzing your tasks or
-            discuss augmentation options with your team.
-          </p>
-        )}
-      </div>
+      <ToolAccessGroup title="Enterprise AI Tools" items={grouped.enterprise} />
+      <ToolAccessGroup title="External AI Tools" items={grouped.external} />
     </div>
   );
 }
@@ -345,7 +412,7 @@ export const CollapsibleTaskCard = forwardRef<
     humanBuild: isBuild && Boolean(task.human_capability),
     components: components.length > 0,
     capabilities: capabilities.length > 0,
-    solutions: false,
+    solutions: components.some((comp) => getComponentTools(comp).length > 0),
     humanBlend: !isBuild && Boolean(task.human_capability),
     feasibility: showFeasibility && Boolean(task.feasibility_note),
     velocity: showVelocity && Boolean(task.velocity_note),
@@ -503,24 +570,11 @@ export const CollapsibleTaskCard = forwardRef<
               )}
 
               {sections.solutions && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex min-w-0 items-center gap-2.5">
-                      <StepBadge step={solutionsStep} />
-                      <h5 className="text-[11px] font-bold uppercase tracking-wider text-[#8b7355]">
-                        Solution Options — By Component
-                      </h5>
-                    </div>
-                    <span className="shrink-0 rounded-full border border-[#e8d5a8] bg-[#faf6eb] px-2.5 py-0.5 text-[10px] font-medium text-[#8b7355]">
-                      {generatedAtLabel
-                        ? `Generated ${generatedAtLabel}`
-                        : "Verify before adopting"}
-                    </span>
-                  </div>
-                  {components.map((comp, i) => (
-                    <ComponentSolutionBlock key={i} comp={comp} />
-                  ))}
-                </div>
+                <TaskToolRecommendations
+                  step={solutionsStep}
+                  components={components}
+                  generatedAtLabel={generatedAtLabel}
+                />
               )}
 
               {sections.humanBlend && (

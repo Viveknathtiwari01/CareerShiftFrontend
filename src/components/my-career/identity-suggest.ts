@@ -135,6 +135,16 @@ export function formatConfidencePercent(confidence: number): string {
   return `${Math.round(confidence * 100)}% confidence`;
 }
 
+const GLUED_REASON_JUNK = /(?:\.is[A-Z]\w*|(?:\.0){3,}).*/;
+
+/** Drop code-like noise glued onto an otherwise normal suggestion sentence. */
+export function cleanSuggestionReason(reason: string): string {
+  const collapsed = reason.replace(/\s+/g, " ").trim();
+  if (!GLUED_REASON_JUNK.test(collapsed)) return collapsed;
+  const cleaned = collapsed.replace(GLUED_REASON_JUNK, "").trim().replace(/[.\s]+$/, "");
+  return cleaned ? `${cleaned}.` : collapsed;
+}
+
 function uniqueItems(items: string[] | null | undefined): string[] {
   const seen = new Set<string>();
   const result: string[] = [];

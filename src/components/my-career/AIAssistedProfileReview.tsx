@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
   IDENTITY_FIELD_META,
   isReviewDraftComplete,
+  cleanSuggestionReason,
   isTrustedSuggestion,
   type IdentityFieldKey,
   type ReviewDraft,
@@ -206,7 +207,9 @@ export function AIAssistedProfileReview({
                     <p className="text-lg font-semibold leading-snug text-[#0B1D3A] dark:text-slate-100">
                       {reviewDraft[key]}
                     </p>
-                    <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-500">{suggestion.reason}</p>
+                    <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-500">
+                      {cleanSuggestionReason(suggestion.reason)}
+                    </p>
                   </div>
                 )
               ) : (

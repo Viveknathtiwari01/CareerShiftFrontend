@@ -66,6 +66,9 @@ export interface RoadmapPhase {
 export interface ToolkitTaskLink {
   task_title: string;
   reason: string;
+  how_to_use?: string;
+  starting_point?: string;
+  limitations?: string;
 }
 
 export interface ToolkitItem {
@@ -158,6 +161,40 @@ export function reportRevisionNumber(version: string | null | undefined): number
   return Math.max(1, numericParts.length || 1);
 }
 
+export interface TaskToolkitGroup {
+  taskTitle: string;
+  enterprise: ToolkitItem[];
+  external: ToolkitItem[];
+}
+
+function isEnterpriseTool(tool: ToolkitItem): boolean {
+  return tool.category.toLowerCase().includes("enterprise");
+}
+
+/** One card per task, so the same product can explain a different use on each task. */
+export function groupToolkitByTask(tools: ToolkitItem[]): TaskToolkitGroup[] {
+  const map = new Map<string, TaskToolkitGroup>();
+  for (const tool of tools) {
+    const links = (tool.task_links ?? []).filter((link) => link.task_title.trim());
+    const targets = links.length
+      ? links
+      : [{ task_title: "Other recommendations", reason: tool.use_case }];
+    for (const link of targets) {
+      const title = link.task_title.trim();
+      const group = map.get(title) ?? { taskTitle: title, enterprise: [], external: [] };
+      const scoped: ToolkitItem = {
+        ...tool,
+        use_case: link.reason || tool.use_case,
+        task_links: [link],
+      };
+      if (isEnterpriseTool(tool)) group.enterprise.push(scoped);
+      else group.external.push(scoped);
+      map.set(title, group);
+    }
+  }
+  return Array.from(map.values());
+}
+
 /** User-facing report version label, e.g. "1" or "3". */
 export function formatReportVersion(version: string | null | undefined): string {
   return String(reportRevisionNumber(version));
@@ -193,6 +230,9 @@ function flattenToolkit(raw: unknown): ToolkitItem[] {
           ? tool.task_links.map((link: Record<string, unknown>) => ({
               task_title: String(link.task_title ?? ""),
               reason: String(link.reason ?? ""),
+              how_to_use: link.how_to_use ? String(link.how_to_use) : "",
+              starting_point: link.starting_point ? String(link.starting_point) : "",
+              limitations: link.limitations ? String(link.limitations) : "",
             }))
           : [],
       }));

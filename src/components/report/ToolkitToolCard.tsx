@@ -76,14 +76,37 @@ export function ToolkitToolCard({ tool, rank }: Props) {
       <div className="flex-1 space-y-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-            Why recommended (from 3B analysis)
+            Why this tool
           </p>
           {taskLinks.length > 0 ? (
-            <ul className="mt-2 space-y-2">
+            <ul className="mt-2 space-y-3">
               {taskLinks.map((link) => (
-                <li key={`${link.task_title}-${link.reason.slice(0, 24)}`} className="text-sm leading-relaxed">
-                  <span className="font-semibold text-foreground">{link.task_title}:</span>{" "}
+                <li
+                  key={`${link.task_title}-${link.reason.slice(0, 24)}`}
+                  className="text-sm leading-relaxed"
+                >
+                  {taskLinks.length > 1 && (
+                    <span className="font-semibold text-foreground">{link.task_title}: </span>
+                  )}
                   <span className="text-muted-foreground">{link.reason}</span>
+                  {link.how_to_use ? (
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+                      <span className="font-semibold">How to use it. </span>
+                      {link.how_to_use}
+                    </p>
+                  ) : null}
+                  {link.starting_point ? (
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+                      <span className="font-semibold">Start here. </span>
+                      {link.starting_point}
+                    </p>
+                  ) : null}
+                  {link.limitations ? (
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-foreground">Check first. </span>
+                      {link.limitations}
+                    </p>
+                  ) : null}
                 </li>
               ))}
             </ul>

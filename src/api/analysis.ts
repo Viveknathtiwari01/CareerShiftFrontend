@@ -16,6 +16,8 @@ export type FeasibilityTier =
   | "org_must_enable"
   | "stays_human_led";
 
+export type ToolAccessClass = "enterprise" | "external";
+
 export interface ToolOption {
   name: string;
   cost_band: CostBand | string;
@@ -27,6 +29,14 @@ export interface ToolOption {
   credibility_note?: string;
   feasibility: FeasibilityTier | string;
   verification_status?: "UNVERIFIED" | "VERIFIED" | "REJECTED";
+  access_class?: ToolAccessClass | string;
+  why_this_tool?: string;
+  how_to_use?: string;
+  task_connection?: string;
+  expected_benefit?: string;
+  starting_point?: string;
+  limitations?: string;
+  component_name?: string;
 }
 
 export interface TaskComponent {
@@ -250,9 +260,54 @@ export function getToolPricingLine(tool: ToolOption): string {
   return "";
 }
 
-/** Why this tool fits — prefers fit_description, falls back to credibility_note. */
+/** Why this tool fits — prefers the task-specific reason, then older fit text. */
 export function getToolFitDescription(tool: ToolOption): string {
-  return (tool.fit_description || tool.credibility_note || "").trim();
+  return (tool.why_this_tool || tool.fit_description || tool.credibility_note || "").trim();
+}
+
+export function toolAccessClass(tool: ToolOption): ToolAccessClass {
+  const raw = String(tool.access_class || "").toLowerCase();
+  if (raw === "enterprise" || raw.includes("enterprise")) return "enterprise";
+  if (raw === "external" || raw.includes("external")) return "external";
+  const feasibility = String(tool.feasibility || "").toLowerCase();
+  const cost = String(tool.cost_band || "").toLowerCase();
+  if (
+    feasibility.includes("org") ||
+    feasibility.includes("company") ||
+    cost.includes("enterprise")
+  ) {
+    return "enterprise";
+  }
+  return "external";
+}
+
+export function accessClassLabel(access: ToolAccessClass): string {
+  return access === "enterprise" ? "Enterprise AI Tools" : "External AI Tools";
+}
+
+export interface TaskToolGroup {
+  componentName: string;
+  tool: ToolOption;
+}
+
+/** Tools for one task, split by access class and keeping the component they support. */
+export function groupToolsByAccess(components: TaskComponent[]): {
+  enterprise: TaskToolGroup[];
+  external: TaskToolGroup[];
+} {
+  const enterprise: TaskToolGroup[] = [];
+  const external: TaskToolGroup[] = [];
+  const seen = new Set<string>();
+  for (const comp of components) {
+    for (const tool of getComponentTools(comp)) {
+      const key = `${toolAccessClass(tool)}:${tool.name.toLowerCase()}:${comp.name.toLowerCase()}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const group = toolAccessClass(tool) === "enterprise" ? enterprise : external;
+      group.push({ componentName: comp.name, tool });
+    }
+  }
+  return { enterprise, external };
 }
 
 /** Contextual proof footnote — prefers market_note. */
