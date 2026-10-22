@@ -69,6 +69,9 @@ export interface ToolkitTaskLink {
   how_to_use?: string;
   starting_point?: string;
   limitations?: string;
+  task_priority_rank?: number | null;
+  task_priority_label?: string | null;
+  task_priority_reason?: string | null;
 }
 
 export interface ToolkitItem {
@@ -171,7 +174,7 @@ function isEnterpriseTool(tool: ToolkitItem): boolean {
   return tool.category.toLowerCase().includes("enterprise");
 }
 
-/** One card per task, so the same product can explain a different use on each task. */
+/** One card per task, with per-task ranking and task-specific priority reasons. */
 export function groupToolkitByTask(tools: ToolkitItem[]): TaskToolkitGroup[] {
   const map = new Map<string, TaskToolkitGroup>();
   for (const tool of tools) {
@@ -186,12 +189,33 @@ export function groupToolkitByTask(tools: ToolkitItem[]): TaskToolkitGroup[] {
         ...tool,
         use_case: link.reason || tool.use_case,
         task_links: [link],
+        priority_rank: link.task_priority_rank ?? tool.priority_rank,
+        priority_label: link.task_priority_label ?? tool.priority_label,
+        priority_reason: link.task_priority_reason ?? tool.priority_reason,
       };
       if (isEnterpriseTool(tool)) group.enterprise.push(scoped);
       else group.external.push(scoped);
       map.set(title, group);
     }
   }
+
+  // Ensure tools within each task are cleanly ranked 1, 2, ... for THAT task
+  for (const group of map.values()) {
+    const allTaskTools = [...group.enterprise, ...group.external];
+    allTaskTools.sort((a, b) => (a.priority_rank ?? 99) - (b.priority_rank ?? 99));
+    allTaskTools.forEach((item, idx) => {
+      const rank = idx + 1;
+      item.priority_rank = rank;
+      if (!item.priority_label || item.priority_label === "Supporting" || item.priority_label === "Critical") {
+        item.priority_label = rank === 1 ? "Critical" : rank === 2 ? "High" : rank === 3 ? "Medium" : "Supporting";
+      }
+      if (!item.priority_reason || item.priority_reason.includes("recommended across")) {
+        const lead = rank === 1 ? "Top recommendation for this task" : rank === 2 ? "High-fit complementary AI tool" : "Supporting AI tool for this task";
+        item.priority_reason = `${lead}: directly targets the workload and deliverable of ${group.taskTitle}.`;
+      }
+    });
+  }
+
   return Array.from(map.values());
 }
 
