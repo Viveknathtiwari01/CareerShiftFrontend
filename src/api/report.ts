@@ -69,6 +69,8 @@ export interface ToolkitTaskLink {
   how_to_use?: string;
   starting_point?: string;
   limitations?: string;
+  pros?: string[];
+  cons?: string[];
   task_priority_rank?: number | null;
   task_priority_label?: string | null;
   task_priority_reason?: string | null;
@@ -82,6 +84,8 @@ export interface ToolkitItem {
   priority_rank?: number | null;
   priority_label?: string | null;
   priority_reason?: string | null;
+  pros?: string[];
+  cons?: string[];
   task_links?: ToolkitTaskLink[];
 }
 
@@ -192,6 +196,8 @@ export function groupToolkitByTask(tools: ToolkitItem[]): TaskToolkitGroup[] {
         priority_rank: link.task_priority_rank ?? tool.priority_rank,
         priority_label: link.task_priority_label ?? tool.priority_label,
         priority_reason: link.task_priority_reason ?? tool.priority_reason,
+        pros: link.pros && link.pros.length > 0 ? link.pros : tool.pros,
+        cons: link.cons && link.cons.length > 0 ? link.cons : tool.cons,
       };
       if (isEnterpriseTool(tool)) group.enterprise.push(scoped);
       else group.external.push(scoped);

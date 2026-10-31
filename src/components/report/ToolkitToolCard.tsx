@@ -1,4 +1,4 @@
-import { Wrench, Sparkles, Bot, Cpu, type LucideIcon } from "lucide-react";
+import { Wrench, Sparkles, Bot, Cpu, CheckCircle2, AlertCircle, type LucideIcon } from "lucide-react";
 import type { ToolkitItem } from "@/api/report";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +40,17 @@ export function ToolkitToolCard({ tool, rank }: Props) {
     (rank != null && rank <= 6 ? (rank <= 3 ? "Critical" : "High") : "Recommended");
   const priorityClass = PRIORITY_STYLES[priorityLabel] ?? PRIORITY_STYLES.Recommended;
   const taskLinks = tool.task_links ?? [];
+
+  // Extract pros and cons from the tool or its task links
+  const prosList = (tool.pros && tool.pros.length > 0)
+    ? tool.pros
+    : taskLinks.flatMap((l) => l.pros ?? []).filter(Boolean);
+  const consList = (tool.cons && tool.cons.length > 0)
+    ? tool.cons
+    : taskLinks.flatMap((l) => l.cons ?? []).filter(Boolean);
+
+  const uniquePros = Array.from(new Set(prosList)).slice(0, 3);
+  const uniqueCons = Array.from(new Set(consList)).slice(0, 3);
 
   return (
     <article className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition-shadow hover:shadow-elevated">
@@ -118,6 +129,44 @@ export function ToolkitToolCard({ tool, rank }: Props) {
             </p>
           )}
         </div>
+
+        {/* Pros & Cons Section */}
+        {(uniquePros.length > 0 || uniqueCons.length > 0) && (
+          <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            {uniquePros.length > 0 && (
+              <div className="rounded-xl border border-emerald-500/25 bg-emerald-50/70 p-3 dark:border-emerald-500/20 dark:bg-emerald-950/20">
+                <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                  Pros
+                </p>
+                <ul className="mt-1.5 space-y-1">
+                  {uniquePros.map((pro, i) => (
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-emerald-950/80 leading-relaxed dark:text-emerald-200/90">
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-emerald-500" />
+                      <span>{pro}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {uniqueCons.length > 0 && (
+              <div className="rounded-xl border border-amber-500/25 bg-amber-50/70 p-3 dark:border-amber-500/20 dark:bg-amber-950/20">
+                <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                  <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                  Cons
+                </p>
+                <ul className="mt-1.5 space-y-1">
+                  {uniqueCons.map((con, i) => (
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-amber-950/80 leading-relaxed dark:text-amber-200/90">
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
+                      <span>{con}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {tool.priority_reason ? (
