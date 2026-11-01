@@ -1,0 +1,29 @@
+# CareerShift — https://careershift3b.com
+# Public marketing and legal pages stay crawlable.
+# Logged-in product, checkout, and API paths are not for search engines.
+
+User-agent: *
+Allow: /
+
+# Logged-in app. These pages hold personal career data and redirect to /auth.
+Disallow: /dashboard
+Disallow: /my-profile
+Disallow: /profile
+Disallow: /onboarding
+Disallow: /assessment
+Disallow: /3b-analysis
+Disallow: /report
+Disallow: /history
+Disallow: /insights
+Disallow: /toolkit
+Disallow: /ai-fitness
+
+# Checkout and payment return URLs are session-specific.
+Disallow: /checkout
+Disallow: /payment/
+
+# API and health checks, if they are ever served on this host.
+Disallow: /api/
+Disallow: /health
+
+Sitemap: https://careershift3b.com/sitemap.xml

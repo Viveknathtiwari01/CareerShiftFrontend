@@ -51,7 +51,12 @@ export function getEffectiveConfidenceScore(task: Task): number {
 
 /** True when the user has answered the required review questions (sliders use UI defaults). */
 export function isTaskReviewComplete(task: Task): boolean {
-  return Boolean(task.frequency && task.businessCriticality && task.aiAssistance);
+  return Boolean(
+    task.frequency &&
+    task.businessCriticality &&
+    task.aiAssistance &&
+    getEffectiveTimeAllocation(task) > 0,
+  );
 }
 
 export function mapBackendTaskToFrontend(task: BackendTask): Task {

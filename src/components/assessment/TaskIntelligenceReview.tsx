@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  AlertCircle,
   CheckCircle2,
   ChevronRight,
   Circle,
   ClipboardList,
   Sparkles,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   getEffectiveConfidenceScore,
   getEffectiveTimeAllocation,
@@ -65,13 +67,19 @@ function TaskSelectOptions({
   value,
   options,
   onChange,
+  hasError = false,
 }: {
   value: string;
   options: readonly string[];
   onChange: (v: string) => void;
+  hasError?: boolean;
 }) {
   return (
-    <div className="flex flex-wrap gap-2 text-xs">
+    <div
+      className={`flex flex-wrap gap-2 text-xs rounded-xl p-1 transition-all ${
+        hasError ? "ring-2 ring-red-400/80 bg-red-50/50" : ""
+      }`}
+    >
       {options.map((v) => (
         <button
           key={v}
@@ -80,7 +88,9 @@ function TaskSelectOptions({
           className={`rounded-md border px-3 py-2 font-medium transition-all duration-200 ${
             value === v
               ? "scale-[1.02] border-primary bg-primary text-primary-foreground shadow-soft"
-              : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+              : hasError
+                ? "border-red-300 bg-background text-foreground hover:border-red-400"
+                : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
           }`}
         >
           {v}
@@ -114,8 +124,13 @@ export default function TaskIntelligenceReview({
   );
 
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [showValidation, setShowValidation] = useState(false);
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const [rightPanelHeight, setRightPanelHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    setShowValidation(false);
+  }, [activeId]);
 
   useEffect(() => {
     if (activeId && selectedTasks.some((t) => t.id === activeId)) return;
@@ -249,9 +264,14 @@ export default function TaskIntelligenceReview({
         {/* Left: task rail — matches right height on desktop, scrolls internally */}
         <aside className="w-full shrink-0 lg:h-[var(--task-panel-h)] lg:w-[300px] lg:overflow-hidden xl:w-[320px]">
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-soft max-lg:max-h-[min(420px,50vh)]">
-            <p className="mb-3 shrink-0 px-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-              Generated tasks
-            </p>
+            <div className="mb-3 flex items-center justify-between px-2">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                Generated tasks
+              </p>
+              <span className="text-[11px] font-bold text-primary">
+                {tasksReviewed} of {selectedTasks.length} reviewed
+              </span>
+            </div>
 
             <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-x-auto overflow-y-auto pb-1 lg:overflow-x-hidden lg:pb-0">
               {selectedTasks.map((t, index) => {
@@ -263,7 +283,10 @@ export default function TaskIntelligenceReview({
                     key={t.id}
                     type="button"
                     layout
-                    onClick={() => setActiveId(t.id)}
+                    onClick={() => {
+                      setShowValidation(false);
+                      setActiveId(t.id);
+                    }}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     className={`flex min-w-[220px] shrink-0 items-center gap-3 rounded-xl border px-3 py-3 text-left transition-colors duration-200 lg:min-w-0 lg:w-full ${
@@ -334,7 +357,7 @@ export default function TaskIntelligenceReview({
                         <p className="mt-0.5 text-sm text-muted-foreground">{activeTask.category}</p>
                       )}
                     </div>
-                    {isTaskReviewComplete(activeTask) && (
+                    {isTaskReviewComplete(activeTask) ? (
                       <motion.span
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -342,8 +365,28 @@ export default function TaskIntelligenceReview({
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" /> Reviewed
                       </motion.span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">
+                        <AlertCircle className="h-3.5 w-3.5 text-amber-600" /> Pending Review
+                      </span>
                     )}
                   </div>
+                  <div className="mt-2.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <span className="font-bold">*</span>
+                    <span>Fields marked with an asterisk are required to complete review.</span>
+                  </div>
+                  {showValidation && !isTaskReviewComplete(activeTask) && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-2.5 text-xs font-medium text-red-800"
+                    >
+                      <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+                      <span>
+                        Please answer all required questions marked with <strong className="font-bold">(*)</strong> before proceeding.
+                      </span>
+                    </motion.div>
+                  )}
                   {activeTask.description && (
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                       {activeTask.description}
@@ -354,11 +397,17 @@ export default function TaskIntelligenceReview({
                 <div className="space-y-8 p-5 md:p-6">
                   <div className="grid gap-6 lg:grid-cols-2">
                     <div>
-                      <h4 className="mb-3 text-sm font-semibold">
-                        How often do you perform this task?
-                      </h4>
+                      <div className="mb-2 flex items-center justify-between">
+                        <h4 className="text-sm font-semibold">
+                          How often do you perform this task? <span className="font-bold" title="Required">*</span>
+                        </h4>
+                        {showValidation && !activeTask.frequency && (
+                          <span className="text-xs font-semibold text-red-600">Selection required</span>
+                        )}
+                      </div>
                       <TaskSelectOptions
                         value={activeTask.frequency || ""}
+                        hasError={showValidation && !activeTask.frequency}
                         options={[
                           "Multiple times daily",
                           "Daily",
@@ -373,11 +422,17 @@ export default function TaskIntelligenceReview({
                       />
                     </div>
                     <div>
-                      <h4 className="mb-3 text-sm font-semibold">
-                        How important is this task to your role?
-                      </h4>
+                      <div className="mb-2 flex items-center justify-between">
+                        <h4 className="text-sm font-semibold">
+                          How important is this task to your role? <span className="font-bold" title="Required">*</span>
+                        </h4>
+                        {showValidation && !activeTask.businessCriticality && (
+                          <span className="text-xs font-semibold text-red-600">Selection required</span>
+                        )}
+                      </div>
                       <TaskSelectOptions
                         value={activeTask.businessCriticality || ""}
+                        hasError={showValidation && !activeTask.businessCriticality}
                         options={["Mission Critical", "High", "Medium", "Low"]}
                         onChange={(v) =>
                           updateTask(activeTask.id, {
@@ -390,21 +445,32 @@ export default function TaskIntelligenceReview({
 
                   <div className="grid gap-6 lg:grid-cols-2">
                     <div>
-                      <div className="mb-3 flex items-center justify-between">
+                      <div className="mb-2 flex items-center justify-between">
                         <h4 className="text-sm font-semibold">
-                          Approximately how much of your work week is spent on this task?
+                          Approximately how much of your work week is spent on this task? <span className="font-bold" title="Required">*</span>
                         </h4>
-                        <span className="text-sm font-bold text-primary">
-                          {getEffectiveTimeAllocation(activeTask) < 0.5
-                            ? "<15 min"
-                            : getEffectiveTimeAllocation(activeTask) === 0.5
-                              ? "30 min"
-                              : getEffectiveTimeAllocation(activeTask) === 1
-                                ? "1 hr"
-                                : `${getEffectiveTimeAllocation(activeTask)} hrs`}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          {showValidation && getEffectiveTimeAllocation(activeTask) <= 0 && (
+                            <span className="text-xs font-semibold text-red-600">Selection required</span>
+                          )}
+                          <span className="text-sm font-bold text-primary">
+                            {getEffectiveTimeAllocation(activeTask) < 0.5
+                              ? "<15 min"
+                              : getEffectiveTimeAllocation(activeTask) === 0.5
+                                ? "30 min"
+                                : getEffectiveTimeAllocation(activeTask) === 1
+                                  ? "1 hr"
+                                  : `${getEffectiveTimeAllocation(activeTask)} hrs`}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 text-xs">
+                      <div
+                        className={`flex flex-wrap gap-2 rounded-xl p-1 text-xs transition-all ${
+                          showValidation && getEffectiveTimeAllocation(activeTask) <= 0
+                            ? "ring-2 ring-red-400/80 bg-red-50/50"
+                            : ""
+                        }`}
+                      >
                         {[
                           { label: "<15 min", val: 0.25 },
                           { label: "15-30 min", val: 0.5 },
@@ -420,7 +486,9 @@ export default function TaskIntelligenceReview({
                             className={`rounded-md border px-3 py-2 font-medium transition-all duration-200 ${
                               getEffectiveTimeAllocation(activeTask) === opt.val
                                 ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                                : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                                : showValidation && getEffectiveTimeAllocation(activeTask) <= 0
+                                  ? "border-red-300 bg-background text-foreground hover:border-red-400"
+                                  : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
                             }`}
                           >
                             {opt.label}
@@ -430,9 +498,9 @@ export default function TaskIntelligenceReview({
                     </div>
 
                     <div>
-                      <div className="mb-3 flex items-center justify-between">
+                      <div className="mb-2 flex items-center justify-between">
                         <h4 className="text-sm font-semibold">
-                          How confident are you performing this task without assistance?
+                          How confident are you performing this task without assistance? <span className="font-bold" title="Required">*</span>
                         </h4>
                         <span className="text-sm font-bold text-primary">
                           {getEffectiveConfidenceScore(activeTask)} / 10
@@ -458,12 +526,23 @@ export default function TaskIntelligenceReview({
                   </div>
 
                   <div>
-                    <h4 className="mb-3 text-sm font-semibold">
-                      Do you currently use AI for this task?
-                    </h4>
+                    <div className="mb-2 flex items-center justify-between">
+                      <h4 className="text-sm font-semibold">
+                        Do you currently use AI for this task? <span className="font-bold" title="Required">*</span>
+                      </h4>
+                      {showValidation && !activeTask.aiAssistance && (
+                        <span className="text-xs font-semibold text-red-600">Selection required</span>
+                      )}
+                    </div>
                     <TaskSelectOptions
                       value={activeTask.aiAssistance || ""}
-                      options={["Never", "Sometimes", "Frequently", "Always"]}
+                      hasError={showValidation && !activeTask.aiAssistance}
+                      options={[
+                        "Never",
+                        "Sometimes",
+                        "Frequently",
+                        "Always",
+                      ]}
                       onChange={(v) =>
                         updateTask(activeTask.id, { aiAssistance: v as Task["aiAssistance"] })
                       }
@@ -471,7 +550,9 @@ export default function TaskIntelligenceReview({
                   </div>
 
                   <div>
-                    <h4 className="mb-2 text-sm font-semibold">Manual Notes (Optional)</h4>
+                    <h4 className="mb-2 text-sm font-semibold">
+                      Manual Notes <span className="font-normal text-muted-foreground">(Optional)</span>
+                    </h4>
                     <textarea
                       placeholder="Anything else you want CareerShift to know?"
                       value={activeTask.manualNotes || ""}
@@ -486,7 +567,10 @@ export default function TaskIntelligenceReview({
                     <button
                       type="button"
                       disabled={activeIndex <= 0}
-                      onClick={() => setActiveId(selectedTasks[activeIndex - 1]?.id)}
+                      onClick={() => {
+                        setShowValidation(false);
+                        setActiveId(selectedTasks[activeIndex - 1]?.id);
+                      }}
                       className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-[#0B1D3A] transition-colors hover:bg-muted disabled:opacity-40"
                     >
                       ← Previous task
@@ -494,7 +578,15 @@ export default function TaskIntelligenceReview({
                     <button
                       type="button"
                       disabled={activeIndex >= selectedTasks.length - 1}
-                      onClick={() => setActiveId(selectedTasks[activeIndex + 1]?.id)}
+                      onClick={() => {
+                        if (!isTaskReviewComplete(activeTask)) {
+                          setShowValidation(true);
+                          toast.error("Please answer all required questions (*) before proceeding to the next task.");
+                          return;
+                        }
+                        setShowValidation(false);
+                        setActiveId(selectedTasks[activeIndex + 1]?.id);
+                      }}
                       className="inline-flex items-center gap-1.5 rounded-lg border border-primary bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:brightness-[1.03] disabled:opacity-40"
                     >
                       Next task <ChevronRight className="h-4 w-4" />

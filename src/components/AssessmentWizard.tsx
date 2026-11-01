@@ -54,6 +54,7 @@ import { getProfile } from "@/api/profile";
 import {
   saveAssessmentTasks,
   mapBackendTaskToFrontend,
+  isTaskReviewComplete,
 } from "@/api/tasks";
 import { runTaskAnalysis } from "@/api/analysis";
 import {
@@ -111,6 +112,9 @@ function AssessmentWizard({
   const [saveError, setSaveError] = useState<string | null>(null);
   const [tasksReviewComplete, setTasksReviewComplete] = useState(false);
   const pipeline = useCompetencyAssessment({ prefetchedSession });
+
+  const selectedTasks = draft.tasks.filter((t) => t.selected ?? true);
+  const tasksReviewedCount = selectedTasks.filter(isTaskReviewComplete).length;
 
   const progress = ((step + 1) / STEPS.length) * 100;
   const currentStepKey = STEPS[step].key;
@@ -322,7 +326,7 @@ function AssessmentWizard({
               disabled
               className="inline-flex items-center gap-2 rounded-xl bg-muted px-6 py-2.5 text-sm font-medium text-muted-foreground"
             >
-              Complete all task reviews to continue
+              Complete all task reviews ({tasksReviewedCount}/{selectedTasks.length}) to continue
             </button>
           )}
         </div>

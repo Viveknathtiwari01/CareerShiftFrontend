@@ -422,18 +422,15 @@ export const CollapsibleTaskCard = forwardRef<
   };
 
   let step = 0;
-  const stepFor = (key: keyof typeof sections) => (sections[key] ? ++step : 0);
-  const reasonStep = stepFor("reason");
-  const humanBuildStep = stepFor("humanBuild");
-  const componentsStep = stepFor("components");
-  const capabilitiesStep = stepFor("capabilities");
-  const solutionsStep = stepFor("solutions");
-  const humanBlendStep = stepFor("humanBlend");
-  stepFor("feasibility");
-  stepFor("velocity");
-  stepFor("cost");
-  const actionStep = stepFor("action");
-  const learningStep = stepFor("learning");
+  const stepFor = (active: boolean) => (active ? ++step : undefined);
+  const reasonStep = stepFor(sections.reason);
+  const humanBuildStep = stepFor(sections.humanBuild);
+  const componentsStep = stepFor(sections.components);
+  const capabilitiesStep = stepFor(sections.capabilities);
+  const solutionsStep = stepFor(sections.solutions);
+  const humanBlendStep = stepFor(sections.humanBlend);
+  const actionStep = stepFor(sections.action);
+  const learningStep = stepFor(sections.learning);
 
   const showRecommendedBanner = isRecommendedFocus && !isBuild;
 
@@ -571,7 +568,7 @@ export const CollapsibleTaskCard = forwardRef<
 
               {sections.solutions && (
                 <TaskToolRecommendations
-                  step={solutionsStep}
+                  step={solutionsStep!}
                   components={components}
                   generatedAtLabel={generatedAtLabel}
                 />
