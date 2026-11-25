@@ -88,7 +88,7 @@ export default function CheckoutPage() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-[420px] text-[15px] leading-[1.7] text-[#5B7C99] sm:text-base">
-          One-time payment of $19 USD. After payment, the rest of your competency map and assessment unlock.
+          One-time payment of $49 USD. After payment, the rest of your competency map and assessment unlock.
         </p>
 
         {/* CTA */}
@@ -105,7 +105,7 @@ export default function CheckoutPage() {
             </>
           ) : (
             <>
-              Pay $19
+              Pay $49
               <ArrowRight className="h-4 w-4" />
             </>
           )}
