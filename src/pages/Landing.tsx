@@ -1169,7 +1169,7 @@ function Pricing() {
                 $49
               </span>
               <span className="inline-flex items-center rounded-full bg-[#FDCF58] px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#0B1D3A]">
-                61% OFF
+                50% OFF
               </span>
             </div>
             <p className="mt-3 text-sm text-[#7DD3FC]">Limited time launch offer</p>
